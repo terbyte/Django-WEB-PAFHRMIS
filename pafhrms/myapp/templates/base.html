@@ -7,10 +7,7 @@
     <title>PAFHRMIS</title>
     <!-- <link rel="stylesheet" href="style.css" /> -->
 
-    <link
-      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
-      rel="stylesheet"
-    />
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet"/>
   </head>
   <style>@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
 
@@ -19,7 +16,7 @@
       padding: 0;
       box-sizing: border-box;
       font-family: "Poppins", sans-serif;
-      --color-hover: rgba(32, 59, 232);
+      --color-hover: rgb(195, 202, 243);
       --transition: all 0.2s ease;
     }
     
@@ -145,9 +142,12 @@
       transition: var(--transition);
     }
     
-    .nav-links li:hover a .title {
+    .sidebar .nav-links li:hover a .title {
       color: #fff;
     }
+
+    
+    
     
     .nav-links li .tooltip {
       position: absolute;
@@ -277,7 +277,14 @@
       display: inline-block;
       margin: 20px;
       white-space: nowrap;
-    }</style>
+    }
+
+
+    
+    
+    
+    
+    </style>
   <body>
     <section class="sidebar">
       <div class="nav-header">
@@ -298,11 +305,18 @@
           <span class="tooltip">Personnel Records</span>
         </li>
         <li>
-          <a href="#">
+          <!-- <a href="#">
             <i class="bx bx-cog"></i>
             <span class="title">Placement</span>
-          </a>
+            <div class=”sub-menu”>
+              <a href=”#” class=”sub-item”>Sub Item 01</a>
+              <a href=”#” class=”sub-item”>Sub Item 02</a>
+              <a href=”#” class=”sub-item”>Sub Item 03</a>
+           </div>
+          </a> -->
           <span class="tooltip">Placement</span>
+            
+        </div>
         </li>
         <li>
           <a href="#">

@@ -33,7 +33,7 @@ end
 # Unset irrelevant variables.
 deactivate nondestructive
 
-set -gx VIRTUAL_ENV "/home/terbyte/Desktop/Hrmis-DJango/venv"
+set -gx VIRTUAL_ENV "/home/terbyte/Desktop/Django-WEB-PAFHRMIS/venv"
 
 set -gx _OLD_VIRTUAL_PATH $PATH
 set -gx PATH "$VIRTUAL_ENV/bin" $PATH

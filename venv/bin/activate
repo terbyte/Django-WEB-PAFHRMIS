@@ -38,7 +38,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="/home/terbyte/Desktop/Hrmis-DJango/venv"
+VIRTUAL_ENV="/home/terbyte/Desktop/Django-WEB-PAFHRMIS/venv"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

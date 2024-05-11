@@ -1,4 +1,4 @@
-#!/home/terbyte/Desktop/Hrmis-DJango/venv/bin/python3
+#!/home/terbyte/Desktop/Django-WEB-PAFHRMIS/venv/bin/python3
 # -*- coding: utf-8 -*-
 import re
 import sys
