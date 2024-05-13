@@ -1,14 +1,16 @@
-from django.shortcuts import render,HttpResponse
-
+from django.shortcuts import render
+from django.http import HttpResponse
+from .models import Placement,Personnel_Item
 # Create your views here.
 
 
 def index(response,id):
-    return HttpResponse("<h1>%s</h1>" %id)
+    ls =Personnel_Item.objects.get(id =id)
+    return render (response,"myapp/placement.html",{"FULLNAME":ls.FULLNAME})
 
-def Personnel_Records(request):
-    return render(request,"base.html")
+def Personnel_Records(response):
+    return render(response,"myapp/Personnel_Records.html",{})
 
-def Placement(request):
-    return render(request,"placement.html")
+def Placement(response):
+    return render(response,"myapp/placement.html",{})
 
