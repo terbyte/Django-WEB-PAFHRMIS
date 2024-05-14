@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Display Data</title>
+</head>
+<body>
+    <h1>Data</h1>
+    <table border="1">
+        <tr>
+            <th>NR</th>
+            <th>AFSN</th>
+            <th>RANK</th>
+            <th>LASTNAME</th>
+            <th>FIRSTNAME</th>
+            <th>MIDDLENAME</th>
+            <th>EXTENSION_NAME</th>
+            <th>SERIAL_NUMBER</th>
+            <th>BOS</th>
+            <th>SEX</th>
+            <th>CONTACT_NUMBER</th>
+            <th>ADDRESS</th>
+            <th>REGULAR_RESERVE</th>
+            <th>PILOT_RATED_NOT</th>
+            <th>AFSC</th>
+            <th>PME_COURSES</th>
+            <th>DATE_OFAPPOINTMENT</th>
+            <th>DATE_ENTERED</th>
+            <th>LENGTHSERVICE</th>
+            <th>DATE_OFLASTPROMOTION</th>
+            <th>UNIT</th>
+            <th>SUB_UNIT</th>
+            <th>FIRST_TRANCH</th>
+            <th>SECOND_TRANCH</th>
+        </tr>
+        {% for person in persons %}
+        <tr>
+            <td>{{ person.NR }}</td>
+            <td>{{ person.AFSN }}</td>
+            <td>{{ person.RANK }}</td>
+            <td>{{ person.LASTNAME }}</td>
+            <td>{{ person.FIRSTNAME }}</td>
+            <td>{{ person.MIDDLENAME }}</td>
+            <td>{{ person.EXTENSION_NAME }}</td>
+            <td>{{ person.SERIAL_NUMBER }}</td>
+            <td>{{ person.BOS }}</td>
+            <td>{{ person.SEX }}</td>
+            <td>{{ person.CONTACT_NUMBER }}</td>
+            <td>{{ person.ADDRESS }}</td>
+            <td>{{ person.REGULAR_RESERVE }}</td>
+            <td>{{ person.PILOT_RATED_NOT }}</td>
+            <td>{{ person.AFSC }}</td>
+            <td>{{ person.PME_COURSES }}</td>
+            <td>{{ person.DATE_OFAPPOINTMENT }}</td>
+            <td>{{ person.DATE_ENTERED }}</td>
+            <td>{{ person.LENGTHSERVICE }}</td>
+            <td>{{ person.DATE_OFLASTPROMOTION }}</td>
+            <td>{{ person.UNIT }}</td>
+            <td>{{ person.SUB_UNIT }}</td>
+            <td>{{ person.FIRST_TRANCH }}</td>
+            <td>{{ person.SECOND_TRANCH }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

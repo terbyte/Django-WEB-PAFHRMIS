@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <h1>{{FULLNAME}}</h1>
 
-    <!-- <h1>HEEEEEEEEEEEEEEEEEEEEe</h1> -->
+    
+
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -403,10 +404,18 @@
       background-color: #0096c7;
       color: white;
       border-color: white;
-      
-
-      
-
+    }
+    .importBtn{
+      /* margin-left: 50%; */
+      width: 10%;
+      margin-left: 20%;
+      padding: 10px;
+      border-radius: 10px;
+      margin-top: 1%;
+      margin-bottom: 1%;
+      background-color: #0096c7;
+      color: white;
+      border-color: white;
     }
 
   </style>
@@ -515,8 +524,6 @@
       </div> -->
     </section>
     <section class="home">
-
-
       <div class="input-grp1">
         
         <input type="text" class="textbix" placeholder="Last Name" aria-label="Username" aria-describedby="addon-wrapping">
@@ -527,7 +534,6 @@
         </div>
 
         <div class="input-grp2">
-        
           <input type="text" class="lastnametxt" placeholder="Last Name" aria-label="Username" aria-describedby="addon-wrapping">
           <input type="text" class="firstnametxt" placeholder="First Name" aria-label="Username" aria-describedby="addon-wrapping">
           <input type="text" class="textClassification" placeholder="Classification" aria-label="Username" aria-describedby="addon-wrapping">
@@ -539,35 +545,74 @@
             <option value="other">Other</option>
           </select>
           <input type="text" class="textbix" placeholder="Unit" aria-label="Username" aria-describedby="addon-wrapping">
-
-          
         </div>
-        
         <button class="seachBTN"> SEARCH </button>
 
+        <form method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <button class="importBtn"> IMPORT </button>
+      </form>
+        
 
-      
+
  
 
       
        <table class="table table-responsive-sm table-bordered table-striped table-sm">
         <tr>
-            <th>AFPSN</th>
             <th>RANK</th>
-            <th>FULL NAME</th>
+            <th>LASTNAME</th>
+            <th>FIRSTNAME</th>
+            <th>MIDDLENAME</th>
+            <th>EXTENSION_NAME</th>
+            <th>SERIAL_NUMBER</th>
+            <th>BOS</th>
+            <th>SEX</th>
+            <th>BIRTHDAY</th>
+            <th>CONTACT_NUMBER</th>
+            <th>ADDRESS</th>
+            <th>REGULAR_RESERVE</th>
+            <th>PILOT_RATED_NOT</th>
+            <th>AFSC</th>
+            <th>PME_COURSES</th>
+            <th>DATE_OFAPPOINTMENT</th>
+            <th>DATE_ENTERED</th>
+            <th>LENGTHSERVICE</th>
+            <th>DATE_OFLASTPROMOTION</th>
             <th>UNIT</th>
-            <th>ACTION</th>
+            <th>SUB_UNIT</th>
+            <th>FIRST_TRANCH</th>
+            <th>SECOND_TRANCH</th>
 
         </tr>
-            <tr>
-                <td class="cls_name">987914</td>
-                <td class="cls_admission">AM</td>
-                <td class="cls_class">GEROME B FERNANDEZ</td>
-                <td class="cls_class">PAFHRMC</td>
-                <td><button class="count_btn">Edit</button></td>
-
-
-            </tr>
+        {% for person in persons %}
+        <tr>
+          <td>{{ person.RANK }}</td>
+          <td>{{ person.LAST_NAME }}</td>
+          <td>{{ person.FIRST_NAME }}</td>
+          <td>{{ person.MIDDLE_NAME }}</td>
+          <td>{{ person.EXTENSION_NAME }}</td>
+          <td>{{ person.SERIAL_NUMBER }}</td>
+          <td>{{ person.BOS }}</td>
+          <td>{{ person.SEX }}</td>
+          <td>{{ person.BIRTHDAY }}</td>
+          <td>{{ person.CONTACT_NUMBER }}</td>
+          <td>{{ person.ADDRESS }}</td>
+          <td>{{ person.REGULAR_RESERVE }}</td>
+          <td>{{ person.PILOT_RATED_NON_RATED }}</td>
+          <td>{{ person.AFSC }}</td>
+          <td>{{ person.HIGHEST_PME_COURSES }}</td>
+          <td>{{ person.EFFECTIVE_DATE_APPOINTMENT }}</td>
+          <td>{{ person.EFFECTIVE_DATE_ENTERED }}</td>
+          <td>{{ person.LENGTH_OF_SERVICE }}</td>
+          <td>{{ person.DATE_LAST_PROMOTION_APPOINTMENT }}</td>
+          <td>{{ person.UNIT }}</td>
+          <td>{{ person.SUB_UNIT }}</td>
+          <td>{{ person.DATE_LAST_1ST_TRANCH_REENLISTMENT }}</td>
+          <td>{{ person.DATE_LAST_2ND_TRANCH_REENLISTMENT }}</td>
+      </tr>
+        {% endfor %}
     </table>
     </section>
 
@@ -591,4 +636,4 @@
       }
     </script>
   </body>
-</html>
+</html> 
