@@ -20,8 +20,17 @@ def Placement(response):
     return render(response,"myapp/placement.html",{})
 
 
+def display_file_data(request):
+    if request.method == 'GET':
+        form = UploadFileForm(request.GET, request.FILES)
+        
+
+
+
+
 
 def upload_file(request):
+    # if request.method == 'POST':
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():

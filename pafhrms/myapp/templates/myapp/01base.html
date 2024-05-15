@@ -553,64 +553,20 @@
           {{ form.as_p }}
           <button class="importBtn"> IMPORT </button>
       </form>
-        
-
-
- 
-
       
        <table class="table table-responsive-sm table-bordered table-striped table-sm">
         <tr>
             <th>RANK</th>
-            <th>LASTNAME</th>
-            <th>FIRSTNAME</th>
-            <th>MIDDLENAME</th>
-            <th>EXTENSION_NAME</th>
-            <th>SERIAL_NUMBER</th>
-            <th>BOS</th>
-            <th>SEX</th>
-            <th>BIRTHDAY</th>
-            <th>CONTACT_NUMBER</th>
-            <th>ADDRESS</th>
-            <th>REGULAR_RESERVE</th>
-            <th>PILOT_RATED_NOT</th>
-            <th>AFSC</th>
-            <th>PME_COURSES</th>
-            <th>DATE_OFAPPOINTMENT</th>
-            <th>DATE_ENTERED</th>
-            <th>LENGTHSERVICE</th>
-            <th>DATE_OFLASTPROMOTION</th>
+            <th>FULL NAME</th>
             <th>UNIT</th>
-            <th>SUB_UNIT</th>
-            <th>FIRST_TRANCH</th>
-            <th>SECOND_TRANCH</th>
 
         </tr>
         {% for person in persons %}
         <tr>
           <td>{{ person.RANK }}</td>
-          <td>{{ person.LAST_NAME }}</td>
-          <td>{{ person.FIRST_NAME }}</td>
-          <td>{{ person.MIDDLE_NAME }}</td>
-          <td>{{ person.EXTENSION_NAME }}</td>
-          <td>{{ person.SERIAL_NUMBER }}</td>
-          <td>{{ person.BOS }}</td>
-          <td>{{ person.SEX }}</td>
-          <td>{{ person.BIRTHDAY }}</td>
-          <td>{{ person.CONTACT_NUMBER }}</td>
-          <td>{{ person.ADDRESS }}</td>
-          <td>{{ person.REGULAR_RESERVE }}</td>
-          <td>{{ person.PILOT_RATED_NON_RATED }}</td>
-          <td>{{ person.AFSC }}</td>
-          <td>{{ person.HIGHEST_PME_COURSES }}</td>
-          <td>{{ person.EFFECTIVE_DATE_APPOINTMENT }}</td>
-          <td>{{ person.EFFECTIVE_DATE_ENTERED }}</td>
-          <td>{{ person.LENGTH_OF_SERVICE }}</td>
-          <td>{{ person.DATE_LAST_PROMOTION_APPOINTMENT }}</td>
+          <td>{{ person.FIRST_NAME}} {{person.MIDDLE_NAME}} {{person.LAST_NAME}}</td>
           <td>{{ person.UNIT }}</td>
-          <td>{{ person.SUB_UNIT }}</td>
-          <td>{{ person.DATE_LAST_1ST_TRANCH_REENLISTMENT }}</td>
-          <td>{{ person.DATE_LAST_2ND_TRANCH_REENLISTMENT }}</td>
+
       </tr>
         {% endfor %}
     </table>
