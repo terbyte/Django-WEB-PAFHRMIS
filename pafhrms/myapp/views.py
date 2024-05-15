@@ -3,14 +3,13 @@ from django.http import HttpResponse
 # Create your views here.
 from django.core.files.storage import FileSystemStorage
 from .models import PersonnelItem
-
+from django.core.paginator import Paginator
 from .forms import UploadFileForm
 import openpyxl
 from datetime import datetime
 
 
 def index(response,id):
-    ls =PersonnelItem.objects.all(id =id)
     return render (response,"myapp/01base.html",{"name":"name"})
 
 def Personnel_Records(response):
@@ -30,7 +29,7 @@ def display_file_data(request):
 
 
 def upload_file(request):
-    # if request.method == 'POST':
+
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
@@ -74,5 +73,8 @@ def upload_file(request):
 
 def display_data(request):
     persons = PersonnelItem.objects.all()
+    paginator = Paginator(persons,5)
+    page_num = request.GET.get("page")
+    persons = paginator.get_page(page_num)
     return render(request, 'myapp/01base.html', {'persons': persons})
 
