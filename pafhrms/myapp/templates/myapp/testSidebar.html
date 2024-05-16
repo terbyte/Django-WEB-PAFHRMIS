@@ -10,7 +10,9 @@
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
 
     {% load static %}
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+	<!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"> -->
 	
   </head>
   <body>
@@ -143,18 +145,20 @@
     
           {% include 'myapp/searchforms.html' %}
           {% include 'myapp/tablewithPaginator.html' %}
+          
 
 
             <div class="contents">  </div>
          </div>
 	</div>
 
-
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-
     <script src="{% static 'js/jquery.min.js' %}"></script>
     <script src="{% static 'js/popper.js'%}"></script>
     <script src="{% static 'js/bootstrap.min.js'%}"></script>
     <script src="{% static 'js/main.js'%}"></script>
+
+    
   </body>
+
+  
 </html>

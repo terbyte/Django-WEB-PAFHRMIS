@@ -9,4 +9,5 @@ urlpatterns = [
     path('display/', views.display_data, name='display_data'),
     path('personnel-records/', views.Personnel_Records, name='Personnel_Records'),
     path('placement/', views.Placement, name='Placement'),
+    # path('search/', views.searchpersonnel, name='searchpersonnel'),
 ]

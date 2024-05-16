@@ -8452,10 +8452,117 @@ a[data-toggle="collapse"] {
 
 
 
+/* PAGINATION SECTION */
 
 
 
 
+table {
+    border-collapse: collapse;
+    width: 60%;
+    margin-bottom: 20px;
+    margin: 0 auto;
+    
+  }
+  th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+     text-align: center; /* Center-align the content horizontally */
+  }
+  th {
+    background-color: #f2f2f2;
+  }
+  tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  tr:hover {
+    background-color: #ddd;
+  }
+
+  .count_btn {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+
+  .count_btn:hover {
+    background-color: #45a049; /* Darker Green */
+  }
+
+
+    .input-grp1{
+      margin: auto;
+      width: 100%;
+      height: 100%;
+      padding: 8px;
+      left: 10%;
+      text-align: center;
+      padding-top: 5%;
 
 
 
+      .textbix{
+        padding: 8px;
+        margin: auto;
+      border-radius: 10px;
+
+        
+
+      }
+    }
+
+    .input-grp2{
+      margin: auto;
+      width: 100%;
+      height: 100%;
+      padding: 8px;
+      left: 10%;
+      text-align: center;
+      padding-top: 1%;
+
+
+      .textbix{
+        padding: 8px;
+        margin: auto;
+      border-radius: 10px;
+
+
+      }
+      .lastnametxt{
+          width: 8.5rem;
+        padding: 8px;
+      border-radius: 10px;
+
+
+        }
+        .firstnametxt{
+          width: 8.5rem;
+        padding: 8px;
+      border-radius: 10px;
+
+
+        }
+        .textClassification{
+          padding: 8px;
+          margin: auto;
+          border-radius: 10px;
+          width: 25%;
+
+        }
+    }
+
+    .pagination{
+      font-size: 15px;
+      margin-left: 0;
+      margin-top: 20px;
+      }
