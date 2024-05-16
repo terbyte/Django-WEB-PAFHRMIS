@@ -1,13 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
 
-    <p>HEEEEEEEEEEEEEEEEEEEEe</p>
-    
+
+
+
+<body class="app header-fixed sidebar-fixed aside-menu-fixed aside-menu-hidden">
+<!--Navbar-->
+{% include 'base/navbar.html' %}
+
+<div class="app-body">
+    <!--Sidebar-->
+    {% include 'base/testsidebar.html' %}
+
+    <!-- Main content -->
+    <main class="main">
+
+
+        <!-- Page contents -->
+        <div class="container-fluid">
+            <div class="animated fadeIn py-4">
+                {% block content %}
+                {% endblock %}
+            </div>
+
+        </div>
+        <!-- /.conainer-fluid -->
+    </main>
+
+
+
+</div>
+
+<!--Footer-->
+{% include 'base/footer.html' %}
+
+<!--JS-->
+{% include 'base/js.html' %}
+
 </body>
 </html>

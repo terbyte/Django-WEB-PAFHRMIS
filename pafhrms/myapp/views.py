@@ -9,14 +9,17 @@ import openpyxl
 from datetime import datetime
 
 
-def index(response,id):
-    return render (response,"myapp/01base.html",{"name":"name"})
+def index(request,id):
+    return render (request,"myapp/01base.html",{"name":"name"})
 
-def Personnel_Records(response):
-    return render(response,"myapp/Personnel_Records.html",{"name":"PERSONNEL RECORDS"})
+def Personnel_Records(request):
+    return render(request,"myapp/Personnel_Records.html",{"name":"PERSONNEL RECORDS"})
 
-def Placement(response):
-    return render(response,"myapp/placement.html",{})
+def Placement(request):
+    return render(request,"myapp/placement.html",{})
+
+def side(request):
+    return render(request,"myapp/testSidebar.html",{})
 
 
 def display_file_data(request):

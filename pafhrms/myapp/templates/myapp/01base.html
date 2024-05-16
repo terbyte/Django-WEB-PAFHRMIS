@@ -13,6 +13,7 @@
 
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet"/>
   </head>
+  <!-- <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">   -->
   <style>@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
 
     * {
@@ -445,10 +446,23 @@
         <li>
           <a href="#">
             <i class="bx bx-cog"></i>
-            <span class="title">Personnel Records</span>
+            <span class="title" action="{% url 'Personnel_Records' %}" method="post">{% csrf_token %} Personnel Records</span>
+
+        
+              <!-- index.html -->
+           
+
+
+          
           </a>
+          
           <span class="tooltip">Personnel Records</span>
         </li>
+
+        <form action="{% url 'Personnel_Records' %}" method="post">
+          {% csrf_token %}
+          <button type="submit">Go to My Template</button>
+        </form>
         <li>
           <a href="#">
             <i class="bx bx-cog"></i>
