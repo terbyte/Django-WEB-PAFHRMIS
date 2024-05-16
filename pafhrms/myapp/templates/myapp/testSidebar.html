@@ -7,21 +7,16 @@
   	<title>PAHRMIS</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
 
     {% load static %}
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 	
   </head>
   <body>
-
-     
-
     
 		
-		<div class="wrapper d-flex align-items-stretch">
+	<div class="wrapper d-flex align-items-stretch">
 			<nav id="sidebar">
 				<div class="p-4 pt-5">
 		  		<a href="#" class="img logo rounded-circle mb-5" style="background-image: url(/static/img/logo.png);"></a>
@@ -30,7 +25,6 @@
                     <a href="#">Personnel Records</a>
                   </li>
 	          <li>
-                
 	            <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Placement</a>
 	            <ul class="collapse list-unstyled" id="homeSubmenu">
                 <li>
@@ -47,7 +41,6 @@
                 </li>
 	            </ul>
 	          </li>
-              
 	          <li>
               <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Reenlistment</a>
               <ul class="collapse list-unstyled" id="pageSubmenu">
@@ -65,7 +58,6 @@
                 </li>
               </ul>
 	          </li>
-
             <li>
                 <a href="#schoolingSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Schooling</a>
                 <ul class="collapse list-unstyled" id="schoolingSubmenu">
@@ -77,7 +69,6 @@
                   </li>
                 </ul>
             </li>
-
             <li>
                 <a href="#promotionSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Promotion</a>
                 <ul class="collapse list-unstyled" id="promotionSubmenu">
@@ -89,7 +80,6 @@
                   </li>
                 </ul>
             </li>
-
             <li>
                 <a href="#senioritySubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Seniority Linear List</a>
                 <ul class="collapse list-unstyled" id="senioritySubmenu">
@@ -101,8 +91,6 @@
                   </li>
                 </ul>
             </li>
-
-
             <li>
                 <a href="#afscSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">AFSC Monitoring</a>
                 <ul class="collapse list-unstyled" id="afscSubmenu">
@@ -143,20 +131,38 @@
                 </ul>
             </li>
 	        <li>
-              <a href="#">Inactive Personnel</a>
+              <a href="">Inactive Personnel</a>
 	        </li>
 	        </ul>
 	      </div>
     	</nav>
 
-        <!-- Page Content  -->
-      <div id="content" class="p-4 p-md-5">
 
-    
-        <div class="contents">
-        </div>
-    </div>
+        <!-- Page Content  -->
+        <div id="content" class="p-4 p-md-5">
+
+            
+
+          {% include 'myapp/testnavbar.html' %}
+
+
+          {% include 'myapp/tablewithPaginator.html' %}
+
+
+          
+
+          
+
+
+
+
+
+
+
+            <div class="contents">  </div>
+         </div>
 	</div>
+
 
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 

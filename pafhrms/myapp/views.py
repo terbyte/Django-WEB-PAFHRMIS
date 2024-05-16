@@ -18,8 +18,6 @@ def Personnel_Records(request):
 def Placement(request):
     return render(request,"myapp/placement.html",{})
 
-def side(request):
-    return render(request,"myapp/testSidebar.html",{})
 
 
 def display_file_data(request):
@@ -28,6 +26,16 @@ def display_file_data(request):
         
 
 
+def side(request):
+    if request.method == 'GET':
+            form = UploadFileForm(request.GET, request.FILES)
+    persons = PersonnelItem.objects.all()
+    paginator = Paginator(persons,5)
+    page_num = request.GET.get("page")
+    persons = paginator.get_page(page_num)
+    return render(request, 'myapp/testSidebar.html', {'persons': persons})
+    return render(request,"myapp/testSidebar.html",{})
+    
 
 
 
