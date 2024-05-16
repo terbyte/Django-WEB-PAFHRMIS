@@ -9,6 +9,10 @@ import openpyxl
 from datetime import datetime
 
 
+def custom_404(request, exception):
+    return render(request, 'other/404.html', status=404)
+
+
 def index(request):
     if request.method == 'GET':
         form = UploadFileForm(request.GET, request.FILES)
