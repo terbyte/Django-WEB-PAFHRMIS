@@ -1,13 +1,30 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Page Not Found</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image inside a Div</title>
+    <style>
+        /* Style for the div */
+        .image-container {
+            width: 100%; /* Adjust width as needed */
+            height: 100%; /* Adjust height as needed */
+            overflow: hidden; /* Hide overflow */
+        }
+
+        /* Style for the image */
+        .image-container img {
+            width: 50%; /* Make the image fill the container */
+            height: auto; /* Maintain aspect ratio */
+            display: block; /* Remove any spacing below the image */
+            margin-left: 25%;
+        }
+    </style>
 </head>
 <body>
-    <h1>404 - Page Not Found</h1>
-    <p>The page you requested does not exist.</p>
+    <div class="image-container">
+        <!-- Insert your image path in the src attribute -->
+        <img src="static/img/404.png" alt="Description of the image">
+    </div>
 </body>
 </html>
