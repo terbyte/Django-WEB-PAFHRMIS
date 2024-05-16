@@ -7,7 +7,7 @@ urlpatterns = [
     # path("<int:id>/", views.index, name="index"),
     path('', views.index, name='index'),
     
-    path('upload/', views.upload_file, name='upload_file'),
+    path('UploadFile/', views.UploadFile, name='UploadFile'),
     path('Personnel_Records/', views.Personnel_Records, name='Personnel_Records'),
 
     path('display/', views.display_data, name='display_data'),

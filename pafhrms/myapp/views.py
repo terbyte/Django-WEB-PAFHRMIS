@@ -9,6 +9,10 @@ import openpyxl
 from datetime import datetime
 
 
+def UploadFile(request):
+    # Logic to handle personnel records
+    return render(request, 'myapp/upload.html')
+
 def custom_404(request, exception):
     return render(request, 'other/404.html', status=404)
 
@@ -54,7 +58,6 @@ def display_file_data(request):
 
 
 def upload_file(request):
-
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
@@ -91,10 +94,10 @@ def upload_file(request):
                 DATE_LAST_1ST_TRANCH_REENLISTMENT=row[22],
                 DATE_LAST_2ND_TRANCH_REENLISTMENT=row[23]
                 )
-            return redirect('display_data')
+            return redirect('myapp/index.html')
     else:
         form = UploadFileForm()
-    return render(request, 'myapp/01base.html', {'form': form})
+    return render(request, 'myapp/index.html', {'form': form})
 
 def display_data(request):
     persons = PersonnelItem.objects.all()
