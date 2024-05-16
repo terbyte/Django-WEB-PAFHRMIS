@@ -9,14 +9,34 @@ import openpyxl
 from datetime import datetime
 
 
-def index(request,id):
-    return render (request,"myapp/01base.html",{"name":"name"})
+def index(request):
+    if request.method == 'GET':
+        form = UploadFileForm(request.GET, request.FILES)
+        persons = PersonnelItem.objects.all()
+        paginator = Paginator(persons,5)
+        page_num = request.GET.get("page")
+        persons = paginator.get_page(page_num)
+        return render(request, 'myapp/index.html', {'persons': persons})
+    # return render(request,"myapp/testSidebar.html",{})
+
+
 
 def Personnel_Records(request):
-    return render(request,"myapp/Personnel_Records.html",{"name":"PERSONNEL RECORDS"})
+    if request.method == 'GET':
+            form = UploadFileForm(request.GET, request.FILES)
+    persons = PersonnelItem.objects.all()
+    paginator = Paginator(persons,5)
+    page_num = request.GET.get("page")
+    persons = paginator.get_page(page_num)
+    return render(request, 'Base/sidebar.html', {'persons': persons})
+    # return render(request,"myapp/testSidebar.html",{})
+
 
 def Placement(request):
     return render(request,"myapp/placement.html",{})
+
+def inactivepersonnel(request):
+    return render(request,"myapp/index.html",{})
 
 
 
@@ -25,16 +45,6 @@ def display_file_data(request):
         form = UploadFileForm(request.GET, request.FILES)
         
 
-
-def side(request):
-    if request.method == 'GET':
-            form = UploadFileForm(request.GET, request.FILES)
-    persons = PersonnelItem.objects.all()
-    paginator = Paginator(persons,5)
-    page_num = request.GET.get("page")
-    persons = paginator.get_page(page_num)
-    return render(request, 'myapp/testSidebar.html', {'persons': persons})
-    return render(request,"myapp/testSidebar.html",{})
     
 
 

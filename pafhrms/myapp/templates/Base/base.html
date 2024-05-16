@@ -1,25 +1,26 @@
+<!-- base.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Your Website{% endblock %}</title>
-    <!-- Add your CSS links here -->
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-    {% block extra_head %}{% endblock %}
+    <title>{% block title %}PAFHRMIS{% endblock %}</title>
 </head>
 <body>
-    {% include 'sidebar.html' %}
-    
+    <!-- sidebar -->
+    {% include 'Base/sidebar.html' %}
+   
 
-    <div class="content">
-        <!-- Main content goes here -->
-        {% block content %}
-        {% endblock %}
+
+    <div id="content" class="p-4 p-md-5">
+        <div class="contents"> 
+            {% block content %}
+        
+            {% endblock %}
+        </div>
     </div>
 
-    <!-- Add your JavaScript links here if needed -->
-    <script src="{% static 'js/script.js' %}"></script>
-    {% block extra_scripts %}{% endblock %}
+    <!-- <div id="footer">
+        <p>Footer content &copy; 2024</p>
+    </div> -->
 </body>
 </html>
