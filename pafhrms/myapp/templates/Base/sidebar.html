@@ -29,7 +29,7 @@
 	            <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Placement</a>
 	            <ul class="collapse list-unstyled" id="homeSubmenu">
                 <li>
-                    <a href="">Officer</a>
+                    <a href="{% url 'placementOfficer' %}">Officer</a>
                 </li>
                 <li>
                     <a href="">Enlisted Personnel</a>
@@ -62,12 +62,35 @@
             <li>
                 <a href="#schoolingSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Schooling</a>
                 <ul class="collapse list-unstyled" id="schoolingSubmenu">
-                  <li>
-                      <a href="">Officer</a>
-                  </li>
-                  <li>
-                      <a href="">Enlisted Personnel</a>
-                  </li>
+                    <a href="#schoolingSubmenuofficer" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Officer</a>
+                    <ul class="collapse list-unstyled" id="schoolingSubmenuofficer">
+              
+                        <li>
+                            <a href="">CGSC</a>
+                        </li>
+                        <li>
+                            <a href="">SOC</a>
+                        </li>
+                        <li>
+                            <a href="">BAFOC</a>
+                        </li>
+                    </ul>
+                    <a href="#schoolingSubmenuenlisted" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Enlisted Personnel</a>
+                <ul class="collapse list-unstyled" id="schoolingSubmenuenlisted">
+                
+                    <li>
+                        <a href="">SMC</a>
+                    </li>
+                    <li>
+                        <a href="">ANCOC</a>
+                    </li>
+                    <li>
+                        <a href="">BNCOC</a>
+                    </li>
+                    <li>
+                        <a href="">BMT</a>
+                    </li>
+                </ul>
                 </ul>
             </li>
             <li>
@@ -132,15 +155,22 @@
                 </ul>
             </li>
 	        <li>
-              <a href="">Inactive Personnel</a>
+                <a href="{% url 'Inactive_Personnel' %}">Inactive Personnel</a>
 	        </li>
 
             <li>
                 <a href="{% url 'UploadFile' %}">Upload File</a>
-              </li>
+            </li>
 	        </ul>
 	      </div>
     	</nav>
+        <!-- <div class="theme-wrapper">
+        <i class="bx bxs-moon theme-icon"></i>
+        <p>Dark Theme</p>
+        <div class="theme-btn">
+          <span class="theme-ball"></span>
+        </div>
+      </div> -->
 
 
 

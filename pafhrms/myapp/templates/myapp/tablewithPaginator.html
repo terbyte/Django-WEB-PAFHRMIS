@@ -6,7 +6,7 @@
      <table class="table table-responsive-sm table-bordered table-striped table-sm">
       <tr>
           <th>RANK</th>
-          <th>AFSN</th>
+          <th>AFPSN</th>
           <th>FULL NAME</th>
           <th>UNIT</th>
           <th>ACTION</th>
@@ -17,10 +17,87 @@
         <td>{{ person.SERIAL_NUMBER }}</td>
         <td>{{ person.FIRST_NAME}} {{person.MIDDLE_NAME}} {{person.LAST_NAME}}</td>
         <td>{{ person.UNIT }}</td>
-        <td><button onclick="alert('Button clicked!')" class="count_btn">EDIT</button></td>
+        <td><button class="btn btn-primary" id="openModalButton"  class="count_btn">EDIT</button></td>
     </tr>
       {% endfor %}
   </table>
+
+  <!-- Button trigger modal -->
+<!-- <button type="button" class="btn btn-primary" id="openModalButton">
+    Launch modal
+  </button>
+   -->
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="myModalLabel">Modal title</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form>
+                <div class="form-group row">
+                    <label for="label1" class="col-sm-2 col-form-label">Name</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="label1" placeholder="">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="label2" class="col-sm-2 col-form-label">Present Unit</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="label2" placeholder="">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="label3" class="col-sm-2 col-form-label">Reassignment Unit</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="label3" placeholder="">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="label4" class="col-sm-2 col-form-label">Sub Unit</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="label4" placeholder="">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="label5" class="col-sm-2 col-form-label">Reassignment Date</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="label5" placeholder="">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="label6" class="col-sm-2 col-form-label">Order Date</label>
+                    <div class="col-sm-10">
+                        <!-- This could be another input or a placeholder if not needed -->
+                        <input type="text" class="form-control" id="label6" placeholder="">
+                    </div>
+                </div>
+
+            </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script>
+  document.getElementById('openModalButton').addEventListener('click', function() {
+    $('#myModal').modal('show');
+  });
+  </script>
+
+
+
   <div class="pagination">
     <span class="step-links">
         {% if persons.has_previous %}

@@ -25,6 +25,7 @@ def search_Personnel(request):
 def UploadFile(request):
     # Logic to handle personnel records
     return render(request, 'myapp/upload.html')
+    
 
 def custom_404(request, exception):
     return render(request, 'other/404.html', status=404)
@@ -53,11 +54,11 @@ def Personnel_Records(request):
     # return render(request,"myapp/testSidebar.html",{})
 
 
-def Placement(request):
-    return render(request,"myapp/placement.html",{})
+def placementOfficer(request):
+    return render(request,"myapp/placementOfficer.html",{})
 
 def inactivepersonnel(request):
-    return render(request,"myapp/index.html",{})
+    return render(request,"myapp/InactivePersonnel.html",{})
 
 
 

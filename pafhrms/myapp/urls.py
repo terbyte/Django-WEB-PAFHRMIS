@@ -11,7 +11,8 @@ urlpatterns = [
     path('Personnel_Records/', views.Personnel_Records, name='Personnel_Records'),
 
     path('search_Personnel/', views.search_Personnel, name='search_Personnel'),
-    path('placement/', views.Placement, name='Placement'),
+    path('Inactive_Personnel/', views.inactivepersonnel, name='Inactive_Personnel'),
+    path('placementOfficer/', views.placementOfficer, name='placementOfficer'),
     # path('search/', views.searchpersonnel, name='searchpersonnel'),
 ]
 
