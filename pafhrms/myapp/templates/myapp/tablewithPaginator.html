@@ -6,6 +6,7 @@
      <table class="table table-responsive-sm table-bordered table-striped table-sm">
       <tr>
           <th>RANK</th>
+          <th>AFSN</th>
           <th>FULL NAME</th>
           <th>UNIT</th>
           <th>ACTION</th>
@@ -13,6 +14,7 @@
       {% for person in persons %}
       <tr>
         <td>{{ person.RANK }}</td>
+        <td>{{ person.SERIAL_NUMBER }}</td>
         <td>{{ person.FIRST_NAME}} {{person.MIDDLE_NAME}} {{person.LAST_NAME}}</td>
         <td>{{ person.UNIT }}</td>
         <td><button onclick="alert('Button clicked!')" class="count_btn">EDIT</button></td>

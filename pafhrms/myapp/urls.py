@@ -10,7 +10,7 @@ urlpatterns = [
     path('UploadFile/', views.UploadFile, name='UploadFile'),
     path('Personnel_Records/', views.Personnel_Records, name='Personnel_Records'),
 
-    path('display/', views.display_data, name='display_data'),
+    path('search_Personnel/', views.search_Personnel, name='search_Personnel'),
     path('placement/', views.Placement, name='Placement'),
     # path('search/', views.searchpersonnel, name='searchpersonnel'),
 ]

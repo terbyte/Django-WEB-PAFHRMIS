@@ -6,7 +6,20 @@ from .models import PersonnelItem
 from django.core.paginator import Paginator
 from .forms import UploadFileForm
 import openpyxl
-from datetime import datetime
+from .forms import searchPersonnel
+
+
+def search_Personnel(request):
+    form = searchPersonnel()
+    query = None
+    results = []
+    if 'Name' in request.GET:
+        form = searchPersonnel(request.GET)
+        if form.is_valid():
+            query = form.cleaned_data['Name']
+            results = PersonnelItem.objects.filter(title__icontains=query)
+    return render(request, 'myapp/index.html', {'form': form, 'query': query, 'results': results})
+
 
 
 def UploadFile(request):

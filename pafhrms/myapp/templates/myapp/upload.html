@@ -178,7 +178,13 @@
             </svg>
             <input type="file" name="unique-files[]" id="unique-file" class="unique-box-file" data-multiple-caption="{count} files selected" multiple="">
             <label for="unique-file"><strong>Choose a file</strong><span class="unique-box-dragndrop"> or drag it here</span>.</label>
-            <button type="submit" class="unique-button">Upload</button>
+
+
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button class="UploadBtn"> UPLOAD DATA </button>
+            </form>
         </div>
 
         <div class="unique-box-uploading">Uploading…</div>
