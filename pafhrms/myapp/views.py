@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
 # Create your views here.
 from django.core.files.storage import FileSystemStorage
@@ -7,7 +8,6 @@ from django.core.paginator import Paginator
 from .forms import UploadFileForm
 import openpyxl
 from .forms import searchPersonnel
-
 
 def search_Personnel(request):
     form = searchPersonnel()
@@ -120,3 +120,17 @@ def display_data(request):
     persons = paginator.get_page(page_num)
     return render(request, 'myapp/01base.html', {'persons': persons})
 
+
+
+
+def edit_item(request, item_id):
+    def edit_item(request, item_id):
+        item = get_object_or_404(PersonnelItem, id=item_id)
+        if request.method == 'POST':
+            form = ItemForm(request.POST, instance=item)
+            if form.is_valid():
+                form.save()
+                return redirect('item_list')
+        else:
+            form = ItemForm(instance=item)
+        return render(request, 'edit_item.html', {'form': form, 'item': item})
