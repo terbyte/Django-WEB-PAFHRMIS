@@ -22,11 +22,29 @@
         <td>
         <button 
                 class="btn btn-primary openModalButton" 
+                data-rank="{{ person.RANK }}"
                 data-lastname="{{ person.LAST_NAME }}"
                 data-firstname="{{ person.FIRST_NAME }}"
                 data-middlename="{{ person.MIDDLE_NAME }}"
-
+                data-suffix="{{ person.EXTENSION_NAME }}"
                 data-unit="{{ person.UNIT }}"
+                data-afpsn="{{ person.SERIAL_NUMBER }}"
+                data-unit="{{ person.UNIT }}"
+                data-subunit="{{ person.SUB_UNIT }}"
+                data-birthday="{{ person.BIRTHDAY }}"
+                data-contactnumber="{{ person.CONTACT_NUMBER }}"
+                data-sex="{{ person.SEX }}"
+                data-address="{{ person.ADDRESS }}"
+                data-afsc="{{ person.AFSC }}"
+                data-highestpme="{{ person.HIGHEST_PME_COURSES }}"
+     
+                data-dateenteredmilitary="{{ person.EFFECTIVE_DATE_ENTERED }}"
+                data-datelastpromotion="{{ person.DATE_LAST_PROMOTION_APPOINTMENT }}"
+                data-lengthofservice="{{ person.LENGTH_OF_SERVICE }}"
+
+
+
+
                 data-toggle="modal"
                 data-target="#myModal">EDIT</button>
         </td>
@@ -47,15 +65,45 @@
 
 $(document).ready(function() {
     $('.openModalButton').click(function() {
+        var rank = $(this).data('rank');
         var lastname = $(this).data('lastname');
         var firstname = $(this).data('firstname');
         var middlename = $(this).data('middlename');
+        var suffix = $(this).data('suffix');
         var unit = $(this).data('unit');
+        var afpsn = $(this).data('afpsn');
+        var unit = $(this).data('unit');
+        var subunit = $(this).data('subunit');
+        var birthday = $(this).data('birthday');
+        var contactnum = $(this).data('contactnumber');
+        var sex = $(this).data('sex');
+        var address = $(this).data('address');
+        var afsc = $(this).data('afsc');
+        var highestpme = $(this).data('highestpme');
+        var dateenteredmilitary = $(this).data('dateenteredmilitary');
+        var dateoflastpromotion = $(this).data('datelastpromotion');
+        var lengthofservice = $(this).data('lengthofservice');
 
+
+        $('#ranktxt').val(rank);
         $('#lastnametxt').val(lastname);
         $('#firstnametxt').val(firstname);
         $('#middlenametxt').val(middlename);
-
+        $('#Suffix').val(suffix);
+        $('#afpsntxt').val(afpsn);
+        $('#unittxt').val(unit);
+        $('#subunittxt').val(subunit);
+        $('#bdaytxt').val(birthday);
+        $('#contactnumtxt').val(contactnum);
+        $('#sextxt').val(sex);
+        $('#addresstxt').val(address);
+        $('#afsctxt').val(afsc);
+        $('#hpmetxt').val(highestpme);
+        $('#DOLetadsottxt').val(highestpme);  
+        $('#enlistmentdatetxt').val(dateenteredmilitary);
+        $('#promotiontxt').val(dateoflastpromotion);
+        $('#lengthofservicetxt').val(lengthofservice);
+        
         // $('#firstnametxt').val(unit);
     });
 });
