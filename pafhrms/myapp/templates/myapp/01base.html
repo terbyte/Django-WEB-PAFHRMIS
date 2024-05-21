@@ -446,7 +446,7 @@
         <li>
           <a href="#">
             <i class="bx bx-cog"></i>
-            <span class="title" action="{% url 'Personnel_Records' %}" method="post">{% csrf_token %} Personnel Records</span>
+            <span class="title" action="{% url 'index' %}" method="post">{% csrf_token %} Personnel Records</span>
 
         
               <!-- index.html -->
@@ -459,7 +459,7 @@
           <span class="tooltip">Personnel Records</span>
         </li>
 
-        <form action="{% url 'Personnel_Records' %}" method="post">
+        <form action="{% url 'index' %}" method="post">
           {% csrf_token %}
           <button type="submit">Go to My Template</button>
         </form>

@@ -28,7 +28,6 @@ class PersonnelItem(models.Model):
     DATE_LAST_1ST_TRANCH_REENLISTMENT = models.DateField(max_length=200, blank=True, null=True)
     DATE_LAST_2ND_TRANCH_REENLISTMENT = models.DateField(max_length=200, blank=True, null=True)
 
-
     def __str__(self):
         return f'{self.RANK} {self.LAST_NAME}, {self.FIRST_NAME} {self.MIDDLE_NAME}'
     
