@@ -1,3 +1,56 @@
+<!-- 
+<form>
+  <div class="input-group mb-3">
+    <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name="last_name" placeholder="Last Name" {% if last_name_query %}value="{{ last_name_query }}"{% endif %}>
+    <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name="first_name" placeholder="First Name" {% if first_name_query %}value="{{ first_name_query }}"{% endif %}>
+    <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name="middle_name" placeholder="Middle Name" {% if middle_name_query %}value="{{ middle_name_query }}"{% endif %}>
+    <div class="form-group col-md-2">
+      <select id="inputState" name="suffix" class="form-control">
+          <option value="Suffix" selected>Suffix</option>
+          <option value="Jr.">Jr.</option>
+          <option value="Sr.">Sr.</option>
+          <option value="II">II</option>
+          <option value="III">III</option>
+          <option value="Other">Other</option>
+      </select>
+  </div>
+  </div>
+  <div class="input-group mb-3">
+    <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name="afsn" placeholder="AFSN" {% if afsn_query %}value="{{ afsn_query }}"{% endif %}>
+      <div class="form-group col-md-2">
+          <select id="inputState" name="rank" class="form-control">
+            <option selected>Rank</option>
+            <option>GEN</option>
+            <option>AM</option>
+            <option>A2C</option>
+            <option>A1C</option>
+            <option>AW2C</option>
+            <option>AW1C</option>
+            <option>COL</option>
+            <option>LTCOL</option>
+          </select>
+      </div>
+      <div class="form-group col-md-4">
+          <select id="inputState" class="form-control">
+            <option selected>Classification</option>
+            <option>Officer</option>
+            <option>Enlistment</option>
+          </select>
+      </div>
+      <div class="form-group col-md-2">
+          <select id="inputState" name="sex" class="form-control">
+            <option selected>Sex</option>
+            <option>Male</option>
+            <option>Female</option>
+          </select>
+      </div>
+      <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name="unit" placeholder="Unit">
+  </div>
+  <div class="form-group">
+      <button type="submit" class="btn btn-primary">Search</button>
+  </div>
+</form>
+ -->
 
 
 <form>
@@ -44,6 +97,6 @@
         <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" placeholder="Unit">
     </div>
     <div class="form-group">
-        <a href="{% url 'search_Personnel' %}" class="btn btn-primary">SEARCH</a>
+        <a href="" class="btn btn-primary">SEARCH</a>
     </div>
-  </form>
+  </form> 

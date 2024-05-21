@@ -8,8 +8,8 @@ class UploadFileForm(forms.Form):
 
 #unue
 
-class searchPersonnel(forms.Form):
-    query = forms.CharField(label='Search for a book', max_length=100)
+# class searchPersonnel(forms.Form):
+#     query = forms.CharField(label='Search for a book', max_length=100)
 
 
 
