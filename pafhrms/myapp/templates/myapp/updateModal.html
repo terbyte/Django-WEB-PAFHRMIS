@@ -6,7 +6,7 @@
     <div class="modal-dialog modal-xl" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="myModalLabel">Modal title</h5>
+          <h5 class="modal-title" id="myModalLabel">Update Information</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -40,43 +40,49 @@
                         <label for="textbox1">AFPSN</label>
                         <input type="text" id="afpsntxt" class="form-control" placeholder="AFPSN" disabled>
                       </div>
-                      <div class="col-md-2">
-                        <label for="textbox1">Rank</label>
-                        <input type="text"  id="ranktxt" class="form-control" placeholder="Rank" disabled>
-                      </div>
-                      <div class="col-md-4">
-                        <label for="textbox1">Classification</label>
-                        <input type="text" id="Classificationtxt"  class="form-control" placeholder="Classification" disabled>
-                      </div>
-                      <div class="col-md-2">
-                        <label for="textbox1">Unit</label>
-                        <input type="text" id="unittxt"  class="form-control" placeholder="Unit">
-                      </div>
-                      <div class="col-md-2">
-                        <label for="textbox1">Sub Unit</label>
-
-                        <input type="text"  id="subunittxt" class="form-control" placeholder="Sub Unit">
-                      </div>
-                    </div>
-                    
-                    <!-- Row 3: 4 columns of textboxes -->
-                    <div class="row mt-3">
                       <div class="col-md-3">
+                        <label for="textbox1">Sex</label>
+                        <input type="text"  id="sextxt" class="form-control" placeholder="Sex" disabled>
+                      </div>
+                      <div class="col-md-2">
                         <label for="textbox1">Birthday</label>
                         <input type="text"  id="bdaytxt" class="form-control" placeholder="Birthday" disabled>
                       </div>
                       <div class="col-md-3">
-                        <label for="textbox1">Contact Number</label>
-                        <input type="text" id="contactnumtxt"  class="form-control" placeholder="Contact Number" >
+                        <label for="textbox1">Classification</label>
+                        <input type="text" id="Classificationtxt"  class="form-control" placeholder="Classification" disabled>
                       </div>
+                      <div class="col-md-2">
+                        <label for="textbox1">Category</label>
+                        <input type="text" id="cateorytxt"  class="form-control" placeholder="Category" disabled>
+                      </div>
+                      
+                      
+
+                    </div>
+                    
+                    <!-- Row 3: 4 columns of textboxes -->
+                    <div class="row mt-3">
+                      
+                      <div class="col-md-3">
+                        <label for="textbox1">Date Of Commssionship</label>
+                        <input type="text" id="dateofcommissionshiptxt"  class="form-control" placeholder="Date of commissionship" disabled>
+                      </div>
+                      
                       <div class="col-md-3">
                         <label for="textbox1">Source of Commission</label>
                         <input type="text"  id="sourcecommissiontxt" class="form-control" placeholder="Source of commission" disabled>
                       </div>
                       <div class="col-md-3">
-                        <label for="textbox1">Sex</label>
-                        <input type="text"  id="sextxt" class="form-control" placeholder="Sex" disabled>
+                        <label for="textbox1">Date Entered to Military Service</label>
+                        <input type="text" id="enlistmentdatetxt"  class="form-control" placeholder="Date Entered to Military Service" disabled>
                       </div>
+                      <div class="col-md-3">
+                        <label for="textbox1">Length Of Service</label>
+                        <input type="text" id="lengthofservicetxt"  class="form-control" placeholder="Length of service" disabled>
+                      </div>
+                      
+                     
                     </div>
                   </div>
 
@@ -91,42 +97,82 @@
                     
                     <!-- Row 2: 5 columns of textboxes -->
                     <div class="row mt-3">
+                      <div class="col-md-3">
+                        <label for="textbox1">Rank</label>
+                        <select id="inputState" name="rank" class="form-control">
+                          <option selected>Rank</option>
+                          <optgroup label="Officer">
+                            <option value="GEN">GEN</option>
+                            <option value="LTGEN">LTGEN</option>
+                            <option value="BGEN">BGEN</option>
+                            <option value="COL">COL</option>
+                            <option value="LTC">LTC</option>
+                            <option value="MAJ">MAJ</option>
+                            <option value="CPT">CPT</option>
+                            <option value="1LT">1LT</option>
+                            <option value="2LT">2LT</option>
+                          </optgroup>
+                          <optgroup label="Enlisted Personnel">
+                            <option value="CMSgt">CMSgt</option>
+                            <option value="SMSgt">SMSgt</option>
+                            <option value="MSgt">MSgt</option>
+                            <option value="TSg">TSg</option>
+                            <option value="SSg">SSg</option>
+                            <option value="Sgt">Sgt</option>
+                            <option value="A1C">A1C</option>
+                            <option value="AW1C">AW1C</option>
+                            <option value="A2C">A2C</option>
+                            <option value="AW2C">AW2C</option>
+                            <option value="AM">AM</option>
+                            <option value="AW">AW</option>
+                          </optgroup>
+                        </select>
+                      </div>
                       <div class="col-md-2">
                         <label for="textbox1">AFSC</label>
-                        <input type="text"  id="afsctxt" id= "inputState" class="form-control" placeholder="AFSC" disabled>
+                        <input type="text"  id="afsctxt" id= "inputState" class="form-control" placeholder="AFSC">
                       </div>
                       <div class="col-md-2">
-                        <label for="textbox1">Highest PME</label>
-                        <input type="text"  id="hpmetxt" class="form-control" placeholder="Highest PME" disabled>
+                        <label for="textbox1">Unit</label>
+                        <select id="inputState" class="form-control">
+                          <option selected>Unit</option>
+                          <option>PAFHRMC</option>
+                          <option>950th</option>
+                          <option>300th</option>
+                        </select>
                       </div>
                       <div class="col-md-2">
-                        <label for="textbox1">Category</label>
-                        <input type="text" id="cateorytxt"  class="form-control" placeholder="Category" disabled>
+                        <label for="textbox1">Sub Unit</label>
+                        <select id="inputState" class="form-control">
+                          <option selected>Sub-Unit</option>
+                          <option>sub-PAFHRMC</option>
+                          <option>sub-PAFHRMC2</option>
+                        </select>
                       </div>
                       <div class="col-md-3">
-                        <label for="textbox1">Date Of Last ETAD/SOT</label>
-                        <input type="text" id="DOLetadsottxt"  class="form-control" placeholder="Date of Last ETAD/SOT" disabled>
+                        <label for="textbox1">Contact Number</label>
+                        <input type="text" id="contactnumtxt"  class="form-control" placeholder="Contact Number" >
                       </div>
-                      <div class="col-md-3">
-                        <label for="textbox1">Date Entered to Military Service</label>
-                        <input type="text" id="enlistmentdatetxt"  class="form-control" placeholder="Date Entered to Military Service" disabled>
-                      </div>
+                      
+                      
                     </div>  
                     
                     <!-- Row 3: 4 columns of textboxes -->
                     <div class="row mt-3">
-                      <div class="col-md-3">
-                        <label for="textbox1">Date Of Commssionship</label>
-                        <input type="text" id="dateofcommissionshiptxt"  class="form-control" placeholder="Date of commissionship" disabled>
-                      </div>
+                      
                       <div class="col-md-3">
                         <label for="textbox1">Date of Last Promotion</label>
-                        <input type="text"  id="promotiontxt" class="form-control" placeholder="Date of last promotion" disabled>
+                        <input type="text"  id="promotiontxt" class="form-control" placeholder="Date of last promotion">
                       </div>
                       <div class="col-md-3">
-                        <label for="textbox1">Length Of Service</label>
-                        <input type="text" id="lengthofservicetxt"  class="form-control" placeholder="Length of service" disabled>
+                        <label for="textbox1">Highest PME</label>
+                        <input type="text"  id="hpmetxt" class="form-control" placeholder="Highest PME">
                       </div>
+                      <div class="col-md-3">
+                        <label for="textbox1">Date Of Last ETAD/SOT</label>
+                        <input type="text" id="DOLetadsottxt"  class="form-control" placeholder="Date of Last ETAD/SOT" >
+                      </div>
+                      
                  
                     </div>
                   </div>
