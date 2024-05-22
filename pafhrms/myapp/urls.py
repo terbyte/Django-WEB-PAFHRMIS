@@ -8,12 +8,11 @@ urlpatterns = [
     path('', views.index, name='index'),
     
     path('UploadFile/', views.UploadFile, name='UploadFile'),
-    # path('Personnel_Records/', views.Personnel_Records, name='Personnel_Records'),
-
     path('Inactive_Personnel/', views.inactivepersonnel, name='Inactive_Personnel'),
     path('placementOfficer/', views.placementOfficer, name='placementOfficer'),
+    path('placementEnlisted/', views.placementEnlisted, name='placementEnlisted'),
     
-    # path('search/', views.searchpersonnel, name='searchpersonnel'),
+
 ]
 
 

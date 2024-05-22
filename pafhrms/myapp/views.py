@@ -34,6 +34,9 @@ def index(request):
 def placementOfficer(request):
     return render(request,"myapp/placementOfficer.html",{})
 
+def placementEnlisted(request):
+    return render(request,"myapp/placementEnlisted.html",{})
+
 def inactivepersonnel(request):
     return render(request,"myapp/InactivePersonnel.html",{})
 
@@ -192,3 +195,10 @@ def Personnel_Records(request):
         'sex_query': sex_query,
         'unit_query': unit_query,
     })
+
+
+
+
+
+# UPDATE FROM MODAL
+
