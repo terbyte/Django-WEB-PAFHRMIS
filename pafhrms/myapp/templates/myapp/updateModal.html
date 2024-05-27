@@ -75,7 +75,9 @@
                       </div>
                       <div class="col-md-3">
                         <label for="textbox1">Date Entered to Military Service</label>
+                        
                         <input type="text" id="enlistmentdatetxt"  class="form-control" placeholder="Date Entered to Military Service" disabled>
+                      
                       </div>
                       <div class="col-md-3">
                         <label for="textbox1">Length Of Service</label>
@@ -154,7 +156,9 @@
                       
                       <div class="col-md-3">
                         <label for="textbox1">Date of Last Promotion</label>
-                        <input type="text"  id="promotiontxt" class="form-control" placeholder="Date of last promotion">
+                        <!-- <input type="text"  id="promotiontxt" class="form-control" placeholder="Date of last promotion"> -->
+                        <input type="date" id="promotiontxt" class="form-control">
+
                       </div>
                       <div class="col-md-3">
                         <label for="textbox1">Highest PME</label>
@@ -162,7 +166,9 @@
                       </div>
                       <div class="col-md-3">
                         <label for="textbox1">Date Of Last ETAD/SOT</label>
-                        <input type="text" id="DOLetadsottxt"  class="form-control" placeholder="Date of Last ETAD/SOT" >
+                        <input type="date" id="dateoflastetadsot" class="form-control">
+                        
+
                       </div>
                     </div>
                   </div>
@@ -183,4 +189,7 @@
             input.value = input.value.replace(/\D/g, '');
            
         }
+
+
+   
 </script>
