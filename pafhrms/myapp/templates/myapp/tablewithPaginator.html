@@ -65,6 +65,9 @@ $(document).ready(function() {
         var subunit = $(this).data('subunit');
         var birthday = $(this).data('birthday');
         var contactnum = $(this).data('contactnumber');
+        if (contactnum === "None") {
+          contactnum= '';
+            }
         var sex = $(this).data('sex');
         var address = $(this).data('address');
         var afsc = $(this).data('afsc');
