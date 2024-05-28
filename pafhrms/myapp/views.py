@@ -10,6 +10,12 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from .models import PersonnelItem
 
+
+def Tranche(request):
+    return render(request, 'reenlistment/Tranche.html')
+ 
+
+
 @csrf_exempt  # Only if you don't have CSRF token in the form
 def update_personnel(request):
     if request.method == 'POST':

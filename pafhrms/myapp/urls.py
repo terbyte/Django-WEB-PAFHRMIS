@@ -11,7 +11,8 @@ urlpatterns = [
     path('Inactive_Personnel/', views.inactivepersonnel, name='Inactive_Personnel'),
     path('placementOfficer/', views.placementOfficer, name='placementOfficer'),
     path('placementEnlisted/', views.placementEnlisted, name='placementEnlisted'),
-    path('update_personnel/', views.update_personnel, name='update_personnel'),  # Add this line
+    path('update_personnel/', views.update_personnel, name='update_personnel'),  # Add this line 
+    path('Tranche/', views.Tranche, name='Tranche'),  
     
 
 ]
