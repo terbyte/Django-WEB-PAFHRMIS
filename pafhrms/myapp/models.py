@@ -54,3 +54,6 @@ class Placement(models.Model):
 
     
 
+
+
+
