@@ -1,14 +1,47 @@
 from django.shortcuts import render, redirect
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
-# Create your views here.
 from django.core.files.storage import FileSystemStorage
-from .models import PersonnelItem
-from django.core.paginator import Paginator
 from .forms import UploadFileForm
 import openpyxl
-
 from django.db.models import Q
+from django.core.paginator import Paginator
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from .models import PersonnelItem
+
+@csrf_exempt  # Only if you don't have CSRF token in the form
+def update_personnel(request):
+    if request.method == 'POST':
+        try:
+            personnel_id = request.POST.get('personnel_id')
+            personnel_items = PersonnelItem.objects.filter(SERIAL_NUMBER=personnel_id)
+            if not personnel_items.exists():
+                return JsonResponse({'success': False, 'error': 'Personnel not found'})
+            
+            personnel_items.update(
+                # LAST_NAME=request.POST.get('last_name'),
+                # FIRST_NAME=request.POST.get('first_name'),
+                # MIDDLE_NAME=request.POST.get('middle_name'),
+                ADDRESS=request.POST.get('address'),
+                RANK=request.POST.get('rank'),
+                AFSC=request.POST.get('afsc'),
+                SUB_UNIT=request.POST.get('sub_unit'),
+                UNIT=request.POST.get('unit'),
+                CONTACT_NUMBER=request.POST.get('contactnum'),
+                HIGHEST_PME_COURSES=request.POST.get('hpme'),
+                # DATE_LAST_PROMOTION_APPOINTMENT=request.POST.get('promotion'),
+                
+
+                # Update other fields similarly
+            )
+            
+            
+            return JsonResponse({'success': True})
+        except Exception as e:
+            return JsonResponse({'success': False, 'error': str(e)})
+
+    return JsonResponse({'success': False, 'error': 'Invalid request'})
 
 
 def UploadFile(request):
@@ -200,5 +233,4 @@ def Personnel_Records(request):
 
 
 
-# UPDATE FROM MODAL
 

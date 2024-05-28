@@ -1,33 +1,43 @@
   
   
-  
-  <!-- Modal -->
-  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="myModalLabel">Update Information</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-            <form>
+  <style>
+
+    .addresstxt{
+      text-align: center;
+    }
+
+  </style>
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="myModalLabel">Update Information</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+      <div class="modal-body">
+        <form id="updateForm" method="post">
+          {% csrf_token %}
+          <input type="hidden" id="personnel_id" name="personnel_id">
+
                 <div class="container mt-4">
                     <!-- Row 1: 4 columns of textboxes -->
                     <div class="row">
                       <div class="col-md-4">
-                        <label for="textbox1">Last Name</label>
-                        <input type="text" id="lastnametxt" class="form-control" placeholder="Last Name" disabled>
-                      </div>
-                      <div class="col-md-3">
-                        <label for="textbox1">First Name</label>
-                        <input type="text" id="firstnametxt" class="form-control" placeholder="First Name" disabled>
-                      </div>
-                      <div class="col-md-3">
-                        <label for="textbox1">Middle Name</label>
-                        <input type="text" id="middlenametxt" class="form-control" placeholder="Middle Name" disabled>
-                      </div>
+                      <label for="lastnametxt">Last Name</label>
+                      <input type="text" id="lastnametxt" name="last_name" class="form-control" placeholder="Last Name" readonly>
+                    </div>
+                    <div class="col-md-3">
+                      <label for="firstnametxt">First Name</label>
+                      <input type="text" id="firstnametxt" name="first_name" class="form-control" placeholder="First Name" readonly>
+                    </div>
+                    <div class="col-md-3">
+                      <label for="middlenametxt">Middle Name</label>
+                      <input type="text" id="middlenametxt" name="middle_name" class="form-control" placeholder="Middle Name" readonly>
+                    </div>
                       <div class="col-md-2">
                         <label for="textbox1">Suffix</label>
                         <input type="text" id="Suffix" class="form-control" placeholder="Suffix" disabled>
@@ -41,7 +51,7 @@
                         <input type="text" id="afpsntxt" class="form-control" placeholder="AFPSN" disabled>
                       </div>
                       <div class="col-md-3">
-                        <label for="textbox1">Sex</label>
+                        <label for="sextxt">Sex</label>
                         <input type="text"  id="sextxt" class="form-control" placeholder="Sex" disabled>
                       </div>
                       <div class="col-md-2">
@@ -92,18 +102,20 @@
                     <!-- Row 1: 4 columns of textboxes -->
                     <div class="row">
                       <div class="col-md-12">
-                        <label for="textbox1">Address</label>
-                        <input type="text"  id="addresstxt" class="form-control" placeholder="Address">
+                        <label for="addresstxt">Address</label>
+                        <input type="text"  id="addresstxt" class="form-control" name="address" placeholder="Address">
                       </div>
+
+                    
                     </div>
                     
                     <!-- Row 2: 5 columns of textboxes -->
                     <div class="row mt-3">
                       <div class="col-md-3">
-                        <label for="textbox1">Rank</label>
-                        <input type="text"  id="ranktxt" class="form-control" >
+                        <label for="ranktxt">Rank</label>
+                        <input type="text"  id="ranktxt" name = "rank" class="form-control" >
 
-                        <!-- <select id="inputState" id="ranktxt" class="form-control">
+                        <!-- <select id="ranktxt" name = 'rank 'id="ranktxt" class="form-control">
                           <option selected>Rank</option>
                           <optgroup label="Officer">
                             <option value="GEN">GEN</option>
@@ -133,59 +145,50 @@
                         </select> -->
                       </div>
                       <div class="col-md-2">
-                        <label for="textbox1">AFSC</label>
-                        <input type="text"  id="afsctxt"  class="form-control" placeholder="AFSC">
+                        <label for="afsctxt">AFSC</label>
+                        <input type="text"  id="afsctxt" name="afsc"  class="form-control" placeholder="AFSC">
                       </div>
+                      <div class="col-md-2">
+                        <label for="unittxt">Unit</label>
+                        <input type="text"  id="unittxt" name="unit" class="form-control" placeholder="Unit">
 
-                      
+                      </div>
+                      <div class="col-md-2">
+                        <label for="subunittxt">Sub Unit</label>
+                        <input type="text" name="sub_unit"  id="subunittxt"  class="form-control" placeholder="Sub-Unit">
+
+                      </div>
                       <div class="col-md-3">
-                        <label for="textbox1">Date Of Last ETAD/SOT</label>
-                        <input type="date" id="dateoflastetadsot" class="form-control">
+                        <label for="contactnumtxt">Contact Number</label>
+                        <input type="text" name="contactnum" id="contactnumtxt"  oninput="validateNumberInput(this)" class="form-control" maxlength="11" placeholder="e.g 09123456789" >
                       </div>
-
-
-                      <div class="col-md-4">
-                        <label for="textbox1">Date of Last Promotion</label>
-                        <!-- <input type="text"  id="promotiontxt" class="form-control" placeholder="Date of last promotion"> -->
-                        <input type="date" id="promotiontxt" class="form-control">
-                      </div>
-
-                      
-
                     </div>  
                     <!-- Row 3: 4 columns of textboxes -->
                     <div class="row mt-3">
                       
-                     
-
                       <div class="col-md-3">
-                        <label for="textbox1">Contact Number</label>
-                        <input type="text" id="contactnumtxt"  oninput="validateNumberInput(this)" class="form-control" maxlength="11" placeholder="e.g 09123456789" >
-                      </div>
-                      
-                      <div class="col-md-2">
-                        <label for="textbox1">Highest PME</label>
-                        <input type="text"  id="hpmetxt" class="form-control" placeholder="Highest PME">
-                      </div>
+                        <label for="promotiontxt">Date of Last Promotion</label>
+                        <!-- <input type="text"  id="promotiontxt" class="form-control" placeholder="Date of last promotion"> -->
+                        <input type="text" name="promotion" id="promotiontxt" class="form-control">
 
+                      </div>
                       <div class="col-md-3">
-                        <label for="textbox1">Unit</label>
-                        <input type="text"  id="unittxt"  class="form-control" placeholder="Unit">
+                        <label for="hpmetxt">Highest PME</label>
+                        <input type="text" name="hpme"  id="hpmetxt" class="form-control" placeholder="Highest PME">
+                      </div>
+                      <div class="col-md-3">
+                        <label for="dateoflastetadsot">Date Of Last ETAD/SOT</label>
+                        <input type="text" name="dateoflastetadsot" id="dateoflastetadsot" class="form-control">
+                        
 
                       </div>
-                      <div class="col-md-4">
-                        <label for="textbox1">Sub Unit</label>
-                        <input type="text"  id="subunittxt"  class="form-control" placeholder="Sub-Unit">
-                      </div>
-                      
-
                     </div>
                   </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                  <button type="submit" class="btn btn-primary">Save changes</button>
             </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-          <button type="button" id="saveChangesBtn" class="btn btn-primary">Save changes</button>
         </div>
       </div>
     </div>
@@ -200,5 +203,57 @@
         }
 
 
-   
-</script>
+
+
+    $(document).ready(function() {
+      $('.openModalButton').click(function() {
+          var personnelId = $(this).data('afpsn'); // Assuming 'afpsn' is the unique identifier
+          $('#personnel_id').val(personnelId);
+          $('#addresstxt').val($(this).data('address'));
+          // $('#lastnametxt').val($(this).data('lastname'));
+          // $('#firstnametxt').val($(this).data('firstname'));
+          // $('#middlenametxt').val($(this).data('middlename'));
+          $('#ranktxt').val($(this).data('rank'));
+          $('#afsctxt').val($(this).data('afsc'));
+          $('#unittxt').val($(this).data('unit'));
+          $('#subunitxt').val($(this).data('sub_unit'));
+          $('#contactnumtxt').val($(this).data('contactnum'));
+          $('#hpmetxt').val($(this).data('hpme'));
+          // $('#promotiontxt').val($(this).data('promotion'));
+        
+
+      });
+
+      
+  
+      $('#updateForm').submit(function(event) {
+          event.preventDefault();
+          
+          var formData = $(this).serialize();
+          var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
+  
+          $.ajax({
+              url: '{% url "update_personnel" %}',
+              method: 'POST',
+              data: formData,
+              headers: {
+                  'X-CSRFToken': csrfToken
+              },
+              success: function(response) {
+                  if (response.success) {
+                      console.log('Data updated successfully!');
+                      
+                      location.reload(); // Reload page or update UI as needed
+                  } else {
+                      console.error('Error updating data:', response.error);
+                  }
+              },
+              error: function(xhr, status, error) {
+                  console.error('Error updating data:', error);
+              }
+          });
+      });
+  });
+
+
+  </script>
