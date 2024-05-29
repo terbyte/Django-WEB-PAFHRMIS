@@ -42,7 +42,7 @@
                         <label for="textbox1">AFPSN</label>
                         <input type="text" id="afpsntxt" class="form-control" placeholder="AFPSN" disabled>
                       </div>
-                      <div class="col-md-3">
+                      <div class="col-md-2">
                         <label for="sextxt">Sex</label>
                         <input type="text"  id="sextxt" class="form-control" placeholder="Sex" disabled>
                       </div>
@@ -54,9 +54,9 @@
                         <label for="textbox1">Classification</label>
                         <input type="text" id="Classificationtxt"  class="form-control" placeholder="Classification" disabled>
                       </div>
-                      <div class="col-md-2">
+                      <div class="col-md-3">
                         <label for="textbox1">Category</label>
-                        <input type="text" id="cateorytxt"  class="form-control" placeholder="Category" >
+                        <input type="text" id="categorytxt"  class="form-control" placeholder="Category" >
                       </div>
                       
                       
@@ -283,6 +283,7 @@
   $('.openModalButton').click(function() {
     var personnelId = $(this).data('afpsn'); // Assuming 'afpsn' is the unique identifier
     var address = $(this).data('address');
+    var category = $(this).data('category');
     var rank = $(this).data('rank');
     
     var afsc = $(this).data('afsc');
@@ -298,6 +299,7 @@
     // $('#lastnametxt').val(lastname);
 
     $('#addresstxt').val(address);
+    $('#categorytxt').val(category);
     $('#ranktxt').val(rank);
     $('#afsctxt').val(afsc);
     $('#unitDP').val(unit);

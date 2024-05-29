@@ -33,9 +33,10 @@
                 data-contactnumber="{{ person.CONTACT_NUMBER }}"
                 data-sex="{{ person.SEX }}"
                 data-address="{{ person.ADDRESS }}"
+                data-classification="{{ person.CLASSIFICATION }}"
+                data-category="{{ person.CATEGORY }}"
                 data-afsc="{{ person.AFSC }}"
                 data-highestpme="{{ person.HIGHEST_PME_COURSES }}"
-     
                 data-dateenteredmilitary="{{ person.EFFECTIVE_DATE_ENTERED }}"
                 data-datelastpromotion="{{ person.DATE_LAST_PROMOTION_APPOINTMENT }}"
                 data-lengthofservice="{{ person.LENGTH_OF_SERVICE }}"
@@ -71,6 +72,8 @@ $(document).ready(function() {
             }
         var sex = $(this).data('sex');
         var address = $(this).data('address');
+        var classification = $(this).data('classification');
+        var category = $(this).data('category');
         var afsc = $(this).data('afsc');
         var highestpme = $(this).data('highestpme');
         var dateenteredmilitary = $(this).data('dateenteredmilitary');
@@ -90,6 +93,7 @@ $(document).ready(function() {
         $('#contactnumtxt').val(contactnum);
         $('#sextxt').val(sex);
         $('#addresstxt').val(address);
+        $('#categorytxt').val(category);
         $('#afsctxt').val(afsc);
         $('#hpmetxt').val(highestpme);
         $('#DOLetadsottxt').val(highestpme);  
