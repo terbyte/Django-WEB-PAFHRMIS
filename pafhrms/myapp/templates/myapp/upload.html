@@ -1,445 +1,203 @@
-<style>
-    #unique-container {
-        margin: auto;
-        margin-top: auto;
-        width: 37%;
-    }
 
-    .unique-box-input {
-        text-align: center;
-    }
-
-    .unique-box-input svg {
-        width: 5rem;
-        height: 5rem;
-        vertical-align: middle;
-        fill: currentColor;
-    }
-
-    form {
-        color: #fff;
-    }
-
-    input[type="button" i],
-    input[type="file" i]::-webkit-file-upload-button {
-        display: none !important;
-    }
-
-    .unique-box.has-advanced-upload {
-        transition: all .15s ease-in-out, background-color .15s linear;
-    }
-
-    .unique-box {
-        font-size: 1.25rem;
-        background-color: rgba(0, 142, 198, 1);
-        border: 4px solid #f8b739;
-        padding: 5rem 8rem;
-    }
-
-    .unique-js .unique-box-file {
-        width: .1px;
-        height: .1px;
-        opacity: 0;
-        overflow: hidden;
-        position: absolute;
-        z-index: -1;
-    }
-
-    .unique-box-input label {
-        margin: auto;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        color: #fff;
-        cursor: pointer;
-        text-align: center;
-        display: block;
-        overflow: hidden;
-    }
-
-    .unique-js .unique-box-file + label * {
-        pointer-events: none;
-    }
-
-    .unique-js .unique-box-file:focus + label {
-        outline: 1px dotted #000;
-        outline: -webkit-focus-ring-color auto 5px;
-    }
-
-    button {
-        background: #0CE9AF;
-        border: none;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, .25);
-        color: #fff;
-        display: flex;
-        font-size: 1.25rem;
-        font-weight: 700;
-        margin: auto;
-        margin-top: 2.5rem;
-        overflow: auto;
-        padding: 1rem 1.5rem;
-    }
-
-    button:hover {
-        box-shadow: 0 4px 12px rgba(0, 0, 0, .5);
-    }
-
-    button:active {
-        box-shadow: none;
-    }
-
-    .unique-box-uploading {
-        font-style: italic;
-    }
-
-    .unique-box-success {
-        transition: appear-from-inside .25s ease-in-out;
-    }
-
-    .unique-box__success {
-        animation: appear-from-inside .25s ease-in-out;
-    }
-
-    @keyframes appear-from-inside {
-        from {
-            transform: translateY(-50%) scale(0);
-        }
-
-        75% {
-            transform: translateY(-50%) scale(1.1);
-        }
-
-        to {
-            transform: translateY(-50%) scale(1);
-        }
-    }
-
-    .unique-box-restart {
-        font-weight: 700;
-    }
-
-    input,
-    textarea,
-    select {
-        border-radius: 0;
-        border: none;
-    }
-
-    input {
-        line-height: normal;
-    }
-
-    .unique-box-dragndrop,
-    .unique-box-icon,
-    .unique-box-uploading,
-    .unique-box-success,
-    .unique-box-error {
-        display: none;
-    }
-
-    .unique-box.has-advanced-upload .unique-box-dragndrop {
-        display: inline;
-    }
-
-    strong {
-        color: #f8b739;
-    }
-</style>
 
 {% extends 'Base/base.html' %}
-
 {% block content %}
 
-<div id="unique-container">
-    <form method="post" enctype="multipart/form-data" novalidate="" class="unique-box has-advanced-upload">
-        <div class="unique-box-input">
-            <svg x="0px" y="0px" viewBox="0 0 64 62" style="enable-background:new 0 0 64 62;" xml:space="preserve">
-                <style type="text/css">
-                    .unique-st0 {
-                        fill: none;
-                        stroke: #fff;
-                        stroke-width: 2;
-                        stroke-linecap: round;
-                        stroke-linejoin: round;
-                        stroke-miterlimit: 10;
-                    }
-                </style>
-                <g id="unique-spa-launch">
-                    <path class="unique-st0" d="M33,27.1h-8c0,0-2-6-2-12c0-8,6-14,6-14s6,6,6,14C35,21.1,33,27.1,33,27.1z" />
-                    <line class="unique-st0" x1="29" y1="17.1" x2="29" y2="27.1" />
-                    <polyline class="unique-st0" points="25,27.1 17,27.1 17,23.1 23.1,17.1 " />
-                    <polyline class="unique-st0" points="33,27.1 41,27.1 41,23.1 34.9,17.1 " />
-                    <path class="unique-st0" d="M18,41.2c0.5-5.7,5.2-10.1,11-10.1c5.1,0,9.3,3.4,10.6,8.1" />
-                    <path class="unique-st0" d="M48,41.1c-0.2-3.4-3.1-6-6.5-6c-1.2,0-2.4,0.3-3.3,0.9" />
-                    <path class="unique-st0" d="M42.3,47.1c0,0-1-4-6-4" />
-                    <path class="unique-st0" d="M26.3,43.1c-3-1-4,2-4,2s-3-2-5,0s-1,4-1,4" />
-                    <path class="unique-st0" d="M9,46.1c-0.8-0.6-1.9-1-3-1c-2.8,0-5,2.2-5,5s2.2,5,5,5h46c2.8,0,5-2.2,5-5c0-5-4-9-9-9 c-0.9,0-1.8,0.1-2.6,0.4" />
-                    <path class="unique-st0" d="M18.8,37.9c-1.1-0.5-2.4-0.8-3.8-0.8c-4.6,0-8.5,3.5-8.9,8" />
-                </g>
-            </svg>
-            <input type="file" name="unique-files[]" id="unique-file" class="unique-box-file" data-multiple-caption="{count} files selected" multiple="">
-            <label for="unique-file"><strong>Choose a file</strong><span class="unique-box-dragndrop"> or drag it here</span>.</label>
 
-
-            <form method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <button class="UploadBtn"> UPLOAD DATA </button>
-            </form>
-        </div>
-
-        <div class="unique-box-uploading">Uploading…</div>
-        <div class="unique-box-success">Done! <a href="#" class="unique-box-restart" role="button">Upload more?</a></div>
-        <div class="unique-box-error">Error! <span></span>. <a href="#" class="unique-box-restart" role="button">Try again!</a></div>
-        <input type="hidden" name="ajax" value="1">
-    </form>
-</div>
-
-
-
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Upload Excel</title>
+    <style>
+        #unique-container {
+            margin: auto;
+            margin-top: auto;
+            width: 37%;
+        }
+    
+        .unique-box-input {
+            text-align: center;
+        }
+    
+        .unique-box-input svg {
+            width: 5rem;
+            height: 5rem;
+            vertical-align: middle;
+            fill: currentColor;
+        }
+    
+        form {
+            color: #fff;
+        }
+    
+        input[type="button" i],
+        input[type="file" i]::-webkit-file-upload-button {
+            display: none !important;
+        }
+    
+        .unique-box.has-advanced-upload {
+            transition: all .15s ease-in-out, background-color .15s linear;
+        }
+    
+        .unique-box {
+            font-size: 1.25rem;
+            background-color: rgba(0, 142, 198, 1);
+            border: 4px solid #f8b739;
+            padding: 5rem 8rem;
+        }
+    
+        .unique-js .unique-box-file {
+            width: .1px;
+            height: .1px;
+            opacity: 0;
+            overflow: hidden;
+            position: absolute;
+            z-index: -1;
+        }
+    
+        .unique-box-input label {
+            margin: auto;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            color: #fff;
+            cursor: pointer;
+            text-align: center;
+            display: block;
+            overflow: hidden;
+        }
+    
+        .unique-js .unique-box-file + label * {
+            pointer-events: none;
+        }
+    
+        .unique-js .unique-box-file:focus + label {
+            outline: 1px dotted #000;
+            outline: -webkit-focus-ring-color auto 5px;
+        }
+    
+        button {
+            background: #0CE9AF;
+            border: none;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, .25);
+            color: #fff;
+            display: flex;
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin: auto;
+            margin-top: 2.5rem;
+            overflow: auto;
+            padding: 1rem 1.5rem;
+        }
+    
+        button:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, .5);
+        }
+    
+        button:active {
+            box-shadow: none;
+        }
+    
+        .unique-box-uploading {
+            font-style: italic;
+        }
+    
+        .unique-box-success {
+            transition: appear-from-inside .25s ease-in-out;
+        }
+    
+        .unique-box__success {
+            animation: appear-from-inside .25s ease-in-out;
+        }
+    
+        @keyframes appear-from-inside {
+            from {
+                transform: translateY(-50%) scale(0);
+            }
+    
+            75% {
+                transform: translateY(-50%) scale(1.1);
+            }
+    
+            to {
+                transform: translateY(-50%) scale(1);
+            }
+        }
+    
+        .unique-box-restart {
+            font-weight: 700;
+        }
+    
+        input,
+        textarea,
+        select {
+            border-radius: 0;
+            border: none;
+        }
+    
+        input {
+            line-height: normal;
+        }
+    
+        .unique-box-dragndrop,
+        .unique-box-icon,
+        .unique-box-uploading,
+        .unique-box-success,
+        .unique-box-error {
+            display: none;
+        }
+    
+        .unique-box.has-advanced-upload .unique-box-dragndrop {
+            display: inline;
+        }
+    
+        strong {
+            color: #f8b739;
+        }
+    </style>
+</head>
+<body>
+    <div id="unique-container">
+        <form method="post" enctype="multipart/form-data" class="unique-box has-advanced-upload" action="{% url 'upload_excel' %}">
+            {% csrf_token %}
+            <div class="unique-box-input">
+                <svg x="0px" y="0px" viewBox="0 0 64 62" style="enable-background:new 0 0 64 62;" xml:space="preserve">
+                    <style type="text/css">
+                        .unique-st0 {
+                            fill: none;
+                            stroke: #fff;
+                            stroke-width: 2;
+                            stroke-linecap: round;
+                            stroke-linejoin: round;
+                            stroke-miterlimit: 10;
+                        }
+                    </style>
+                    <g id="unique-spa-launch">
+                        <path class="unique-st0" d="M33,27.1h-8c0,0-2-6-2-12c0-8,6-14,6-14s6,6,6,14C35,21.1,33,27.1,33,27.1z" />
+                        <line class="unique-st0" x1="29" y1="17.1" x2="29" y2="27.1" />
+                        <polyline class="unique-st0" points="25,27.1 17,27.1 17,23.1 23.1,17.1 " />
+                        <polyline class="unique-st0" points="33,27.1 41,27.1 41,23.1 34.9,17.1 " />
+                        <path class="unique-st0" d="M18,41.2c0.5-5.7,5.2-10.1,11-10.1c5.1,0,9.3,3.4,10.6,8.1" />
+                        <path class="unique-st0" d="M48,41.1c-0.2-3.4-3.1-6-6.5-6c-1.2,0-2.4,0.3-3.3,0.9" />
+                        <path class="unique-st0" d="M42.3,47.1c0,0-1-4-6-4" />
+                        <path class="unique-st0" d="M26.3,43.1c-3-1-4,2-4,2s-3-2-5,0s-1,4-1,4" />
+                        <path class="unique-st0" d="M9,46.1c-0.8-0.6-1.9-1-3-1c-2.8,0-5,2.2-5,5s2.2,5,5,5h46c2.8,0,5-2.2,5-5c0-5-4-9-9-9 c-0.9,0-1.8,0.1-2.6,0.4" />
+                        <path class="unique-st0" d="M18.8,37.9c-1.1-0.5-2.4-0.8-3.8-0.8c-4.6,0-8.5,3.5-8.9,8" />
+                    </g>
+                </svg>
+                <input type="file" name="excel_file" id="unique-file" class="unique-box-file">
+                <label for="unique-file"><strong>Choose a file</strong><span class="unique-box-dragndrop"> or drag it here</span>.</label>
+            </div>
+            <button type="submit" class="UploadBtn">UPLOAD DATA</button>
+            <div class="unique-box-uploading">Uploading…</div>
+            <div class="unique-box-success">Done! <a href="#" class="unique-box-restart" role="button">Upload more?</a></div>
+            <div class="unique-box-error">Error! <span></span>. <a href="#" class="unique-box-restart" role="button">Try again!</a></div>
+        </form>
+    </div>
+    <script>
+        // Your existing JavaScript for drag and drop
+    </script>
+</body>
+</html>
 
 
 {% endblock %}
-<script>
-
-'use strict';
-; (function ($, window, document, undefined) {
-    var isAdvancedUpload = function () {
-        var div = document.createElement('div');
-        return (('draggable' in div) || ('ondragstart' in div && 'ondrop' in div)) && 'FormData' in window && 'FileReader' in window;
-    }();
-
-    $('.unique-box').each(function () {
-        var $uniqueForm = $(this),
-            $uniqueInput = $uniqueForm.find('input[type="file"]'),
-            $uniqueLabel = $uniqueForm.find('label'),
-            $uniqueErrorMsg = $uniqueForm.find('.unique-box-error span'),
-            $uniqueRestart = $uniqueForm.find('.unique-box-restart'),
-            uniqueDroppedFiles = false,
-            uniqueShowFiles = function (files) {
-                $uniqueLabel.text(files.length > 1 ? ($uniqueInput.attr('data-multiple-caption') || '').replace('{count}', files.length) : files[0].name);
-            };
-
-        $uniqueForm.append('<input type="hidden" name="ajax" value="1" />');
-
-        $uniqueInput.on('change', function (e) {
-            uniqueShowFiles(e.target.files);
-        });
-
-        if (isAdvancedUpload) {
-            $uniqueForm
-                .addClass('has-advanced-upload')
-                .on('drag dragstart dragend dragover dragenter dragleave drop', function (e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                })
-                .on('dragover dragenter', function () {
-                    $uniqueForm.addClass('is-dragover');
-                })
-                .on('dragleave dragend drop', function () {
-                    $uniqueForm.removeClass('is-dragover');
-                })
-                .on('drop', function (e) {
-                    uniqueDroppedFiles = e.originalEvent.dataTransfer.files;
-                    uniqueShowFiles(uniqueDroppedFiles);
-                });
-        }
-
-        $uniqueForm.on('submit', function (e) {
-            if ($uniqueForm.hasClass('is-uploading')) return false;
-
-            $uniqueForm.addClass('is-uploading').removeClass('is-error');
-
-            if (isAdvancedUpload) {
-                e.preventDefault();
-
-                var uniqueAjaxData = new FormData($uniqueForm.get(0));
-                if (uniqueDroppedFiles) {
-                    $.each(uniqueDroppedFiles, function (i, file) {
-                        uniqueAjaxData.append($uniqueInput.attr('name'), file);
-                    });
-                }
-
-                $.ajax({
-                    url: $uniqueForm.attr('action'),
-                    type: $uniqueForm.attr('method'),
-                    data: uniqueAjaxData,
-                    dataType: 'json',
-                    cache: false,
-                    contentType: false,
-                    processData: false,
-                    complete: function () {
-                        $uniqueForm.removeClass('is-uploading');
-                    },
-                    success: function (data) {
-                        $uniqueForm.addClass(data.success ? 'is-success' : 'is-error');
-                        if (!data.success) $uniqueErrorMsg.text(data.error);
-                    },
-                    error: function () {
-                        alert('Error. Please, contact the webmaster!');
-                    }
-                });
-            } else {
-                var uniqueIframeName = 'uploadiframe' + new Date().getTime(),
-                    $uniqueIframe = $('<iframe name="' + uniqueIframeName + '" style="display: none;"></iframe>');
-
-                $('body').append($uniqueIframe);
-                $uniqueForm.attr('target', uniqueIframeName);
-
-                $uniqueIframe.one('load', function () {
-                    var data = $.parseJSON($uniqueIframe.contents().find('body').text());
-                    $uniqueForm.removeClass('is-uploading').addClass(data.success ? 'is-success' : 'is-error').removeAttr('target');
-                    if (!data.success) $uniqueErrorMsg.text(data.error);
-                    $uniqueIframe.remove();
-                });
-            }
-        });
-
-        $uniqueRestart.on('click', function (e) {
-            e.preventDefault();
-            $uniqueForm.removeClass('is-error is-success');
-            $uniqueInput.trigger('click');
-        });
-
-        $uniqueInput
-            .on('focus', function () { $uniqueInput.addClass('has-focus'); })
-            .on('blur', function () { $uniqueInput.removeClass('has-focus'); });
-    });
-
-})(jQuery, window, document);
-
-'use strict';
-
-; (function (document, window, index) {
-    var isDragAndDropEnabled = function () {
-        var div = document.createElement('div');
-        return (('draggable' in div) || ('ondragstart' in div && 'ondrop' in div)) && 'FormData' in window && 'FileReader' in window;
-    }();
-
-    var uniqueUploadForms = document.querySelectorAll('.unique-box');
-    Array.prototype.forEach.call(uniqueUploadForms, function (form) {
-        var uniqueFileInput = form.querySelector('input[type="file"]'),
-            uniqueFileLabel = form.querySelector('label'),
-            uniqueErrorMsg = form.querySelector('.unique-box-error span'),
-            uniqueRestartButtons = form.querySelectorAll('.unique-box-restart'),
-            uniqueDroppedFiles = false,
-            uniqueDisplaySelectedFiles = function (files) {
-                uniqueFileLabel.textContent = files.length > 1 ? (uniqueFileInput.getAttribute('data-multiple-caption') || '').replace('{count}', files.length) : files[0].name;
-            },
-            triggerUniqueFormSubmit = function () {
-                var event = document.createEvent('HTMLEvents');
-                event.initEvent('submit', true, false);
-                form.dispatchEvent(event);
-            };
-
-        var uniqueAjaxFlagInput = document.createElement('input');
-        uniqueAjaxFlagInput.setAttribute('type', 'hidden');
-        uniqueAjaxFlagInput.setAttribute('name', 'ajax');
-        uniqueAjaxFlagInput.setAttribute('value', 1);
-        form.appendChild(uniqueAjaxFlagInput);
-
-        uniqueFileInput.addEventListener('change', function (e) {
-            uniqueDisplaySelectedFiles(e.target.files);
-        });
-
-        if (isDragAndDropEnabled) {
-            form.classList.add('has-advanced-upload');
-
-            ['drag', 'dragstart', 'dragend', 'dragover', 'dragenter', 'dragleave', 'drop'].forEach(function (event) {
-                form.addEventListener(event, function (e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                });
-            });
-            ['dragover', 'dragenter'].forEach(function (event) {
-                form.addEventListener(event, function () {
-                    form.classList.add('is-dragover');
-                });
-            });
-            ['dragleave', 'dragend', 'drop'].forEach(function (event) {
-                form.addEventListener(event, function () {
-                    form.classList.remove('is-dragover');
-                });
-            });
-            form.addEventListener('drop', function (e) {
-                uniqueDroppedFiles = e.dataTransfer.files;
-                uniqueDisplaySelectedFiles(uniqueDroppedFiles);
-            });
-        }
-
-        form.addEventListener('submit', function (e) {
-            if (form.classList.contains('is-uploading')) return false;
-
-            form.classList.add('is-uploading');
-            form.classList.remove('is-error');
-
-            if (isDragAndDropEnabled) {
-                e.preventDefault();
-
-                var uniqueAjaxData = new FormData(form);
-                if (uniqueDroppedFiles) {
-                    Array.prototype.forEach.call(uniqueDroppedFiles, function (file) {
-                        uniqueAjaxData.append(uniqueFileInput.getAttribute('name'), file);
-                    });
-                }
-
-                var uniqueAjaxRequest = new XMLHttpRequest();
-                uniqueAjaxRequest.open(form.getAttribute('method'), form.getAttribute('action'), true);
-
-                uniqueAjaxRequest.onload = function () {
-                    form.classList.remove('is-uploading');
-                    if (uniqueAjaxRequest.status >= 200 && uniqueAjaxRequest.status < 400) {
-                        var uniqueResponseData = JSON.parse(uniqueAjaxRequest.responseText);
-                        form.classList.add(uniqueResponseData.success ? 'is-success' : 'is-error');
-                        if (!uniqueResponseData.success) uniqueErrorMsg.textContent = uniqueResponseData.error;
-                    } else {
-                        alert('Error. Please, contact the webmaster!');
-                    }
-                };
-
-                uniqueAjaxRequest.onerror = function () {
-                    form.classList.remove('is-uploading');
-                    alert('Error. Please, try again!');
-                };
-
-                uniqueAjaxRequest.send(uniqueAjaxData);
-            } else {
-                var uniqueIframeName = 'uploadiframe' + new Date().getTime(),
-                    uniqueIframe = document.createElement('iframe');
-
-                uniqueIframe.setAttribute('name', uniqueIframeName);
-                uniqueIframe.style.display = 'none';
-
-                document.body.appendChild(uniqueIframe);
-                form.setAttribute('target', uniqueIframeName);
-
-                uniqueIframe.addEventListener('load', function () {
-                    var uniqueResponseData = JSON.parse(uniqueIframe.contentDocument.body.textContent);
-                    form.classList.remove('is-uploading');
-                    form.classList.add(uniqueResponseData.success ? 'is-success' : 'is-error');
-                    form.removeAttribute('target');
-                    if (!uniqueResponseData.success) uniqueErrorMsg.textContent = uniqueResponseData.error;
-                    document.body.removeChild(uniqueIframe);
-                });
-            }
-        });
-
-        Array.prototype.forEach.call(uniqueRestartButtons, function (uniqueRestartButton) {
-            uniqueRestartButton.addEventListener('click', function (e) {
-                e.preventDefault();
-                form.classList.remove('is-error', 'is-success');
-                uniqueFileInput.click();
-            });
-        });
-
-        uniqueFileInput.addEventListener('focus', function () { uniqueFileInput.classList.add('has-focus'); });
-        uniqueFileInput.addEventListener('blur', function () { uniqueFileInput.classList.remove('has-focus'); });
-    });
-
-})(document, window, 0);
-</script>
-
-    
-  
-  
-  
-  

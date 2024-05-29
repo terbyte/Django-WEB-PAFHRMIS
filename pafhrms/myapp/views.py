@@ -51,8 +51,69 @@ def update_personnel(request):
     return JsonResponse({'success': False, 'error': 'Invalid request'})
 
 
-def UploadFile(request):
-    # Logic to handle personnel records
+import pandas as pd
+from django.shortcuts import render, redirect
+from django.http import HttpResponse
+from .models import PersonnelItem  # Import your model
+from django.core.files.storage import FileSystemStorage
+from datetime import datetime
+
+def upload_excel(request):
+    if request.method == 'POST' and request.FILES['excel_file']:
+        excel_file = request.FILES['excel_file']
+        fs = FileSystemStorage()
+        filename = fs.save(excel_file.name, excel_file)
+        file_path = fs.path(filename)
+
+
+        df = pd.read_excel(file_path)
+        # Convert the date format
+        def convert_date(date_value):
+            if pd.isna(date_value):
+                return None
+            if isinstance(date_value, datetime):
+                # If the value is already a datetime object, return it in the desired format
+                return date_value.strftime('%Y-%m-%d')
+            elif isinstance(date_value, str):
+                # If the value is a string, try to parse it
+                try:
+                    return datetime.strptime(date_value, '%d-%b-%y').strftime('%Y-%m-%d')
+                except ValueError:
+                    return None
+            else:
+                return None
+        try:
+            df = pd.read_excel(file_path)
+            for index, row in df.iterrows():
+                    PersonnelItem.objects.create(
+                    RANK=row[0],
+                    LAST_NAME=row[1],
+                    FIRST_NAME=row[2],
+                    MIDDLE_NAME=row[3],
+                    EXTENSION_NAME=row[4],
+                    SERIAL_NUMBER=row[5],
+                    BOS=row[6],
+                    SEX=row[7],
+                    BIRTHDAY=convert_date(row[8]),
+                    CONTACT_NUMBER=row[9],
+                    ADDRESS=row[10],
+                    CLASSIFICATION =row[11],
+                    CATEGORY=row[12],
+                    SOURCE_OF_ENLISTMENT_COMMISION=row[13],
+                    PILOT_RATED_NON_RATED=row[14],
+                    AFSC=row[15],
+                    HIGHEST_PME_COURSES=row[16],
+                    EFFECTIVE_DATE_APPOINTMENT=convert_date(row[17]),
+                    EFFECTIVE_DATE_ENTERED=convert_date(row[18]),
+                    DATE_LAST_PROMOTION_APPOINTMENT=convert_date(row[19]),
+                    UNIT=row[20],
+                    SUB_UNIT=row[21],
+                    DATE_1ST_TRANCH_REENLISTMENT=convert_date(row[22]),
+                    DATE_2ND_TRANCH_REENLISTMENT=convert_date(row[23])
+                )
+            return HttpResponse('Data uploaded successfully.')
+        except Exception as e:
+            return HttpResponse(f'Error: {e}')
     return render(request, 'myapp/upload.html')
     
 
@@ -68,7 +129,7 @@ def custom_404(request, exception):
 #         page_num = request.GET.get("page")
 #         persons = paginator.get_page(page_num)
 #         return render(request, 'myapp/index.html', {'persons': persons})
-#     # return render(request,"myapp/testSidebar.html",{})
+    # return render(request,"myapp/testSidebar.html",{})
 
 
 def placementOfficer(request):
@@ -98,30 +159,29 @@ def upload_file(request):
             ws = wb.active
             for row in ws.iter_rows(min_row=30, values_only=True):  
                 PersonnelItem.objects.create(
-                NR=row[0],
-                RANK=row[1],
-                LAST_NAME=row[2],
-                FIRST_NAME=row[3],
-                MIDDLE_NAME=row[4],
-                EXTENSION_NAME=row[5],
-                SERIAL_NUMBER=row[6],
-                BOS=row[7],
-                SEX=row[8],
-                BIRTHDAY=row[9],
-                CONTACT_NUMBER=row[10],
-                ADDRESS=row[11],
-                REGULAR_RESERVE=row[12],
-                PILOT_RATED_NON_RATED=row[13],
-                AFSC=row[14],
-                HIGHEST_PME_COURSES=row[15],
-                EFFECTIVE_DATE_APPOINTMENT=row[16],
-                EFFECTIVE_DATE_ENTERED=row[17],
-                LENGTH_OF_SERVICE=row[18],
-                DATE_LAST_PROMOTION_APPOINTMENT=row[19],
-                UNIT=row[20],
-                SUB_UNIT=row[21],
-                DATE_LAST_1ST_TRANCH_REENLISTMENT=row[22],
-                DATE_LAST_2ND_TRANCH_REENLISTMENT=row[23]
+                RANK=row[0],
+                LAST_NAME=row[1],
+                FIRST_NAME=row[2],
+                MIDDLE_NAME=row[3],
+                EXTENSION_NAME=row[4],
+                SERIAL_NUMBER=row[5],
+                BOS=row[6],
+                SEX=row[7],
+                BIRTHDAY=row[8],
+                CONTACT_NUMBER=row[9],
+                ADDRESS=row[10],
+                REGULAR_RESERVE=row[11],
+                PILOT_RATED_NON_RATED=row[12],
+                AFSC=row[13],
+                HIGHEST_PME_COURSES=row[14],
+                EFFECTIVE_DATE_APPOINTMENT=row[15],
+                EFFECTIVE_DATE_ENTERED=row[16],
+                LENGTH_OF_SERVICE=row[17],
+                DATE_LAST_PROMOTION_APPOINTMENT=row[18],
+                UNIT=row[19],
+                SUB_UNIT=row[20],
+                DATE_LAST_1ST_TRANCH_REENLISTMENT=row[21],
+                DATE_LAST_2ND_TRANCH_REENLISTMENT=row[22]
                 )
             return redirect('myapp/index.html')
     else:
