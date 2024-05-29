@@ -88,8 +88,6 @@
                         <label for="textbox1">Length Of Service</label>
                         <input type="text" id="lengthofservicetxt"  class="form-control" placeholder="Length of service" disabled>
                       </div>
-                      
-                     
                     </div>
                   </div>
 
@@ -106,7 +104,7 @@
                     
                     <!-- Row 2: 5 columns of textboxes -->
                     <div class="row mt-3">
-                      <div class="col-md-3">
+                      <div class="col-md-2">
                         <label for="ranktxt">Rank</label>
                         <input type="text"  id="ranktxt" name = "rank" class="form-control" >
 
@@ -143,11 +141,10 @@
                         <label for="afsctxt">AFSC</label>
                         <input type="text"  id="afsctxt" name="afsc"  class="form-control" placeholder="AFSC">
                       </div>
-                      <div class="col-md-2">
-                        <label for="unittxt">Unit</label>
-                        <input type="text"  id="unittxt" name="unit" class="form-control" placeholder="Unit">
-                        <!-- <select id="unittxt" class="form-control">
-                          <option selected>UNIT</option>
+                      <div class="col-md-4">
+                        <label >Unit</label>
+                        <select for="unitDP" id="unitDP" name="unit" class="form-control">
+                        <option selected>UNIT</option>
                         <option>GHQ</option>
                         <option>HPAF</option>
                         <option>PAFHRMC-A/U</option>
@@ -180,21 +177,21 @@
                         <option >WESTMINCOM</option>
                         <option >EASTMINCOM</option>
                         <option >JTF-NCR</option>
-                        </select> -->
+                        </select>
 
                       </div>
 
+
+                      <div class="col-md-4">
+                        <label>Sub Unit</label>
+
+                        <select for="SubunitDP" id="SubunitDP"  name="subunit" class="form-control">
+                        <option selected>SUB UNIT</option>
+
+                      </select>
+                      </div>
                       
-                      <div class="col-md-2">
-                        <label for="subunittxt">Sub Unit</label>
-                        <input type="text" name="sub_unit"  id="subunittxt"  class="form-control" placeholder="Sub-Unit">
-                      </div>
 
-
-                      <div class="col-md-3">
-                        <label for="contactnumtxt">Contact Number</label>
-                        <input type="text" name="contactnum" id="contactnumtxt"  oninput="validateNumberInput(this)" class="form-control" maxlength="11" placeholder="e.g 09123456789" >
-                      </div>
                     </div>  
                     <!-- Row 3: 4 columns of textboxes -->
                     <div class="row mt-3">
@@ -215,6 +212,14 @@
                         
 
                       </div>
+
+                      <div class="col-md-3">
+
+                      <label for="contactnumtxt">Contact Number</label>
+                        <input type="text" name="contactnum" id="contactnumtxt"  oninput="validateNumberInput(this)" class="form-control" maxlength="11" placeholder="e.g 09123456789" >
+                      </div>
+                      
+
                     </div>
                   </div>
                 </div>
@@ -248,13 +253,12 @@
           // $('#middlenametxt').val($(this).data('middlename'));
           $('#ranktxt').val($(this).data('rank'));
           $('#afsctxt').val($(this).data('afsc'));
-          $('#unittxt').val($(this).data('unit'));
-          $('#subunitxt').val($(this).data('sub_unit'));
+          $('#unitDP').val($(this).data('unit'));
+          $('#SubunitDP').val($(this).data('subunit'));
           $('#contactnumtxt').val($(this).data('contactnum'));
           $('#hpmetxt').val($(this).data('hpme'));
           // $('#promotiontxt').val($(this).data('promotion'));
-        
-
+          
       });
 
 
@@ -290,5 +294,57 @@
       });
   });
 
+
+  // Object mapping units to their respective subunits
+  const unitSubunitMap = {
+            'HPAF': ['OCG', 'OVC', 'OCAS', 'OSAS', 'AFCC', 'OAFIG', 'OSS', 'AFSO', 'OESPA',
+            'AFSMO', 'AFPAO', 'OAFIA', 'OAFSM', 'OAFA', 'OAFPM', 'OAJA', 'OCAC',
+            'OCSAF', 'OCAFDS', 'OCNAF', 'OAFCE', 'OCHCA', 'AFREO', 'AFIMAO',
+            'AFCLOAC', 'OAFGAD', 'ACOFAS, A-1', 'ACOFAS, A-2', 'ACOFAS, A-3',
+            'ACOFAS, A-4', 'ACOFAS, A-5', 'ACOFAS, A-6', 'ACOFAS, A-7', 'ACOFAS, A-8',
+            'ACOFAS, A-9', 'ACOFAS, A-10'],
+            'AIBDC':  ['HAIBDC', '520th ABG', '530th ABG', '540th ABG', '550th ABG',
+            '560th ABG', '585th ABG', '590th ABG', '600ABG', '970th HECG',
+            'AFGH', '1301st DD'],
+            'ADC': ['HADC', '5FW', '580ACWW', '960AMDG', 'PADCC', 'ADAC'],
+            'AMC':['HAMC', '205THW', '220AW', '250PAW', '505SRG'],
+            'ACC': ['HACC', '15SW', '710SPOW'],
+            'AETDC': [ 'HAETDC', 'PAFOS', 'PAFOCS', 'PAFFS', 'PAFNCOS', 'PAFTSS',
+            'PAFBMS', 'PAFLTC', 'PAFALEN', '440AMG', 'TDC', 'AWC'],
+            'ARFC': ['HAFRC', '1ARCEN', '2ARCEN', '3ARCEN', '4ARCEN', '5ARCEN', '6ARCEN', '7ARCEN', '8ARCEN'],
+            'PAFHRMC-A/U': [],
+            'GHQ': ['OJ1', 'OJ2', 'OJ3', 'OJ4', 'OJ5', 'OJ6', 'OJ7', 'OJ8', 'OJ9', 'OJ10', 'AFPCC','OTAG', 'OTPMG', 'OTCCHS', 'OTJAG', 'AFPPDO', 'OTQMG', 'OTSG', 'AFPSEO','AFPHRO', 'OTCN', 'OTCDS', 'OSPS', 'AFPIMAC', 'AFPREO', 'AFPEBSO', 'OTCE','AFP K9', 'AFPCOC', 'CEISO', 'CGEASH', 'OAFPSM', 'GHQTS', 'PMO', 'OSJA','ODCOP', 'ONAF', 'GHQPFO'],
+            'AFPWSSUS': ['PMA', 'AFPETDC', 'CEISSAFP', 'CRSAFP', 'ISAFP', 'AFPHSC', 'AFP SOCOM', 'AFPFC', 'AFPPS', 'AFPPKOC', 'AFPCES', 'AFPMCC', 'PSG', 'AFPPGMC', 'AFPCYBER', 'AFPRESCOM', 'DND'],
+
+          };
+
+        // Get the dropdown elements 
+        const unitDP = document.getElementById('unitDP');
+        const SubunitDP = document.getElementById('SubunitDP');
+
+        // Event listener for unit dropdown change
+        unitDP.addEventListener('change', function() {
+            // Get selected unit
+            const selectedUnit = unitDP.value;
+
+            // Clear previous subunit options
+            SubunitDP.innerHTML = '<option value="">--Select Subunit--</option>';
+
+            // If a valid unit is selected, populate subunits
+            if (selectedUnit) {
+                const subunits = unitSubunitMap[selectedUnit];
+                subunits.forEach(function(subunit) {
+                    const option = document.createElement('option');
+                    option.value = subunit;
+                    option.textContent = subunit;
+                    SubunitDP.appendChild(option);
+                });
+            }
+        });
+
+
+
+
+        
 
   </script>

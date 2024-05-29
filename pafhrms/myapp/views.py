@@ -32,8 +32,8 @@ def update_personnel(request):
                 ADDRESS=request.POST.get('address'),
                 RANK=request.POST.get('rank'),
                 AFSC=request.POST.get('afsc'),
-                SUB_UNIT=request.POST.get('sub_unit'),
                 UNIT=request.POST.get('unit'),
+                SUB_UNIT=request.POST.get('subunit'),
                 CONTACT_NUMBER=request.POST.get('contactnum'),
                 HIGHEST_PME_COURSES=request.POST.get('hpme'),
                 # DATE_LAST_PROMOTION_APPOINTMENT=request.POST.get('promotion'),
@@ -59,15 +59,15 @@ def custom_404(request, exception):
     return render(request, 'other/404.html', status=404)
 
 
-def index(request):
-    if request.method == 'GET':
-        form = UploadFileForm(request.GET, request.FILES)
-        persons = PersonnelItem.objects.all()
-        paginator = Paginator(persons,5)
-        page_num = request.GET.get("page")
-        persons = paginator.get_page(page_num)
-        return render(request, 'myapp/index.html', {'persons': persons})
-    # return render(request,"myapp/testSidebar.html",{})
+# def index(request):
+#     if request.method == 'GET':
+#         form = UploadFileForm(request.GET, request.FILES)
+#         persons = PersonnelItem.objects.all()
+#         paginator = Paginator(persons,10)
+#         page_num = request.GET.get("page")
+#         persons = paginator.get_page(page_num)
+#         return render(request, 'myapp/index.html', {'persons': persons})
+#     # return render(request,"myapp/testSidebar.html",{})
 
 
 def placementOfficer(request):
@@ -127,12 +127,6 @@ def upload_file(request):
         form = UploadFileForm()
     return render(request, 'myapp/index.html', {'form': form})
 
-# def display_data(request):
-#     persons = PersonnelItem.objects.all()
-#     paginator = Paginator(persons,5)
-#     page_num = request.GET.get("page")
-#     persons = paginator.get_page(page_num)
-#     return render(request, 'myapp/01base.html', {'persons': persons})
 
 
 def index(request):
@@ -168,7 +162,7 @@ def index(request):
     
     persons = PersonnelItem.objects.filter(filters)
     
-    paginator = Paginator(persons, 5)
+    paginator = Paginator(persons, 10)
     page_num = request.GET.get("page")
     persons = paginator.get_page(page_num)
     
@@ -218,7 +212,7 @@ def Personnel_Records(request):
     
     persons = PersonnelItem.objects.filter(filters)
     
-    paginator = Paginator(persons, 5)
+    paginator = Paginator(persons, 10)
     page_num = request.GET.get("page")
     persons = paginator.get_page(page_num)
     
