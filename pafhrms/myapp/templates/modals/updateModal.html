@@ -32,7 +32,7 @@
                     </div>
                       <div class="col-md-2">
                         <label for="textbox1">Suffix</label>
-                        <input type="text" id="Suffix" class="form-control" placeholder="Suffix" disabled>
+                        <input type="text" id="Suffix" class="form-control" placeholder="Suffix" >
                       </div>
                     </div>
                     
@@ -52,11 +52,11 @@
                       </div>
                       <div class="col-md-3">
                         <label for="textbox1">Classification</label>
-                        <input type="text" id="Classificationtxt"  class="form-control" placeholder="Classification" disabled>
+                        <input type="text" id="classificationtxt"  class="form-control" placeholder="Classification" disabled>
                       </div>
                       <div class="col-md-3">
                         <label for="textbox1">Category</label>
-                        <input type="text" id="categorytxt"  class="form-control" placeholder="Category" >
+                        <input type="text" id="categorytxt"  class="form-control" placeholder="Category" readonly >
                       </div>
                       
                       
@@ -73,7 +73,7 @@
                       
                       <div class="col-md-3">
                         <label for="textbox1">Source of Commission</label>
-                        <input type="text"  id="sourcecommissiontxt" class="form-control" placeholder="Source of commission" disabled>
+                        <input type="text"  id="sourceofenlistmentcommissiontxt" class="form-control" placeholder="Source of commission" disabled>
                       </div>
                       <div class="col-md-3">
                         <label for="textbox1">Date Entered to Military Service</label>
@@ -283,6 +283,8 @@
   $('.openModalButton').click(function() {
     var personnelId = $(this).data('afpsn'); // Assuming 'afpsn' is the unique identifier
     var address = $(this).data('address');
+    var classification = $(this).data('classification');
+
     var category = $(this).data('category');
     var rank = $(this).data('rank');
     
@@ -300,6 +302,7 @@
 
     $('#addresstxt').val(address);
     $('#categorytxt').val(category);
+    $('#classificationtxt').val(classification);
     $('#ranktxt').val(rank);
     $('#afsctxt').val(afsc);
     $('#unitDP').val(unit);

@@ -34,6 +34,7 @@
                 data-sex="{{ person.SEX }}"
                 data-address="{{ person.ADDRESS }}"
                 data-classification="{{ person.CLASSIFICATION }}"
+                data-sourceofenlistmentcommission="{{ person.SOURCE_OF_ENLISTMENT_COMMISION }}"
                 data-category="{{ person.CATEGORY }}"
                 data-afsc="{{ person.AFSC }}"
                 data-highestpme="{{ person.HIGHEST_PME_COURSES }}"
@@ -49,8 +50,8 @@
       {% endfor %}
   </table>
 
-
-  {% include 'myapp/updateModal.html' %}
+  {% include 'modals/updateModal.html' %}
+  
  <script>
 
   
@@ -73,6 +74,8 @@ $(document).ready(function() {
         var sex = $(this).data('sex');
         var address = $(this).data('address');
         var classification = $(this).data('classification');
+        var sourceofenlistmentcommission = $(this).data('sourceofenlistmentcommission');
+
         var category = $(this).data('category');
         var afsc = $(this).data('afsc');
         var highestpme = $(this).data('highestpme');
@@ -94,6 +97,8 @@ $(document).ready(function() {
         $('#sextxt').val(sex);
         $('#addresstxt').val(address);
         $('#categorytxt').val(category);
+        $('#classificationtxt').val(classification);
+        $('#sourceofenlistmentcommissiontxt').val(sourceofenlistmentcommission);
         $('#afsctxt').val(afsc);
         $('#hpmetxt').val(highestpme);
         $('#DOLetadsottxt').val(highestpme);  
