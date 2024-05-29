@@ -8286,7 +8286,9 @@ a[data-toggle="collapse"] {
   border-color: #0077b6; }
   .btn.btn-primary:hover, .btn.btn-primary:focus {
     background: #023047 !important;
-    border-color: #f8b739 !important; }
+    /* border-color: #f8b739 !important;  */
+    
+  }
 
 .footer p {
   color: rgba(255, 255, 255, 0.5); }
@@ -8401,12 +8403,12 @@ a[data-toggle="collapse"] {
 .form-upload-button img:hover {
    top: -2px
 }
-.about-template {
+/* .about-template {
    
 }
 .template-prep-tips {
 
-}
+} */
 .about-template-tips {
   background-color: white;
   padding: 20px 15px 30px 25px;
