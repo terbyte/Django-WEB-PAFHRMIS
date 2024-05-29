@@ -26,9 +26,9 @@ def update_personnel(request):
                 return JsonResponse({'success': False, 'error': 'Personnel not found'})
             
             personnel_items.update(
-                # LAST_NAME=request.POST.get('last_name'),
-                # FIRST_NAME=request.POST.get('first_name'),
-                # MIDDLE_NAME=request.POST.get('middle_name'),
+                LAST_NAME=request.POST.get('last_name'),
+                FIRST_NAME=request.POST.get('first_name'),
+                MIDDLE_NAME=request.POST.get('middle_name'),
                 ADDRESS=request.POST.get('address'),
                 # CATEGORY=request.POST.get('address'),
                 RANK=request.POST.get('rank'),

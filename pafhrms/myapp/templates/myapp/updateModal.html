@@ -1,7 +1,4 @@
-  
 
-
-  </style>
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-xl" role="document">
@@ -23,15 +20,15 @@
                     <div class="row">
                       <div class="col-md-4">
                       <label for="lastnametxt">Last Name</label>
-                      <input type="text" id="lastnametxt" name="last_name" class="form-control" placeholder="Last Name" readonly>
+                      <input type="text" id="lastnametxt" name="last_name" class="form-control" placeholder="Last Name" >
                     </div>
                     <div class="col-md-3">
                       <label for="firstnametxt">First Name</label>
-                      <input type="text" id="firstnametxt" name="first_name" class="form-control" placeholder="First Name" readonly>
+                      <input type="text" id="firstnametxt" name="first_name" class="form-control" placeholder="First Name" >
                     </div>
                     <div class="col-md-3">
                       <label for="middlenametxt">Middle Name</label>
-                      <input type="text" id="middlenametxt" name="middle_name" class="form-control" placeholder="Middle Name" readonly>
+                      <input type="text" id="middlenametxt" name="middle_name" class="form-control" placeholder="Middle Name" >
                     </div>
                       <div class="col-md-2">
                         <label for="textbox1">Suffix</label>
@@ -107,6 +104,8 @@
                       <div class="col-md-2">
                         <label>Rank</label>
                         <input type="text"  id="ranktxt" name = "rank" class="form-control" >
+
+
                         <!-- <select for="ranktxt" id="ranktxt" name = 'rank ' class="form-control">
                           <option selected>Rank</option>
                           <optgroup label="Officer">
@@ -135,6 +134,10 @@
                             <option >AW</option>
                           </optgroup>
                         </select> -->
+
+
+
+
                       </div>
                       <div class="col-md-2">
                         <label for="afsctxt">AFSC</label>
@@ -194,16 +197,51 @@
                     </div>  
                     <!-- Row 3: 4 columns of textboxes -->
                     <div class="row mt-3">
+                      <div class="col-md-3">
+                        <label>Highest PME</label>
+                        <input type="text" name="hpme"  id="hpmetxt" class="form-control" placeholder="Highest PME">
+                      
+                        <!-- <select for="hpmetxt" id="hpmetxt" name = 'hpme ' class="form-control">
+                          <option selected>Rank</option>
+                          <optgroup label="Officer">
+                            <option >GEN</option>
+                            <option >LTGEN</option>
+                            <option >BGEN</option>
+                            <option >COL</option>
+                            <option >LTC</option>
+                            <option >MAJ</option>
+                            <option >CPT</option>
+                            <option >1LT</option>
+                            <option >2LT</option>
+                          </optgroup>
+                          <optgroup label="Enlisted Personnel">
+                            <option >CMSgt</option>
+                            <option >SMSgt</option>
+                            <option >MSgt</option>
+                            <option >TSg</option>
+                            <option >SSg</option>
+                            <option >Sgt</option>
+                            <option >A1C</option>
+                            <option >AW1C</option>
+                            <option >A2C</option>
+                            <option >AW2C</option>
+                            <option >AM</option>
+                            <option >AW</option>
+                          </optgroup>
+                        </select> -->
+                      
+                      
+                      
+                      
+                      
+                      
+                      </div>
                       
                       <div class="col-md-3">
                         <label for="promotiontxt">Date of Last Promotion</label>
                         <!-- <input type="text"  id="promotiontxt" class="form-control" placeholder="Date of last promotion"> -->
                         <input type="text" name="promotion" id="promotiontxt" class="form-control">
 
-                      </div>
-                      <div class="col-md-3">
-                        <label for="hpmetxt">Highest PME</label>
-                        <input type="text" name="hpme"  id="hpmetxt" class="form-control" placeholder="Highest PME">
                       </div>
                       <div class="col-md-3">
                         <label for="dateoflastetadsot">Date Of Last ETAD/SOT</label>
@@ -241,12 +279,12 @@
 
 
 
-
         $(document).ready(function() {
   $('.openModalButton').click(function() {
     var personnelId = $(this).data('afpsn'); // Assuming 'afpsn' is the unique identifier
     var address = $(this).data('address');
     var rank = $(this).data('rank');
+    
     var afsc = $(this).data('afsc');
     var unit = $(this).data('unit');
     var subunit = $(this).data('subunit');
@@ -255,6 +293,10 @@
     var promotion = $(this).data('promotion');
 
     $('#personnel_id').val(personnelId);
+    // $('#firstnametxt').val(firstname);
+    // $('#middlenametxt').val(middlename);
+    // $('#lastnametxt').val(lastname);
+
     $('#addresstxt').val(address);
     $('#ranktxt').val(rank);
     $('#afsctxt').val(afsc);
@@ -310,7 +352,7 @@
       'ACC': ['HACC', '15SW', '710SPOW'],
       'AETDC': [ 'HAETDC', 'PAFOS', 'PAFOCS', 'PAFFS', 'PAFNCOS', 'PAFTSS',
                  'PAFBMS', 'PAFLTC', 'PAFALEN', '440AMG', 'TDC', 'AWC'],
-      'ARFC': ['HAFRC', '1ARCEN', '2ARCEN', '3ARCEN', '4ARCEN', '5ARCEN', '6ARCEN', '7ARCEN', '8ARCEN'],
+      'ARFC': ['HAFRC', '1st ARCEN', '2nd ARCEN', '3rd ARCEN', '4th ARCEN', '5th ARCEN', '6th ARCEN', '7th ARCEN', '8th ARCEN'],  
       'PAFHRMC-A/U': [],
       'GHQ': ['OJ1', 'OJ2', 'OJ3', 'OJ4', 'OJ5', 'OJ6', 'OJ7', 'OJ8', 'OJ9', 'OJ10', 'AFPCC','OTAG', 'OTPMG', 'OTCCHS', 'OTJAG', 'AFPPDO', 'OTQMG', 'OTSG', 'AFPSEO','AFPHRO', 'OTCN', 'OTCDS', 'OSPS', 'AFPIMAC', 'AFPREO', 'AFPEBSO', 'OTCE','AFP K9', 'AFPCOC', 'CEISO', 'CGEASH', 'OAFPSM', 'GHQTS', 'PMO', 'OSJA','ODCOP', 'ONAF', 'GHQPFO'],
       'AFPWSSUS': ['PMA', 'AFPETDC', 'CEISSAFP', 'CRSAFP', 'ISAFP', 'AFPHSC', 'AFP SOCOM', 'AFPFC', 'AFPPS', 'AFPPKOC', 'AFPCES', 'AFPMCC', 'PSG', 'AFPPGMC', 'AFPCYBER', 'AFPRESCOM', 'DND'],
@@ -352,5 +394,6 @@
     validateNumberInput(this);
   });
 });
+
 
   </script>
