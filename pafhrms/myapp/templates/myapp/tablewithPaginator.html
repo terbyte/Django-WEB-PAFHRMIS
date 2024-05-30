@@ -49,8 +49,6 @@
                 data-dateoflastetadsot="{{ person.DATE_2ND_TRANCH_REENLISTMENT }}"
 
 
-
-
                 data-toggle="modal"
                 data-target="#myModal">EDIT</button>
         </td>
@@ -62,6 +60,8 @@
   {% include 'modals/updateModal.html' %}
   
  <script>
+
+  
 
   
 
@@ -144,6 +144,8 @@ $(document).ready(function() {
           $('#unaTranchetxt').show();
           $('#dosTranchelbl').show();
           $('#dosTranchetxt').show();
+          $('#pilotratingtxt').hide();
+          $('#pilotratinglbl').hide();
 
         // } else if(category === "OFFICER") {
         } else{
@@ -153,6 +155,9 @@ $(document).ready(function() {
           $('#unaTranchetxt').hide();
           $('#dosTranchelbl').hide(); 
           $('#dosTranchetxt').hide();
+          $('#pilotratinglbl').show();
+          $('#pilotratingtxt').show();
+
 
           $('#dateoflastetadsottxt').show();
           $('#dateoflastetadsotlbl').show();

@@ -229,6 +229,7 @@
                           <label >Date of Last Promotion</label>
                           <input type="text" name="promotion" id="promotiontxt" class="form-control">
                           </div>
+                          
                           <div class="col-md-3">
                             <label id="dateoflastetadsotlbl">Date of Last ETAD/SOT</label>
                             <input type="text" name="dateoflastetadsot" id="dateoflastetadsottxt" class="form-control" placeholder="Date of last ETAD/SOT" >
@@ -239,7 +240,12 @@
                         <div class="col-md-3">
                           <label id="dosTranchelbl" >Date of 2nd Tranche</label>
                             <input type="text" name="dosTranche" id="dosTranchetxt"   class="form-control"  placeholder="Date of 2nd Tranche" >
-                        </div>
+                            <label id="pilotratinglbl" >Pilot Rating</label>
+                            <input type="text" name="pilotrating" id="pilotratingtxt"   class="form-control"  placeholder="Date of 2nd Tranche" >
+                         
+                          </div>
+
+                   
                     </div>
                   </div>
                 </div>
@@ -254,6 +260,13 @@
 
 
   <script>
+
+
+// DATE PICKER 
+
+
+
+
     function validateNumberInput(input) {
             // Remove any non-digit characters
             input.value = input.value.replace(/\D/g, '');
