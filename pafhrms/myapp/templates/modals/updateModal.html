@@ -31,7 +31,7 @@
                     </div>
                       <div class="col-md-2">
                         <label for="textbox1">Suffix</label>
-                        <input type="text" id="Suffix" class="form-control" placeholder="Suffix" >
+                        <input type="text" id="suffixtxt" name="suffix" class="form-control" placeholder="suffix" >
                       </div>
                     </div>
                     
@@ -195,11 +195,8 @@
                       <input type="text" name="contactnum" id="contactnumtxt"  oninput="validateNumberInput(this)" class="form-control" maxlength="11" placeholder="e.g 09123456789" >
                     </div>
                   </div>  
-
-
                     <!-- Row 3: 4 columns of textboxes -->
                     <div class="row mt-3">
-                     
                         <!-- <select for="hpmetxt" id="hpmetxt" name = 'hpme ' class="form-control">
                           <option selected>Rank</option>
                           <optgroup label="Officer">
@@ -228,14 +225,13 @@
                             <option >AW</option>
                           </optgroup>
                         </select> -->
-     
                       <div class="col-md-3">
                         <label for="promotiontxt">Date of Last Promotion</label>
                         <input type="text" name="promotion" id="promotiontxt" class="form-control">
                       </div>
                       <div class="col-md-3">
                         <label for="dateoflastetadsot">Date Of Last ETAD/SOT</label>
-                        <input type="text" name="dateoflastetadsot" id="dateoflastetadsottxt" class="form-control">
+                        <input type="text" name="dateoflastetadsot" id="dateoflastetadsottxt" class="form-control" placeholder="Date of last ETAD/SOT" >
                       </div>
                       <div class="col-md-3">
                         <label for="">Date of 1st Tranche</label>
@@ -245,9 +241,7 @@
                         <label for="">Date of 2nd Tranche</label>
                           <input type="text" name="dosTranche" id="dosTranchetxt"   class="form-control"  placeholder="Date of 2nd Tranche" >
                       </div>
-                      
                     </div>
-                   
                   </div>
                 </div>
                 <div class="modal-footer">
@@ -276,6 +270,7 @@
 
     var category = $(this).data('category');
     var rank = $(this).data('rank');
+    var suffix = $(this).data('suffix');
     
     var afsc = $(this).data('afsc');
     var unit = $(this).data('unit');
@@ -283,6 +278,7 @@
     var contactnum = $(this).data('contactnum');
     var hpme = $(this).data('hpme');
     var promotion = $(this).data('promotion');
+
     var unaTranche = $(this).data('unaTranche');
     var dosTranche = $(this).data('dosTranche');
     var dateoflastetadsot = $(this).data('dateoflastetadsot');
@@ -292,6 +288,8 @@
     // $('#firstnametxt').val(firstname);
     // $('#middlenametxt').val(middlename);
     // $('#lastnametxt').val(lastname);
+    $('#suffixtxt').val(suffix);
+    
 
     $('#addresstxt').val(address);
     $('#categorytxt').val(category);
@@ -302,9 +300,9 @@
     $('#unitDP').val(unit);
     $('#contactnumtxt').val(contactnum);
     $('#hpmetxt').val(hpme);
-    // $('#unaTranchetxt').val(unaTranche);
-    // $('#dosTranchetxt').val(dosTranche);
-    // $('#dateoflastetadsottxt').val(dateoflastetadsot);
+    $('#unaTranchetxt').val(unaTranche);
+    $('#dosTranchetxt').val(dosTranche);
+    $('#dateoflastetadsottxt').val(dateoflastetadsot);
 
     // Populate the subunit dropdown based on the selected unit
     populateSubunits(unit, subunit);

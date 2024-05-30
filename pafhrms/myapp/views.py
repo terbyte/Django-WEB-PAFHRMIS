@@ -29,6 +29,7 @@ def update_personnel(request):
                 LAST_NAME=request.POST.get('last_name'),
                 FIRST_NAME=request.POST.get('first_name'),
                 MIDDLE_NAME=request.POST.get('middle_name'),
+                EXTENSION_NAME=request.POST.get('suffix'),
                 ADDRESS=request.POST.get('address'),
                 # CATEGORY=request.POST.get('address'),
                 RANK=request.POST.get('rank'),

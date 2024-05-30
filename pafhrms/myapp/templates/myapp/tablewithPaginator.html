@@ -41,6 +41,15 @@
                 data-dateenteredmilitary="{{ person.EFFECTIVE_DATE_ENTERED }}"
                 data-datelastpromotion="{{ person.DATE_LAST_PROMOTION_APPOINTMENT }}"
                 data-lengthofservice="{{ person.LENGTH_OF_SERVICE }}"
+                data-dateofcommissionship="{{ person.EFFECTIVE_DATE_APPOINTMENT }}"
+                data-promotion="{{ person.DATE_LAST_PROMOTION_APPOINTMENT }}"
+
+                data-unaTranche="{{ person.DATE_1ST_TRANCH_REENLISTMENT }}"
+                data-dosTranche="{{ person.DATE_2ND_TRANCH_REENLISTMENT }}"
+                data-dateoflastetadsot="{{ person.DATE_2ND_TRANCH_REENLISTMENT }}"
+
+
+
 
                 data-toggle="modal"
                 data-target="#myModal">EDIT</button>
@@ -63,6 +72,9 @@ $(document).ready(function() {
         var firstname = $(this).data('firstname');
         var middlename = $(this).data('middlename');
         var suffix = $(this).data('suffix');
+        if (suffix === "None" || "nan") {
+          suffix= '';
+            }
         var afpsn = $(this).data('afpsn');
         var unit = $(this).data('unit');
         var subunit = $(this).data('subunit');
@@ -82,13 +94,21 @@ $(document).ready(function() {
         var dateenteredmilitary = $(this).data('dateenteredmilitary');
         var dateoflastpromotion = $(this).data('datelastpromotion');
         var lengthofservice = $(this).data('lengthofservice');
+        var dateofcommissionship = $(this).data('dateofcommissionship');
+        var promotion = $(this).data('promotion');
+
+        var dateoflastetadsot = $(this).data('dateoflastetadsot');
+        var unaTranche = $(this).data('unaTranche');
+        var dosTranche = $(this).data('dosTranche');
+
+        
 
 // POPULATING DATA TO MODAL 
         $('#ranktxt').val(rank);
         $('#lastnametxt').val(lastname);
         $('#firstnametxt').val(firstname);
         $('#middlenametxt').val(middlename);
-        $('#Suffix').val(suffix);
+        $('#suffixtxt').val(suffix);
         $('#afpsntxt').val(afpsn);
         $('#unittxt').val(unit);
         $('#subunittxt').val(subunit);
@@ -105,9 +125,12 @@ $(document).ready(function() {
         $('#enlistmentdatetxt').val(dateenteredmilitary);
         $('#promotiontxt').val(dateoflastpromotion);
         $('#lengthofservicetxt').val(lengthofservice);
-        // $('#dateoflastetadsottxt').val(dateoflastetadsot);
-        // $('#unaTranchetxt').val(unaTranche);
-        // $('#dosTranchetxt').val(dosTranche);
+        $('#dateofcommissionshiptxt').val(dateofcommissionship);
+        $('#promotiontxt').val(promotion);
+
+        $('#dateoflastetadsottxt').val(dateoflastetadsot);
+        $('#unaTranchetxt').val(unaTranche);
+        $('#dosTranchetxt').val(dosTranche);
 
         
         // $('#firstnametxt').val(unit);
