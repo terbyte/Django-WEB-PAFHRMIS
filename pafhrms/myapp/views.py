@@ -16,7 +16,7 @@ def Tranche(request):
  
 
 
-@csrf_exempt  # Only if you don't have CSRF token in the form
+# @csrf_exempt  # Only if you don't have CSRF token in the form
 def update_personnel(request):
     if request.method == 'POST':
         try:
@@ -34,6 +34,8 @@ def update_personnel(request):
                 RANK=request.POST.get('rank'),
                 AFSC=request.POST.get('afsc'),
                 UNIT=request.POST.get('unit'),
+                # DATE_1ST_TRANCH_REENLISTMENT=request.POST.get('unaTranche'),
+                # DATE_2ND_TRANCH_REENLISTMENT=request.POST.get('dosTranche'),
                 SUB_UNIT=request.POST.get('subunit'),
                 CONTACT_NUMBER=request.POST.get('contactnum'),
                 HIGHEST_PME_COURSES=request.POST.get('hpme'),
@@ -115,12 +117,9 @@ def upload_excel(request):
         except Exception as e:
             return HttpResponse(f'Error: {e}')
     return render(request, 'myapp/upload.html')
-    
 
 def custom_404(request, exception):
     return render(request, 'other/404.html', status=404)
-
-
 # def index(request):
 #     if request.method == 'GET':
 #         form = UploadFileForm(request.GET, request.FILES)
@@ -147,46 +146,46 @@ def display_file_data(request):
     if request.method == 'GET':
         form = UploadFileForm(request.GET, request.FILES)
         
-def upload_file(request):
-    if request.method == 'POST':
-        form = UploadFileForm(request.POST, request.FILES)
-        if form.is_valid():
-            file = request.FILES['file']
-            fs = FileSystemStorage()
-            filename = fs.save(file.name, file)
-            file_path = fs.path(filename)
-            wb = openpyxl.load_workbook(file_path)
-            ws = wb.active
-            for row in ws.iter_rows(min_row=30, values_only=True):  
-                PersonnelItem.objects.create(
-                RANK=row[0],
-                LAST_NAME=row[1],
-                FIRST_NAME=row[2],
-                MIDDLE_NAME=row[3],
-                EXTENSION_NAME=row[4],
-                SERIAL_NUMBER=row[5],
-                BOS=row[6],
-                SEX=row[7],
-                BIRTHDAY=row[8],
-                CONTACT_NUMBER=row[9],
-                ADDRESS=row[10],
-                REGULAR_RESERVE=row[11],
-                PILOT_RATED_NON_RATED=row[12],
-                AFSC=row[13],
-                HIGHEST_PME_COURSES=row[14],
-                EFFECTIVE_DATE_APPOINTMENT=row[15],
-                EFFECTIVE_DATE_ENTERED=row[16],
-                LENGTH_OF_SERVICE=row[17],
-                DATE_LAST_PROMOTION_APPOINTMENT=row[18],
-                UNIT=row[19],
-                SUB_UNIT=row[20],
-                DATE_LAST_1ST_TRANCH_REENLISTMENT=row[21],
-                DATE_LAST_2ND_TRANCH_REENLISTMENT=row[22]
-                )
-            return redirect('myapp/index.html')
-    else:
-        form = UploadFileForm()
-    return render(request, 'myapp/index.html', {'form': form})
+# def upload_file(request):
+#     if request.method == 'POST':
+#         form = UploadFileForm(request.POST, request.FILES)
+#         if form.is_valid():
+#             file = request.FILES['file']
+#             fs = FileSystemStorage()
+#             filename = fs.save(file.name, file)
+#             file_path = fs.path(filename)
+#             wb = openpyxl.load_workbook(file_path)
+#             ws = wb.active
+#             for row in ws.iter_rows(min_row=30, values_only=True):  
+#                 PersonnelItem.objects.create(
+#                 RANK=row[0],
+#                 LAST_NAME=row[1],
+#                 FIRST_NAME=row[2],
+#                 MIDDLE_NAME=row[3],
+#                 EXTENSION_NAME=row[4],
+#                 SERIAL_NUMBER=row[5],
+#                 BOS=row[6],
+#                 SEX=row[7],
+#                 BIRTHDAY=row[8],
+#                 CONTACT_NUMBER=row[9],
+#                 ADDRESS=row[10],
+#                 REGULAR_RESERVE=row[11],
+#                 PILOT_RATED_NON_RATED=row[12],
+#                 AFSC=row[13],
+#                 HIGHEST_PME_COURSES=row[14],
+#                 EFFECTIVE_DATE_APPOINTMENT=row[15],
+#                 EFFECTIVE_DATE_ENTERED=row[16],
+#                 LENGTH_OF_SERVICE=row[17],
+#                 DATE_LAST_PROMOTION_APPOINTMENT=row[18],
+#                 UNIT=row[19],
+#                 SUB_UNIT=row[20],
+#                 DATE_LAST_1ST_TRANCH_REENLISTMENT=row[21],
+#                 DATE_LAST_2ND_TRANCH_REENLISTMENT=row[22]
+#                 )
+#             return redirect('myapp/index.html')
+#     else:
+#         form = UploadFileForm()
+#     return render(request, 'myapp/index.html', {'form': form})
 
 
 
