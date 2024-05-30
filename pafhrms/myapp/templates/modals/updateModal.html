@@ -66,7 +66,7 @@
                     <div class="row mt-3">
                       
                       <div class="col-md-3">
-                        <label for="textbox1">Date Of commission/Enlistment</label>
+                        <label for="textbox1" id="commission_enlistment_lbl">Date Of commission/Enlistment</label>
                         <input type="text" id="dateofcommissionshiptxt"  class="form-control" placeholder="Date Of commission/Enlistment" disabled>
                       </div>
                       
@@ -225,22 +225,21 @@
                             <option >AW</option>
                           </optgroup>
                         </select> -->
-                      <div class="col-md-3">
-                        <label for="promotiontxt">Date of Last Promotion</label>
-                        <input type="text" name="promotion" id="promotiontxt" class="form-control">
-                      </div>
-                      <div class="col-md-3">
-                        <label for="dateoflastetadsot">Date Of Last ETAD/SOT</label>
-                        <input type="text" name="dateoflastetadsot" id="dateoflastetadsottxt" class="form-control" placeholder="Date of last ETAD/SOT" >
-                      </div>
-                      <div class="col-md-3">
-                        <label for="">Date of 1st Tranche</label>
-                          <input type="text" name="unaTranche" id="unaTranchetxt"   class="form-control"  placeholder="Date of 1st Tranche" >
-                      </div>
-                      <div class="col-md-3">
-                        <label for="">Date of 2nd Tranche</label>
-                          <input type="text" name="dosTranche" id="dosTranchetxt"   class="form-control"  placeholder="Date of 2nd Tranche" >
-                      </div>
+                        <div class="col-md-3">
+                          <label >Date of Last Promotion</label>
+                          <input type="text" name="promotion" id="promotiontxt" class="form-control">
+                          </div>
+                          <div class="col-md-3">
+                            <label id="dateoflastetadsotlbl">Date of Last ETAD/SOT</label>
+                            <input type="text" name="dateoflastetadsot" id="dateoflastetadsottxt" class="form-control" placeholder="Date of last ETAD/SOT" >
+                            <label  id="unaTranchelbl" >Date of 1st Tranche</label>
+                            <input type="text" name="unaTranche" id="unaTranchetxt"   class="form-control"  placeholder="Date of 1st Tranche" >
+                          </div>
+                          
+                        <div class="col-md-3">
+                          <label id="dosTranchelbl" >Date of 2nd Tranche</label>
+                            <input type="text" name="dosTranche" id="dosTranchetxt"   class="form-control"  placeholder="Date of 2nd Tranche" >
+                        </div>
                     </div>
                   </div>
                 </div>
@@ -294,6 +293,7 @@
     $('#addresstxt').val(address);
     $('#categorytxt').val(category);
     $('#classificationtxt').val(classification);
+    $('#promotiontxt').val(promotion);
     
     $('#ranktxt').val(rank);
     $('#afsctxt').val(afsc);
