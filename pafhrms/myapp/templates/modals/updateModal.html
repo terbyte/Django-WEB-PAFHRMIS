@@ -50,8 +50,8 @@
                         <input type="text"  id="bdaytxt" class="form-control" placeholder="Birthday" disabled>
                       </div>
                       <div class="col-md-3">
-                        <label for="textbox1">Classification</label>
-                        <input type="text" id="classificationtxt"  class="form-control" placeholder="Classification" disabled>
+                        <label for="textbox1">Source of Commission</label>
+                        <input type="text"  id="sourceofenlistmentcommissiontxt" class="form-control" placeholder="Source of commission" disabled>
                       </div>
                       <div class="col-md-3">
                         <label for="textbox1">Category</label>
@@ -70,20 +70,20 @@
                         <input type="text" id="dateofcommissionshiptxt"  class="form-control" placeholder="Date Of commission/Enlistment" disabled>
                       </div>
                       
-                      <div class="col-md-3">
-                        <label for="textbox1">Source of Commission</label>
-                        <input type="text"  id="sourceofenlistmentcommissiontxt" class="form-control" placeholder="Source of commission" disabled>
-                      </div>
+                     
                       <div class="col-md-3">
                         <label for="textbox1">Date Entered to Military Service</label>
-                        
                         <input type="text" id="enlistmentdatetxt"  class="form-control" placeholder="Date Entered to Military Service" disabled>
-                      
                       </div>
                       <div class="col-md-3">
                         <label for="textbox1">Length Of Service</label>
                         <input type="text" id="lengthofservicetxt"  class="form-control" placeholder="Length of service" disabled>
                       </div>
+                      <div class="col-md-3">
+                        <label id="classificationlbl">Classification</label>
+                        <input type="text" id="classificationtxt"  class="form-control" placeholder="Classification" disabled>
+                      </div>
+                     
                     </div>
                   </div>
 
@@ -241,9 +241,14 @@
                           <label id="dosTranchelbl" >Date of 2nd Tranche</label>
                             <input type="text" name="dosTranche" id="dosTranchetxt"   class="form-control"  placeholder="Date of 2nd Tranche" >
                             <label id="pilotratinglbl" >Pilot Rating</label>
-                            <input type="text" name="pilotrating" id="pilotratingtxt"   class="form-control"  placeholder="Date of 2nd Tranche" >
-                         
+                            <!-- <input type="text" name="pilotrating" id="pilotratingtxt"   class="form-control"  placeholder="Date of 2nd Tranche" disabled> -->
+                            <!-- <select for="pilotratingtxt" id="pilotratingtxt"  name="pilotrating" class="form-control"> -->
+                                <select for="pilotratingtxt" id="pilotratingtxt"  name="pilotrating" class="form-control">
+                                  <option selected>Non-Rated</option>
+                                  <option>Rated</option>
+                              </select>
                           </div>
+                          
 
                    
                     </div>

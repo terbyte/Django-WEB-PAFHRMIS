@@ -112,8 +112,10 @@ def upload_excel(request):
                     DATE_LAST_PROMOTION_APPOINTMENT=convert_date(row[19]),
                     UNIT=row[20],
                     SUB_UNIT=row[21],
-                    DATE_1ST_TRANCH_REENLISTMENT=convert_date(row[22]),
-                    DATE_2ND_TRANCH_REENLISTMENT=convert_date(row[23])
+                    DATE_FIRST_TRANCHE_REENLISTMENT=convert_date(row[22]),
+                    DATE_SECOND_TRANCHE_REENLISTMENT=convert_date(row[23])
+
+                    
                 )
             return HttpResponse('Data uploaded successfully.')
         except Exception as e:

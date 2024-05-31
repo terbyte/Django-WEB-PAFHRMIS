@@ -44,9 +44,9 @@
                 data-dateofcommissionship="{{ person.EFFECTIVE_DATE_APPOINTMENT }}"
                 data-promotion="{{ person.DATE_LAST_PROMOTION_APPOINTMENT }}"
 
-                data-unaTranche="{{ person.DATE_1ST_TRANCH_REENLISTMENT }}"
-                data-dosTranche="{{ person.DATE_2ND_TRANCH_REENLISTMENT }}"
-                data-dateoflastetadsot="{{ person.DATE_2ND_TRANCH_REENLISTMENT }}"
+                data-unaTranche="{{ person.DATE_FIRST_TRANCHE_REENLISTMENT }}"
+                data-dosTranche="{{ person.DATE_SECOND_TRANCHE_REENLISTMENT }}"
+                data-dateoflastetadsot="{{ person.DATE_SECOND_TRANCHE_REENLISTMENT }}"
                 data-pilotrating="{{ person.PILOT_RATED_NON_RATED }}"
 
 
@@ -149,6 +149,9 @@ $(document).ready(function() {
           $('#dosTranchetxt').show();
           $('#pilotratingtxt').hide();
           $('#pilotratinglbl').hide();
+          $('#classificationtxt').hide();
+          $('#classificationlbl').hide();
+          
 
         // } else if(category === "OFFICER") {
         } else{
@@ -160,6 +163,10 @@ $(document).ready(function() {
           $('#dosTranchetxt').hide();
           $('#pilotratinglbl').show();
           $('#pilotratingtxt').show();
+          $('#classificationlbl').show();
+          $('#classificationtxt').show();
+
+
 
 
           $('#dateoflastetadsottxt').show();

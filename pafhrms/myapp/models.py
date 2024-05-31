@@ -25,18 +25,13 @@ class PersonnelItem(models.Model):
     DATE_LAST_PROMOTION_APPOINTMENT = models.DateField(blank=True, null=True)
     UNIT = models.CharField(max_length=200, blank=True, null=True)
     SUB_UNIT = models.CharField(max_length=200, blank=True, null=True)
-    DATE_1ST_TRANCH_REENLISTMENT = models.DateField( blank=True, null=True)
-    DATE_2ND_TRANCH_REENLISTMENT = models.DateField( blank=True, null=True)
+    DATE_FIRST_TRANCHE_REENLISTMENT = models.DateField( blank=True, null=True)
+    DATE_SECOND_TRANCHE_REENLISTMENT = models.DateField( blank=True, null=True)
 
     def __str__(self):
         return f'{self.RANK} {self.LAST_NAME}, {self.FIRST_NAME} {self.MIDDLE_NAME}'
     
 
-# class PersonnelItem(models.Model):
-#     RANK = models.CharField(max_length=200)
-#     LAST_NAME = models.CharField(max_length=200)
-#     FIRST_NAME = models.CharField(max_length=200)
-#     MIDDLE_NAME = models.CharField(max_length=200)
 
 
 
