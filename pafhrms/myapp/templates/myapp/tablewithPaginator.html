@@ -47,6 +47,7 @@
                 data-unaTranche="{{ person.DATE_1ST_TRANCH_REENLISTMENT }}"
                 data-dosTranche="{{ person.DATE_2ND_TRANCH_REENLISTMENT }}"
                 data-dateoflastetadsot="{{ person.DATE_2ND_TRANCH_REENLISTMENT }}"
+                data-pilotrating="{{ person.PILOT_RATED_NON_RATED }}"
 
 
                 data-toggle="modal"
@@ -103,6 +104,7 @@ $(document).ready(function() {
         var dateoflastetadsot = $(this).data('dateoflastetadsot');
         var unaTranche = $(this).data('unaTranche');
         var dosTranche = $(this).data('dosTranche');
+        var pilotrating = $(this).data('pilotrating');
 
         
 
@@ -133,6 +135,7 @@ $(document).ready(function() {
         $('#dateoflastetadsottxt').val(dateoflastetadsot);
         $('#unaTranchetxt').val(unaTranche);
         $('#dosTranchetxt').val(dosTranche);
+        $('#pilotratingtxt').val(pilotrating);
 
 
 
