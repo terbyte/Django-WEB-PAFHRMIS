@@ -9,6 +9,7 @@ from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from .models import PersonnelItem
+from .models import AFSC
 
 
 def Tranche(request):
@@ -298,3 +299,10 @@ def Personnel_Records(request):
 
 
 
+
+# def autocomplete_afsc(request):
+#     if 'term' in request.GET:
+#         qs = AFSC.objects.filter(code__icontains=request.GET.get('term'))
+#         codes = list(qs.values_list('code', flat=True))
+#         return JsonResponse(codes, safe=False)
+#     return JsonResponse([])
