@@ -12,7 +12,7 @@ urlpatterns = [
     path('placementEnlisted/', views.placementEnlisted, name='placementEnlisted'),
     path('update_personnel/', views.update_personnel, name='update_personnel'),  # Add this line 
     path('Tranche/', views.Tranche, name='Tranche'),  
-    path('autocomplete_afsc/', views.autocomplete_afsc, name='autocomplete_afsc'),
+    # path('autocomplete_afsc/', views.autocomplete_afsc, name='autocomplete_afsc'),
 
 
 ]

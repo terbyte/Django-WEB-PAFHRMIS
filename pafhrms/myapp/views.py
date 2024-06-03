@@ -9,15 +9,15 @@ from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from .models import PersonnelItem
-from .models import AFSC
-
+import pandas as pd
+from datetime import datetime
+from .forms import PersonnelItemForm
 
 def Tranche(request):
     return render(request, 'reenlistment/Tranche.html')
  
 
 
-# @csrf_exempt  # Only if you don't have CSRF token in the form
 def update_personnel(request):
     if request.method == 'POST':
         try:
@@ -32,17 +32,13 @@ def update_personnel(request):
                 MIDDLE_NAME=request.POST.get('middle_name'),
                 EXTENSION_NAME=request.POST.get('suffix'),
                 ADDRESS=request.POST.get('address'),
-                # DATE_LAST_PROMOTION_APPOINTMENT=request.POST.get('promotion'),
-                # CATEGORY=request.POST.get('address'),
                 RANK=request.POST.get('rank'),
                 AFSC=request.POST.get('afsc'),
                 UNIT=request.POST.get('unit'),
-                # DATE_1ST_TRANCH_REENLISTMENT=request.POST.get('unaTranche'),
-                # DATE_2ND_TRANCH_REENLISTMENT=request.POST.get('dosTranche'),
                 SUB_UNIT=request.POST.get('subunit'),
                 CONTACT_NUMBER=request.POST.get('contactnum'),
-                HIGHEST_PME_COURSES=request.POST.get('hpme'),
-                # DATE_LAST_PROMOTION_APPOINTMENT=request.POST.get('promotion'),
+                HIGHEST_PME_COURSES=request.POST.get('hpme')
+
                 
 
                 # Update other fields similarly
@@ -56,12 +52,22 @@ def update_personnel(request):
     return JsonResponse({'success': False, 'error': 'Invalid request'})
 
 
-import pandas as pd
-from django.shortcuts import render, redirect
-from django.http import HttpResponse
-from .models import PersonnelItem  # Import your model
-from django.core.files.storage import FileSystemStorage
-from datetime import datetime
+
+
+def convert_date(date_value):
+    if pd.isna(date_value):
+        return None
+    if isinstance(date_value, datetime):
+        # If the value is already a datetime object, return it in the desired format
+        return date_value.strftime('%Y-%m-%d')
+    elif isinstance(date_value, str):
+        # If the value is a string, try to parse it
+        try:
+            return datetime.strptime(date_value, '%d-%m-%Y').strftime('%Y-%m-%d')
+        except ValueError:
+            return None
+    else:
+        return None
 
 def upload_excel(request):
     if request.method == 'POST' and request.FILES['excel_file']:
@@ -299,6 +305,7 @@ def Personnel_Records(request):
 
 
 
+# from .models import AFSC
 
 # def autocomplete_afsc(request):
 #     if 'term' in request.GET:
