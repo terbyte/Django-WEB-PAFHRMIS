@@ -37,7 +37,11 @@ def update_personnel(request):
                 UNIT=request.POST.get('unit'),
                 SUB_UNIT=request.POST.get('subunit'),
                 CONTACT_NUMBER=request.POST.get('contactnum'),
-                HIGHEST_PME_COURSES=request.POST.get('hpme')
+                HIGHEST_PME_COURSES=request.POST.get('hpme'),
+                PILOT_RATED_NON_RATED=request.POST.get('pilotrating'),
+                DATE_LAST_PROMOTION_APPOINTMENT=request.POST.get('promotion'),
+                DATE_SECOND_TRANCHE_REENLISTMENT=request.POST.get('dateoflastetadsot'),
+
 
                 
 

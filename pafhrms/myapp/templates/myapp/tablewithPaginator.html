@@ -8,6 +8,7 @@
           <th>SUB-UNIT</th>
           <th>PME</th>
           <th>untanche</th>
+          <th>DATE OF LAST PROMOTION</th>
           <th>ACTION</th>
       </tr>
       {% for person in persons %}
@@ -19,6 +20,7 @@
         <td>{{ person.SUB_UNIT }}</td>
         <td>{{ person.HIGHEST_PME_COURSES }}</td>
         <td>{{ person.DATE_FIRST_TRANCHE_REENLISTMENT }}</td>
+        <td>{{ person.DATE_LAST_PROMOTION_APPOINTMENT }}</td>
 
         <!-- <td><button class="btn btn-primary" id="openModalButton"  class="count_btn">EDIT</button></td> -->
         
@@ -33,7 +35,7 @@
                 data-afpsn="{{ person.SERIAL_NUMBER }}"
                 data-unit="{{ person.UNIT }}"
                 data-subunit="{{ person.SUB_UNIT }}"
-                data-birthday="{{ person.BIRTHDAY }}"
+                data-birthday="{{ person.BIRTHDAY|date:'d-b-Y' }}"
                 data-contactnumber="{{ person.CONTACT_NUMBER }}"
                 data-sex="{{ person.SEX }}"
                 data-address="{{ person.ADDRESS }}"
@@ -42,17 +44,22 @@
                 data-category="{{ person.CATEGORY }}"
                 data-afsc="{{ person.AFSC }}"
                 data-hpme="{{ person.HIGHEST_PME_COURSES }}"
-                data-dateenteredmilitary="{{ person.EFFECTIVE_DATE_ENTERED }}"
+                data-dateenteredmilitary="{{ person.EFFECTIVE_DATE_ENTERED|date:'d-b-Y' }}"
                 data-lengthofservice="{{ person.LENGTH_OF_SERVICE }}"
-                data-dateofcommissionship="{{ person.EFFECTIVE_DATE_APPOINTMENT }}"
-                data-promotion="{{ person.DATE_LAST_PROMOTION_APPOINTMENT }}"
 
-                data-unaTranche="{{ person.DATE_FIRST_TRANCHE_REENLISTMENT }}"
-                data-dosTranche="{{ person.DATE_SECOND_TRANCHE_REENLISTMENT }}"
-                data-dateoflastetadsot="{{ person.DATE_SECOND_TRANCHE_REENLISTMENT }}"
+                
+                data-unaTranche="{{ person.DATE_FIRST_TRANCHE_REENLISTMENT|date:'Y-m-d' }}"
+                data-dosTranche="{{ person.DATE_SECOND_TRANCHE_REENLISTMENT|date:'Y-m-d' }}"
+                data-dateoflastetadsot="{{ person.DATE_SECOND_TRANCHE_REENLISTMENT|date:'Y-m-d' }}"
                 data-pilotrating="{{ person.PILOT_RATED_NON_RATED }}"
 
+                data-promotion="{{ person.DATE_LAST_PROMOTION_APPOINTMENT|date:'Y-m-d' }}" 
+                data-dateofcommissionship="{{ person.DATE_LAST_PROMOTION_APPOINTMENT|date:'d-b-Y' }}" 
 
+                
+
+
+                
                 data-toggle="modal"
                 data-target="#myModal">EDIT</button>
         </td>
@@ -97,7 +104,6 @@ $(document).ready(function() {
         if (afsc === "nan") {
           afsc= '';
             }
-            
         var hpme = $(this).data('hpme');
         var dateenteredmilitary = $(this).data('dateenteredmilitary');
         var dateoflastpromotion = $(this).data('datelastpromotion');
@@ -129,7 +135,7 @@ $(document).ready(function() {
         $('#classificationtxt').val(classification);
         $('#sourceofenlistmentcommissiontxt').val(sourceofenlistmentcommission);
         $('#afsctxt').val(afsc);
-        $('#hpmetxt').val(hpme);
+        // $('#hpmetxt').val(hpme);
         // $('#DOLetadsottxt').val(hpme);  
         $('#enlistmentdatetxt').val(dateenteredmilitary);
         $('#promotiontxt').val(dateoflastpromotion);
@@ -140,8 +146,9 @@ $(document).ready(function() {
         $('#unaTranchetxt').val(unaTranche);
         $('#dosTranchetxt').val(dosTranche);
         $('#pilotratingtxt').val(pilotrating);
+        var hpme = $(this).data('hpme');
+        $('#hpmetxt').val(hpme);
 
-        
         if (category === "ENLISTED PERSONNEL") {
           $('#commission_enlistment_lbl').text('Date of Enlistment');
           $('#dateoflastetadsottxt').hide();
@@ -178,90 +185,12 @@ $(document).ready(function() {
             // $('#dosTranchetxt').hide();  
         }
    
-        
 
-        
-        // $('#firstnametxt').val(unit);
     });
 });
 
 
 
-
-
-
-
-
-// function calculateLengthOfService(startDate) {
-//     // Split the start date into parts
-//     var startDateParts = startDate.replace(',', '').split(' ');
-//     var startMonth = getMonthNumber(startDateParts[0]);
-//     var startDay = parseInt(startDateParts[1], 10);
-//     var startYear = parseInt(startDateParts[2], 10);
-    
-
-//     // Create Date objects for the start and current dates
-//     var startDateFormatted = new Date(startYear, startMonth, startDay);
-//     var currentDate = new Date();
-
-
-//     // Calculate the difference in time
-//     var differenceInTime = currentDate.getTime() - startDateFormatted.getTime();
-//     console.log(differenceInTime)
-
-//     // Calculate the differences in years, months, and days
-//     var years = currentDate.getFullYear() - startDateFormatted.getFullYear();
-//     var months = currentDate.getMonth() - startDateFormatted.getMonth();
-//     var days = currentDate.getDate() - startDateFormatted.getDate();
-
-
-
-//     // Adjust for cases where months or days are negative
-//     if (months < 0 || (months === 0 && days < 0)) {
-//         years--;
-//         months += 12;
-//     }
-//     if (days < 0) {
-//         var prevMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 0);
-//         days += prevMonth.getDate();
-//         months--;
-//     }
-
-//     // Return the length of service as an object
-//     return {
-//         years: years,
-//         months: months,
-//         days: days
-//     };
-// }
-
-// // Helper function to get month number from month name
-// function getMonthNumber(monthString) {
-//     var months = {
-//         "Jan": 0, "Feb": 1, "Mar": 2, "Apr": 3, "May": 4, "Jun": 5,
-//         "Jul": 6, "Aug": 7, "Sep": 8, "Oct": 9, "Nov": 10, "Dec": 11
-//     };
-//     return months[monthString];
-// }
-
-// // Function to update length of service textbox
-// function updateLengthOfService() {
-//     var enlistmentDate =  "Dec 31, 2020";
-//     var lengthOfService = calculateLengthOfService(enlistmentDate);
-//     $("#lengthofservicetxt").val(lengthOfService.years + " years, " + lengthOfService.months + " months, " + lengthOfService.days + " days");
-// }
-
-// console.log("hey")
-// updateLengthOfService()
-
-
-//  document.body.addEventListener('click', function(event) {
-//   if (event.target && event.target.id === 'openModalButton') {
-//     $('#myModal').modal('show');
-    
-
-//   }
-// });
 
 
 

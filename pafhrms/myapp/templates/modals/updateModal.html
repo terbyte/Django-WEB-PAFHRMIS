@@ -82,11 +82,11 @@
                      
                       <div class="col-md-3">
                         <label for="textbox1">Date Entered to Military Service</label>
-                        <input type="text" id="enlistmentdatetxt"  class="form-control" placeholder="Date Entered to Military Service" >
+                        <input type="text" id="enlistmentdatetxt"  class="form-control" placeholder="Date Entered to Military Service" disabled>
                       </div>
                       <div class="col-md-3">
                         <label for="textbox1">Length Of Service</label>
-                        <input type="text" id="lengthofservicetxt"  class="form-control" placeholder="Length of service" >
+                        <input type="text" id="lengthofservicetxt"  class="form-control" placeholder="Length of service" disabled>
                       </div>
                       <div class="col-md-3">
                         <label id="classificationlbl">Classification</label>
@@ -225,22 +225,21 @@
                     <!-- Row 3: 4 columns of textboxes -->
                     <div class="row mt-3">
                        
-                        <div class="col-md-3">
-                          <label >Date of Last Promotion</label>
-                          <input type="text" name="promotion" id="promotiontxt" class="form-control">
-                          </div>
+                      <div class="col-md-3">
+                        <label>Date of Last Promotion</label>
+                        <input type="date" name="promotion" id="promotiontxt" class="form-control">
+                      </div>
                           
-                          <div class="col-md-3">
-                            <label id="dateoflastetadsotlbl">Date of Last ETAD/SOT</label>
-                            <input type="text" name="dateoflastetadsot" id="dateoflastetadsottxt" class="form-control" placeholder="Date of last ETAD/SOT" >
-                            <label  id="unaTranchelbl" >Date of 1st Tranche</label>
-
-                            <input type="text" for="unaTranchetxt" name="unaTranche" id="unaTranchetxt"   class="form-control"  placeholder="Date of 1st Tranche" >
-                          </div>
-                          
+                      <div class="col-md-3">
+                        <label id="dateoflastetadsotlbl">Date of Last ETAD/SOT</label>
+                        <input type="date" name="dateoflastetadsot" id="dateoflastetadsottxt" class="form-control"  >
+                        <label  id="unaTranchelbl" >Date of 1st Tranche</label>
+                        <input type="date" name="unaTranche" id="unaTranchetxt"   class="form-control"  placeholder="Date of 1st Tranche" >
+                      </div>
+                      
                         <div class="col-md-3">
                           <label id="dosTranchelbl" >Date of 2nd Tranche</label>
-                            <input type="text" name="dosTranche" id="dosTranchetxt"   class="form-control"  placeholder="Date of 2nd Tranche" >
+                            <input type="date" name="dosTranche" id="dosTranchetxt"   class="form-control"  placeholder="Date of 2nd Tranche" >
                             <label id="pilotratinglbl" >Pilot Rating</label>
                             
                             <!-- <input type="text" name="pilotrating" id="pilotratingtxt"   class="form-control"  placeholder="Date of 2nd Tranche" disabled> -->
@@ -295,6 +294,7 @@
     var dosTranche = $(this).data('dosTranche');
     var dateoflastetadsot = $(this).data('dateoflastetadsot');
     var hpme = $(this).data('hpme');
+    var pilotrating = $(this).data('pilotrating');
 
 
 
@@ -318,6 +318,7 @@
     $('#dosTranchetxt').val(dosTranche);
     $('#dateoflastetadsottxt').val(dateoflastetadsot);
     $('#hpmetxt').val(hpme);
+    $('#pilotratingtxt').val(pilotrating);
 
 
 
