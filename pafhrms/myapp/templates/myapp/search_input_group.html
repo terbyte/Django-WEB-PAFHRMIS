@@ -1,0 +1,13 @@
+<!-- search_input_group.html -->
+<div class="input-group mb-3">
+    <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name="{{ name }}" placeholder="{{ placeholder }}" {% if value %}value="{{ value }}"{% endif %}>
+    {% if select_options %}
+    <div class="form-group col-md-{{ select_size }}">
+        <select class="form-control" name="{{ select_name }}">
+            {% for option in select_options %}
+                <option value="{{ option.value }}" {% if option.selected %}selected{% endif %}>{{ option.label }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    {% endif %}
+</div>

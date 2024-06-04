@@ -6,6 +6,7 @@
           <th>FULL NAME</th>
           <th>UNIT</th>
           <th>SUB-UNIT</th>
+          <th>category</th>
           <th>ACTION</th>
       </tr>
       {% for person in persons %}
@@ -15,6 +16,7 @@
         <td>{{ person.FIRST_NAME}} {{person.MIDDLE_NAME}} {{person.LAST_NAME}}</td>
         <td>{{ person.UNIT }}</td>
         <td>{{ person.SUB_UNIT }}</td>
+        <td>{{ person.CATEGORY }}</td>
 
         <!-- <td><button class="btn btn-primary" id="openModalButton"  class="count_btn">EDIT</button></td> -->
         
@@ -40,19 +42,12 @@
                 data-hpme="{{ person.HIGHEST_PME_COURSES }}"
                 data-dateenteredmilitary="{{ person.EFFECTIVE_DATE_ENTERED|date:'d-b-Y' }}"
                 data-lengthofservice="{{ person.LENGTH_OF_SERVICE }}"
-
-                
                 data-unaTranche="{{ person.DATE_FIRST_TRANCHE_REENLISTMENT|date:'Y-m-d' }}"
                 data-dosTranche="{{ person.DATE_SECOND_TRANCHE_REENLISTMENT|date:'Y-m-d' }}"
                 data-dateoflastetadsot="{{ person.DATE_SECOND_TRANCHE_REENLISTMENT|date:'Y-m-d' }}"
                 data-pilotrating="{{ person.PILOT_RATED_NON_RATED }}"
-
                 data-promotion="{{ person.DATE_LAST_PROMOTION_APPOINTMENT|date:'Y-m-d' }}" 
-                data-dateofcommissionship="{{ person.DATE_LAST_PROMOTION_APPOINTMENT|date:'d-b-Y' }}" 
-
-                
-
-
+                data-dateofcommissionship="{{ person.EFFECTIVE_DATE_APPOINTMENT|date:'d-b-Y' }}" 
                 
                 data-toggle="modal"
                 data-target="#myModal">EDIT</button>
@@ -182,12 +177,6 @@ $(document).ready(function() {
 
     });
 });
-
-
-
-
-
-
 
   </script>
 
