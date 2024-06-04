@@ -3,3 +3,4 @@ __pycache__
 FORMAT 2024_*
 FORMAT *
 db*
+db.*
