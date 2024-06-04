@@ -193,7 +193,7 @@ def placement(request):
     page_num = request.GET.get("page")
     persons = paginator.get_page(page_num)
     
-    return render(request, 'myapp/placement.html', {
+    return render(request, 'Placement/placement.html', {
         'persons': persons,
         'last_name_query': last_name_query,
         'first_name_query': first_name_query,
@@ -266,9 +266,11 @@ def index(request):
     suffix_query = request.GET.get('suffix')
     afsn_query = request.GET.get('afsn')
     rank_query = request.GET.get('rank')
-    classification_query = request.GET.get('classification')
+    category_query = request.GET.get('category')
     sex_query = request.GET.get('sex')
     unit_query = request.GET.get('unit')
+
+    
     
     filters = Q()
     if last_name_query:
@@ -283,8 +285,8 @@ def index(request):
         filters &= Q(SERIAL_NUMBER__icontains=afsn_query)  # Change this to 'SERIAL_NUMBER'
     if rank_query and rank_query != "Rank":
         filters &= Q(RANK__icontains=rank_query)
-    if classification_query and classification_query != "Classification":
-        filters &= Q(CLASSIFICATION__icontains=classification_query)
+    if category_query and category_query != "Category":
+        filters &= Q(CATEGORY__icontains=category_query)
     if sex_query and sex_query != "Sex":
         filters &= Q(SEX__icontains=sex_query)
     if unit_query:
@@ -304,11 +306,10 @@ def index(request):
         'suffix_query': suffix_query,
         'afsn_query': afsn_query,
         'rank_query': rank_query,
-        'classification_query': classification_query,
+        'category_query': category_query,
         'sex_query': sex_query,
         'unit_query': unit_query,
     })
-
 def Personnel_Records(request):
     last_name_query = request.GET.get('last_name')
     first_name_query = request.GET.get('first_name')
