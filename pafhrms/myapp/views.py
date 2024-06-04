@@ -112,7 +112,7 @@ def upload_excel(request):
                     BIRTHDAY=convert_date(row[8]),
                     CONTACT_NUMBER=row[9],
                     ADDRESS=row[10],
-                    CLASSIFICATION =row[11],
+                    CLASSIFICATION=row[11],
                     CATEGORY=row[12],
                     SOURCE_OF_ENLISTMENT_COMMISION=row[13],
                     PILOT_RATED_NON_RATED=row[14],

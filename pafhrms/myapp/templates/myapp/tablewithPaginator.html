@@ -6,9 +6,6 @@
           <th>FULL NAME</th>
           <th>UNIT</th>
           <th>SUB-UNIT</th>
-          <th>PME</th>
-          <th>untanche</th>
-          <th>DATE OF LAST PROMOTION</th>
           <th>ACTION</th>
       </tr>
       {% for person in persons %}
@@ -18,9 +15,6 @@
         <td>{{ person.FIRST_NAME}} {{person.MIDDLE_NAME}} {{person.LAST_NAME}}</td>
         <td>{{ person.UNIT }}</td>
         <td>{{ person.SUB_UNIT }}</td>
-        <td>{{ person.HIGHEST_PME_COURSES }}</td>
-        <td>{{ person.DATE_FIRST_TRANCHE_REENLISTMENT }}</td>
-        <td>{{ person.DATE_LAST_PROMOTION_APPOINTMENT }}</td>
 
         <!-- <td><button class="btn btn-primary" id="openModalButton"  class="count_btn">EDIT</button></td> -->
         
