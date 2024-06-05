@@ -11,6 +11,7 @@ urlpatterns = [
     path('update_personnel/', views.update_personnel, name='update_personnel'),  # Add this line 
     path('Tranche/', views.Tranche, name='Tranche'),  
     path('placement/', views.placement_officer, name='placement'),
+    
     path('placement/placement_enlisted', views.placement_enlisted, name='placement_enlisted'),
     path('placement/placement_officer', views.placement_officer, name='placement_officer'),
     # path('autocomplete_afsc/', views.autocomplete_afsc, name='autocomplete_afsc'),

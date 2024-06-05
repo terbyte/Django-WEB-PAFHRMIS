@@ -1,67 +1,80 @@
-
-     <table class="table table-responsive-sm table-bordered table-striped table-sm">
-      <tr>
-          <th>RANK</th>
-          <th>AFPSN</th>
-          <th>FULL NAME</th>
-          <th>UNIT</th>
-          <th>SUB-UNIT</th>
-          <th>category</th>
-          <th>ACTION</th>
-      </tr>
-      {% for person in persons %}
-      <tr>
-        <td>{{ person.RANK }}</td>
-        <td>{{ person.SERIAL_NUMBER }}</td>
-        <td>{{ person.FIRST_NAME}} {{person.MIDDLE_NAME}} {{person.LAST_NAME}}</td>
-        <td>{{ person.UNIT }}</td>
-        <td>{{ person.SUB_UNIT }}</td>
-        <td>{{ person.CATEGORY }}</td>
-
-        <!-- <td><button class="btn btn-primary" id="openModalButton"  class="count_btn">EDIT</button></td> -->
-        
-        <td>
-        <button 
-                class="btn btn-primary openModalButton" 
-                data-rank="{{ person.RANK }}"
-                data-lastname="{{ person.LAST_NAME }}"
-                data-firstname="{{ person.FIRST_NAME }}"
-                data-middlename="{{ person.MIDDLE_NAME }}"
-                data-suffix="{{ person.EXTENSION_NAME }}"
-                data-afpsn="{{ person.SERIAL_NUMBER }}"
-                data-unit="{{ person.UNIT }}"
-                data-subunit="{{ person.SUB_UNIT }}"
-                data-birthday="{{ person.BIRTHDAY|date:'d-b-Y' }}"
-                data-contactnumber="{{ person.CONTACT_NUMBER }}"
-                data-sex="{{ person.SEX }}"
-                data-address="{{ person.ADDRESS }}"
-                data-classification="{{ person.CLASSIFICATION }}"
-                data-sourceofenlistmentcommission="{{ person.SOURCE_OF_ENLISTMENT_COMMISION }}"
-                data-category="{{ person.CATEGORY }}"
-                data-afsc="{{ person.AFSC }}"
-                data-hpme="{{ person.HIGHEST_PME_COURSES }}"
-                data-dateenteredmilitary="{{ person.EFFECTIVE_DATE_ENTERED|date:'d-b-Y' }}"
-                data-lengthofservice="{{ person.LENGTH_OF_SERVICE }}"
-                data-unaTranche="{{ person.DATE_FIRST_TRANCHE_REENLISTMENT|date:'Y-m-d' }}"
-                data-dosTranche="{{ person.DATE_SECOND_TRANCHE_REENLISTMENT|date:'Y-m-d' }}"
+<table class="table table-responsive-sm table-bordered table-striped table-sm" id="sortableTable">
+    <thead>
+        <tr>
+            <th class="sortable" data-sort="RANK">Rank</th>
+            <th class="sortable" data-sort="AFPSN">AFPSN</th>
+            <th class="sortable" data-sort="FULL_NAME">Full Name</th>
+            <th class="sortable" data-sort="UNIT">Unit</th>
+            <th class="sortable" data-sort="SUB_UNIT">Sub-Unit</th>
+            <th class="sortable" data-sort="CATEGORY">Category</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for person in persons %}
+        <tr>
+            <td>{{ person.RANK }}</td>
+            <td>{{ person.SERIAL_NUMBER }}</td>
+            <td>{{ person.FIRST_NAME}} {{person.MIDDLE_NAME}} {{person.LAST_NAME}}</td>
+            <td>{{ person.UNIT }}</td>
+            <td>{{ person.SUB_UNIT }}</td>
+            <td>{{ person.CATEGORY }}</td>
+            <td>
+                <button class="btn btn-primary openModalButton" 
+                data-rank="{{ person.RANK }}" 
+                data-lastname="{{ person.LAST_NAME }}" 
+                data-firstname="{{ person.FIRST_NAME }}" 
+                data-middlename="{{ person.MIDDLE_NAME }}" 
+                data-suffix="{{ person.EXTENSION_NAME }}" 
+                data-afpsn="{{ person.SERIAL_NUMBER }}" 
+                data-unit="{{ person.UNIT }}" 
+                data-subunit="{{ person.SUB_UNIT }}" 
+                data-birthday="{{ person.BIRTHDAY|date:'d-b-Y' }}" 
+                data-contactnumber="{{ person.CONTACT_NUMBER }}" 
+                data-sex="{{ person.SEX }}" 
+                data-address="{{ person.ADDRESS }}" 
+                data-classification="{{ person.CLASSIFICATION }}" 
+                data-sourceofenlistmentcommission="{{ person.SOURCE_OF_ENLISTMENT_COMMISION }}" 
+                data-category="{{ person.CATEGORY }}" 
+                data-afsc="{{ person.AFSC }}" 
+                data-hpme="{{ person.HIGHEST_PME_COURSES }}" 
+                data-dateenteredmilitary="{{ person.EFFECTIVE_DATE_ENTERED|date:'d-b-Y' }}" 
+                data-lengthofservice="{{ person.LENGTH_OF_SERVICE }}" 
+                data-unaTranche="{{ person.DATE_FIRST_TRANCHE_REENLISTMENT|date:'Y-m-d' }}" 
+                data-dosTranche="{{ person.DATE_SECOND_TRANCHE_REENLISTMENT|date:'Y-m-d' }}" 
                 data-dateoflastetadsot="{{ person.DATE_SECOND_TRANCHE_REENLISTMENT|date:'Y-m-d' }}"
-                data-pilotrating="{{ person.PILOT_RATED_NON_RATED }}"
+                data-pilotrating="{{ person.PILOT_RATED_NON_RATED }}" 
                 data-promotion="{{ person.DATE_LAST_PROMOTION_APPOINTMENT|date:'Y-m-d' }}" 
                 data-dateofcommissionship="{{ person.EFFECTIVE_DATE_APPOINTMENT|date:'d-b-Y' }}" 
-                
-                data-toggle="modal"
+                data-toggle="modal" 
                 data-target="#myModal">EDIT</button>
-        </td>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 
-    </tr>
-      {% endfor %}
-  </table>
 
   {% include 'modals/updateModal.html' %}
   
  <script>
 
-  
+$(document).ready(function() {
+    $('.sortable').click(function() {
+        var index = $(this).index();
+        var rows = $('#sortableTable tbody tr').get();
+        var sortAttribute = $(this).data('sort');
+        rows.sort(function(a, b) {
+            var aValue = $(a).children('td').eq(index).text().toUpperCase();
+            var bValue = $(b).children('td').eq(index).text().toUpperCase();
+            return aValue.localeCompare(bValue);
+        });
+        $.each(rows, function(index, row) {
+            $('#sortableTable tbody').append(row);
+        });
+    });
+});
+
 
   
 

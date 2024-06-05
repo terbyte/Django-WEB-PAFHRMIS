@@ -37,11 +37,11 @@ class PersonnelItem(models.Model):
 
 
 class Placement(models.Model):
+    AFPSN = models.CharField(max_length=200)
     FULLNAME = models.CharField(max_length=200)
-    PresentUNIT = models.CharField(max_length=200)
-    subUNIT = models.CharField(max_length=200)
-    reassignedDATE = models.CharField(max_length=200)
-    dateORDER = models.CharField(max_length=200)
+    PRESENTUNIT = models.CharField(max_length=200)
+    REASSIGNEDDATE = models.CharField(max_length=200)
+    ORDERUPLOAD = models.CharField(max_length=200)
 
     def __str__(self):
         return self.FULLNAME
