@@ -154,57 +154,9 @@ def custom_404(request, exception):
 
 
 
-def placement(request):
-    last_name_query = request.GET.get('last_name')
-    first_name_query = request.GET.get('first_name')
-    middle_name_query = request.GET.get('middle_name')
-    suffix_query = request.GET.get('suffix')
-    afsn_query = request.GET.get('afsn')
-    rank_query = request.GET.get('rank')
-    category_query = ('Officer')
-    sex_query = request.GET.get('sex')
-    unit_query = request.GET.get('unit')
 
-    
-    
-    filters = Q()
-    if last_name_query:
-        filters &= Q(LAST_NAME__icontains=last_name_query)
-    if first_name_query:
-        filters &= Q(FIRST_NAME__icontains=first_name_query)
-    if middle_name_query:
-        filters &= Q(MIDDLE_NAME__icontains=middle_name_query)
-    if suffix_query and suffix_query != "Suffix":
-        filters &= Q(EXTENSION_NAME__icontains=suffix_query)
-    if afsn_query:
-        filters &= Q(SERIAL_NUMBER__icontains=afsn_query)  
-    if rank_query and rank_query != "Rank":
-        filters &= Q(RANK__icontains=rank_query)
-    if category_query and category_query:
-        filters &= Q(CATEGORY__icontains=category_query)
-    if sex_query and sex_query != "Sex":
-        filters &= Q(SEX__icontains=sex_query)
-    if unit_query:
-        filters &= Q(UNIT__icontains=unit_query)
-    
-    persons = PersonnelItem.objects.filter(filters)
-    
-    paginator = Paginator(persons, 10)
-    page_num = request.GET.get("page")
-    persons = paginator.get_page(page_num)
-    
-    return render(request, 'Placement/placement.html', {
-        'persons': persons,
-        'last_name_query': last_name_query,
-        'first_name_query': first_name_query,
-        'middle_name_query': middle_name_query,
-        'suffix_query': suffix_query,
-        'afsn_query': afsn_query,
-        'rank_query': rank_query,
-        'category_query': category_query,
-        'sex_query': sex_query,
-        'unit_query': unit_query,
-    })
+
+
 
 
 def inactivepersonnel(request):
@@ -216,47 +168,6 @@ def display_file_data(request):
     if request.method == 'GET':
         form = UploadFileForm(request.GET, request.FILES)
         
-# def upload_file(request):
-#     if request.method == 'POST':
-#         form = UploadFileForm(request.POST, request.FILES)
-#         if form.is_valid():
-#             file = request.FILES['file']
-#             fs = FileSystemStorage()
-#             filename = fs.save(file.name, file)
-#             file_path = fs.path(filename)
-#             wb = openpyxl.load_workbook(file_path)
-#             ws = wb.active
-#             for row in ws.iter_rows(min_row=30, values_only=True):  
-#                 PersonnelItem.objects.create(
-#                 RANK=row[0],
-#                 LAST_NAME=row[1],
-#                 FIRST_NAME=row[2],
-#                 MIDDLE_NAME=row[3],
-#                 EXTENSION_NAME=row[4],
-#                 SERIAL_NUMBER=row[5],
-#                 BOS=row[6],
-#                 SEX=row[7],
-#                 BIRTHDAY=row[8],
-#                 CONTACT_NUMBER=row[9],
-#                 ADDRESS=row[10],
-#                 REGULAR_RESERVE=row[11],
-#                 PILOT_RATED_NON_RATED=row[12],
-#                 AFSC=row[13],
-#                 HIGHEST_PME_COURSES=row[14],
-#                 EFFECTIVE_DATE_APPOINTMENT=row[15],
-#                 EFFECTIVE_DATE_ENTERED=row[16],
-#                 LENGTH_OF_SERVICE=row[17],
-#                 DATE_LAST_PROMOTION_APPOINTMENT=row[18],
-#                 UNIT=row[19],
-#                 SUB_UNIT=row[20],
-#                 DATE_LAST_1ST_TRANCH_REENLISTMENT=row[21],
-#                 DATE_LAST_2ND_TRANCH_REENLISTMENT=row[22]
-#                 )
-#             return redirect('myapp/index.html')
-#     else:
-#         form = UploadFileForm()
-#     return render(request, 'myapp/index.html', {'form': form})
-
 
 
 def index(request):
@@ -373,3 +284,112 @@ def Personnel_Records(request):
 #         codes = list(qs.values_list('code', flat=True))
 #         return JsonResponse(codes, safe=False)
 #     return JsonResponse([])
+
+
+
+
+
+# PLACEMENT
+# FOR OFFICER
+def placement_officer(request):
+    last_name_query = request.GET.get('last_name')
+    first_name_query = request.GET.get('first_name')
+    middle_name_query = request.GET.get('middle_name')
+    suffix_query = request.GET.get('suffix')
+    afsn_query = request.GET.get('afsn')
+    rank_query = request.GET.get('rank')
+    category_query = ('Officer')
+    sex_query = request.GET.get('sex')
+    unit_query = request.GET.get('unit')
+    
+    filters = Q()
+    if last_name_query:
+        filters &= Q(LAST_NAME__icontains=last_name_query)
+    if first_name_query:
+        filters &= Q(FIRST_NAME__icontains=first_name_query)
+    if middle_name_query:
+        filters &= Q(MIDDLE_NAME__icontains=middle_name_query)
+    if suffix_query and suffix_query != "Suffix":
+        filters &= Q(EXTENSION_NAME__icontains=suffix_query)
+    if afsn_query:
+        filters &= Q(SERIAL_NUMBER__icontains=afsn_query)  
+    if rank_query and rank_query != "Rank":
+        filters &= Q(RANK__icontains=rank_query)
+    if category_query and category_query:
+        filters &= Q(CATEGORY__icontains=category_query)
+    if sex_query and sex_query != "Sex":
+        filters &= Q(SEX__icontains=sex_query)
+    if unit_query:
+        filters &= Q(UNIT__icontains=unit_query)
+    
+    persons = PersonnelItem.objects.filter(filters)
+    
+    paginator = Paginator(persons, 10)
+    page_num = request.GET.get("page")
+    persons = paginator.get_page(page_num)
+    
+    return render(request, 'Placement/placement.html', {
+        'persons': persons,
+        'last_name_query': last_name_query,
+        'first_name_query': first_name_query,
+        'middle_name_query': middle_name_query,
+        'suffix_query': suffix_query,
+        'afsn_query': afsn_query,
+        'rank_query': rank_query,
+        'category_query': category_query,
+        'sex_query': sex_query,
+        'unit_query': unit_query,
+    })
+
+
+
+# FOR ENLISTED PERSONNEL
+def placement_enlisted(request):
+    last_name_query = request.GET.get('last_name')
+    first_name_query = request.GET.get('first_name')
+    middle_name_query = request.GET.get('middle_name')
+    suffix_query = request.GET.get('suffix')
+    afsn_query = request.GET.get('afsn')
+    rank_query = request.GET.get('rank')
+    category_query = ('ENLISTED PERSONNEL')
+    sex_query = request.GET.get('sex')
+    unit_query = request.GET.get('unit')
+    
+    filters = Q()
+    if last_name_query:
+        filters &= Q(LAST_NAME__icontains=last_name_query)
+    if first_name_query:
+        filters &= Q(FIRST_NAME__icontains=first_name_query)
+    if middle_name_query:
+        filters &= Q(MIDDLE_NAME__icontains=middle_name_query)
+    if suffix_query and suffix_query != "Suffix":
+        filters &= Q(EXTENSION_NAME__icontains=suffix_query)
+    if afsn_query:
+        filters &= Q(SERIAL_NUMBER__icontains=afsn_query)  
+    if rank_query and rank_query != "Rank":
+        filters &= Q(RANK__icontains=rank_query)
+    if category_query and category_query:
+        filters &= Q(CATEGORY__icontains=category_query)
+    if sex_query and sex_query != "Sex":
+        filters &= Q(SEX__icontains=sex_query)
+    if unit_query:
+        filters &= Q(UNIT__icontains=unit_query)
+    
+    persons = PersonnelItem.objects.filter(filters)
+    
+    paginator = Paginator(persons, 10)
+    page_num = request.GET.get("page")
+    persons = paginator.get_page(page_num)
+    
+    return render(request, 'Placement/placement.html', {
+        'persons': persons,
+        'last_name_query': last_name_query,
+        'first_name_query': first_name_query,
+        'middle_name_query': middle_name_query,
+        'suffix_query': suffix_query,
+        'afsn_query': afsn_query,
+        'rank_query': rank_query,
+        'category_query': category_query,
+        'sex_query': sex_query,
+        'unit_query': unit_query,
+    })

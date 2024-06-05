@@ -8,9 +8,10 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('upload_excel/', views.upload_excel, name='upload_excel'),
     path('Inactive_Personnel/', views.inactivepersonnel, name='Inactive_Personnel'),
-    path('placement/', views.placement, name='placement'),
     path('update_personnel/', views.update_personnel, name='update_personnel'),  # Add this line 
     path('Tranche/', views.Tranche, name='Tranche'),  
+    path('placementofficer/', views.placement_officer, name='placementofficer'),
+    path('placement_enlisted/', views.placement_enlisted, name='placement_enlisted'),
     # path('autocomplete_afsc/', views.autocomplete_afsc, name='autocomplete_afsc'),
     
 

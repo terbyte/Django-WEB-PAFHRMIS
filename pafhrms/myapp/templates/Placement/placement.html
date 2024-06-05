@@ -15,7 +15,8 @@
         <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#officer" type="button" role="tab" aria-controls="home" aria-selected="true">Officer</button>
     </li>
     <li class="nav-item" role="presentation">
-        <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#epPersonnel" type="button" role="tab" aria-controls="profile" aria-selected="false">Enlisted Personnel</button>
+        <button class="nav-link" id="profile-tab"  data-bs-toggle="tab" data-bs-target="#epPersonnel" type="button" role="tab" aria-controls="profile" aria-selected="false">Enlisted Personnel</button>
+    
     </li>
     <li class="nav-item" role="presentation">
         <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#DSMonitoring" type="button" role="tab" aria-controls="contact" aria-selected="false">DS Monitoring</button>
@@ -25,17 +26,26 @@
     </li>
 </ul>
 <div class="tab-content" id="myTabContent">
-    <div class="tab-pane fade show active" id="officer" role="tabpanel" aria-labelledby="home-tab">Officer content...
-
-        <!-- forms.html -->
-       
-
+    <div class="tab-pane fade show active" id="officer" role="tabpanel" aria-labelledby="home-tab">
+        
+        
+        Officer content...
     {% include 'Placement/officerTab.html' %}
 
 
 
     </div>
-    <div class="tab-pane fade" id="epPersonnel" role="tabpanel" aria-labelledby="profile-tab">Enlisted Personnel content...</div>
+    <div class="tab-pane fade" id="epPersonnel" role="tabpanel" aria-labelledby="profile-tab">
+        
+        
+        
+        Enlisted Personnel content...
+        {% include 'Placement/epTab.html' %}
+
+    
+    
+    
+    </div>
     <div class="tab-pane fade" id="DSMonitoring" role="tabpanel" aria-labelledby="contact-tab">DS Monitoring...</div>
     <div class="tab-pane fade" id="PersonnelMonitoring" role="tabpanel" aria-labelledby="contact-tab">Personnel Monitoring...</div>
 </div>

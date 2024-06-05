@@ -3,7 +3,208 @@
 
 
     {% include 'myapp/searchforms.html' %}
-    {% include 'myapp/tablewithPaginator.html' %}
+ 
+    <table class="table table-responsive-sm table-bordered table-striped table-sm">
+        <tr>
+            <th>RANK</th>
+            <th>AFPSN</th>
+            <th>FULL NAME</th>
+            <th>UNIT</th>
+            <th>SUB-UNIT</th>
+            <th>category</th>
+            <th>ACTION</th>
+        </tr>
+        {% for person in persons %}
+        <tr>
+          <td>{{ person.RANK }}</td>
+          <td>{{ person.SERIAL_NUMBER }}</td>
+          <td>{{ person.FIRST_NAME}} {{person.MIDDLE_NAME}} {{person.LAST_NAME}}</td>
+          <td>{{ person.UNIT }}</td>
+          <td>{{ person.SUB_UNIT }}</td>
+          <td>{{ person.CATEGORY }}</td>
+  
+          <!-- <td><button class="btn btn-primary" id="openModalButton"  class="count_btn">EDIT</button></td> -->
+          
+          <td>
+          <button 
+                  class="btn btn-primary openModalButton" 
+                  data-rank="{{ person.RANK }}"
+                  data-lastname="{{ person.FIRST_NAME }} {{ person.MIDDLE_NAME }} {{ person.LAST_NAME }} {{ person.EXTENSION_NAME }}"
+                  data-firstname="{{ person.FIRST_NAME }}"
+                  data-middlename="{{ person.MIDDLE_NAME }}"
+                  data-suffix="{{ person.EXTENSION_NAME }}"
+                  data-afpsn="{{ person.SERIAL_NUMBER }}"
+                  data-unit="{{ person.UNIT }}"
+                  data-subunit="{{ person.SUB_UNIT }}"
+                  data-birthday="{{ person.BIRTHDAY|date:'d-b-Y' }}"
+                  data-contactnumber="{{ person.CONTACT_NUMBER }}"
+                  data-sex="{{ person.SEX }}"
+                  data-address="{{ person.ADDRESS }}"
+                  data-classification="{{ person.CLASSIFICATION }}"
+                  data-sourceofenlistmentcommission="{{ person.SOURCE_OF_ENLISTMENT_COMMISION }}"
+                  data-category="{{ person.CATEGORY }}"
+                  data-afsc="{{ person.AFSC }}"
+                  data-hpme="{{ person.HIGHEST_PME_COURSES }}"
+                  data-dateenteredmilitary="{{ person.EFFECTIVE_DATE_ENTERED|date:'d-b-Y' }}"
+                  data-lengthofservice="{{ person.LENGTH_OF_SERVICE }}"
+                  data-unaTranche="{{ person.DATE_FIRST_TRANCHE_REENLISTMENT|date:'Y-m-d' }}"
+                  data-dosTranche="{{ person.DATE_SECOND_TRANCHE_REENLISTMENT|date:'Y-m-d' }}"
+                  data-dateoflastetadsot="{{ person.DATE_SECOND_TRANCHE_REENLISTMENT|date:'Y-m-d' }}"
+                  data-pilotrating="{{ person.PILOT_RATED_NON_RATED }}"
+                  data-promotion="{{ person.DATE_LAST_PROMOTION_APPOINTMENT|date:'Y-m-d' }}" 
+                  data-dateofcommissionship="{{ person.EFFECTIVE_DATE_APPOINTMENT|date:'d-b-Y' }}" 
+                  
+                  data-toggle="modal"
+                  data-target="#myModal">Reassign</button>
+          </td>
+  
+      </tr>
+        {% endfor %}
+    </table>
+  
+    {% include 'modals/Placement-modal.html' %}
+    
+   <script>
+  
+    
+  
+    
+  
+  $(document).ready(function() {
+      $('.openModalButton').click(function() {
+          var rank = $(this).data('rank');
+          var lastname = $(this).data('lastname');
+          var firstname = $(this).data('firstname');
+          var middlename = $(this).data('middlename');
+          var suffix = $(this).data('suffix');
+          if (suffix === "nan") {
+            suffix= '';
+              }
+          var afpsn = $(this).data('afpsn');
+          var unit = $(this).data('unit');
+          var subunit = $(this).data('subunit');
+          var birthday = $(this).data('birthday');
+          var contactnum = $(this).data('contactnumber');
+          if (contactnum === "None") {
+            contactnum= '';
+              }
+          var sex = $(this).data('sex');
+          var address = $(this).data('address');
+          var classification = $(this).data('classification');
+          var sourceofenlistmentcommission = $(this).data('sourceofenlistmentcommission');
+  
+          var category = $(this).data('category');
+          var afsc = $(this).data('afsc');
+          if (afsc === "nan") {
+            afsc= '';
+              }
+          var hpme = $(this).data('hpme');
+          var dateenteredmilitary = $(this).data('dateenteredmilitary');
+          var dateoflastpromotion = $(this).data('datelastpromotion');
+          var lengthofservice = $(this).data('lengthofservice');
+          var dateofcommissionship = $(this).data('dateofcommissionship');
+          var promotion = $(this).data('promotion');
+  
+          var dateoflastetadsot = $(this).data('dateoflastetadsot');
+          var unaTranche = $(this).data('unaTranche');
+          var dosTranche = $(this).data('dosTranche');
+          var pilotrating = $(this).data('pilotrating');
+  
+          
+  
+  // POPULATING DATA TO MODAL 
+          $('#ranktxt').val(rank);
+          $('#lastnametxt').val(lastname);
+          $('#firstnametxt').val(firstname);
+          $('#middlenametxt').val(middlename);
+          $('#suffixtxt').val(suffix);
+          $('#afpsntxt').val(afpsn);
+          $('#unittxt').val(unit);
+          $('#subunittxt').val(subunit);
+          $('#bdaytxt').val(birthday);
+          $('#contactnumtxt').val(contactnum);
+          $('#sextxt').val(sex);
+          $('#addresstxt').val(address);
+          $('#categorytxt').val(category);
+          $('#classificationtxt').val(classification);
+          $('#sourceofenlistmentcommissiontxt').val(sourceofenlistmentcommission);
+          $('#afsctxt').val(afsc);
+          // $('#hpmetxt').val(hpme);
+          // $('#DOLetadsottxt').val(hpme);  
+          $('#enlistmentdatetxt').val(dateenteredmilitary);
+          $('#promotiontxt').val(dateoflastpromotion);
+          $('#lengthofservicetxt').val(lengthofservice);
+          $('#dateofcommissionshiptxt').val(dateofcommissionship);
+          $('#promotiontxt').val(promotion);
+          $('#dateoflastetadsottxt').val(dateoflastetadsot);
+          $('#unaTranchetxt').val(unaTranche);
+          $('#dosTranchetxt').val(dosTranche);
+          $('#pilotratingtxt').val(pilotrating);
+          var hpme = $(this).data('hpme');
+          $('#hpmetxt').val(hpme);
+  
+          if (category === "ENLISTED PERSONNEL") {
+            $('#commission_enlistment_lbl').text('Date of Enlistment');
+            $('#dateoflastetadsottxt').hide();
+            $('#dateoflastetadsotlbl').hide();
+            $('#unaTranchelbl').show();
+            $('#unaTranchetxt').show();
+            $('#dosTranchelbl').show();
+            $('#dosTranchetxt').show();
+            $('#pilotratingtxt').hide();
+            $('#pilotratinglbl').hide();
+            $('#classificationtxt').hide();
+            $('#classificationlbl').hide();
+            
+  
+          // } else if(category === "OFFICER") {
+          } else{
+  
+            $('#commission_enlistment_lbl').text('Date of Commission');
+            $('#unaTranchelbl').hide();
+            $('#unaTranchetxt').hide();
+            $('#dosTranchelbl').hide(); 
+            $('#dosTranchetxt').hide();
+            $('#pilotratinglbl').show();
+            $('#pilotratingtxt').show();
+            $('#classificationlbl').show();
+            $('#classificationtxt').show();
+  
+  
+            $('#dateoflastetadsottxt').show();
+            $('#dateoflastetadsotlbl').show();
+              // $('#unaTranchelbl').hide();
+              // $('#dosTranchetxt').hide();  
+              // $('#dosTranchelbl').hide();  
+              // $('#dosTranchetxt').hide();  
+          }
+     
+  
+      });
+  });
+  
+    </script>
+  
+  
+  
+    <div class="pagination">
+      <span class="step-links">
+          {% if persons.has_previous %}
+              <a href="?page=1">&laquo; first</a>
+              <a href="?page={{ persons.previous_page_number }}">previous</a>
+          {% endif %}
+          <span class="current">
+              Page {{ persons.number }} of {{ persons.paginator.num_pages }}
+          </span>
+          {% if persons.has_next %}
+              <a href="?page={{ persons.next_page_number }}">next</a>
+              <a href="?page={{ persons.paginator.num_pages }}">last &raquo;</a>
+          {% endif %}
+      </span>
+    </div>
+  
+  
+    
 
     <!-- <div class="form-group">
         <button type="submit" class="btn btn-primary">Search</button>
