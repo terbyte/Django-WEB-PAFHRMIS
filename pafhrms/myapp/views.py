@@ -161,7 +161,7 @@ def placement(request):
     suffix_query = request.GET.get('suffix')
     afsn_query = request.GET.get('afsn')
     rank_query = request.GET.get('rank')
-    category_query = request.GET.get('category')
+    category_query = ('Officer')
     sex_query = request.GET.get('sex')
     unit_query = request.GET.get('unit')
 
@@ -177,10 +177,10 @@ def placement(request):
     if suffix_query and suffix_query != "Suffix":
         filters &= Q(EXTENSION_NAME__icontains=suffix_query)
     if afsn_query:
-        filters &= Q(SERIAL_NUMBER__icontains=afsn_query)  # Change this to 'SERIAL_NUMBER'
+        filters &= Q(SERIAL_NUMBER__icontains=afsn_query)  
     if rank_query and rank_query != "Rank":
         filters &= Q(RANK__icontains=rank_query)
-    if category_query and category_query != "Category":
+    if category_query and category_query:
         filters &= Q(CATEGORY__icontains=category_query)
     if sex_query and sex_query != "Sex":
         filters &= Q(SEX__icontains=sex_query)
