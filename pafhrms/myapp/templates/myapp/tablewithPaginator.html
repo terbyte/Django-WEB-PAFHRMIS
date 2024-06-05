@@ -130,7 +130,26 @@ $(document).ready(function() {
         $('#pilotratingtxt').val(pilotrating);
         $('#hpmetxt').val(hpme);
 
+
+        // Swal.fire({
+        //             title: 'Updated Successfully',
+        //             text: 'value: ' +classification,
+        //             icon: 'success',
+        //             confirmButtonText: 'OK'
+        //             });
+
+
+          console.log(classification);
+        if (classification === "Regular ") {
+          $('#tohide').hide();
+        } else {
+          $('#tohide').show();
+        }
+        
+
+     
         if (category === "ENLISTED PERSONNEL") {
+          
           $('#commission_enlistment_lbl').text('Date of Enlistment');
           $('#dateoflastetadsottxt').hide();
           $('#dateoflastetadsotlbl').hide();
@@ -162,6 +181,16 @@ $(document).ready(function() {
 
           
         }
+
+
+        
+
+
+
+
+
+
+
     });
 });
 
