@@ -47,7 +47,8 @@ def update_personnel(request):
                 HIGHEST_PME_COURSES=request.POST.get('hpme'),
                 PILOT_RATED_NON_RATED=request.POST.get('pilotrating'),
                 DATE_LAST_PROMOTION_APPOINTMENT=request.POST.get('promotion'),
-                DATE_SECOND_TRANCHE_REENLISTMENT=request.POST.get('dateoflastetadsot'),
+                DATE_FIRST_TRANCHE_REENLISTMENT=request.POST.get('unaTranche'),
+                DATE_SECOND_TRANCHE_REENLISTMENT=request.POST.get('dosTranche'),
 
 
                 
