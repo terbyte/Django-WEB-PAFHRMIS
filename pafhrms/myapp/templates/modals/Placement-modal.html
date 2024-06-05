@@ -49,7 +49,7 @@
     /* Style for the form label */
     .form-label {
       /* font-weight: bold; */
-      color: #333;
+      /* color: #333; */
     }
 
     /* Style for the form control */
@@ -255,6 +255,15 @@
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
    -->
   <script>
+    $(document).ready(function() {
+    // Add change event listener to the file input
+    $('#uploadOrder').change(function() {
+        // Get the name of the selected file
+        var fileName = $(this).val().split('\\').pop();
+        // Display the file name in the custom file label
+        $('.custom-file-label').text(fileName);
+    });
+});
     $(document).ready(function() {
       $('.openModalButton').click(function() {
         var personnelId = $(this).data('afpsn'); // Assuming 'afpsn' is the unique identifier
