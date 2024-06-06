@@ -327,9 +327,25 @@ var previousValue = document.getElementById('assignmentcategorytxt').value;
 var untilDateLabel = document.getElementById('untildatelbl');
 
 document.getElementById('reassignmentDate').addEventListener('change', function() {
-  console.log(document.getElementById('reassignmentDate').value)
-  var untilDateLabel =document.getElementById('reassignmentDate').value
-    untildatelbl.textContent = untilDateLabel;
+  //populate date to untildatelbl
+  // Get the value of the reassignmentDate input
+  var reassignmentDateValue = document.getElementById('reassignmentDate').value;
+  // Convert the input date string to a Date object
+  var reassignmentDate = new Date(reassignmentDateValue);
+  var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  // Format the date as "dd-mmm-yyyy"
+  var formattedDate = ("0" + reassignmentDate.getDate()).slice(-2) + "-" + 
+                      months[reassignmentDate.getMonth()] + "-" + 
+                      reassignmentDate.getFullYear();
+  // Get the label element by its ID
+  // new var format = dd-mm-yyyy
+  var formattedDate2 = reassignmentDate.toLocaleDateString('en-GB');
+  var untildatelbl = document.getElementById('untildatelbl');
+  // Set the text content of the label
+  untildatelbl.textContent = formattedDate2;
+
+  console.log(reassignmentDateValue);
 
 
 });
@@ -341,9 +357,6 @@ document.getElementById('reassignmentDate').addEventListener('change', function(
     var reassignmentDate = document.getElementById('reassignmentDate').value;
     var selectedCategory = this.value;
     var dropdownContainer = document.getElementById('dropdownContainer');
-    
-
-
 
     if ((selectedCategory === 'Detached Service(DS)' || selectedCategory === 'Temporary Duty(TDY)') && !reassignmentDate) {
       showAlert();
@@ -356,6 +369,68 @@ document.getElementById('reassignmentDate').addEventListener('change', function(
       previousValue = selectedCategory;
     }
   });
+
+
+// event for duration drop down
+function computeDate() {
+    // Get the value of the reassignmentDate input
+    var reassignmentDateValue = document.getElementById('reassignmentDate').value;
+
+    // Convert the input date string to a Date object
+    var reassignmentDate = new Date(reassignmentDateValue);
+
+    // Get the value of the duration dropdown
+    var durationSelect = document.getElementById('durationtxt');
+    var selectedDuration = durationSelect.value; // Value from the duration dropdown
+
+    // Define variables for years and months to add
+    var yearsToAdd = 0;
+    var monthsToAdd = 0;
+
+    // Determine years and months based on the selected duration
+    switch(selectedDuration) {
+        case "6 Months":
+            monthsToAdd = 6;
+            break;
+        case "1 Year":
+            yearsToAdd = 1;
+            break;
+        case "2 Years":
+            yearsToAdd = 2;
+            break;
+        default:
+            break;
+    }
+
+    // Calculate the new date by adding the selected duration to the reassignment date
+    var newDate = new Date(reassignmentDate.getTime());
+
+    // Add years
+    newDate.setFullYear(newDate.getFullYear() + yearsToAdd);
+
+    // Add months
+    newDate.setMonth(newDate.getMonth() + monthsToAdd);
+
+    // Format the new date as "dd-mm-yyyy"
+    var day = ("0" + newDate.getDate()).slice(-2);
+    var month = ("0" + (newDate.getMonth() + 1)).slice(-2);
+    var year = newDate.getFullYear();
+    var formattedNewDate = day + "-" + month + "-" + year;
+
+    // Display the new date
+    document.getElementById('untildatelbl').textContent = "Effective Until: " + formattedNewDate;
+
+    
+}
+
+// Add event listener to reassignment date picker
+document.getElementById('reassignmentDate').addEventListener('change', computeDate);
+
+// Add event listener to duration dropdown
+document.getElementById('durationtxt').addEventListener('change', computeDate);
+
+
+
 
   document.getElementById('closeAlertBtn').addEventListener('click', function() {
     hideAlert();
