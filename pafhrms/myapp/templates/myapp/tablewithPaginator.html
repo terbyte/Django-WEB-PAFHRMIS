@@ -1,3 +1,7 @@
+
+
+
+
 <table class="table table-responsive-sm table-bordered table-striped table-sm" id="sortableTable">
     <thead>
         <tr>
@@ -6,6 +10,8 @@
             <th class="sortable" data-sort="FULL_NAME">Full Name</th>
             <th class="sortable" data-sort="UNIT">Unit</th>
             <th class="sortable" data-sort="SUB_UNIT">Sub-Unit</th>
+            <th class="sortable" data-sort="CATEGORY">category</th>
+
             <th>Action</th>
         </tr>
     </thead>
@@ -17,6 +23,8 @@
             <td>{{ person.FIRST_NAME}} {{person.MIDDLE_NAME}} {{person.LAST_NAME}}</td>
             <td>{{ person.UNIT }}</td>
             <td>{{ person.SUB_UNIT }}</td>
+            <td>{{ person.CATEGORY }}</td>
+
             <td>
               <button class="btn btn-primary openModalButton"
               data-rank="{{ person.RANK }}"

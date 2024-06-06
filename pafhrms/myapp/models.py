@@ -36,18 +36,18 @@ class PersonnelItem(models.Model):
 
 
 
-# class Placement(models.Model):
-#     AFPSN = models.CharField(max_length=200)
-#     LAST_NAME = models.CharField(max_length=200)
-#     FIRST_NAME = models.CharField(max_length=200)
-#     MIDDLE_NAME = models.CharField(max_length=200)
-#     SUFFIX = models.CharField(max_length=200)
-#     NEW_UNIT = models.CharField(max_length=200)
-#     REASSIGN_EFFECTIVEDDATE = models.CharField(max_length=200)
-#     ORDER_UPLOADFILE = models.FileField(upload_to='uploads/orders/')
+class Placement(models.Model):
+    AFPSN = models.CharField(max_length=200)
+    LAST_NAME = models.CharField(max_length=200)
+    FIRST_NAME = models.CharField(max_length=200)
+    MIDDLE_NAME = models.CharField(max_length=200)
+    SUFFIX = models.CharField(max_length=200)
+    NEW_UNIT = models.CharField(max_length=200)
+    REASSIGN_EFFECTIVEDDATE = models.CharField(max_length=200)
+    ORDER_UPLOADFILE = models.FileField(upload_to='uploads/orders/')
 
-#     def __str__(self):
-#         return self.FULLNAME
+    def __str__(self):
+        return self.FULLNAME
 
 
     
