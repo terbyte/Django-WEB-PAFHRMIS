@@ -190,6 +190,7 @@
               </select>
             </div>
             
+            
             <div class="mb-3">
               <label for="reassignmentUnit" class="form-label">Reassignment Unit</label>
               <select id="unitDP" name="unit" class="form-select">
@@ -230,6 +231,14 @@
               </select>
             </div>
 
+            
+
+
+            <div class="mb-3">
+              <label for="reassignmentDate" class="form-label">Reassignment Effective Date</label>
+              <input type="date" class="form-control" id="reassignmentDate" name="reassignmentDate" required>
+            </div>
+
             <div class="mb-3">
               <label  class="form-label">Assignment Category</label>
                 <select name="assignmentcategory" for="assignmentcategory" id="assignmentcategorytxt" name = 'assignmentcategory ' class="form-control">
@@ -239,12 +248,6 @@
                   <option>Temporary Duty(TDY)</option>
                   </optgroup>
               </select>
-            </div>
-            
-
-            <div class="mb-3">
-              <label for="reassignmentDate" class="form-label">Reassignment Effective Date</label>
-              <input type="date" class="form-control" id="reassignmentDate" name="reassignmentDate" required>
             </div>
             <div class="mb-3">
                 <label for="uploadOrder" class="form-label">Upload Order</label>
@@ -369,6 +372,26 @@
           'AFPWSSUS': ['PMA', 'AFPETDC', 'CEISSAFP', 'CRSAFP', 'ISAFP', 'AFPHSC', 'AFP SOCOM', 'AFPFC', 'AFPPS', 'AFPPKOC', 'AFPCES', 'AFPMCC', 'PSG', 'AFPPGMC', 'AFPCYBER', 'AFPRESCOM', 'DND'],
         };
   
+        // IF assignmentcategory IS DS OR TDY, SHOW THE OPTION FOR DURATION, 6 MONTS/ 1 YEAR OR CUSTOM
+        // IF assignmentcategory IS ASSINED, IT HAS NO DURATION
+        var selectElement = document.getElementById('assignmentcategorytxt');
+        // Add event listener for change event
+        selectElement.addEventListener('change', function(event) {
+            // Get the selected option
+            var selectedOption = event.target.value;
+        
+            // Check if the selected option is not "Assigned"
+            if (selectedOption !== 'Assigned') {
+              
+                Swal.fire({
+                    title: 'Selected Option',
+                    text: 'You selected: ' + selectedOption,
+                    icon: 'info',
+                    confirmButtonText: 'OK'
+                });
+            }
+        });
+
         const subunitDP = document.getElementById('SubunitDP');
         subunitDP.innerHTML = '<option value="">--Select Subunit--</option>';
   

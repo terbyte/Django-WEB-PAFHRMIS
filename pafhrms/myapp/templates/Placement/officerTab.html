@@ -186,24 +186,49 @@
     </script>
   
   
+  <nav aria-label="...">
+    <ul class="pagination">
+        {% if persons.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page=1">&laquo; first</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ persons.previous_page_number }}">previous</a>
+            </li>
+        {% else %}
+            <li class="page-item disabled">
+                <span class="page-link">&laquo; first</span>
+            </li>
+            <li class="page-item disabled">
+                <span class="page-link">previous</span>
+            </li>
+        {% endif %}
+
+        <li class="page-item">
+            <span class="page-link">
+                Page {{ persons.number }} of {{ persons.paginator.num_pages }}
+            </span>
+        </li>
+
+        {% if persons.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ persons.next_page_number }}">next</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ persons.paginator.num_pages }}">last &raquo;</a>
+            </li>
+        {% else %}
+            <li class="page-item disabled">
+                <span class="page-link">next</span>
+            </li>
+            <li class="page-item disabled">
+                <span class="page-link">last &raquo;</span>
+            </li>
+        {% endif %}
+    </ul>
+</nav>
   
-    <div class="pagination">
-      <span class="step-links">
-          {% if persons.has_previous %}
-              <a href="?page=1">&laquo; first</a>
-              <a href="?page={{ persons.previous_page_number }}">previous</a>
-          {% endif %}
-          <span class="current">
-              Page {{ persons.number }} of {{ persons.paginator.num_pages }}
-          </span>
-          {% if persons.has_next %}
-              <a href="?page={{ persons.next_page_number }}">next</a>
-              <a href="?page={{ persons.paginator.num_pages }}">last &raquo;</a>
-          {% endif %}
-      </span>
-    </div>
-  
-  
+
     
 
     <!-- <div class="form-group">
