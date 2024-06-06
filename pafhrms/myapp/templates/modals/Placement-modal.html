@@ -249,6 +249,18 @@
                   </optgroup>
               </select>
             </div>
+
+            <div class="mb-3" id="dropdownContainer" hidden>
+              <label class="form-label">Assignment Category</label>
+              <select name="duration" for="duration" id="durationtxt" class="form-control">
+                <optgroup label="Duration">
+                  <option>6 Months</option>
+                  <option>1 Year</option>
+                  <option>2 Years</option>
+                </optgroup>
+              </select>
+            </div>
+            
             <div class="mb-3">
                 <label for="uploadOrder" class="form-label">Upload Order</label>
                 <div class="custom-file">
@@ -382,14 +394,14 @@
         
             // Check if the selected option is not "Assigned"
             if (selectedOption !== 'Assigned') {
+              document.getElementById('dropdownContainer').removeAttribute('hidden');
+            }else{
+
+              document.getElementById('dropdownContainer').setAttribute('hidden', 'hidden');
               
-                Swal.fire({
-                    title: 'Selected Option',
-                    text: 'You selected: ' + selectedOption,
-                    icon: 'info',
-                    confirmButtonText: 'OK'
-                });
             }
+
+            
         });
 
         const subunitDP = document.getElementById('SubunitDP');
