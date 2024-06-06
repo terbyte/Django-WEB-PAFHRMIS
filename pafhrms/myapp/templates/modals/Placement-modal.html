@@ -316,24 +316,41 @@
   <div class="alert-content">Please enter the reassignment effective date first.</div>
   <button class="close-btn" id="closeAlertBtn">OK</button>
 </div>
+<!-- /alert section -->
 
 
 
 
   <script>
-
 // if the reaasgined date is empty, do something
 var previousValue = document.getElementById('assignmentcategorytxt').value;
+var untilDateLabel = document.getElementById('untildatelbl');
+
+document.getElementById('reassignmentDate').addEventListener('change', function() {
+  console.log(document.getElementById('reassignmentDate').value)
+  var untilDateLabel =document.getElementById('reassignmentDate').value
+    untildatelbl.textContent = untilDateLabel;
+
+
+});
+
+// ends
+
 
   document.getElementById('assignmentcategorytxt').addEventListener('change', function() {
     var reassignmentDate = document.getElementById('reassignmentDate').value;
     var selectedCategory = this.value;
     var dropdownContainer = document.getElementById('dropdownContainer');
+    
+
+
 
     if ((selectedCategory === 'Detached Service(DS)' || selectedCategory === 'Temporary Duty(TDY)') && !reassignmentDate) {
       showAlert();
       this.value = previousValue;
       dropdownContainer.classList.add('hidden');
+
+
     } else {
       dropdownContainer.classList.remove('hidden');
       previousValue = selectedCategory;
@@ -353,7 +370,7 @@ var previousValue = document.getElementById('assignmentcategorytxt').value;
     var alertBox = document.getElementById('alertBox');
     alertBox.style.display = 'none';
   }
-  // =======================================
+// =======================================
 
     $(document).ready(function() {
     // Add change event listener to the file input
