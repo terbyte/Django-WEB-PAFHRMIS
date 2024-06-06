@@ -32,7 +32,6 @@ def update_personnel(request):
             personnel_items = PersonnelItem.objects.filter(SERIAL_NUMBER=personnel_id)
             if not personnel_items.exists():
                 return JsonResponse({'success': False, 'error': 'Personnel not found'})
-            
             personnel_items.update(
                 LAST_NAME=request.POST.get('last_name'),
                 FIRST_NAME=request.POST.get('first_name'),
@@ -49,14 +48,7 @@ def update_personnel(request):
                 DATE_LAST_PROMOTION_APPOINTMENT=request.POST.get('promotion'),
                 DATE_FIRST_TRANCHE_REENLISTMENT=request.POST.get('unaTranche'),
                 DATE_SECOND_TRANCHE_REENLISTMENT=request.POST.get('dosTranche'),
-
-
-                
-
-                # Update other fields similarly
             )
-            
-            
             return JsonResponse({'success': True})
         except Exception as e:
             return JsonResponse({'success': False, 'error': str(e)})
@@ -109,32 +101,30 @@ def upload_excel(request):
             df = pd.read_excel(file_path)
             for index, row in df.iterrows():
                     PersonnelItem.objects.create(
-                    RANK=row[0],
-                    LAST_NAME=row[1],
-                    FIRST_NAME=row[2],
-                    MIDDLE_NAME=row[3],
-                    EXTENSION_NAME=row[4],
-                    SERIAL_NUMBER=row[5],
-                    BOS=row[6],
-                    SEX=row[7],
-                    BIRTHDAY=convert_date(row[8]),
-                    CONTACT_NUMBER=row[9],
-                    ADDRESS=row[10],
-                    CLASSIFICATION=row[11],
-                    CATEGORY=row[12],
-                    SOURCE_OF_ENLISTMENT_COMMISION=row[13],
-                    PILOT_RATED_NON_RATED=row[14],
-                    AFSC=row[15],
-                    HIGHEST_PME_COURSES=row[16],
-                    EFFECTIVE_DATE_APPOINTMENT=convert_date(row[17]),
-                    EFFECTIVE_DATE_ENTERED=convert_date(row[18]),
-                    DATE_LAST_PROMOTION_APPOINTMENT=convert_date(row[19]),
-                    UNIT=row[20],
-                    SUB_UNIT=row[21],
-                    DATE_FIRST_TRANCHE_REENLISTMENT=convert_date(row[22]),
-                    DATE_SECOND_TRANCHE_REENLISTMENT=convert_date(row[23])
-
-                    
+                    RANK=row.iloc[0],
+                    LAST_NAME=row.iloc[1],
+                    FIRST_NAME=row.iloc[2],
+                    MIDDLE_NAME=row.iloc[3],
+                    EXTENSION_NAME=row.iloc[4],
+                    SERIAL_NUMBER=row.iloc[5],
+                    BOS=row.iloc[6],
+                    SEX=row.iloc[7],
+                    BIRTHDAY=convert_date(row.iloc[8]),
+                    CONTACT_NUMBER=row.iloc[9],
+                    ADDRESS=row.iloc[10],
+                    CLASSIFICATION=row.iloc[11],
+                    CATEGORY=row.iloc[12],
+                    SOURCE_OF_ENLISTMENT_COMMISION=row.iloc[13],
+                    PILOT_RATED_NON_RATED=row.iloc[14],
+                    AFSC=row.iloc[15],
+                    HIGHEST_PME_COURSES=row.iloc[16],
+                    EFFECTIVE_DATE_APPOINTMENT=convert_date(row.iloc[17]),
+                    EFFECTIVE_DATE_ENTERED=convert_date(row.iloc[18]),
+                    DATE_LAST_PROMOTION_APPOINTMENT=convert_date(row.iloc[19]),
+                    UNIT=row.iloc[20],
+                    SUB_UNIT=row.iloc[21],
+                    DATE_FIRST_TRANCHE_REENLISTMENT=convert_date(row.iloc[22]),
+                    DATE_SECOND_TRANCHE_REENLISTMENT=convert_date(row.iloc[23])
                 )
             return HttpResponse('Data uploaded successfully.')
         except Exception as e:
