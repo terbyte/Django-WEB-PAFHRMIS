@@ -71,6 +71,9 @@ $(document).ready(function() {
         var lastname = $(this).data('lastname');
         var firstname = $(this).data('firstname');
         var middlename = $(this).data('middlename');
+        if (middlename === "nan") {
+            middlename = '';
+        }
         var suffix = $(this).data('suffix');
         if (suffix === "nan") {
           suffix = '';
@@ -200,7 +203,6 @@ $(document).ready(function() {
 
 
 // TABLE ASCEND DESCEND WHEN COLUMN TITLE IS CLICKED
-
 $(document).ready(function() {
     $('.sortable').each(function() {
         $(this).data('sortOrder', 'asc');

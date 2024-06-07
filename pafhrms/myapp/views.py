@@ -14,9 +14,8 @@ from datetime import datetime
 from .forms import PersonnelItemForm
 
 
-
-
-
+def placement_update_officer(request):
+    print("==================called===========================================")
 
 
 
@@ -146,10 +145,6 @@ def custom_404(request, exception):
 
 
 
-
-
-
-
 def inactivepersonnel(request):
     return render(request,"myapp/InactivePersonnel.html",{})
 
@@ -171,8 +166,6 @@ def index(request):
     category_query = request.GET.get('category')
     sex_query = request.GET.get('sex')
     unit_query = request.GET.get('unit')
-
-    
     
     filters = Q()
     if last_name_query:
@@ -212,6 +205,9 @@ def index(request):
         'sex_query': sex_query,
         'unit_query': unit_query,
     })
+
+
+
 def Personnel_Records(request):
     last_name_query = request.GET.get('last_name')
     first_name_query = request.GET.get('first_name')

@@ -29,31 +29,12 @@
           <td>
           <button 
                   class="btn btn-primary openModalButton" 
-                  data-rank="{{ person.RANK }}"
-                  data-lastname="{{ person.FIRST_NAME }} {{ person.MIDDLE_NAME }} {{ person.LAST_NAME }} {{ person.EXTENSION_NAME }}"
+                  data-lastname="{{ person.LAST_NAME }}"
                   data-firstname="{{ person.FIRST_NAME }}"
                   data-middlename="{{ person.MIDDLE_NAME }}"
                   data-suffix="{{ person.EXTENSION_NAME }}"
                   data-afpsn="{{ person.SERIAL_NUMBER }}"
                   data-unit="{{ person.UNIT }}"
-                  data-subunit="{{ person.SUB_UNIT }}"
-                  data-birthday="{{ person.BIRTHDAY|date:'d-b-Y' }}"
-                  data-contactnumber="{{ person.CONTACT_NUMBER }}"
-                  data-sex="{{ person.SEX }}"
-                  data-address="{{ person.ADDRESS }}"
-                  data-classification="{{ person.CLASSIFICATION }}"
-                  data-sourceofenlistmentcommission="{{ person.SOURCE_OF_ENLISTMENT_COMMISION }}"
-                  data-category="{{ person.CATEGORY }}"
-                  data-afsc="{{ person.AFSC }}"
-                  data-hpme="{{ person.HIGHEST_PME_COURSES }}"
-                  data-dateenteredmilitary="{{ person.EFFECTIVE_DATE_ENTERED|date:'d-b-Y' }}"
-                  data-lengthofservice="{{ person.LENGTH_OF_SERVICE }}"
-                  data-unaTranche="{{ person.DATE_FIRST_TRANCHE_REENLISTMENT|date:'Y-m-d' }}"
-                  data-dosTranche="{{ person.DATE_SECOND_TRANCHE_REENLISTMENT|date:'Y-m-d' }}"
-                  data-dateoflastetadsot="{{ person.DATE_SECOND_TRANCHE_REENLISTMENT|date:'Y-m-d' }}"
-                  data-pilotrating="{{ person.PILOT_RATED_NON_RATED }}"
-                  data-promotion="{{ person.DATE_LAST_PROMOTION_APPOINTMENT|date:'Y-m-d' }}" 
-                  data-dateofcommissionship="{{ person.EFFECTIVE_DATE_APPOINTMENT|date:'d-b-Y' }}" 
                   
                   data-toggle="modal"
                   data-target="#myModal">Reassign</button>
@@ -73,7 +54,6 @@
   
   $(document).ready(function() {
       $('.openModalButton').click(function() {
-          var rank = $(this).data('rank');
           var lastname = $(this).data('lastname');
           var firstname = $(this).data('firstname');
           var middlename = $(this).data('middlename');
@@ -83,103 +63,10 @@
               }
           var afpsn = $(this).data('afpsn');
           var unit = $(this).data('unit');
-          var subunit = $(this).data('subunit');
-          var birthday = $(this).data('birthday');
-          var contactnum = $(this).data('contactnumber');
-          if (contactnum === "None") {
-            contactnum= '';
-              }
-          var sex = $(this).data('sex');
-          var address = $(this).data('address');
-          var classification = $(this).data('classification');
-          var sourceofenlistmentcommission = $(this).data('sourceofenlistmentcommission');
-  
-          var category = $(this).data('category');
-          var afsc = $(this).data('afsc');
-          if (afsc === "nan") {
-            afsc= '';
-              }
-          var hpme = $(this).data('hpme');
-          var dateenteredmilitary = $(this).data('dateenteredmilitary');
-          var dateoflastpromotion = $(this).data('datelastpromotion');
-          var lengthofservice = $(this).data('lengthofservice');
-          var dateofcommissionship = $(this).data('dateofcommissionship');
-          var promotion = $(this).data('promotion');
-  
-          var dateoflastetadsot = $(this).data('dateoflastetadsot');
-          var unaTranche = $(this).data('unaTranche');
-          var dosTranche = $(this).data('dosTranche');
-          var pilotrating = $(this).data('pilotrating');
-  
-          
-  
   // POPULATING DATA TO MODAL 
-          $('#ranktxt').val(rank);
-          $('#lastnametxt').val(lastname);
-          $('#firstnametxt').val(firstname);
-          $('#middlenametxt').val(middlename);
-          $('#suffixtxt').val(suffix);
+          $('#fullnametxt').val(lastname +" "+firstname+" "+middlename+" "+suffix);
           $('#afpsntxt').val(afpsn);
           $('#unittxt').val(unit);
-          $('#subunittxt').val(subunit);
-          $('#bdaytxt').val(birthday);
-          $('#contactnumtxt').val(contactnum);
-          $('#sextxt').val(sex);
-          $('#addresstxt').val(address);
-          $('#categorytxt').val(category);
-          $('#classificationtxt').val(classification);
-          $('#sourceofenlistmentcommissiontxt').val(sourceofenlistmentcommission);
-          $('#afsctxt').val(afsc);
-          // $('#hpmetxt').val(hpme);
-          // $('#DOLetadsottxt').val(hpme);  
-          $('#enlistmentdatetxt').val(dateenteredmilitary);
-          $('#promotiontxt').val(dateoflastpromotion);
-          $('#lengthofservicetxt').val(lengthofservice);
-          $('#dateofcommissionshiptxt').val(dateofcommissionship);
-          $('#promotiontxt').val(promotion);
-          $('#dateoflastetadsottxt').val(dateoflastetadsot);
-          $('#unaTranchetxt').val(unaTranche);
-          $('#dosTranchetxt').val(dosTranche);
-          $('#pilotratingtxt').val(pilotrating);
-          var hpme = $(this).data('hpme');
-          $('#hpmetxt').val(hpme);
-  
-          if (category === "ENLISTED PERSONNEL") {
-            $('#commission_enlistment_lbl').text('Date of Enlistment');
-            $('#dateoflastetadsottxt').hide();
-            $('#dateoflastetadsotlbl').hide();
-            $('#unaTranchelbl').show();
-            $('#unaTranchetxt').show();
-            $('#dosTranchelbl').show();
-            $('#dosTranchetxt').show();
-            $('#pilotratingtxt').hide();
-            $('#pilotratinglbl').hide();
-            $('#classificationtxt').hide();
-            $('#classificationlbl').hide();
-            
-  
-          // } else if(category === "OFFICER") {
-          } else{
-  
-            $('#commission_enlistment_lbl').text('Date of Commission');
-            $('#unaTranchelbl').hide();
-            $('#unaTranchetxt').hide();
-            $('#dosTranchelbl').hide(); 
-            $('#dosTranchetxt').hide();
-            $('#pilotratinglbl').show();
-            $('#pilotratingtxt').show();
-            $('#classificationlbl').show();
-            $('#classificationtxt').show();
-  
-  
-            $('#dateoflastetadsottxt').show();
-            $('#dateoflastetadsotlbl').show();
-              // $('#unaTranchelbl').hide();
-              // $('#dosTranchetxt').hide();  
-              // $('#dosTranchelbl').hide();  
-              // $('#dosTranchetxt').hide();  
-          }
-     
   
       });
   });

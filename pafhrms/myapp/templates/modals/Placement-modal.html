@@ -172,13 +172,13 @@
         </div>
   
         <div class="modal-body">
-          <form id="updateForm" method="post">
+          <form id="PlacementupdateForm" method="post">
             {% csrf_token %}
             <input type="hidden" id="personnel_id" name="personnel_id">
             
             <div class="mb-3">
-              <label for="lastnametxt" class="form-label">Full Name</label>
-              <input type="text" class="form-control" id="lastnametxt" name="lastnametxt" placeholder="Full Name" readonly>
+              <label for="fullnametxt" class="form-label">Full Name</label>
+              <input type="text" class="form-control" id="fullnametxt" name="fullnametxt" placeholder="Full Name" readonly>
             </div>
             
             <div class="mb-4">
@@ -223,8 +223,8 @@
             
             
             <div class="mb-3">
-              <label for="reassignmentUnit" class="form-label">Reassignment Unit</label>
-              <select id="unitDP" name="unit" class="form-select">
+              <label for="new_unit" class="form-label">Reassignment Unit</label>
+              <select id="new_unit" name="new_unit" class="form-select">
                 <option selected>UNIT</option>
                 <option>GHQ</option>
                 <option>HPAF</option>
@@ -274,15 +274,15 @@
               <label  class="form-label">Assignment Category</label>
                 <select name="assignmentcategory" for="assignmentcategory" id="assignmentcategorytxt" name = 'assignmentcategory ' class="form-control">
                   <optgroup label="Category">
-                    <option>Assigned</option>
-                  <option>Detached Service(DS)</option>
-                  <option>Temporary Duty(TDY)</option>
+                    <option>Assign</option>
+                  <option>Detached Service</option>
+                  <option>Temporary Duty</option>
                   </optgroup>
               </select>
             </div>
 
             <div class="mb-3" id="dropdownContainer" hidden>
-              <label class="form-label">Assignment Duration: </label>
+              <label class="form-label">Assignment </label>
               <label  class="form-label" id="untildatelbl" ></label>
               <select name="duration" for="duration" id="durationtxt" class="form-control">
                 <optgroup label="Duration">
@@ -318,9 +318,6 @@
 </div>
 <!-- /alert section -->
 
-
-
-
   <script>
 // if the reaasgined date is empty, do something
 var previousValue = document.getElementById('assignmentcategorytxt').value;
@@ -347,23 +344,19 @@ document.getElementById('reassignmentDate').addEventListener('change', function(
 
   console.log(reassignmentDateValue);
 
-
 });
 
 // ends
 
-
+// hides the dropdown of DS and TDY if dropdown option is assigned
   document.getElementById('assignmentcategorytxt').addEventListener('change', function() {
     var reassignmentDate = document.getElementById('reassignmentDate').value;
     var selectedCategory = this.value;
     var dropdownContainer = document.getElementById('dropdownContainer');
-
-    if ((selectedCategory === 'Detached Service(DS)' || selectedCategory === 'Temporary Duty(TDY)') && !reassignmentDate) {
+    if ((selectedCategory === 'Detached Service' || selectedCategory === 'Temporary Duty') && !reassignmentDate) {
       showAlert();
       this.value = previousValue;
       dropdownContainer.classList.add('hidden');
-
-
     } else {
       dropdownContainer.classList.remove('hidden');
       previousValue = selectedCategory;
@@ -375,18 +368,14 @@ document.getElementById('reassignmentDate').addEventListener('change', function(
 function computeDate() {
     // Get the value of the reassignmentDate input
     var reassignmentDateValue = document.getElementById('reassignmentDate').value;
-
     // Convert the input date string to a Date object
     var reassignmentDate = new Date(reassignmentDateValue);
-
     // Get the value of the duration dropdown
     var durationSelect = document.getElementById('durationtxt');
     var selectedDuration = durationSelect.value; // Value from the duration dropdown
-
     // Define variables for years and months to add
     var yearsToAdd = 0;
     var monthsToAdd = 0;
-
     // Determine years and months based on the selected duration
     switch(selectedDuration) {
         case "6 Months":
@@ -401,26 +390,19 @@ function computeDate() {
         default:
             break;
     }
-
     // Calculate the new date by adding the selected duration to the reassignment date
     var newDate = new Date(reassignmentDate.getTime());
-
     // Add years
     newDate.setFullYear(newDate.getFullYear() + yearsToAdd);
-
     // Add months
     newDate.setMonth(newDate.getMonth() + monthsToAdd);
-
     // Format the new date as "dd-mm-yyyy"
     var day = ("0" + newDate.getDate()).slice(-2);
     var month = ("0" + (newDate.getMonth() + 1)).slice(-2);
     var year = newDate.getFullYear();
     var formattedNewDate = day + "-" + month + "-" + year;
-
     // Display the new date
     document.getElementById('untildatelbl').textContent = "Effective Until: " + formattedNewDate;
-
-    
 }
 
 // Add event listener to reassignment date picker
@@ -458,150 +440,100 @@ document.getElementById('durationtxt').addEventListener('change', computeDate);
 });
     $(document).ready(function() {
       $('.openModalButton').click(function() {
-        var personnelId = $(this).data('afpsn'); // Assuming 'afpsn' is the unique identifier
-        var address = $(this).data('address');
-        var classification = $(this).data('classification');
-        var category = $(this).data('category');
-        var rank = $(this).data('rank');
+        var afpsn = $(this).data('afpsn'); // Assuming 'afpsn' is the unique identifier
+        var lastname = $(this).data('lastname');
+        var firstname = $(this).data('firstname');
+        var middlename = $(this).data('middlename');
         var suffix = $(this).data('suffix');
-        var afsc = $(this).data('afsc');
-        var unit = $(this).data('unit');
-        var subunit = $(this).data('subunit');
-        var contactnum = $(this).data('contactnum');
-        var promotion = $(this).data('promotion');
-        var unaTranche = $(this).data('unaTranche');
-        var dosTranche = $(this).data('dosTranche');
-        var dateoflastetadsot = $(this).data('dateoflastetadsot');
-        var hpme = $(this).data('hpme');
-        var pilotrating = $(this).data('pilotrating');
-  
-        $('#personnel_id').val(personnelId);
-        $('#suffixtxt').val(suffix);
-        $('#addresstxt').val(address);
-        $('#categorytxt').val(category);
-        $('#classificationtxt').val(classification);
-        $('#promotiontxt').val(promotion);
-        $('#ranktxt').val(rank);
-        $('#afsctxt').val(afsc);
-        $('#unitDP').val(unit);
-        $('#contactnumtxt').val(contactnum);
-        $('#unaTranchetxt').val(unaTranche);
-        $('#dosTranchetxt').val(dosTranche);
-        $('#dateoflastetadsottxt').val(dateoflastetadsot);
-        $('#hpmetxt').val(hpme);
-        $('#pilotratingtxt').val(pilotrating);
-  
+        var new_unit = $(this).data('unit');
+        var new_unit = $(this).data('unit');
+
+        $('#personnel_id').val(personnel_id);
+        console.log("THIS IS SPARRTAAAAAAAAAAAAAAA",lastname,firstname,middlename,suffix,new_unit,);
+      
+
         // Populate the subunit dropdown based on the selected unit
-        populateSubunits(unit, subunit);
-  
-        $('#updateForm').submit(function(event) {
-          event.preventDefault();
-          var formData = $(this).serialize();
-          var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
-  
-          $.ajax({
-            url: '{% url "update_personnel" %}',
-            method: 'POST',
-            data: formData,
-            headers: {
-              'X-CSRFToken': csrfToken
-            },
-            success: function(response) {
-              if (response.success) {
-                Swal.fire({
-                  title: 'Updated Successfully',
-                  text: 'Your data has been updated successfully!',
-                  icon: 'success',
-                  confirmButtonText: 'OK'
-                });
-              } else {
-                Swal.fire({
-                  title: 'Update Failed',
-                  text: response.error,
-                  icon: 'error',
-                  confirmButtonText: 'Try Again'
-                });
-              }
-            },
-            error: function(xhr, status, error) {
-              Swal.fire({
-                title: 'Update Failed',
-                text: response.error,
-                icon: 'error',
-                confirmButtonText: 'Try Again'
-              });
-            }
-          });
-        });
+
       });
-  
-      function populateSubunits(unit, selectedSubunit) {
-        const unitSubunitMap = {
-          'HPAF': ['OCG', 'OVC', 'OCAS', 'OSAS', 'AFCC', 'OAFIG', 'OSS', 'AFSO', 'OESPA','AFSMO', 'AFPAO', 'OAFIA', 'OAFSM', 'OAFA', 'OAFPM', 'OAJA', 'OCAC','OCSAF', 'OCAFDS', 'OCNAF', 'OAFCE', 'OCHCA', 'AFREO', 'AFIMAO','AFCLOAC', 'OAFGAD', 'ACOFAS, A-1', 'ACOFAS, A-2', 'ACOFAS, A-3','ACOFAS, A-4', 'ACOFAS, A-5', 'ACOFAS, A-6', 'ACOFAS, A-7', 'ACOFAS, A-8','ACOFAS, A-9', 'ACOFAS, A-10'],
-          'AIBDC':  ['HAIBDC', '520th ABG', '530th ABG', '540th ABG', '550th ABG','560th ABG', '585th ABG', '590th ABG', '600ABG', '970th HECG','AFGH', '1301st DD'],
-          'ADC': ['HADC', '5FW', '580ACWW', '960AMDG', 'PADCC', 'ADAC'],
-          'AMC':['HAMC', '205THW', '220AW', '250PAW', '505SRG'],
-          'ACC': ['HACC', '15SW', '710SPOW'],
-          'AETDC': [ 'HAETDC', 'PAFOS', 'PAFOCS', 'PAFFS', 'PAFNCOS', 'PAFTSS','PAFBMS', 'PAFLTC', 'PAFALEN', '440AMG', 'TDC', 'AWC'],
-          'ARFC': ['HAFRC', '1st ARCEN', '2nd ARCEN', '3rd ARCEN', '4th ARCEN', '5th ARCEN', '6th ARCEN', '7th ARCEN', '8th ARCEN'],  
-          'GHQ': ['OJ1', 'OJ2', 'OJ3', 'OJ4', 'OJ5', 'OJ6', 'OJ7', 'OJ8', 'OJ9', 'OJ10', 'AFPCC','OTAG', 'OTPMG', 'OTCCHS', 'OTJAG', 'AFPPDO', 'OTQMG', 'OTSG', 'AFPSEO','AFPHRO', 'OTCN', 'OTCDS', 'OSPS', 'AFPIMAC', 'AFPREO', 'AFPEBSO', 'OTCE','AFP K9', 'AFPCOC', 'CEISO', 'CGEASH', 'OAFPSM', 'GHQTS', 'PMO', 'OSJA','ODCOP', 'ONAF', 'GHQPFO'],
-          'AFPWSSUS': ['PMA', 'AFPETDC', 'CEISSAFP', 'CRSAFP', 'ISAFP', 'AFPHSC', 'AFP SOCOM', 'AFPFC', 'AFPPS', 'AFPPKOC', 'AFPCES', 'AFPMCC', 'PSG', 'AFPPGMC', 'AFPCYBER', 'AFPRESCOM', 'DND'],
-        };
-  
-        // IF assignmentcategory IS DS OR TDY, SHOW THE OPTION FOR DURATION, 6 MONTS/ 1 YEAR OR CUSTOM
-        // IF assignmentcategory IS ASSINED, IT HAS NO DURATION
-        var selectElement = document.getElementById('assignmentcategorytxt');
+    });
+
+
+    var selectElement = document.getElementById('assignmentcategorytxt');
         // Add event listener for change event
         selectElement.addEventListener('change', function(event) {
             // Get the selected option
             var selectedOption = event.target.value;
-        
             // Check if the selected option is not "Assigned"
-            if (selectedOption !== 'Assigned') {
+            if (selectedOption !== 'Assign') {
               document.getElementById('dropdownContainer').removeAttribute('hidden');
             }else{
-
               document.getElementById('dropdownContainer').setAttribute('hidden', 'hidden');
-              
             }
-
-            
         });
 
-        const subunitDP = document.getElementById('SubunitDP');
-        subunitDP.innerHTML = '<option value="">--Select Subunit--</option>';
-  
-        if (unit) {
-          const subunits = unitSubunitMap[unit];
-          if (subunits) {
-            subunits.forEach(function(subunit) {
-              const option = document.createElement('option');
-              option.value = subunit;
-              option.textContent = subunit;
-              subunitDP.appendChild(option);
+
+
+
+
+
+        $('#PlacementupdateForm').submit(function(event) {
+    // Prevent the default form submission behavior
+    event.preventDefault();
+    
+    // Serialize form data
+    var formData = $(this).serialize();
+    var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
+
+    // Perform AJAX request to submit the form data
+    $.ajax({
+        url: '{% url "placement_update_officer" %}', // Replace with the URL of your server-side script
+        method: 'POST',
+        data: formData,
+        headers: {
+            'X-CSRFToken': csrfToken
+        },
+        success: function(response) {
+            if (response.success) {
+                console.log('Data updated successfully!');
+                
+                // Optionally, show a success message to the user
+                Swal.fire({
+                    title: 'Updated Successfully',
+                    text: 'Your data has been updated successfully!',
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                });
+            } else {
+                console.error('Error updating data:', response.error);
+                
+                // Optionally, show an error message to the user
+                Swal.fire({
+                    title: 'Update Failed',
+                    text: response.error,
+                    icon: 'error',
+                    confirmButtonText: 'Try Again'
+                });
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error updating data:', error);
+            
+            // Optionally, show an error message to the user
+            Swal.fire({
+                title: 'Update Failed',
+                text: 'An error occurred while updating data. Please try again later.',
+                icon: 'error',
+                confirmButtonText: 'Try Again'
             });
-          }
         }
-  
-        if (selectedSubunit) {  
-          $('#SubunitDP').val(selectedSubunit);
-        }
-      }
-  
-      $('#unitDP').change(function() {
-        const selectedUnit = $(this).val();
-        const selectedSubunit = $('#SubunitDP').val();
-        populateSubunits(selectedUnit, selectedSubunit);
-      });
-  
-      $('#contactnumtxt').on('input', function() {
-        validateNumberInput(this);
-      });
-  
-      function validateNumberInput(input) {
-        input.value = input.value.replace(/\D/g, '');
-      }
     });
+});
+
+
+
+
+
+
   </script>
     <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
      -->
