@@ -47,7 +47,7 @@ class Placement(models.Model):
     REASSIGN_EFFECTIVEDDATE = models.DateField()
     ASSIGN_CATEGORY = models.CharField(max_length=200)
     REASSIGN_EFFECTIVEDDATE_UNTIL = models.DateField( blank=True, null=True)
-    ORDER_UPLOADFILE = models.FileField(upload_to='uploads/orders/')
+    ORDER_UPLOADFILE = models.FileField(upload_to='media/')
 
     class Meta:
         db_table="placementinfo"

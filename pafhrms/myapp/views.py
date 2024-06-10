@@ -12,10 +12,65 @@ from .models import PersonnelItem
 import pandas as pd
 from datetime import datetime
 from .forms import PersonnelItemForm
+from .models import Placement
+from django.http import HttpResponseBadRequest, HttpResponse
+from datetime import datetime, timedelta
+
+def calculate_due_date(duration):
+    if duration == '6 Months':
+        return datetime.now() + timedelta(weeks=26)
+    elif duration == '1 Year':
+        return datetime.now() + timedelta(weeks=52)
+    elif duration == '2 Years':
+        return datetime.now() + timedelta(weeks=104)
+    return None
+
+def save_placement_update(request):
+    if request.method == 'POST':
+        personnel_id = request.POST.get('personnel_id')
+        last_name = request.POST.get('last_name')
+        first_name = request.POST.get('first_name')
+        middle_name = request.POST.get('middle_name')
+        suffix = request.POST.get('suffix')
+        new_unit = request.POST.get('new_unit')
+        reassignment_date = request.POST.get('reassignmentDate')
+        assignment_category = request.POST.get('assignmentcategory')
+        duration = request.POST.get('duration')
+        upload_file = request.FILES.get('uploadOrder')  # Correct variable name
 
 
-def placement_update_officer(request):
-    print("==================called===========================================")
+        print("Durationnnnn")
+
+        if 'uploadOrder' in request.FILES:
+            upload_file = request.FILES['uploadOrder']
+        else:
+            print("No file uploaded")
+
+        # Calculate the due date based on the duration
+        reassignment_effective_date_until = calculate_due_date(duration)
+
+        # Create the Placement instance
+        placement = Placement(
+            AFPSN=personnel_id,
+            LAST_NAME=last_name,
+            FIRST_NAME=first_name,
+            MIDDLE_NAME=middle_name,
+            SUFFIX=suffix,
+            NEW_UNIT=new_unit,
+            REASSIGN_EFFECTIVEDDATE=reassignment_date,
+            ASSIGN_CATEGORY=assignment_category,
+            REASSIGN_EFFECTIVEDDATE_UNTIL=reassignment_effective_date_until,
+            ORDER_UPLOADFILE=upload_file
+        )
+        placement.save()
+
+        return HttpResponse('Data uploaded successfully.')
+
+    return render(request, 'Placement-modal.html')
+
+
+# def placement_update_officer(request):
+#     print("==================called===========================================")
 
 
 
