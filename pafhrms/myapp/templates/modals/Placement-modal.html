@@ -172,60 +172,115 @@
         </div>
   
         <div class="modal-body">
-          <form id="PlacementupdateForm" method="post">
+          <form id="PlacementupdateForm" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <input type="hidden" id="personnel_id" name="personnel_id">
-            
-            <div class="mb-3">
-              <label for="fullnametxt" class="form-label">Full Name</label>
-              <input type="text" class="form-control" id="fullnametxt" name="fullnametxt" placeholder="Full Name" readonly>
+        
+            <!-- First Row: Form elements aligned in two columns -->
+            <div class="row justify-content-center">
+              <div class="col-md-6">
+                <div class="mb-4">
+                  <label for="ranktxt">Rank</label>
+                  <input name="rank" id="ranktxt" class="form-control" disabled>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="mb-4">
+                  <label for="afpsntxt">AFPSN</label>
+                  <input type="text" id="afpsntxt" class="form-control" placeholder="AFPSN" disabled>
+                </div>
+              </div>
             </div>
-            
-            <div class="mb-4">
-              <label for="presentUnit" class="form-label">Present Unit</label>
-              <select id="unitDP" name="unit" class="form-select" disabled>
-                <option selected>UNIT</option>
-                <option>GHQ</option>
-                <option>HPAF</option>
-                <option>PAFHRMC-A/U</option>
-                <option>PAFHRMC</option>
-                <option>AFPWSSUS</option>
-                <option>AIBDC</option>
-                <option>ADC</option>
-                <option>AMC</option>
-                <option>ACC</option>
-                <option>AETDC</option>
-                <option>ARFC</option>
-                <option>TOWNOL</option>
-                <option>TOWSOL</option>
-                <option>TOWCEN</option>
-                <option>TOWWEST</option>
-                <option>TOWEASTMIN</option>
-                <option>TOWWESTMIN</option>
-                <option>355AEW</option>
-                <option>300AISW</option>
-                <option>900AFWG</option>
-                <option>950CEWW</option>
-                <option>AFFC</option>
-                <option>AFSSG</option>
-                <option>HSSG</option>
-                <option>PAFCMOG</option>
-                <option>PAFHRMC</option>
-                <option>NOLCOM</option>
-                <option>SOLCOM</option>
-                <option>WESCOM</option>
-                <option>VISCOM</option>
-                <option>WESTMINCOM</option>
-                <option>EASTMINCOM</option>
-                <option>JTF-NCR</option>
-              </select>
+        
+            <!-- Second Row: Form elements aligned in two columns -->
+            <div class="row justify-content-center">
+              <div class="col-md-6">
+                <div class="mb-4">
+                  <label for="lastnametxt">Last Name</label>
+                  <input type="text" id="lastnametxt" name="last_name" class="form-control" placeholder="Last Name" readonly>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="mb-4">
+                  <label for="firstnametxt">First Name</label>
+                  <input type="text" id="firstnametxt" name="first_name" class="form-control" placeholder="First Name" readonly>
+                </div>
+              </div>
             </div>
-            
-            
+        
+            <!-- Third Row: Form elements aligned in two columns -->
+            <div class="row justify-content-center">
+              <div class="col-md-6">
+                <div class="mb-4">
+                  <label for="middlenametxt">Middle Name</label>
+                  <input type="text" id="middlenametxt" name="middle_name" class="form-control" placeholder="Middle Name" readonly>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="mb-4">
+                  <label for="suffixtxt">Suffix</label>
+                  <input type="text" id="suffixtxt" name="suffix" class="form-control" placeholder="Suffix" readonly>
+                </div>
+              </div>
+            </div>
+        
+            <!-- Fourth Row: Present Unit and new Textbox -->
+            <div class="row justify-content-center">
+              <div class="col-md-6">
+                <div class="mb-4">
+                  <label for="presentUnit" class="form-label">Present Unit</label>
+                  <select id="unitDP" name="unit" class="form-select" disabled >
+                    <option selected>UNIT</option>
+                    <!-- Add other options here -->
+                    <option>GHQ</option>
+                    <option>HPAF</option>
+                    <option>PAFHRMC-A/U</option>
+                    <option>PAFHRMC</option>
+                    <option>AFPWSSUS</option>
+                    <option>AIBDC</option>
+                    <option>ADC</option>
+                    <option>AMC</option>
+                    <option>ACC</option>
+                    <option>AETDC</option>
+                    <option>ARFC</option>
+                    <option>TOWNOL</option>
+                    <option>TOWSOL</option>
+                    <option>TOWCEN</option>
+                    <option>TOWWEST</option>
+                    <option>TOWEASTMIN</option>
+                    <option>TOWWESTMIN</option>
+                    <option>355AEW</option>
+                    <option>300AISW</option>
+                    <option>900AFWG</option>
+                    <option>950CEWW</option>
+                    <option>AFFC</option>
+                    <option>AFSSG</option>
+                    <option>HSSG</option>
+                    <option>PAFCMOG</option>
+                    <option>PAFHRMC</option>
+                    <option>NOLCOM</option>
+                    <option>SOLCOM</option>
+                    <option>WESCOM</option>
+                    <option>VISCOM</option>
+                    <option>WESTMINCOM</option>
+                    <option>EASTMINCOM</option>
+                    <option>JTF-NCR</option>
+                  </select>
+                </div>
+              </div>
+              
+              <div class="col-md-6">
+                <div class="mb-4">
+                  <label for="bostxt">Branch of Service</label>
+                  <input type="text" id="bostxt" name="bostxt" class="form-control" placeholder="Branch of Service" disabled>
+                </div>
+              </div>
+            </div>
+
             <div class="mb-3">
               <label for="new_unit" class="form-label">Reassignment Unit</label>
-              <select id="new_unit" name="new_unit" class="form-select">
-                <option selected>UNIT</option>
+              <select id="new_unit" name="new_unit" class="form-select" required>
+                <option selected></option>
                 <option>GHQ</option>
                 <option>HPAF</option>
                 <option>PAFHRMC-A/U</option>
@@ -261,6 +316,8 @@
                 <option>JTF-NCR</option>
               </select>
             </div>
+
+            
 
             
 
@@ -282,8 +339,10 @@
             </div>
 
             <div class="mb-3" id="dropdownContainer" hidden>
-              <label class="form-label">Assignment </label>
-              <label  class="form-label" id="untildatelbl" ></label>
+              <label class="form-label">Assignment effective date until:</label>
+
+              <label  class="form-label" id="untildatelbl" > </label>
+
               <select name="duration" for="duration" id="durationtxt" class="form-control">
                 <optgroup label="Duration">
                   <option>6 Months</option>
@@ -402,7 +461,8 @@ function computeDate() {
     var year = newDate.getFullYear();
     var formattedNewDate = day + "-" + month + "-" + year;
     // Display the new date
-    document.getElementById('untildatelbl').textContent = "Effective Until: " + formattedNewDate;
+    // document.getElementById('untildatelbl').textContent = "Effective Until: " + formattedNewDate;
+    document.getElementById('untildatelbl').textContent = formattedNewDate;
 }
 
 // Add event listener to reassignment date picker
@@ -438,19 +498,24 @@ document.getElementById('durationtxt').addEventListener('change', computeDate);
         $('.custom-file-label').text(fileName);
     });
 });
+
+
+
     $(document).ready(function() {
       $('.openModalButton').click(function() {
+
+        $('#personnel_id').val(personnel_id);
         var afpsn = $(this).data('afpsn'); // Assuming 'afpsn' is the unique identifier
         var lastname = $(this).data('lastname');
         var firstname = $(this).data('firstname');
         var middlename = $(this).data('middlename');
         var suffix = $(this).data('suffix');
-        var new_unit = $(this).data('unit');
-        var new_unit = $(this).data('unit');
+        var old_unit = $(this).data('unit');
 
-        $('#personnel_id').val(personnel_id);
-        console.log("THIS IS SPARRTAAAAAAAAAAAAAAA",lastname,firstname,middlename,suffix,new_unit,);
-      
+        console.log("THIS IS SPARRTAAAAAAAAAAAAAAAN",afpsn,lastname,firstname,middlename,suffix,old_unit,);
+        
+
+
 
         // Populate the subunit dropdown based on the selected unit
 
@@ -470,10 +535,7 @@ document.getElementById('durationtxt').addEventListener('change', computeDate);
               document.getElementById('dropdownContainer').setAttribute('hidden', 'hidden');
             }
         });
-
-
-
-
+        
 
 
         $('#PlacementupdateForm').submit(function(event) {
@@ -495,6 +557,7 @@ document.getElementById('durationtxt').addEventListener('change', computeDate);
         success: function(response) {
             if (response.success) {
                 console.log('Data updated successfully!');
+
                 
                 // Optionally, show a success message to the user
                 Swal.fire({
@@ -513,10 +576,28 @@ document.getElementById('durationtxt').addEventListener('change', computeDate);
                     icon: 'error',
                     confirmButtonText: 'Try Again'
                 });
+            $('#personnel_id').val(personnel_id);
+            var afpsn = $(this).data('afpsn'); // Assuming 'afpsn' is the unique identifier
+            var lastname = $(this).data('lastname');
+            var firstname = $(this).data('firstname');
+            var middlename = $(this).data('middlename');
+            var suffix = $(this).data('suffix');
+            var old_unit = $(this).data('unit');
+            var new_unit = $(this).data('new_unit');
+            var dropdown = document.getElementById("reassignmentDate");
+            var reassignment_effectivedate = dropdown.value;
+
+            var duration_dropdown = document.getElementById('untildatelbl').textContent;
+           
+            console.log("This is  ",duration_dropdown.value)
+            var untildatelbls = duration_dropdown.textContent;
+
+            console.log("THIS IS SPARRTAAAAAAAAAAAAAAAN0",afpsn,untildatelbls,new_unit,reassignment_effectivedate,category_assignment,lastname,firstname,middlename,suffix);
             }
         },
         error: function(xhr, status, error) {
             console.error('Error updating data:', error);
+            
             
             // Optionally, show an error message to the user
             Swal.fire({
@@ -525,8 +606,57 @@ document.getElementById('durationtxt').addEventListener('change', computeDate);
                 icon: 'error',
                 confirmButtonText: 'Try Again'
             });
+
+            $('#personnel_id').val(personnel_id);
+            var afpsn_dropdown = document.getElementById("afpsntxt");
+            var afpsn = afpsn_dropdown.value;
+
+            var lastname_dp = document.getElementById("lastnametxt");
+            var lastname = lastname_dp.value;
+
+            var firstname_dp = document.getElementById("firstnametxt");
+            var firstname = firstname_dp.value;
+
+            var middlename_dp = document.getElementById("middlenametxt");
+            var middlename = middlename_dp.value;
+
+            var suffix_dp = document.getElementById("suffixtxt");
+            var suffix = suffix_dp.value;
+
+
+            var oldunit_dp = document.getElementById("unitDP");
+            var old_unit = oldunit_dp.value;
+            
+            var newUnit_dropdown = document.getElementById("new_unit");
+            var new_unit = newUnit_dropdown.value;
+
+            var reasigndate_dropdown = document.getElementById("reassignmentDate");
+            var reassignment_effectivedate = reasigndate_dropdown.value;
+
+            var assign_category_dropdown = document.getElementById("assignmentcategorytxt");
+            var category_assignment = assign_category_dropdown.value;
+
+            var labelElement = document.getElementById('untildatelbl');
+            // Get the text content of the element
+            var labelText = labelElement.textContent;
+                      
+            // Log the text content to the console
+            console.log("THIS IS SPARRTAAAAAAAAAAAAAAAN",labelText);
+
+            var duration_dropdown = document.getElementById('untildatelbl').textContent;
+            var untildatelbls = duration_dropdown.textContent;
+
+            console.log("AFPSN",afpsn,"UNTILDATE:",labelText,"NEW_UNIT:",new_unit,"REASSIGNMENTEFFECTIVE:",reassignment_effectivedate,"CATEGORY_REASSIGNMENT:",category_assignment
+            ,"NAME:",lastname,firstname,middlename,suffix,"OLDUNIT:",old_unit,"NEW_UNIT:",new_unit);
+            
+
+
         }
+
+
+        
     });
+    
 });
 
 
@@ -535,5 +665,4 @@ document.getElementById('durationtxt').addEventListener('change', computeDate);
 
 
   </script>
-    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-     -->
+  

@@ -14,6 +14,7 @@
             <th>category</th>
             <th>ACTION</th>
 
+
         </tr>
         {% for person in persons %}
         <tr>
@@ -35,6 +36,8 @@
                   data-suffix="{{ person.EXTENSION_NAME }}"
                   data-afpsn="{{ person.SERIAL_NUMBER }}"
                   data-unit="{{ person.UNIT }}"
+                  data-rank="{{ person.RANK }}"
+                  data-bos="{{ person.BOS }}"
                   
                   data-toggle="modal"
                   data-target="#myModal">Reassign</button>
@@ -58,6 +61,8 @@
           var firstname = $(this).data('firstname');
           var middlename = $(this).data('middlename');
           var suffix = $(this).data('suffix');
+          var rank = $(this).data('rank');
+          var bos = $(this).data('bos');
           if (suffix === "nan") {
             suffix= '';
               }
@@ -66,7 +71,9 @@
   // POPULATING DATA TO MODAL 
           $('#fullnametxt').val(lastname +" "+firstname+" "+middlename+" "+suffix);
           $('#afpsntxt').val(afpsn);
-          $('#unittxt').val(unit);
+          $('#unittxt').val(unit);  
+          $('#ranktxt').val(rank);  
+          $('#bostxt').val(bos);  
   
       });
   });
