@@ -25,8 +25,8 @@ class PersonnelItem(models.Model):
     DATE_LAST_PROMOTION_APPOINTMENT = models.DateField(blank=True, null=True)
     UNIT = models.CharField(max_length=200, blank=True, null=True)
     SUB_UNIT = models.CharField(max_length=200, blank=True, null=True)
-    DATE_FIRST_TRANCHE_REENLISTMENT = models.DateField( blank=True, null=True)
-    DATE_SECOND_TRANCHE_REENLISTMENT = models.DateField( blank=True, null=True)
+    DATE_LASTFULL_REENLISTMENT = models.DateField( blank=True, null=True)
+    DATE_LAST_ETAD = models.DateField( blank=True, null=True)
 
 
     def __str__(self):

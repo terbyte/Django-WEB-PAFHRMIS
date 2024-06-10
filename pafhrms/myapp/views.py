@@ -100,8 +100,8 @@ def update_personnel(request):
                 HIGHEST_PME_COURSES=request.POST.get('hpme'),
                 PILOT_RATED_NON_RATED=request.POST.get('pilotrating'),
                 DATE_LAST_PROMOTION_APPOINTMENT=request.POST.get('promotion'),
-                DATE_FIRST_TRANCHE_REENLISTMENT=request.POST.get('unaTranche'),
-                DATE_SECOND_TRANCHE_REENLISTMENT=request.POST.get('dosTranche'),
+                DATE_LASTFULL_REENLISTMENT=request.POST.get('unaTranche'),
+                DATE_LAST_ETAD=request.POST.get('dosTranche'),
             )
             return JsonResponse({'success': True})
         except Exception as e:
@@ -177,8 +177,8 @@ def upload_excel(request):
                     DATE_LAST_PROMOTION_APPOINTMENT=convert_date(row.iloc[19]),
                     UNIT=row.iloc[20],
                     SUB_UNIT=row.iloc[21],
-                    DATE_FIRST_TRANCHE_REENLISTMENT=convert_date(row.iloc[22]),
-                    DATE_SECOND_TRANCHE_REENLISTMENT=convert_date(row.iloc[23])
+                    DATE_LASTFULL_REENLISTMENT=convert_date(row.iloc[22]),
+                    DATE_LAST_ETAD=convert_date(row.iloc[23])
                 )
             return HttpResponse('Data uploaded successfully.')
         except Exception as e:

@@ -49,9 +49,8 @@
               data-pilotrating="{{ person.PILOT_RATED_NON_RATED }}"
               data-promotion="{{ person.DATE_LAST_PROMOTION_APPOINTMENT|date:'Y-m-d' }}"
               data-dateofcommissionship="{{ person.EFFECTIVE_DATE_APPOINTMENT|date:'d-b-Y' }}"
-              data-dateoflastetadsot="{{ person.DATE_SECOND_TRANCHE_REENLISTMENT|date:'Y-m-d' }}"
-              data-firstTrancheEnlistment="{{ person.DATE_FIRST_TRANCHE_REENLISTMENT|date:'Y-m-d' }}"
-              data-secondTrancheEnlistment="{{ person.DATE_SECOND_TRANCHE_REENLISTMENT|date:'Y-m-d' }}"
+              data-dateoflastetadsot="{{ person.DATE_LAST_ETAD|date:'Y-m-d' }}"
+              data-firstTrancheEnlistment="{{ person.DATE_LASTFULL_REENLISTMENT|date:'Y-m-d' }}"
               data-toggle="modal"
               data-target="#myModal">EDIT</button>
           

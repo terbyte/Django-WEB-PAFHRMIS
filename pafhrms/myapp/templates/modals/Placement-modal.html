@@ -549,7 +549,7 @@ document.getElementById('durationtxt').addEventListener('change', computeDate);
 
     // Perform AJAX request to submit the form data
     $.ajax({
-        url: '{% url "placement_officer" %}', // Replace with the URL of your server-side script
+        url: '{% url "placement_update_officer" %}', // Replace with the URL of your server-side script
         method: 'POST',
         data: formData,
       
