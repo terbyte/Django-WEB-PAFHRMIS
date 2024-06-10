@@ -81,6 +81,9 @@ def Tranche(request):
 
 def update_personnel(request):
     if request.method == 'POST':
+        print("HERRRRRRRRRRRRRRRRRRRRRRRRR",request.POST.get('unaTranche'))
+        print("himmmmmmmmmmmmmmmmmmmmmmmmm",request.POST.get('dosTranche'))
+
         try:
             personnel_id = request.POST.get('personnel_id')
             personnel_items = PersonnelItem.objects.filter(SERIAL_NUMBER=personnel_id)
