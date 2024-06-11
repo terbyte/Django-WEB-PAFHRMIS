@@ -154,14 +154,13 @@ $(document).ready(function() {
         //   console.log(classification);
 
 
-        if (classification === "Regular") {
+        if (classification === "Regular" || classification === "Regular ") {
           $('#tohide').hide();
         } 
-        else if (classification !== "ENLSITED PERSONNEL") {
+        if (category === "ENLISTED PERSONNEL") {
           $('#tohide').show();
-            }
-        
-
+        } 
+ 
      
         if (category === "ENLISTED PERSONNEL") {
           
