@@ -156,7 +156,10 @@ $(document).ready(function() {
 
         if (classification === "Regular" || classification === "Regular ") {
           $('#tohide').hide();
-        } 
+        }else if (classification === "Reserve" || classification === "Reserve "){
+          $('#tohide').show();
+
+        }
         if (category === "ENLISTED PERSONNEL") {
           $('#tohide').show();
         } 
