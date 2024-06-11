@@ -53,7 +53,7 @@
               data-pilotrating="{{ person.PILOT_RATED_NON_RATED }}"
               data-promotion="{{ person.DATE_LAST_PROMOTION_APPOINTMENT|date:'Y-m-d' }}"
               data-dateofcommissionship="{{ person.EFFECTIVE_DATE_APPOINTMENT|date:'d-b-Y' }}"
-              data-firstTrancheEnlistment="{{ person.DATE_LASTFULL_REENLISTMENT|date:'Y-m-d' }}"
+              data-fullreeenlistment="{{ person.DATE_LASTFULL_REENLISTMENT|date:'Y-m-d' }}"
               data-lastEtad="{{ person.DATE_LAST_ETAD|date:'Y-m-d' }}"
 
               data-toggle="modal"
@@ -107,7 +107,7 @@ $(document).ready(function() {
         var promotion = $(this).data('promotion');
         var pilotrating = $(this).data('pilotrating');
 
-        var firstTranche = $(this).data('firsttrancheenlistment');
+        var firstTranche = $(this).data('fullreeenlistment');
         var lastEtad = $(this).data('lastEtad');
 
 
@@ -140,7 +140,7 @@ $(document).ready(function() {
         $('#lengthofservicetxt').val(lengthofservice);
         $('#dateofcommissionshiptxt').val(dateofcommissionship);
         $('#promotiontxt').val(promotion);
-        $('#unaTranchetxt').val(firstTranche);
+        $('#fullreeenlistmenttxt').val(firstTranche);
         $('#dateoflastetadsottxt').val(lastEtad);
         $('#pilotratingtxt').val(pilotrating);
         $('#hpmetxt').val(hpme);
@@ -167,28 +167,33 @@ $(document).ready(function() {
           $('#commission_enlistment_lbl').text('Date of Enlistment');
           $('#dateoflastetadsottxt').hide();
           $('#dateoflastetadsotlbl').hide();
+
           $('#pilotratingtxt').hide();
           $('#pilotratinglbl').hide();
+
           $('#classificationtxt').hide();
           $('#classificationlbl').hide();
 
-          $('#unaTranchelbl').show();
-          $('#unaTranchetxt').show();
+          $('#fullreeenlistmentlbl').show();
+          $('#fullreeenlistmenttxt').show();
           
 
 
 
         } else {
           $('#commission_enlistment_lbl').text('Date of Commission');
+
           $('#pilotratinglbl').show();
           $('#pilotratingtxt').show();
+
           $('#classificationlbl').show();
           $('#classificationtxt').show();
+          
           $('#dateoflastetadsottxt').show();
           $('#dateoflastetadsotlbl').show();
 
-          $('#unaTranchelbl').hide();
-          $('#unaTranchetxt').hide();
+          $('#fullreeenlistmentlbl').hide();
+          $('#fullreeenlistmenttxt').hide();
 
           
         }
