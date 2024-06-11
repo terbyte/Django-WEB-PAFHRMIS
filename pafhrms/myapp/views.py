@@ -112,7 +112,7 @@ def update_personnel(request):
                 CONTACT_NUMBER=request.POST.get('contactnum'),
                 HIGHEST_PME_COURSES=request.POST.get('hpme'),
                 PILOT_RATED_NON_RATED=request.POST.get('pilotrating'),
-                DATE_LAST_PROMOTION_APPOINTMENT=request.POST.get('promotion'),
+                DATE_LAST_PROMOTION_APPOINTMENT=format_date(request.POST.get('promotion')),
                 DATE_LASTFULL_REENLISTMENT=format_date(request.POST.get('fullreeenlistment')),
                 DATE_LAST_ETAD=format_date(request.POST.get('dateoflastetadsot'))
             )
