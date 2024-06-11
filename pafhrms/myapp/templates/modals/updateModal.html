@@ -149,8 +149,8 @@
                       </div>
                       <div class="col-md-2">
                         <label >Unit</label>
-                        <select for="unitDP" id="unitDP" name="unit" class="form-control" required>
-                        <option ></option>
+                        <select for="unitDP" id="unitDP" name="unit" class="form-control">
+                        <option selected>UNIT</option>
                         <option>GHQ</option>
                         <option>HPAF</option>
                         <option>PAFHRMC-A/U</option>
@@ -198,7 +198,7 @@
                         <!-- <input type="text" name="hpme"  id="hpmetxt" class="form-control" placeholder="Highest PME"> -->
 
 
-                         <select name="hpme" for="hpmetxt" id="hpmetxt" name = 'hpme ' class="form-control" >
+                         <select name="hpme" for="hpmetxt" id="hpmetxt" name = 'hpme ' class="form-control" required>
                           <option></option>
                           <optgroup label="Officer">
                             <option >CGSC</option>
@@ -231,8 +231,9 @@
                       </div>
                           
                       <div class="col-md-3" id="tohide"> 
+
                         <label id="dateoflastetadsotlbl">Date of Last ETAD/SOT</label>
-                        <input type="date" name="dateoflastetadsot" id="dateoflastetadsottxt" class="form-control">
+                        <input type="date" name="dateoflastetadsot" id="dateoflastetadsottxt" class="form-control"  >
                         <label  id="unaTranchelbl" >Date of last full Reenlistment</label>
                         <input type="date" name="unaTranche" id="unaTranchetxt"   class="form-control"  placeholder="Date of 1st Tranche" >
                       
@@ -240,7 +241,10 @@
                       
                         <div class="col-md-3">
                           <label id="pilotratinglbl" >Pilot Rating</label>
-                                <select for="pilotratingtxt" id="pilotratingtxt"  name="pilotrating" class="form-control" required>
+                            
+                            <!-- <input type="text" name="pilotrating" id="pilotratingtxt"   class="form-control"  placeholder="Date of 2nd Tranche" disabled> -->
+                            <!-- <select for="pilotratingtxt" id="pilotratingtxt"  name="pilotrating" class="form-control"> -->
+                                <select for="pilotratingtxt" id="pilotratingtxt"  name="pilotrating" class="form-control">
                                   <option selected>Non-Rated</option>
                                   <option>Rated</option>
                               </select>
@@ -323,6 +327,7 @@ $(document).ready(function() {
     var contactnum = $(this).data('contactnum');
     var promotion = $(this).data('promotion');
     var unaTranche = $(this).data('unaTranche');
+    var lastEtad = $(this).data('lastEtad');
     var dateoflastetadsot = $(this).data('dateoflastetadsot');
     var hpme = $(this).data('hpme');
     var pilotrating = $(this).data('pilotrating');
@@ -346,6 +351,7 @@ $(document).ready(function() {
     $('#unitDP').val(unit);
     $('#contactnumtxt').val(contactnum);
     $('#unaTranchetxt').val(unaTranche);
+    $('#lastEtadtxt').val(lastEtad);
     $('#dateoflastetadsottxt').val(dateoflastetadsot);
     $('#hpmetxt').val(hpme);
     $('#pilotratingtxt').val(pilotrating);

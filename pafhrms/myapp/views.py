@@ -81,6 +81,8 @@ def Tranche(request):
 
 def update_personnel(request):
     if request.method == 'POST':
+        print("HERRRRRRRRRRRRRRRRRRRRRRRRR",request.POST.get('unaTranche'))
+        print("himmmmmmmmmmmmmmmmmmmmmmmmm",request.POST.get('lastEtad'))
 
         try:
             personnel_id = request.POST.get('personnel_id')
@@ -102,7 +104,7 @@ def update_personnel(request):
                 PILOT_RATED_NON_RATED=request.POST.get('pilotrating'),
                 DATE_LAST_PROMOTION_APPOINTMENT=request.POST.get('promotion'),
                 DATE_LASTFULL_REENLISTMENT=request.POST.get('unaTranche'),
-                DATE_LAST_ETAD=request.POST.get('dateoflastetadsot'),
+                DATE_LAST_ETAD=request.POST.get('lastEtad'),
             )
             return JsonResponse({'success': True})
         except Exception as e:
