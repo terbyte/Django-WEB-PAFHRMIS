@@ -78,17 +78,27 @@ def Tranche(request):
     return render(request, 'reenlistment/Tranche.html')
  
 
+def format_date(date):
+    if date:
+        try:
+            return datetime.strptime(date, '%Y-%m-%d').date()
+        except ValueError:
+            # Handle the case where the date format is incorrect
+            return None
+    return None
+
 
 def update_personnel(request):
     if request.method == 'POST':
-        print("HERRRRRRRRRRRRRRRRRRRRRRRRR",request.POST.get('fullreeenlistment'))
-        print("himmmmmmmmmmmmmmmmmmmmmmmmm",request.POST.get('lastEtad'))
-
+        print("fullreeenlistment",request.POST.get('fullreeenlistment'))
+        print("himmmmmmmmmmmmmmmmmmmmmmmmm",request.POST.get('dateoflastetadsot'))
         try:
             personnel_id = request.POST.get('personnel_id')
             personnel_items = PersonnelItem.objects.filter(SERIAL_NUMBER=personnel_id)
             if not personnel_items.exists():
                 return JsonResponse({'success': False, 'error': 'Personnel not found'})
+
+            
             personnel_items.update(
                 LAST_NAME=request.POST.get('last_name'),
                 FIRST_NAME=request.POST.get('first_name'),
@@ -103,8 +113,8 @@ def update_personnel(request):
                 HIGHEST_PME_COURSES=request.POST.get('hpme'),
                 PILOT_RATED_NON_RATED=request.POST.get('pilotrating'),
                 DATE_LAST_PROMOTION_APPOINTMENT=request.POST.get('promotion'),
-                DATE_LASTFULL_REENLISTMENT=request.POST.get('fullreeenlistment'),
-                DATE_LAST_ETAD=request.POST.get('lastEtad'),
+                DATE_LASTFULL_REENLISTMENT=format_date(request.POST.get('fullreeenlistment')),
+                DATE_LAST_ETAD=format_date(request.POST.get('dateoflastetadsot'))
             )
             return JsonResponse({'success': True})
         except Exception as e:

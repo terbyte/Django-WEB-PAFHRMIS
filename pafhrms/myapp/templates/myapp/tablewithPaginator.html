@@ -54,7 +54,7 @@
               data-promotion="{{ person.DATE_LAST_PROMOTION_APPOINTMENT|date:'Y-m-d' }}"
               data-dateofcommissionship="{{ person.EFFECTIVE_DATE_APPOINTMENT|date:'d-b-Y' }}"
               data-fullreeenlistment="{{ person.DATE_LASTFULL_REENLISTMENT|date:'Y-m-d' }}"
-              data-lastEtad="{{ person.DATE_LAST_ETAD|date:'Y-m-d' }}"
+              data-dateoflastetadsot="{{ person.DATE_LAST_ETAD|date:'Y-m-d' }}"
 
               data-toggle="modal"
               data-target="#myModal">EDIT</button>
@@ -108,7 +108,7 @@ $(document).ready(function() {
         var pilotrating = $(this).data('pilotrating');
 
         var firstTranche = $(this).data('fullreeenlistment');
-        var lastEtad = $(this).data('lastEtad');
+        var dateoflastetadsot = $(this).data('dateoflastetadsot');
 
 
         // Swal.fire({
@@ -141,7 +141,7 @@ $(document).ready(function() {
         $('#dateofcommissionshiptxt').val(dateofcommissionship);
         $('#promotiontxt').val(promotion);
         $('#fullreeenlistmenttxt').val(firstTranche);
-        $('#dateoflastetadsottxt').val(lastEtad);
+        $('#dateoflastetadsottxt').val(dateoflastetadsot);
         $('#pilotratingtxt').val(pilotrating);
         $('#hpmetxt').val(hpme);
 
@@ -154,15 +154,15 @@ $(document).ready(function() {
         //   console.log(classification);
 
 
-        if (classification === "Regular" || classification === "Regular ") {
-          $('#tohide').hide();
-        }else if (classification === "Reserve" || classification === "Reserve "){
-          $('#tohide').show();
+        // if (classification === "Regular" || classification === "Regular ") {
+        //   $('#tohide').hide();
+        // }else if (classification === "Reserve" || classification === "Reserve "){
+        //   $('#tohide').show();
 
-        }
-        if (category === "ENLISTED PERSONNEL") {
-          $('#tohide').show();
-        } 
+        // }
+        // if (category === "ENLISTED PERSONNEL") {
+        //   $('#tohide').show();
+        // } 
  
      
         if (category === "ENLISTED PERSONNEL") {
