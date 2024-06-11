@@ -11,8 +11,6 @@
             <th class="sortable" data-sort="UNIT">Unit</th>
             <th class="sortable" data-sort="SUB_UNIT">Sub-Unit</th>
             <th class="sortable" data-sort="CATEGORY">category</th>
-            <th class="sortable" data-sort="DATE_LAST_ETAD">DATE_LAST_ETAD</th>
-            <th class="sortable" data-sort="DATE_LASTFULL_REENLISTMENT">DATE_LASTFULL_REENLISTMENT</th>
 
             <th>Action</th>
         </tr>
@@ -26,8 +24,6 @@
             <td>{{ person.UNIT }}</td>
             <td>{{ person.SUB_UNIT }}</td>
             <td>{{ person.CATEGORY }}</td>
-            <td>{{ person.DATE_LAST_ETAD }}</td>
-            <td>{{ person.DATE_LASTFULL_REENLISTMENT }}</td>
 
             <td>
               <button class="btn btn-primary openModalButton"
@@ -110,7 +106,7 @@ $(document).ready(function() {
         var firstTranche = $(this).data('firsttrancheenlistment');
         var lastEtad = $(this).data('lastEtad');
 
-        
+
         // Swal.fire({
         //             title: 'Updated Successfully',
         //             text: 'Your data has been updated successfully!'+lastEtad,
@@ -145,16 +141,15 @@ $(document).ready(function() {
         $('#pilotratingtxt').val(pilotrating);
         $('#hpmetxt').val(hpme);
 
-
         // Swal.fire({
         //             title: 'Updated Successfully',
         //             text: 'value: ' +classification,
         //             icon: 'success',
         //             confirmButtonText: 'OK'
         //             });
-
-
         //   console.log(classification);
+
+
         if (classification === "Regular ") {
           $('#tohide').hide();
         } else {
@@ -173,8 +168,6 @@ $(document).ready(function() {
           $('#classificationtxt').hide();
           $('#classificationlbl').hide();
 
-          $('#dosTranchelbl').show();
-          $('#dosTranchetxt').show();
           $('#unaTranchelbl').show();
           $('#unaTranchetxt').show();
           
@@ -190,8 +183,6 @@ $(document).ready(function() {
           $('#dateoflastetadsottxt').show();
           $('#dateoflastetadsotlbl').show();
 
-          $('#dosTranchelbl').hide();
-          $('#dosTranchetxt').hide();
           $('#unaTranchelbl').hide();
           $('#unaTranchetxt').hide();
 

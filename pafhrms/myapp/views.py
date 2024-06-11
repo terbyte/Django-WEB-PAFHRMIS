@@ -81,8 +81,6 @@ def Tranche(request):
 
 def update_personnel(request):
     if request.method == 'POST':
-        print("HERRRRRRRRRRRRRRRRRRRRRRRRR",request.POST.get('unaTranche'))
-        print("himmmmmmmmmmmmmmmmmmmmmmmmm",request.POST.get('dateoflastetadsot'))
 
         try:
             personnel_id = request.POST.get('personnel_id')
