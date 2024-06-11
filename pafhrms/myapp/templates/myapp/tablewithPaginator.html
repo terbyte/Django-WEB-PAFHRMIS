@@ -154,11 +154,12 @@ $(document).ready(function() {
         //   console.log(classification);
 
 
-        if (classification === "Regular ") {
+        if (classification === "Regular") {
           $('#tohide').hide();
-        } else {
+        } 
+        else if (classification !== "ENLSITED PERSONNEL") {
           $('#tohide').show();
-        }
+            }
         
 
      
