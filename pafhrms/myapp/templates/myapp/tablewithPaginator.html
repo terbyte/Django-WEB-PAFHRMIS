@@ -54,7 +54,8 @@
               data-promotion="{{ person.DATE_LAST_PROMOTION_APPOINTMENT|date:'Y-m-d' }}"
               data-dateofcommissionship="{{ person.EFFECTIVE_DATE_APPOINTMENT|date:'d-b-Y' }}"
               data-firstTrancheEnlistment="{{ person.DATE_LASTFULL_REENLISTMENT|date:'Y-m-d' }}"
-              data-dateoflastetadsot="{{ person.DATE_LAST_ETAD|date:'Y-m-d' }}"
+              data-lastEtad="{{ person.DATE_LAST_ETAD|date:'Y-m-d' }}"
+
               data-toggle="modal"
               data-target="#myModal">EDIT</button>
           
@@ -104,11 +105,18 @@ $(document).ready(function() {
         var lengthofservice = $(this).data('lengthofservice');
         var dateofcommissionship = $(this).data('dateofcommissionship');
         var promotion = $(this).data('promotion');
-        var dateoflastetadsot = $(this).data('dateoflastetadsot');
         var pilotrating = $(this).data('pilotrating');
 
         var firstTranche = $(this).data('firsttrancheenlistment');
-        var secondTranche = $(this).data('secondtrancheenlistment');
+        var lastEtad = $(this).data('lastEtad');
+
+
+        // Swal.fire({
+        //             title: 'Updated Successfully',
+        //             text: 'Your data has been updated successfully!'+lastEtad,
+        //             icon: 'success',
+        //             confirmButtonText: 'OK'
+        //         });
 
         // POPULATING DATA TO MODAL 
         $('#ranktxt').val(rank);
@@ -132,12 +140,10 @@ $(document).ready(function() {
         $('#lengthofservicetxt').val(lengthofservice);
         $('#dateofcommissionshiptxt').val(dateofcommissionship);
         $('#promotiontxt').val(promotion);
-        $('#dateoflastetadsottxt').val(dateoflastetadsot);
         $('#unaTranchetxt').val(firstTranche);
-        $('#dosTranchetxt').val(secondTranche);
+        $('#dateoflastetadsottxt').val(lastEtad);
         $('#pilotratingtxt').val(pilotrating);
         $('#hpmetxt').val(hpme);
-
 
         // Swal.fire({
         //             title: 'Updated Successfully',
@@ -145,14 +151,14 @@ $(document).ready(function() {
         //             icon: 'success',
         //             confirmButtonText: 'OK'
         //             });
-
-
         //   console.log(classification);
-        // if (classification === "Regular ") {
-        //   $('#tohide').hide();
-        // } else {
-        //   $('#tohide').show();
-        // }
+
+
+        if (classification === "Regular ") {
+          $('#tohide').hide();
+        } else {
+          $('#tohide').show();
+        }
         
 
      
@@ -166,8 +172,6 @@ $(document).ready(function() {
           $('#classificationtxt').hide();
           $('#classificationlbl').hide();
 
-          $('#dosTranchelbl').show();
-          $('#dosTranchetxt').show();
           $('#unaTranchelbl').show();
           $('#unaTranchetxt').show();
           
@@ -183,8 +187,6 @@ $(document).ready(function() {
           $('#dateoflastetadsottxt').show();
           $('#dateoflastetadsotlbl').show();
 
-          $('#dosTranchelbl').hide();
-          $('#dosTranchetxt').hide();
           $('#unaTranchelbl').hide();
           $('#unaTranchetxt').hide();
 
