@@ -1,6 +1,9 @@
 
 
+{% extends 'Base/base.html' %}
 
+
+{% block content %}
 
     {% include 'myapp/searchforms.html' %}
     <table class="table table-responsive-sm table-bordered table-striped table-sm">
@@ -46,12 +49,9 @@
       </tr>
         {% endfor %}
     </table>
-  
     {% include 'modals/Placement-modal.html' %}
-    
    <script>
   
-    
   
     
   
@@ -70,8 +70,13 @@
           var unit = $(this).data('unit');
   // POPULATING DATA TO MODAL 
           $('#fullnametxt').val(lastname +" "+firstname+" "+middlename+" "+suffix);
+          $('#lastnametxt').val(lastname);
+          $('#firstnametxt').val(firstname);
+          $('#middlenametxt').val(middlename);
+          $('#suffixtxt').val(suffix);
+          $('#unitDP').val(unit);  
+
           $('#afpsntxt').val(afpsn);
-          $('#unittxt').val(unit);  
           $('#ranktxt').val(rank);  
           $('#bostxt').val(bos);  
   
@@ -124,6 +129,7 @@
 </nav>
   
 
+{% endblock %}
     
 
     <!-- <div class="form-group">

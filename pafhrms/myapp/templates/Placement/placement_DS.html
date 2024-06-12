@@ -1,6 +1,10 @@
 
 
 
+{% extends 'Base/base.html' %}
+
+
+{% block content %}
 
 {% include 'myapp/searchforms.html' %}
 
@@ -15,8 +19,6 @@
         <th>TEMPORARY UNIT</th>
         <th>DS/TDY CATEGORY</th>
         <th>ASSIGNMENT END DATE</th>
-
-
     </tr>
     {% for person in persons %}
     <tr>
@@ -30,8 +32,6 @@
       <td>{{ person.NEW_UNIT }}</td>
       <td>{{ person.ASSIGNMENT_CATEGORY }}</td>
       <td>{{ person.REASSIGN_EFFECTIVEDDATE_UNTIL }}</td>
-
-
   </tr>
     {% endfor %}
 </table>
@@ -78,6 +78,7 @@
         {% endif %}
     </ul>
 </nav>
+{% endblock %}
 
 
 

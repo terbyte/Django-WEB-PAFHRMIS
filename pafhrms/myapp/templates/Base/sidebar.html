@@ -28,17 +28,34 @@
                         <a href="{% url 'index' %}">Personnel Records</a>
                     </li>
 
-	                <li>
+	                <!-- <li>
                     <a href="{% url 'placement' %}">Placement</a>
 	                </li>
 
+                    -->
 	                <li>
                     <a href="{% url 'Tranche' %}">Reenlistment</a>
 	                </li>
-
-
-              
             <li>
+                 <!--  -->
+                 <a href="#placementSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Placement</a>
+                 <ul class="collapse list-unstyled" id="placementSubmenu">
+                   <li>
+                       <a href="{% url 'placement_officer' %}">Officer</a>
+                 </li>
+                 <li>
+                     <a href="{% url 'placement_enlisted' %}">Enlisted Personnel</a>
+                 </li>
+                 <li>
+                    <a href="{% url 'placement_DS' %}">DS Monitoring</a>
+                </li>
+                <li>
+                    <a href="">Personnel Monitoring</a>
+                </li>
+         </ul>
+             <!--  -->
+                
+
                 <a href="#schoolingSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Schooling</a>
                 <ul class="collapse list-unstyled" id="schoolingSubmenu">
                     <a href="#schoolingSubmenuofficer" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Officer</a>

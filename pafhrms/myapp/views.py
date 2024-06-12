@@ -399,7 +399,7 @@ def placement_officer(request):
     page_num = request.GET.get("page")
     persons = paginator.get_page(page_num)
     
-    return render(request, 'Placement/placement.html', {
+    return render(request, 'Placement/officerTab.html', {
         'persons': persons,
         'last_name_query': last_name_query,
         'first_name_query': first_name_query,
@@ -452,7 +452,7 @@ def placement_enlisted(request):
     page_num = request.GET.get("page")
     persons = paginator.get_page(page_num)
     
-    return render(request, 'Placement/placement.html', {
+    return render(request, 'Placement/epTab.html', {
         'persons': persons,
         'last_name_query': last_name_query,
         'first_name_query': first_name_query,

@@ -1,4 +1,128 @@
 
+{% extends 'Base/base.html' %}
+
+
+{% block content %}
+
 
 {% include 'myapp/searchforms.html' %}
-{% include 'myapp/tablewithPaginator.html' %}
+<table class="table table-responsive-sm table-bordered table-striped table-sm">
+    <tr>
+        <th>RANK</th>
+        <th>AFPSN</th>
+        <th>FULL NAME</th>
+        <th>UNIT</th>
+        <th>SUB-UNIT</th>
+        <th>category</th>
+        <th>ACTION</th>
+    </tr>
+    {% for person in persons %}
+    <tr>
+      <td>{{ person.RANK }}</td>
+      <td>{{ person.SERIAL_NUMBER }}</td>
+      <td>{{ person.FIRST_NAME}} {{person.MIDDLE_NAME}} {{person.LAST_NAME}}</td>
+      <td>{{ person.UNIT }}</td>
+      <td>{{ person.SUB_UNIT }}</td>
+      <td>{{ person.CATEGORY }}</td>
+      <!-- <td><button class="btn btn-primary" id="openModalButton"  class="count_btn">EDIT</button></td> -->
+      <td>
+      <button 
+              class="btn btn-primary openModalButton" 
+              data-lastname="{{ person.LAST_NAME }}"
+              data-firstname="{{ person.FIRST_NAME }}"
+              data-middlename="{{ person.MIDDLE_NAME }}"
+              data-suffix="{{ person.EXTENSION_NAME }}"
+              data-afpsn="{{ person.SERIAL_NUMBER }}"
+              data-unit="{{ person.UNIT }}"
+              data-rank="{{ person.RANK }}"
+              data-bos="{{ person.BOS }}"
+              
+              data-toggle="modal"
+              data-target="#myModal">Reassign</button>
+      </td>
+
+  </tr>
+    {% endfor %}
+</table>
+
+{% include 'modals/Placement-modal.html' %}
+
+<script>
+
+
+
+$(document).ready(function() {
+  $('.openModalButton').click(function() {
+      var lastname = $(this).data('lastname');
+      var firstname = $(this).data('firstname');
+      var middlename = $(this).data('middlename');
+      var suffix = $(this).data('suffix');
+      var rank = $(this).data('rank');
+      var bos = $(this).data('bos');
+      if (suffix === "nan") {
+        suffix= '';
+          }
+      var afpsn = $(this).data('afpsn');
+      var unit = $(this).data('unit');
+// POPULATING DATA TO MODAL 
+      $('#fullnametxt').val(lastname +" "+firstname+" "+middlename+" "+suffix);
+      $('#afpsntxt').val(afpsn);
+      $('#unittxt').val(unit);  
+      $('#ranktxt').val(rank);  
+      $('#bostxt').val(bos);  
+
+  });
+});
+
+</script>
+
+
+<nav aria-label="...">
+<ul class="pagination">
+    {% if persons.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="?page=1">&laquo; first</a>
+        </li>
+        <li class="page-item">
+            <a class="page-link" href="?page={{ persons.previous_page_number }}">previous</a>
+        </li>
+    {% else %}
+        <li class="page-item disabled">
+            <span class="page-link">&laquo; first</span>
+        </li>
+        <li class="page-item disabled">
+            <span class="page-link">previous</span>
+        </li>
+    {% endif %}
+
+    <li class="page-item">
+        <span class="page-link">
+            Page {{ persons.number }} of {{ persons.paginator.num_pages }}
+        </span>
+    </li>
+
+    {% if persons.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ persons.next_page_number }}">next</a>
+        </li>
+        <li class="page-item">
+            <a class="page-link" href="?page={{ persons.paginator.num_pages }}">last &raquo;</a>
+        </li>
+    {% else %}
+        <li class="page-item disabled">
+            <span class="page-link">next</span>
+        </li>
+        <li class="page-item disabled">
+            <span class="page-link">last &raquo;</span>
+        </li>
+    {% endif %}
+</ul>
+</nav>
+
+
+
+
+<!-- <div class="form-group">
+    <button type="submit" class="btn btn-primary">Search</button>
+</div> -->
+{% endblock %}
