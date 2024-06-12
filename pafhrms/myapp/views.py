@@ -28,10 +28,13 @@ def calculate_due_date(duration):
 def save_placement_update(request):
     if request.method == 'POST':
         personnel_id = request.POST.get('personnel_id')
+        rank = request.POST.get('rank')
         last_name = request.POST.get('last_name')
         first_name = request.POST.get('first_name')
         middle_name = request.POST.get('middle_name')
         suffix = request.POST.get('suffix')
+        mother_unit = request.POST.get('unit')
+
         new_unit = request.POST.get('new_unit')
         reassignment_date = request.POST.get('reassignmentDate')
         assignment_category = request.POST.get('assignmentcategory')
@@ -49,6 +52,18 @@ def save_placement_update(request):
         # Calculate the due date based on the duration
         reassignment_effective_date_until = calculate_due_date(duration)
 
+        print("======DEBUG=====")
+        print("AFPSN ", personnel_id)
+        print("RANK ", rank)
+        print("FULLNAME ", last_name + first_name + middle_name + suffix)
+        print("OLD unit ", mother_unit)
+        print("NEW UNIT ", new_unit)
+        print("REASSIGNED DATE ", reassignment_date)
+        print("ASSIGNED CATEGORY ", assignment_category)
+        print("DURATION ", duration)
+        print("UPLOAD FILE ", upload_file)
+
+
         # Create the Placement instance
         placement = Placement(
             AFPSN=personnel_id,
@@ -56,9 +71,10 @@ def save_placement_update(request):
             FIRST_NAME=first_name,
             MIDDLE_NAME=middle_name,
             SUFFIX=suffix,
+            MOTHER_UNIT=mother_unit,
             NEW_UNIT=new_unit,
             REASSIGN_EFFECTIVEDDATE=reassignment_date,
-            ASSIGN_CATEGORY=assignment_category,
+            ASSIGNMENT_CATEGORY=assignment_category,
             REASSIGN_EFFECTIVEDDATE_UNTIL=reassignment_effective_date_until,
             ORDER_UPLOADFILE=upload_file
         )
@@ -437,6 +453,58 @@ def placement_enlisted(request):
     persons = paginator.get_page(page_num)
     
     return render(request, 'Placement/placement.html', {
+        'persons': persons,
+        'last_name_query': last_name_query,
+        'first_name_query': first_name_query,
+        'middle_name_query': middle_name_query,
+        'suffix_query': suffix_query,
+        'afsn_query': afsn_query,
+        'rank_query': rank_query,
+        'category_query': category_query,
+        'sex_query': sex_query,
+        'unit_query': unit_query,
+    })
+
+
+# FOR DS
+def placement_DS(request):
+    last_name_query = request.GET.get('last_name')
+    first_name_query = request.GET.get('first_name')
+    middle_name_query = request.GET.get('middle_name')
+    suffix_query = request.GET.get('suffix')
+    afsn_query = request.GET.get('afsn')
+    rank_query = request.GET.get('RANK')
+    category_query = request.GET.get('category')
+    sex_query = request.GET.get('sex')
+    unit_query = request.GET.get('unit')
+    
+    filters = Q()
+    if last_name_query:
+        filters &= Q(LAST_NAME__icontains=last_name_query)
+    if first_name_query:
+        filters &= Q(FIRST_NAME__icontains=first_name_query)
+    if middle_name_query:
+        filters &= Q(MIDDLE_NAME__icontains=middle_name_query)
+    if suffix_query and suffix_query != "Suffix":
+        filters &= Q(EXTENSION_NAME__icontains=suffix_query)
+    if afsn_query:
+        filters &= Q(SERIAL_NUMBER__icontains=afsn_query)  
+    if rank_query and rank_query != "Rank":
+        filters &= Q(RANK__icontains=rank_query)
+    if category_query and category_query:
+        filters &= Q(CATEGORY__icontains=category_query)
+    if sex_query and sex_query != "Sex":
+        filters &= Q(SEX__icontains=sex_query)
+    if unit_query:
+        filters &= Q(UNIT__icontains=unit_query)
+    
+    persons = Placement.objects.filter(filters)
+    
+    paginator = Paginator(persons, 10)
+    page_num = request.GET.get("page")
+    persons = paginator.get_page(page_num)
+    
+    return render(request, 'Placement/placement_DS.html', {
         'persons': persons,
         'last_name_query': last_name_query,
         'first_name_query': first_name_query,

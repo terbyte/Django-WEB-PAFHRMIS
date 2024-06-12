@@ -39,13 +39,15 @@ class PersonnelItem(models.Model):
 
 class Placement(models.Model):
     AFPSN = models.CharField(max_length=200)
+    RANK = models.CharField(max_length=200)
     LAST_NAME = models.CharField(max_length=200)
     FIRST_NAME = models.CharField(max_length=200)
     MIDDLE_NAME = models.CharField(max_length=200)
     SUFFIX = models.CharField(max_length=200)
+    MOTHER_UNIT = models.CharField(max_length=200)
     NEW_UNIT = models.CharField(max_length=200)
     REASSIGN_EFFECTIVEDDATE = models.DateField()
-    ASSIGN_CATEGORY = models.CharField(max_length=200)
+    ASSIGNMENT_CATEGORY = models.CharField(max_length=200)
     REASSIGN_EFFECTIVEDDATE_UNTIL = models.DateField( blank=True, null=True)
     ORDER_UPLOADFILE = models.FileField(upload_to='media/')
 

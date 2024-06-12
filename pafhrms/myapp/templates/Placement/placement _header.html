@@ -1,14 +1,14 @@
 {% extends 'Base/base.html' %}
 
-{% block content %}
+
+<h2>Placement</h2>
+
 <style>
     .tab-content > .active {
         /* background-color: red; */
 
     }
 </style>
-
-<h2>Placement</h2>
 
 <ul class="nav nav-tabs" id="myTab" role="tablist">
     <li class="nav-item" role="presentation">
@@ -25,7 +25,7 @@
 
     
     <li class="nav-item" role="presentation">
-        <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#DSMonitoring" type="button" role="tab" aria-controls="contact" aria-selected="false " onclick="redirectToURLDS()">DS Monitoring</button>
+        <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#DSMonitoring" type="button" role="tab" aria-controls="contact" aria-selected="false">DS Monitoring</button>
     </li>
     <li class="nav-item" role="presentation">
         <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#PersonnelMonitoring" type="button" role="tab" aria-controls="contact" aria-selected="false">Personnel Monitoring</button>
@@ -46,60 +46,55 @@
         {% include 'Placement/epTab.html' %}
     </div>
 
-    <div class="tab-pane fade" id="DSMonitoring" role="tabpanel" aria-labelledby="contact-tab">
-        
-        DS Monitoring...
-        {% include 'Placement/placement_DS.html' %}
-
-    
-    
-    </div>
+    <div class="tab-pane fade" id="DSMonitoring" role="tabpanel" aria-labelledby="contact-tab">DS Monitoring...</div>
     <div class="tab-pane fade" id="PersonnelMonitoring" role="tabpanel" aria-labelledby="contact-tab">Personnel Monitoring...</div>
 </div>
 
 
 
-
-
-<script>
-
-function redirectToURLEP() {
-    window.location.href = "placement_enlisted";
-}
-
-function redirectToURLOFFICER() {
-    window.location.href = "placement_officer";
-}
-
-function redirectToURLDS() {
-    window.location.href = "placement_DS";
-}
+{% block content %}
 
 
 
 
-document.addEventListener('DOMContentLoaded', function () {
-    const tabButtons = document.querySelectorAll('.nav-link');
-    const tabContents = document.querySelectorAll('.tab-pane');
 
-    tabButtons.forEach(button => {
-        button.addEventListener('click', function () {
-            // Remove active class from all buttons
-            tabButtons.forEach(btn => btn.classList.remove('active'));
-            // Add active class to the clicked button
-            this.classList.add('active');
 
-            // Get target content
-            const target = this.getAttribute('data-bs-target');
-
-            // Remove active class from all tab contents
-            tabContents.forEach(content => content.classList.remove('show', 'active'));
-
-            // Add active class to the target content
-            document.querySelector(target).classList.add('show', 'active');
-        });
-    });
-});
-</script>
 
 {% endblock %}
+<script>
+
+    function redirectToURLOFFICER() {
+        window.location.href = "placement_officer";
+    }
+    
+    
+    function redirectToURLEP() {
+        window.location.href = "placement_enlisted";
+    }
+    
+    
+    
+    
+    document.addEventListener('DOMContentLoaded', function () {
+        const tabButtons = document.querySelectorAll('.nav-link');
+        const tabContents = document.querySelectorAll('.tab-pane');
+    
+        tabButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                // Remove active class from all buttons
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                // Add active class to the clicked button
+                this.classList.add('active');
+    
+                // Get target content
+                const target = this.getAttribute('data-bs-target');
+    
+                // Remove active class from all tab contents
+                tabContents.forEach(content => content.classList.remove('show', 'active'));
+    
+                // Add active class to the target content
+                document.querySelector(target).classList.add('show', 'active');
+            });
+        });
+    });
+    </script>

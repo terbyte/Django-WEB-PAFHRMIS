@@ -16,13 +16,9 @@ urlpatterns = [
     path('placement/placement_enlisted', views.placement_enlisted, name='placement_enlisted'),
     path('placement/placement_officer', views.placement_officer, name='placement_officer'),
     path('placement/placement_update_officer', views.save_placement_update, name='placement_update_officer'),
-    # path('autocomplete_afsc/', views.autocomplete_afsc, name='autocomplete_afsc'),
     
 
-    # path('placement/placement_enlisted', views.placement_enlisted, name='placement_enlisted'),
-    # path('placement/placement_officer', views.placement_officer, name='placement_officer'),
-    # path('placement/placement_update_officer', views.save_placement_update, name='placement_update_officer'),
-    # # path('autocomplete_afsc/', views.autocomplete_afsc, name='autocomplete_afsc'),
+    path('placement/placement_DS', views.placement_DS, name='placement_DS'),
     
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
