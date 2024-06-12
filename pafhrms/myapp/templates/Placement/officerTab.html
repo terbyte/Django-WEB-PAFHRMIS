@@ -6,11 +6,13 @@
 {% block content %}
 
     {% include 'myapp/searchforms.html' %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
     <table class="table table-responsive-sm table-bordered table-striped table-sm">
         <tr>
             
-            <th>RANK</th>
             <th>AFPSN</th>
+            <th>RANK</th>
             <th>FULL NAME</th>
             <th>UNIT</th>
             <th>SUB-UNIT</th>
@@ -51,11 +53,8 @@
     </table>
     {% include 'modals/Placement-modal.html' %}
    <script>
-  
-  
-    
-  
   $(document).ready(function() {
+    
       $('.openModalButton').click(function() {
           var lastname = $(this).data('lastname');
           var firstname = $(this).data('firstname');
@@ -68,7 +67,15 @@
               }
           var afpsn = $(this).data('afpsn');
           var unit = $(this).data('unit');
+
   // POPULATING DATA TO MODAL 
+        //   $('#fullnametxt').val(lastname +" "+firstname+" "+middlename+" "+suffix);
+        //   $('#afpsntxt').val(afpsn);
+        //   $('#unittxt').val(unit);  
+        //   $('#ranktxt').val(rank);  
+        //   $('#bostxt').val(bos);  
+
+
           $('#fullnametxt').val(lastname +" "+firstname+" "+middlename+" "+suffix);
           $('#lastnametxt').val(lastname);
           $('#firstnametxt').val(firstname);
@@ -78,7 +85,7 @@
 
           $('#afpsntxt').val(afpsn);
           $('#ranktxt').val(rank);  
-          $('#bostxt').val(bos);  
+          $('#bostxt').val(bos); 
   
       });
   });

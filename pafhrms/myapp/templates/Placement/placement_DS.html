@@ -8,10 +8,11 @@
 
 {% include 'myapp/searchforms.html' %}
 
-<table class="table table-responsive-sm table-bordered table-striped table-sm">
-    <tr>
-        
-        <th>AFPSN</th>
+<!-- <table class="table table-responsive-sm table-bordered table-striped table-sm" id="sortableTable">
+
+    <thead>
+        <tr>
+        <th class="sortable" data-sort="AFPSN">AFPSN</th>
         <th>RANK</th>
         <th>FULL NAME</th>
         <th>MOTHER UNIT</th>
@@ -19,7 +20,10 @@
         <th>TEMPORARY UNIT</th>
         <th>DS/TDY CATEGORY</th>
         <th>ASSIGNMENT END DATE</th>
+        
     </tr>
+</thead>
+<tbody>
     {% for person in persons %}
     <tr>
       <td>{{ person.AFPSN }}</td>
@@ -33,8 +37,42 @@
       <td>{{ person.ASSIGNMENT_CATEGORY }}</td>
       <td>{{ person.REASSIGN_EFFECTIVEDDATE_UNTIL }}</td>
   </tr>
+</tbody>
+
     {% endfor %}
+</table> -->
+
+
+<table class="table table-responsive-sm table-bordered table-striped table-sm" id="sortableTable">
+    <thead>
+        <tr>
+            <th class="sortable" data-sort="RANK">RANK</th>
+            <th class="sortable" data-sort="AFPSN">AFPSN</th>
+            <th class="sortable" data-sort="FULL_NAME">FULL NAME</th>
+            <th class="sortable" data-sort="MOTHER_UNIT">MOTHER UNIT</th>
+            <th class="sortable" data-sort="REASSIGN_EFFECTIVEDDATE">DS/TDY EFFECTIVE DATE</th>
+            <th class="sortable" data-sort="NEW_UNIT">TEMPORARY UNIT</th>
+            <th class="sortable" data-sort="ASSIGNMENT_CATEGORY">DS/TDY CATEGORY</th>
+            <th class="sortable" data-sort="REASSIGN_EFFECTIVEDDATE_UNTIL">ASSIGNMENT END DATE</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        {% for person in persons %}
+        <tr>
+            <td>{{ person.SERIAL_NUMBER }}</td>
+            <td>{{ person.RANK }}</td>
+            <td>{{ person.FIRST_NAME}} {{person.MIDDLE_NAME}} {{person.LAST_NAME}}</td>
+            <td>{{ person.MOTHER_UNIT }}</td>
+            <td>{{ person.REASSIGN_EFFECTIVEDDATE }}</td>
+            <td>{{ person.NEW_UNIT }}</td>
+            <td>{{ person.ASSIGNMENT_CATEGORY }}</td>
+            <td>{{ person.REASSIGN_EFFECTIVEDDATE_UNTIL }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
 </table>
+
 
 
 <nav aria-label="...">
@@ -78,6 +116,40 @@
         {% endif %}
     </ul>
 </nav>
+<script>// TABLE ASCEND DESCEND WHEN COLUMN TITLE IS CLICKED
+    $(document).ready(function() {
+        $('.sortable').each(function() {
+            $(this).data('sortOrder', 'asc');
+        });
+    
+        $('.sortable').click(function() {
+            var index = $(this).index();
+            var rows = $('#sortableTable tbody tr').get();
+            var sortOrder = $(this).data('sortOrder');
+            var newSortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+            $(this).data('sortOrder', newSortOrder);
+    
+            rows.sort(function(a, b) {
+                var aValue = $(a).children('td').eq(index).text().toUpperCase();
+                var bValue = $(b).children('td').eq(index).text().toUpperCase();
+    
+                if (aValue < bValue) {
+                    return sortOrder === 'asc' ? -1 : 1;
+                }
+                if (aValue > bValue) {
+                    return sortOrder === 'asc' ? 1 : -1;
+                }
+                return 0;
+            });
+    
+            $.each(rows, function(index, row) {
+                $('#sortableTable tbody').append(row);
+            });
+        });
+    });
+    
+    </script>
+
 {% endblock %}
 
 

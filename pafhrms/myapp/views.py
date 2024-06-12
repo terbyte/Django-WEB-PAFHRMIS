@@ -49,8 +49,11 @@ def save_placement_update(request):
         else:
             print("No file uploaded")
 
+        
+
         # Calculate the due date based on the duration
         reassignment_effective_date_until = calculate_due_date(duration)
+        print("======duration until =====", reassignment_effective_date_until)
 
         print("======DEBUG=====")
         print("AFPSN ", personnel_id)
@@ -367,7 +370,7 @@ def placement_officer(request):
     first_name_query = request.GET.get('first_name')
     middle_name_query = request.GET.get('middle_name')
     suffix_query = request.GET.get('suffix')
-    afsn_query = request.GET.get('afsn')
+    afpsn_query = request.GET.get('afpsn')
     rank_query = request.GET.get('rank')
     category_query = ('Officer')
     sex_query = request.GET.get('sex')
@@ -382,8 +385,8 @@ def placement_officer(request):
         filters &= Q(MIDDLE_NAME__icontains=middle_name_query)
     if suffix_query and suffix_query != "Suffix":
         filters &= Q(EXTENSION_NAME__icontains=suffix_query)
-    if afsn_query:
-        filters &= Q(SERIAL_NUMBER__icontains=afsn_query)  
+    if afpsn_query:
+        filters &= Q(SERIAL_NUMBER__icontains=afpsn_query)  
     if rank_query and rank_query != "Rank":
         filters &= Q(RANK__icontains=rank_query)
     if category_query and category_query:
@@ -405,7 +408,7 @@ def placement_officer(request):
         'first_name_query': first_name_query,
         'middle_name_query': middle_name_query,
         'suffix_query': suffix_query,
-        'afsn_query': afsn_query,
+        'afsn_query': afpsn_query,
         'rank_query': rank_query,
         'category_query': category_query,
         'sex_query': sex_query,
@@ -420,7 +423,7 @@ def placement_enlisted(request):
     first_name_query = request.GET.get('first_name')
     middle_name_query = request.GET.get('middle_name')
     suffix_query = request.GET.get('suffix')
-    afsn_query = request.GET.get('afsn')
+    afpsn_query = request.GET.get('afpsn')
     rank_query = request.GET.get('rank')
     category_query = ('ENLISTED PERSONNEL')
     sex_query = request.GET.get('sex')
@@ -435,8 +438,8 @@ def placement_enlisted(request):
         filters &= Q(MIDDLE_NAME__icontains=middle_name_query)
     if suffix_query and suffix_query != "Suffix":
         filters &= Q(EXTENSION_NAME__icontains=suffix_query)
-    if afsn_query:
-        filters &= Q(SERIAL_NUMBER__icontains=afsn_query)  
+    if afpsn_query:
+        filters &= Q(SERIAL_NUMBER__icontains=afpsn_query)  
     if rank_query and rank_query != "Rank":
         filters &= Q(RANK__icontains=rank_query)
     if category_query and category_query:
@@ -458,7 +461,7 @@ def placement_enlisted(request):
         'first_name_query': first_name_query,
         'middle_name_query': middle_name_query,
         'suffix_query': suffix_query,
-        'afsn_query': afsn_query,
+        'afpsn_query': afpsn_query,
         'rank_query': rank_query,
         'category_query': category_query,
         'sex_query': sex_query,
@@ -468,15 +471,18 @@ def placement_enlisted(request):
 
 # FOR DS
 def placement_DS(request):
+    
     last_name_query = request.GET.get('last_name')
     first_name_query = request.GET.get('first_name')
     middle_name_query = request.GET.get('middle_name')
     suffix_query = request.GET.get('suffix')
-    afsn_query = request.GET.get('afsn')
-    rank_query = request.GET.get('RANK')
+    afpsn_query = request.GET.get('afpsn')
+    rank_query = request.GET.get('rank')
     category_query = request.GET.get('category')
     sex_query = request.GET.get('sex')
     unit_query = request.GET.get('unit')
+
+
     
     filters = Q()
     if last_name_query:
@@ -487,8 +493,8 @@ def placement_DS(request):
         filters &= Q(MIDDLE_NAME__icontains=middle_name_query)
     if suffix_query and suffix_query != "Suffix":
         filters &= Q(EXTENSION_NAME__icontains=suffix_query)
-    if afsn_query:
-        filters &= Q(SERIAL_NUMBER__icontains=afsn_query)  
+    if afpsn_query:
+        filters &= Q(SERIAL_NUMBER__icontains=afpsn_query)  
     if rank_query and rank_query != "Rank":
         filters &= Q(RANK__icontains=rank_query)
     if category_query and category_query:
@@ -510,7 +516,7 @@ def placement_DS(request):
         'first_name_query': first_name_query,
         'middle_name_query': middle_name_query,
         'suffix_query': suffix_query,
-        'afsn_query': afsn_query,
+        'afpsn_query': afpsn_query,
         'rank_query': rank_query,
         'category_query': category_query,
         'sex_query': sex_query,
