@@ -189,7 +189,7 @@
               <div class="col-md-6">
                 <div class="mb-4">
                   <label for="afpsntxt">AFPSN</label>
-                  <input type="text" id="afpsntxt" class="form-control" placeholder="AFPSN">
+                  <input type="text" id="afpsntxt" class="form-control" placeholder="AFPSN" readonly>
                 </div>
               </div>
             </div>
@@ -230,44 +230,8 @@
             <div class="row justify-content-center">
               <div class="col-md-6">
                 <div class="mb-4">
-                  <label for="presentUnit" class="form-label">Present Unit</label>
-                  <select id="unitDP" name="unit" class="form-select" readonly >
-                    <option selected>UNIT</option>
-                    <!-- Add other options here -->
-                    <option>GHQ</option>
-                    <option>HPAF</option>
-                    <option>PAFHRMC-A/U</option>
-                    <option>PAFHRMC</option>
-                    <option>AFPWSSUS</option>
-                    <option>AIBDC</option>
-                    <option>ADC</option>
-                    <option>AMC</option>
-                    <option>ACC</option>
-                    <option>AETDC</option>
-                    <option>ARFC</option>
-                    <option>TOWNOL</option>
-                    <option>TOWSOL</option>
-                    <option>TOWCEN</option>
-                    <option>TOWWEST</option>
-                    <option>TOWEASTMIN</option>
-                    <option>TOWWESTMIN</option>
-                    <option>355AEW</option>
-                    <option>300AISW</option>
-                    <option>900AFWG</option>
-                    <option>950CEWW</option>
-                    <option>AFFC</option>
-                    <option>AFSSG</option>
-                    <option>HSSG</option>
-                    <option>PAFCMOG</option>
-                    <option>PAFHRMC</option>
-                    <option>NOLCOM</option>
-                    <option>SOLCOM</option>
-                    <option>WESCOM</option>
-                    <option>VISCOM</option>
-                    <option>WESTMINCOM</option>
-                    <option>EASTMINCOM</option>
-                    <option>JTF-NCR</option>
-                  </select>
+                  <label for="presentUnit" class="form-label">Present Unit</label >
+                  <input type="text" id="unitDP" name="unit" class="form-control" placeholder="Suffix" readonly>
                 </div>
               </div>
               
@@ -599,7 +563,7 @@ document.getElementById('durationtxt').addEventListener('change', computeDate);
             var duration_dropdown = document.getElementById('untildatelbl').textContent;
            
             console.log("This is  ",duration_dropdown.value)
-            
+
             var untildatelbls = duration_dropdown.textContent;
             console.log("THIS IS SPARRTAAAAAAAAAAAAAAAN0",afpsn,"rank ",rank,untildatelbls,new_unit,reassignment_effectivedate,category_assignment,lastname,firstname,middlename,suffix);
             
