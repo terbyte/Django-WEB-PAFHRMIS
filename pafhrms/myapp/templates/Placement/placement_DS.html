@@ -8,39 +8,7 @@
 
 {% include 'myapp/searchforms.html' %}
 
-<!-- <table class="table table-responsive-sm table-bordered table-striped table-sm" id="sortableTable">
 
-    <thead>
-        <tr>
-        <th class="sortable" data-sort="AFPSN">AFPSN</th>
-        <th>RANK</th>
-        <th>FULL NAME</th>
-        <th>MOTHER UNIT</th>
-        <th>DS/TDY EFFECTIVE DATE</th>
-        <th>TEMPORARY UNIT</th>
-        <th>DS/TDY CATEGORY</th>
-        <th>ASSIGNMENT END DATE</th>
-        
-    </tr>
-</thead>
-<tbody>
-    {% for person in persons %}
-    <tr>
-      <td>{{ person.AFPSN }}</td>
-      <td>{{ person.RANK }}</td>
-      <td>{{ person.FIRST_NAME}} {{person.MIDDLE_NAME}} {{person.LAST_NAME}}</td>
-      
-      <td>{{ person.MOTHER_UNIT }}</td>
-      
-      <td>{{ person.REASSIGN_EFFECTIVEDDATE }}</td>
-      <td>{{ person.NEW_UNIT }}</td>
-      <td>{{ person.ASSIGNMENT_CATEGORY }}</td>
-      <td>{{ person.REASSIGN_EFFECTIVEDDATE_UNTIL }}</td>
-  </tr>
-</tbody>
-
-    {% endfor %}
-</table> -->
 
 
 <table class="table table-responsive-sm table-bordered table-striped table-sm" id="sortableTable">
@@ -48,6 +16,7 @@
         <tr>
             <th class="sortable" data-sort="RANK">RANK</th>
             <th class="sortable" data-sort="AFPSN">AFPSN</th>
+
             <th class="sortable" data-sort="FULL_NAME">FULL NAME</th>
             <th class="sortable" data-sort="MOTHER_UNIT">MOTHER UNIT</th>
             <th class="sortable" data-sort="REASSIGN_EFFECTIVEDDATE">DS/TDY EFFECTIVE DATE</th>
@@ -60,8 +29,9 @@
     <tbody>
         {% for person in persons %}
         <tr>
-            <td>{{ person.SERIAL_NUMBER }}</td>
             <td>{{ person.RANK }}</td>
+            <td>{{ person.AFPSN }}</td>
+            
             <td>{{ person.FIRST_NAME}} {{person.MIDDLE_NAME}} {{person.LAST_NAME}}</td>
             <td>{{ person.MOTHER_UNIT }}</td>
             <td>{{ person.REASSIGN_EFFECTIVEDDATE }}</td>

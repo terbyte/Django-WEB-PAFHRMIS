@@ -183,16 +183,17 @@
               <div class="col-md-6">
                 <div class="mb-4">
                   <label for="ranktxt">Rank</label>
-                  <input name="rank " id="ranktxt" class="form-control" readonly>
+                  <input name="rank" id="ranktxt" class="form-control" readonly>
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="mb-4">
                   <label for="afpsntxt">AFPSN</label>
-                  <input type="text" id="afpsntxt" class="form-control" placeholder="AFPSN" readonly>
+                  <input type="text" id="afpsntxt" name="afpsn" class="form-control" placeholder="AFPSN" readonly>
                 </div>
               </div>
             </div>
+            
         
             <!-- Second Row: Form elements aligned in two columns -->
             <div class="row justify-content-center">
@@ -322,7 +323,7 @@
               <label for="uploadOrder" class="form-label">Upload Order</label>
               
               <div class="custom-file">
-                  <input type="file" class="form-control custom-file-input" id="uploadOrder" name="uploadOrder" required>
+                  <input type="file" class="form-control custom-file-input" id="uploadOrder" name="uploadOrder">
                   <label class="custom-file-label" for="uploadOrder">Choose file...</label>
               </div>
           </div>
@@ -472,18 +473,14 @@ document.getElementById('durationtxt').addEventListener('change', computeDate);
       $('.openModalButton').click(function() {
 
         $('#personnel_id').val(personnel_id);
+        var rank = $(this).data('rank');
         var afpsn = $(this).data('afpsn'); // Assuming 'afpsn' is the unique identifier
         var lastname = $(this).data('lastname');
-        var rank = $(this).data('rank');
         var firstname = $(this).data('firstname');
         var middlename = $(this).data('middlename');
         var suffix = $(this).data('suffix');
         var mother_unit = $(this).data('unit');
-        
 
-
-        console.log("START ","MOTHER UNIT:",mother_unit,afpsn,rank,lastname,firstname,middlename,suffix);
-        
 
 
 
@@ -547,26 +544,7 @@ document.getElementById('durationtxt').addEventListener('change', computeDate);
                     icon: 'error',
                     confirmButtonText: 'Try Again'
                 });
-            $('#personnel_id').val(personnel_id);
-            var afpsn = $(this).data('afpsn'); // Assuming 'afpsn' is the unique identifier
-            var rank = $(this).data('rank'); // Assuming 'afpsn' is the unique identifier
-
-            var lastname = $(this).data('lastname');
-            var firstname = $(this).data('firstname');
-            var middlename = $(this).data('middlename');
-            var suffix = $(this).data('suffix');
-            var mother_unit = $(this).data('unit');
-            var new_unit = $(this).data('new_unit');
-            var dropdown = document.getElementById("reassignmentDate");
-            var reassignment_effectivedate = dropdown.value;
-
-            var duration_dropdown = document.getElementById('untildatelbl').textContent;
            
-            console.log("This is  ",duration_dropdown.value)
-
-            var untildatelbls = duration_dropdown.textContent;
-            console.log("THIS IS SPARRTAAAAAAAAAAAAAAAN0",afpsn,"rank ",rank,untildatelbls,new_unit,reassignment_effectivedate,category_assignment,lastname,firstname,middlename,suffix);
-            
           }
         },
         error: function(xhr, status, error) {
@@ -580,51 +558,6 @@ document.getElementById('durationtxt').addEventListener('change', computeDate);
                 icon: 'error',
                 confirmButtonText: 'Try Again'
             });
-
-            $('#personnel_id').val(personnel_id);
-            var afpsn_dropdown = document.getElementById("afpsntxt");
-            var afpsn = afpsn_dropdown.value;
-
-            var rank_dropdown = document.getElementById("ranktxt");
-            var rank = rank_dropdown.value;
-
-            var lastname_dp = document.getElementById("lastnametxt");
-            var lastname = lastname_dp.value;
-
-            var firstname_dp = document.getElementById("firstnametxt");
-            var firstname = firstname_dp.value;
-
-            var middlename_dp = document.getElementById("middlenametxt");
-            var middlename = middlename_dp.value;
-
-            var suffix_dp = document.getElementById("suffixtxt");
-            var suffix = suffix_dp.value;
-
-            var mother_unit_dp = document.getElementById("unitDP");
-            var mother_unit = mother_unit_dp.value;
-            
-            var newUnit_dropdown = document.getElementById("new_unit");
-            var new_unit = newUnit_dropdown.value;
-
-            var reasigndate_dropdown = document.getElementById("reassignmentDate");
-            var reassignment_effectivedate = reasigndate_dropdown.value;
-
-            var assign_category_dropdown = document.getElementById("assignmentcategorytxt");
-            var category_assignment = assign_category_dropdown.value;
-
-            var labelElement = document.getElementById('untildatelbl');
-            // Get the text content of the element
-            var labelText = labelElement.textContent;
-                      
-            // Log the text content to the console
-            console.log("THIS IS SPARRTAAAAAAAAAAAAAAAN",labelText);
-
-            var duration_dropdown = document.getElementById('untildatelbl').textContent;
-            var untildatelbls = duration_dropdown.textContent;
-            
-
-            console.log("AFPSN",afpsn,"RANK",rank,"UNTILDATE:",labelText,"NEW_UNIT:",new_unit,"REASSIGNMENTEFFECTIVE:",reassignment_effectivedate,"CATEGORY_REASSIGNMENT:",category_assignment
-            ,"NAME:",lastname,firstname,middlename,suffix,"mother_unit:",mother_unit,"NEW_UNIT:",new_unit);
 
          }
         

@@ -23,11 +23,11 @@ def calculate_due_date(duration):
         return datetime.now() + timedelta(weeks=52)
     elif duration == '2 Years':
         return datetime.now() + timedelta(weeks=104)
-    return None
+    return None 
 
 def save_placement_update(request):
     if request.method == 'POST':
-        personnel_id = request.POST.get('personnel_id')
+        afpsn = request.POST.get('afpsn')
         rank = request.POST.get('rank')
         last_name = request.POST.get('last_name')
         first_name = request.POST.get('first_name')
@@ -39,13 +39,15 @@ def save_placement_update(request):
         reassignment_date = request.POST.get('reassignmentDate')
         assignment_category = request.POST.get('assignmentcategory')
         duration = request.POST.get('duration')
+        dateeffective_until = request.POST.get('formattedNewDate')
         upload_file = request.FILES.get('uploadOrder')  # Correct variable name
 
 
-        print("Durationnnnn")
 
         if 'uploadOrder' in request.FILES:
             upload_file = request.FILES['uploadOrder']
+            print("FILE")
+
         else:
             print("No file uploaded")
 
@@ -53,10 +55,10 @@ def save_placement_update(request):
 
         # Calculate the due date based on the duration
         reassignment_effective_date_until = calculate_due_date(duration)
-        print("======duration until =====", reassignment_effective_date_until)
+        print("======duration until =====", duration)
 
         print("======DEBUG=====")
-        print("AFPSN ", personnel_id)
+        print("AFPSN ", afpsn)
         print("RANK ", rank)
         print("FULLNAME ", last_name + first_name + middle_name + suffix)
         print("OLD unit ", mother_unit)
@@ -64,12 +66,14 @@ def save_placement_update(request):
         print("REASSIGNED DATE ", reassignment_date)
         print("ASSIGNED CATEGORY ", assignment_category)
         print("DURATION ", duration)
-        print("UPLOAD FILE ", upload_file)
+        print("EFFECTIVE DATE UNTIL ", dateeffective_until)
+        # print("UPLOAD FILE ", upload_file)
 
 
         # Create the Placement instance
         placement = Placement(
-            AFPSN=personnel_id,
+            AFPSN=afpsn,
+            RANK=rank,
             LAST_NAME=last_name,
             FIRST_NAME=first_name,
             MIDDLE_NAME=middle_name,
@@ -79,7 +83,7 @@ def save_placement_update(request):
             REASSIGN_EFFECTIVEDDATE=reassignment_date,
             ASSIGNMENT_CATEGORY=assignment_category,
             REASSIGN_EFFECTIVEDDATE_UNTIL=reassignment_effective_date_until,
-            ORDER_UPLOADFILE=upload_file
+            # ORDER_UPLOADFILE=upload_file
         )
         placement.save()
 
@@ -87,9 +91,6 @@ def save_placement_update(request):
 
     return render(request, 'Placement-modal.html')
 
-
-# def placement_update_officer(request):
-#     print("==================called===========================================")
 
 
 
@@ -109,8 +110,6 @@ def format_date(date):
 
 def update_personnel(request):
     if request.method == 'POST':
-        print("fullreeenlistment",request.POST.get('fullreeenlistment'))
-        print("himmmmmmmmmmmmmmmmmmmmmmmmm",request.POST.get('dateoflastetadsot'))
         try:
             personnel_id = request.POST.get('personnel_id')
             personnel_items = PersonnelItem.objects.filter(SERIAL_NUMBER=personnel_id)
@@ -219,16 +218,6 @@ def upload_excel(request):
 
 def custom_404(request, exception):
     return render(request, 'other/404.html', status=404)
-# def index(request):
-#     if request.method == 'GET':
-#         form = UploadFileForm(request.GET, request.FILES)
-#         persons = PersonnelItem.objects.all()
-#         paginator = Paginator(persons,10)
-#         page_num = request.GET.get("page")
-#         persons = paginator.get_page(page_num)
-#         return render(request, 'myapp/index.html', {'persons': persons})
-    # return render(request,"myapp/testSidebar.html",{})
-
 
 
 
@@ -472,12 +461,13 @@ def placement_enlisted(request):
 # FOR DS
 def placement_DS(request):
     
+    rank_query = request.GET.get('rank')
+    afpsn_query = request.GET.get('afpsn')
     last_name_query = request.GET.get('last_name')
     first_name_query = request.GET.get('first_name')
     middle_name_query = request.GET.get('middle_name')
     suffix_query = request.GET.get('suffix')
-    afpsn_query = request.GET.get('afpsn')
-    rank_query = request.GET.get('rank')
+    
     category_query = request.GET.get('category')
     sex_query = request.GET.get('sex')
     unit_query = request.GET.get('unit')
