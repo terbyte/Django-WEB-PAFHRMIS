@@ -15,14 +15,18 @@ from .forms import PersonnelItemForm
 from .models import Placement
 from django.http import HttpResponseBadRequest, HttpResponse
 from datetime import datetime, timedelta
+from datetime import datetime
+from dateutil.relativedelta import relativedelta
 
-def calculate_due_date(duration):
+
+def calculate_due_date(duration,reassignment_date):
+    reassignment_date = datetime.strptime(reassignment_date, "%Y-%m-%d")
     if duration == '6 Months':
-        return datetime.now() + timedelta(weeks=26)
+        return reassignment_date + relativedelta(months=6)
     elif duration == '1 Year':
-        return datetime.now() + timedelta(weeks=52)
+        return reassignment_date + relativedelta(years=1)
     elif duration == '2 Years':
-        return datetime.now() + timedelta(weeks=104)
+        return reassignment_date+ relativedelta(years=2)
     return None 
 
 def save_placement_update(request):
@@ -53,9 +57,9 @@ def save_placement_update(request):
 
         
 
+        print("======duration until =====", calculate_due_date(duration,reassignment_date))
         # Calculate the due date based on the duration
-        reassignment_effective_date_until = calculate_due_date(duration)
-        print("======duration until =====", duration)
+        reassignment_effective_date_until = calculate_due_date(duration,reassignment_date)
 
         print("======DEBUG=====")
         print("AFPSN ", afpsn)
@@ -67,6 +71,7 @@ def save_placement_update(request):
         print("ASSIGNED CATEGORY ", assignment_category)
         print("DURATION ", duration)
         print("EFFECTIVE DATE UNTIL ", dateeffective_until)
+        print("reassignment_effective_date_until  ", dateeffective_until)
         # print("UPLOAD FILE ", upload_file)
 
 
@@ -87,17 +92,11 @@ def save_placement_update(request):
             # ORDER_UPLOADFILE=upload_file
         )
         placement.save()
-
         return HttpResponse('Data uploaded successfully.')
-
     return render(request, 'Placement-modal.html')
-
-
-
 
 def Tranche(request):
     return render(request, 'reenlistment/Tranche.html')
- 
 
 def format_date(date):
     if date:
