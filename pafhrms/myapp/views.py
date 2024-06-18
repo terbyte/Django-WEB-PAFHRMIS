@@ -83,6 +83,7 @@ def save_placement_update(request):
             REASSIGN_EFFECTIVEDDATE=reassignment_date,
             ASSIGNMENT_CATEGORY=assignment_category,
             REASSIGN_EFFECTIVEDDATE_UNTIL=reassignment_effective_date_until,
+            DURATION=duration,
             # ORDER_UPLOADFILE=upload_file
         )
         placement.save()

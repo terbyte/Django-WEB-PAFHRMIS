@@ -102,7 +102,7 @@
         });
 
         function sortTable(sortKey, ascending) {
-            const tbody = document.querySelector('tbody');
+            const tbody = document.querySelector('tbody');  
             const rows = Array.from(tbody.querySelectorAll('tr'));
             rows.sort((a, b) => {
                 const aData = getCellValue(a, sortKey);
@@ -135,3 +135,197 @@
     </script>
 </body>
 </html>
+
+
+
+
+
+<!-- 
+<table class="table table-responsive-sm table-bordered table-striped table-sm" id="sortableTable">
+    <thead>
+        <tr>
+            <th class="sortable" data-sort="RANK">RANK</th>
+            <th class="sortable" data-sort="AFPSN">AFPSN</th>
+            <th class="sortable" data-sort="FULL_NAME">FULL NAME</th>
+            <th class="sortable" data-sort="MOTHER_UNIT">MOTHER UNIT</th>
+            <th class="sortable" data-sort="REASSIGN_EFFECTIVEDDATE">DS/TDY EFFECTIVE DATE</th>
+            <th class="sortable" data-sort="NEW_UNIT">TEMPORARY UNIT</th>
+            <th class="sortable" data-sort="ASSIGNMENT_CATEGORY">DS/TDY CATEGORY</th>
+            <th class="sortable" data-sort="DURATION">DURATION</th>
+            <th class="sortable" data-sort="REASSIGN_EFFECTIVEDDATE_UNTIL">ASSIGNMENT END DATE</th>
+            <th class="sortable" data-sort="TIME_ELAPSED">TIME ELAPSED</th>
+        </tr>
+    </thead>
+  -->
+
+  {% extends 'Base/base.html' %}
+
+{% block content %}
+
+{% include 'myapp/searchforms.html' %}
+<style>
+    th.sortable {
+        cursor: pointer;
+    }
+    th.sortable:after {
+        content: "\25b2";
+        padding-left: 10px;
+    }
+    th.sortable.desc:after {
+        content: "\25bc";
+    }
+</style>
+</head>
+<table class="table table-responsive-sm table-bordered table-striped table-sm" id="sortableTable">
+    <thead>
+        <tr>
+            <th class="sortable" data-sort="RANK">RANK</th>
+            <th class="sortable" data-sort="AFPSN">AFPSN</th>
+            <th class="sortable" data-sort="FULL_NAME">FULL NAME</th>
+            <th class="sortable" data-sort="MOTHER_UNIT">MOTHER UNIT</th>
+            <th class="sortable" data-sort="REASSIGN_EFFECTIVEDDATE">DS/TDY EFFECTIVE DATE</th>
+            <th class="sortable" data-sort="NEW_UNIT">TEMPORARY UNIT</th>
+            <th class="sortable" data-sort="ASSIGNMENT_CATEGORY">DS/TDY CATEGORY</th>
+            <th class="sortable" data-sort="REASSIGN_EFFECTIVEDDATE_UNTIL">ASSIGNMENT END DATE</th>
+            <th class="sortable" data-sort="TIME_ELAPSED">TIME ELAPSED</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr data-end-date="2024-12-13">
+            <td>Captain</td>
+            <td>123456</td>
+            <td>John A. Smith</td>
+            <td>1st Infantry Division</td>
+            <td>2023-01-01</td>
+            <td>2nd Cavalry Regiment</td>
+            <td>Training</td>
+            <td>2024-12-13</td>
+            <td class="time-elapsed"></td>
+        </tr>
+        <tr data-end-date="2026-06-12">
+            <td>Lieutenant</td>
+            <td>654321</td>
+            <td>Jane B. Doe</td>
+            <td>3rd Artillery Regiment</td>
+            <td>2023-03-15</td>
+            <td>1st Logistics Battalion</td>
+            <td>Temporary Duty</td>
+            <td>2026-06-12</td>
+            <td class="time-elapsed"></td>
+        </tr>
+        <!-- Add more rows as needed -->
+    </tbody>
+</table>
+
+<script>
+    function calculateTimeElapsedToCurrent(endDate) {
+        const end = new Date(endDate);
+        const now = new Date();
+
+        let years = now.getFullYear() - end.getFullYear();
+        let months = now.getMonth() - end.getMonth();
+        let days = now.getDate() - end.getDate();
+
+        if (days < 0) {
+            months -= 1;
+            days += new Date(now.getFullYear(), now.getMonth(), 0).getDate();
+        }
+        if (months < 0) {
+            years -= 1;
+            months += 12;
+        }
+
+        return `${years} years ${months} months ${days} days`;
+    }
+
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const rows = document.querySelectorAll('tbody tr');
+        rows.forEach(row => {
+            const endDate = row.getAttribute('data-end-date');
+            const timeElapsedCell = row.querySelector('.time-elapsed');
+            const timeElapsed = calculateTimeElapsedToCurrent(endDate);
+            timeElapsedCell.textContent = timeElapsed;
+        });
+
+        const headers = document.querySelectorAll('th.sortable');
+        headers.forEach(header => {
+            header.addEventListener('click', () => {
+                const sortKey = header.getAttribute('data-sort');
+                const isAscending = header.classList.contains('desc');
+                sortTable(sortKey, !isAscending);
+                headers.forEach(h => h.classList.remove('desc'));
+                if (!isAscending) header.classList.add('desc');
+            });
+        });
+    });
+
+    function sortTable(sortKey, ascending) {
+        const tbody = document.querySelector('tbody');  
+        const rows = Array.from(tbody.querySelectorAll('tr'));
+        rows.sort((a, b) => {
+            const aData = getCellValue(a, sortKey);
+            const bData = getCellValue(b, sortKey);
+            if (aData < bData) return ascending ? -1 : 1;
+            if (aData > bData) return ascending ? 1 : -1;
+            return 0;
+        });
+        rows.forEach(row => tbody.appendChild(row));
+    }
+
+    function getCellValue(row, sortKey) {
+        if (sortKey === 'TIME_ELAPSED') {
+            const endDate = row.getAttribute('data-end-date');
+            return new Date() - new Date(endDate);
+        } else {
+            return row.querySelector(`td:nth-child(${getColumnIndex(sortKey)})`).textContent.trim();
+        }
+    }
+
+    function getColumnIndex(sortKey) {
+        const headers = document.querySelectorAll('th');
+        for (let i = 0; i < headers.length; i++) {
+            if (headers[i].getAttribute('data-sort') === sortKey) {
+                return i + 1; // nth-child is 1-based
+            }
+        }
+        return -1;
+    }
+
+</script>
+{% endblock %}
+
+
+<!-- 
+<table class="table table-responsive-sm table-bordered table-striped table-sm" id="sortableTable">
+    <thead>
+        <tr>
+            <th class="sortable" data-sort="RANK">RANK</th>
+            <th class="sortable" data-sort="AFPSN">AFPSN</th>
+            <th class="sortable" data-sort="FULL_NAME">FULL NAME</th>
+            <th class="sortable" data-sort="MOTHER_UNIT">MOTHER UNIT</th>
+            <th class="sortable" data-sort="REASSIGN_EFFECTIVEDDATE">DS/TDY EFFECTIVE DATE</th>
+            <th class="sortable" data-sort="NEW_UNIT">TEMPORARY UNIT</th>
+            <th class="sortable" data-sort="ASSIGNMENT_CATEGORY">DS/TDY CATEGORY</th>
+            <th class="sortable" data-sort="DURATION">DURATION</th>
+            <th class="sortable" data-sort="REASSIGN_EFFECTIVEDDATE_UNTIL">ASSIGNMENT END DATE</th>
+            <th class="sortable" data-sort="TIME_ELAPSED">TIME ELAPSED</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for person in persons %}
+        <tr data-end-date="{{ person.REASSIGN_EFFECTIVEDDATE_UNTIL }}">
+            <td>{{ person.RANK }}</td>
+            <td>{{ person.AFPSN }}</td>
+            <td>{{ person.FIRST_NAME }} {{ person.MIDDLE_NAME }} {{ person.LAST_NAME }}</td>
+            <td>{{ person.MOTHER_UNIT }}</td>
+            <td>{{ person.REASSIGN_EFFECTIVEDDATE }}</td>
+            <td>{{ person.NEW_UNIT }}</td>
+            <td>{{ person.ASSIGNMENT_CATEGORY }}</td>
+            <td>DURATION</td>
+            
+            <td>{{ person.REASSIGN_EFFECTIVEDDATE_UNTIL }}</td>
+            <td class="time-elapsed"></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table> -->

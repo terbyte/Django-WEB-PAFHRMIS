@@ -4,6 +4,7 @@
 
 {% include 'myapp/searchforms.html' %}
 
+</head>
 <table class="table table-responsive-sm table-bordered table-striped table-sm" id="sortableTable">
     <thead>
         <tr>
@@ -29,14 +30,92 @@
             <td>{{ person.REASSIGN_EFFECTIVEDDATE }}</td>
             <td>{{ person.NEW_UNIT }}</td>
             <td>{{ person.ASSIGNMENT_CATEGORY }}</td>
-            <td>DURATION</td>
-            
+            <td>{{ person.DURATION }} </td>
             <td>{{ person.REASSIGN_EFFECTIVEDDATE_UNTIL }}</td>
             <td class="time-elapsed"></td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
+
+<script>
+    function calculateTimeElapsedToCurrent(endDate) {
+        const end = new Date(endDate);
+        const now = new Date();
+
+        let years = end.getFullYear() -now.getFullYear()  ;
+        let months = end.getMonth() - now.getMonth()  ;
+        let days = end.getDate() - now.getDate()  ;
+
+        if (days < 0) {
+            months -= 1;
+            days += new Date(now.getFullYear(), now.getMonth(), 0).getDate();
+        }
+        if (months < 0) {
+            years -= 1;
+            months += 12;
+        }
+
+        return `${years} years ${months} months ${days} days`;
+    }
+
+
+
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const rows = document.querySelectorAll('tbody tr');
+        rows.forEach(row => {
+            const endDate = row.getAttribute('data-end-date');
+            const timeElapsedCell = row.querySelector('.time-elapsed');
+            const timeElapsed = calculateTimeElapsedToCurrent(endDate);
+            timeElapsedCell.textContent = timeElapsed;
+        });
+
+        const headers = document.querySelectorAll('th.sortable');
+        headers.forEach(header => {
+            header.addEventListener('click', () => {
+                const sortKey = header.getAttribute('data-sort');
+                const isAscending = header.classList.contains('desc');
+                sortTable(sortKey, !isAscending);
+                headers.forEach(h => h.classList.remove('desc'));
+                if (!isAscending) header.classList.add('desc');
+            });
+        });
+    });
+
+    function sortTable(sortKey, ascending) {
+        const tbody = document.querySelector('tbody');  
+        const rows = Array.from(tbody.querySelectorAll('tr'));
+        rows.sort((a, b) => {
+            const aData = getCellValue(a, sortKey);
+            const bData = getCellValue(b, sortKey);
+            if (aData < bData) return ascending ? -1 : 1;
+            if (aData > bData) return ascending ? 1 : -1;
+            return 0;
+        });
+        rows.forEach(row => tbody.appendChild(row));
+    }
+
+    function getCellValue(row, sortKey) {
+        if (sortKey === 'TIME_ELAPSED') {
+            const endDate = row.getAttribute('data-end-date');
+            return new Date() - new Date(endDate);
+        } else {
+            return row.querySelector(`td:nth-child(${getColumnIndex(sortKey)})`).textContent.trim();
+        }
+    }
+
+    function getColumnIndex(sortKey) {
+        const headers = document.querySelectorAll('th');
+        for (let i = 0; i < headers.length; i++) {
+            if (headers[i].getAttribute('data-sort') === sortKey) {
+                return i + 1; // nth-child is 1-based
+            }
+        }
+        return -1;
+    }
+
+</script>
+
 
 <nav aria-label="...">
     <ul class="pagination">
@@ -79,64 +158,6 @@
         {% endif %}
     </ul>
 </nav>
-
-<script>
-    document.addEventListener('DOMContentLoaded', (event) => {
-        function calculateTimeElapsedToCurrent(endDate) {
-            const end = new Date(endDate);
-            const now = new Date();
-
-            let years = end.getFullYear() -now.getFullYear() ;
-            let months = end.getMonth() - now.getMonth()  ;
-            let days = end.getDate()- now.getDate() ;
-
-            if (days < 0) {
-                months -= 1;
-                days += new Date(now.getFullYear(), now.getMonth(), 0).getDate();
-            }
-            if (months < 0) {
-                years -= 1;
-                months += 12;
-            }
-
-            return `${years} years ${months} months ${days} days`;
-        }
-
-        const rows = document.querySelectorAll('tbody tr');
-        rows.forEach(row => {
-            const endDate = row.getAttribute('data-end-date');
-            const timeElapsedCell = row.querySelector('.time-elapsed');
-            const timeElapsed = calculateTimeElapsedToCurrent(endDate);
-            timeElapsedCell.textContent = timeElapsed;
-        });
-
-        // Add sorting functionality
-        $('.sortable').each(function() {
-            $(this).data('sortOrder', 'asc');
-        });
-
-        $('.sortable').click(function() {
-            var index = $(this).index();
-            var rows = $('#sortableTable tbody tr').get();
-            var sortOrder = $(this).data('sortOrder');
-            var newSortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
-            $(this).data('sortOrder', newSortOrder);
-            rows.sort(function(a, b) {
-                var aValue = $(a).children('td').eq(index).text().toUpperCase();
-                var bValue = $(b).children('td').eq(index).text().toUpperCase();
-                if (aValue < bValue) {
-                    return sortOrder === 'asc' ? -1 : 1;
-                }
-                if (aValue > bValue) {
-                    return sortOrder === 'asc' ? 1 : -1;
-                }
-                return 0;
-            });
-            $.each(rows, function(index, row) {
-                $('#sortableTable tbody').append(row);
-            });
-        });
-    });
-</script>
+  
 
 {% endblock %}
