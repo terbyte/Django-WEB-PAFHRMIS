@@ -18,6 +18,7 @@
             <th class="sortable" data-sort="DURATION">DURATION</th>
             <th class="sortable" data-sort="REASSIGN_EFFECTIVEDDATE_UNTIL">ASSIGNMENT END DATE</th>
             <th class="sortable" data-sort="TIME_ELAPSED">TIME ELAPSED</th>
+            <th class="sortable" data-sort="TIME_ELAPSED">ACTION</th>
         </tr>
     </thead>
     <tbody>
@@ -33,6 +34,13 @@
             <td>{{ person.DURATION }} </td>
             <td>{{ person.REASSIGN_EFFECTIVEDDATE_UNTIL }}</td>
             <td class="time-elapsed"></td>
+
+            <td>
+                <button
+                data-toggle="modal"
+              data-target="#myModal">VIEW</button>
+            </td>
+
         </tr>
         {% endfor %}
     </tbody>

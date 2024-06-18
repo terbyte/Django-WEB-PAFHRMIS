@@ -470,7 +470,6 @@ def placement_DS(request):
     middle_name_query = request.GET.get('middle_name')
     suffix_query = request.GET.get('suffix')
     
-    category_query = request.GET.get('category')
     sex_query = request.GET.get('sex')
     unit_query = request.GET.get('unit')
 
@@ -489,8 +488,7 @@ def placement_DS(request):
         filters &= Q(SERIAL_NUMBER__icontains=afpsn_query)  
     if rank_query and rank_query != "Rank":
         filters &= Q(RANK__icontains=rank_query)
-    if category_query and category_query:
-        filters &= Q(CATEGORY__icontains=category_query)
+
     if sex_query and sex_query != "Sex":
         filters &= Q(SEX__icontains=sex_query)
     if unit_query:
@@ -510,7 +508,6 @@ def placement_DS(request):
         'suffix_query': suffix_query,
         'afpsn_query': afpsn_query,
         'rank_query': rank_query,
-        'category_query': category_query,
         'sex_query': sex_query,
         'unit_query': unit_query,
     })
