@@ -27,6 +27,8 @@ def calculate_due_date(duration,reassignment_date):
         return reassignment_date + relativedelta(years=1)
     elif duration == '2 Years':
         return reassignment_date+ relativedelta(years=2)
+    elif duration == 'NO DEADLINE':
+        return None
     return None 
 
 def save_placement_update(request):
