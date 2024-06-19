@@ -182,13 +182,13 @@
             <div class="row justify-content-center">
               <div class="col-md-6">
                 <div class="mb-4">
-                  <label for="ranktxt">Rank</label>
+                  <label >Rank</label>
                   <input name="rank" id="ranktxt" class="form-control" readonly>
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="mb-4">
-                  <label for="afpsntxt">AFPSN</label>
+                  <label >AFPSN</label>
                   <input type="text" id="afpsntxt" name="afpsn" class="form-control" placeholder="AFPSN" readonly>
                 </div>
               </div>
@@ -199,13 +199,13 @@
             <div class="row justify-content-center">
               <div class="col-md-6">
                 <div class="mb-4">
-                  <label for="lastnametxt">Last Name</label>
+                  <label >Last Name</label>
                   <input type="text" id="lastnametxt" name="last_name" class="form-control" placeholder="Last Name" readonly>
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="mb-4">
-                  <label for="firstnametxt">First Name</label>
+                  <label >First Name</label>
                   <input type="text" id="firstnametxt" name="first_name" class="form-control" placeholder="First Name" readonly>
                 </div>
               </div>
@@ -215,13 +215,13 @@
             <div class="row justify-content-center">
               <div class="col-md-6">
                 <div class="mb-4">
-                  <label for="middlenametxt">Middle Name</label>
+                  <label >Middle Name</label>
                   <input type="text" id="middlenametxt" name="middle_name" class="form-control" placeholder="Middle Name" readonly>
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="mb-4">
-                  <label for="suffixtxt">Suffix</label>
+                  <label >Suffix</label>
                   <input type="text" id="suffixtxt" name="suffix" class="form-control" placeholder="Suffix" readonly>
                 </div>
               </div>
@@ -231,21 +231,21 @@
             <div class="row justify-content-center">
               <div class="col-md-6">
                 <div class="mb-4">
-                  <label for="presentUnit" class="form-label">Present Unit</label >
+                  <label class="form-label">Present Unit</label >
                   <input type="text" id="unitDP" name="unit" class="form-control" placeholder="Suffix" readonly>
                 </div>
               </div>
               
               <div class="col-md-6">
                 <div class="mb-4">
-                  <label for="bostxt">Branch of Service</label>
+                  <label >Branch of Service</label>
                   <input type="text" id="bostxt" name="bostxt" class="form-control" placeholder="Branch of Service" disabled>
                 </div>
               </div>
             </div>
 
             <div class="mb-3">
-              <label for="new_unit" class="form-label">Reassignment Unit</label>
+              <label class="form-label">Reassignment Unit</label>
               <select id="new_unit" name="new_unit" class="form-select" required>
                 <option selected></option>
                 <option>GHQ</option>
@@ -290,13 +290,13 @@
 
 
             <div class="mb-3">
-              <label for="reassignmentDate" class="form-label">Reassignment Effective Date</label>
+              <label  class="form-label">Reassignment Effective Date</label>
               <input type="date" class="form-control" id="reassignmentDate" name="reassignmentDate" required>
             </div>
 
             <div class="mb-3">
               <label  class="form-label">Assignment Category</label>
-                <select name="assignmentcategory" for="assignmentcategory" id="assignmentcategorytxt" class="form-control">
+                <select name="assignmentcategory" id="assignmentcategorytxt" class="form-control">
                   <optgroup label="Category">
                     <option>Assign</option>
                   <option>Detached Service</option>
@@ -310,7 +310,7 @@
 
               <label  class="form-label" name="untildatelbl" id="untildatelbl" > </label>
 
-              <select name="duration" for="duration" id="durationtxt" class="form-control">
+              <select name="duration" id="durationtxt" class="form-control">
                 <optgroup label="Duration">
                   <option>6 Months</option>
                   <option>1 Year</option>
@@ -321,11 +321,11 @@
             </div>
             
             <div class="mb-3">
-              <label for="uploadOrder" class="form-label">Upload Order</label>
+              <label class="form-label">Upload Order</label>
               
               <div class="custom-file">
                   <input type="file" class="form-control custom-file-input" id="uploadOrder" name="uploadOrder">
-                  <label class="custom-file-label" for="uploadOrder">Choose file...</label>
+                  <label class="custom-file-label" >Choose file...</label>
               </div>
           </div>
             <div class="modal-footer">
@@ -516,14 +516,16 @@ document.getElementById('durationtxt').addEventListener('change', computeDate);
 
     // Perform AJAX request to submit the form data
     $.ajax({
-        url: '{% url "placement_update_officer" %}', // Replace with the URL of your server-side script
+        url: '{% url "placement_update" %}', // Replace with the URL of your server-side script
         method: 'POST',
         data: formData,
       
         headers: {
             'X-CSRFToken': csrfToken
         },
+
         success: function(response) {
+        
             if (response.success) {
                 console.log('Data updated successfully!');
 
@@ -536,7 +538,7 @@ document.getElementById('durationtxt').addEventListener('change', computeDate);
                     confirmButtonText: 'OK'
                 });
             } else {
-                console.error('Error updating data:', response.error);
+                // console.error('Error updating data:', response.error);
                 
                 // Optionally, show an error message to the user
                 Swal.fire({

@@ -1,11 +1,10 @@
-{% extends 'Base/base.html' %}
+<!-- {% extends 'Base/base.html' %}
 
 
 <h2>Placement</h2>
 
 <style>
     .tab-content > .active {
-        /* background-color: red; */
 
     }
 </style>
@@ -16,9 +15,7 @@
     </li>
 
 
-    <!-- <li class="nav-item" role="presentation">
-        <button class="nav-link" id="profile-tab"  data-bs-toggle="tab" data-bs-target="#epPersonnel" type="button" role="tab" aria-controls="profile" aria-selected="false">Enlisted Personnel</button>
-    </li> -->
+
     <li class="nav-item" role="presentation">
         <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#epPersonnel" type="button" role="tab" aria-controls="profile" aria-selected="false" onclick="redirectToURLEP()">Enlisted Personnel</button>
     </li>
@@ -81,20 +78,15 @@
     
         tabButtons.forEach(button => {
             button.addEventListener('click', function () {
-                // Remove active class from all buttons
                 tabButtons.forEach(btn => btn.classList.remove('active'));
-                // Add active class to the clicked button
                 this.classList.add('active');
     
-                // Get target content
                 const target = this.getAttribute('data-bs-target');
     
-                // Remove active class from all tab contents
                 tabContents.forEach(content => content.classList.remove('show', 'active'));
     
-                // Add active class to the target content
                 document.querySelector(target).classList.add('show', 'active');
             });
         });
     });
-    </script>
+    </script> -->

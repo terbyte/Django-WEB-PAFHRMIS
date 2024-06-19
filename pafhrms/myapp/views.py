@@ -97,6 +97,8 @@ def save_placement_update(request):
         return HttpResponse('Data uploaded successfully.')
     return render(request, 'Placement-modal.html')
 
+
+
 def Tranche(request):
     return render(request, 'reenlistment/Tranche.html')
 
