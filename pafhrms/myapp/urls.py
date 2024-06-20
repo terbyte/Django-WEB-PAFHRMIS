@@ -17,6 +17,7 @@ urlpatterns = [
     path('placement/placement_enlisted', views.placement_enlisted, name='placement_enlisted'),
     path('placement/placement_update', views.save_placement_update, name='placement_update'),
     path('placement/placement_DS', views.placement_DS, name='placement_DS'),
+    path('placement/placement_DS_extension', views.placement_update_extension, name='placement_DS_extension'),
     
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

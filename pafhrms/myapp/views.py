@@ -40,7 +40,6 @@ def save_placement_update(request):
         middle_name = request.POST.get('middle_name')
         suffix = request.POST.get('suffix')
         mother_unit = request.POST.get('unit')
-
         new_unit = request.POST.get('new_unit')
         reassignment_date = request.POST.get('reassignmentDate')
         assignment_category = request.POST.get('assignmentcategory')
@@ -48,16 +47,11 @@ def save_placement_update(request):
         dateeffective_until = request.POST.get('formattedNewDate')
         upload_file = request.FILES.get('uploadOrder')  # Correct variable name
 
-
-
         if 'uploadOrder' in request.FILES:
             upload_file = request.FILES['uploadOrder']
             print("FILE")
-
         else:
             print("No file uploaded")
-
-        
 
         print("======duration until =====", calculate_due_date(duration,reassignment_date))
         # Calculate the due date based on the duration
@@ -97,6 +91,36 @@ def save_placement_update(request):
         return HttpResponse('Data uploaded successfully.')
     return render(request, 'Placement-modal.html')
 
+
+
+def placement_update_extension(request):
+    if request.method == 'POST':
+        try:
+            personnel_id = request.POST.get('personnel_id')
+            personnel_items = Placement.objects.filter(LAST_NAME="CABALLERO")
+
+            print("------------------------------------",personnel_items)
+            if not personnel_items.exists():
+                return JsonResponse({'success': False, 'error': 'Personnel not found'})
+            personnel_items.update(
+                AFPSN = request.POST.get('afpsn'),
+                RANK = request.POST.get('rank'),
+                LAST_NAME = request.POST.get('last_name'),
+                FIRST_NAME = request.POST.get('first_name'),
+                MIDDLE_NAME = request.POST.get('middle_name'),
+                SUFFIX = request.POST.get('suffix'),
+                MOTHER_UNIT = request.POST.get('unit'),
+                REASSIGN_EFFECTIVEDDATE = request.POST.get('reassignmentDate'),
+                ASSIGNMENT_CATEGORY = request.POST.get('assignmentcategory'),
+                DURATION = request.POST.get('duration'),
+                REASSIGN_EFFECTIVEDDATE_UNTIL = request.POST.get('formattedNewDate'),
+                ORDER_UPLOADFILE = request.FILES.get('uploadOrder'),  # Correct variable name
+            )
+            return JsonResponse({'success': True})
+        except Exception as e:
+            return JsonResponse({'success': False, 'error': str(e)})
+    return JsonResponse({'success': False, 'error': 'Invalid request'})
+            
 
 
 def Tranche(request):
