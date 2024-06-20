@@ -239,7 +239,7 @@
               <div class="col-md-6">
                 <div class="mb-4">
                   <label >Present DS/TDY Unit</label>
-                  <input type="text" id="new_unittxt" name="new_unit" class="form-control" placeholder="Branch of Service" disabled>
+                  <input type="text" id="new_unittxt" name="new_unit" class="form-control" placeholder="DS unit" disabled>
                 </div>
               </div>
             </div>
@@ -249,6 +249,18 @@
               <input type="text" class="form-control" id="assignmentcategorytxt" class="form-control" name="assignmentcategory" placeholder="Assignment Category"readonly>
             </div>
 
+            <div class="mb-3" id="dropdownContainer">
+              <label class="form-label">Assignment effective date until:</label>
+              <label  class="form-label" name="untildatelbl" id="untildatelbl" > </label>
+              <select name="duration" id="durationtxt" class="form-control">
+                <optgroup label="Duration">
+                  <option>6 Months</option>
+                  <option>1 Year</option>
+                  <option>2 Years</option>
+                </optgroup>
+              </select>
+            </div>
+
             <div class="mb-3">
               <label  class="form-label">Reassignment Effective Date</label>
               <input type="date" class="form-control" id="reassignmentDate" name="reassignmentDate" required>
@@ -256,20 +268,7 @@
 
             
 
-            <div class="mb-3" id="dropdownContainer" hidden>
-              <label class="form-label">Assignment effective date until:</label>
-
-              <label  class="form-label" name="untildatelbl" id="untildatelbl" > </label>
-
-              <select name="duration" id="durationtxt" class="form-control">
-                <optgroup label="Duration">
-                  <option>6 Months</option>
-                  <option>1 Year</option>
-                  <option>2 Years</option>
-                  <option>NO DEADLINE</option>
-                </optgroup>
-              </select>
-            </div>
+           
             
             <div class="mb-3">
               <label class="form-label">Upload Order</label>
@@ -339,6 +338,7 @@ $(document).ready(function() {
 
         var firstTranche = $(this).data('fullreeenlistment');
         var dateoflastetadsot = $(this).data('dateoflastetadsot');
+        var unitcategory = $(this).data('unit_category');
         var new_unit = $(this).data('new_unit');
 
 
@@ -350,7 +350,8 @@ $(document).ready(function() {
         $('#suffixtxt').val(suffix);
         $('#afpsntxt').val(afpsn);
         $('#unitDP').val(unit);
-        $('#assignmentcategorytxt').val(new_unit);
+        $('#assignmentcategorytxt').val(unitcategory);
+        $('#new_unittxt').val(new_unit);
 
 
       });
@@ -385,19 +386,19 @@ document.getElementById('reassignmentDate').addEventListener('change', function(
 // ends 
 
 // hides the dropdown of DS and TDY if dropdown option has value of "assigned"
-  document.getElementById('assignmentcategorytxt').addEventListener('change', function() {
-    var reassignmentDate = document.getElementById('reassignmentDate').value;
-    var selectedCategory = this.value;
-    var dropdownContainer = document.getElementById('dropdownContainer');
-    if ((selectedCategory === 'Detached Service' || selectedCategory === 'Temporary Duty') && !reassignmentDate) {
-      showAlert();
-      this.value = previousValue;
-      dropdownContainer.classList.add('hidden');
-    } else {
-      dropdownContainer.classList.remove('hidden');
-      previousValue = selectedCategory;
-    }
-  });
+  // document.getElementById('assignmentcategorytxt').addEventListener('change', function() {
+  //   var reassignmentDate = document.getElementById('reassignmentDate').value;
+  //   var selectedCategory = this.value;
+  //   var dropdownContainer = document.getElementById('dropdownContainer');
+  //   if ((selectedCategory === 'Detached Service' || selectedCategory === 'Temporary Duty') && !reassignmentDate) {
+  //     showAlert();
+  //     this.value = previousValue;
+  //     dropdownContainer.classList.add('hidden');
+  //   } else {
+  //     dropdownContainer.classList.remove('hidden');
+  //     previousValue = selectedCategory;
+  //   }
+  // });
   
 
 
@@ -500,18 +501,18 @@ document.getElementById('durationtxt').addEventListener('change', computeDate);
     });
 
 
-    var selectElement = document.getElementById('assignmentcategorytxt');
-        // Add event listener for change event
-        selectElement.addEventListener('change', function(event) {
-            // Get the selected option
-            var selectedOption = event.target.value;
-            // Check if the selected option is not "Assigned"
-            if (selectedOption !== 'Assign') {
-              document.getElementById('dropdownContainer').removeAttribute('hidden');
-            }else{
-              document.getElementById('dropdownContainer').setAttribute('hidden', 'hidden');
-            }
-        });
+    // var selectElement = document.getElementById('assignmentcategorytxt');
+    //     // Add event listener for change event
+    //     selectElement.addEventListener('change', function(event) {
+    //         // Get the selected option
+    //         var selectedOption = event.target.value;
+    //         // Check if the selected option is not "Assigned"
+    //         if (selectedOption !== 'Assign') {
+    //           document.getElementById('dropdownContainer').removeAttribute('hidden');
+    //         }else{
+    //           document.getElementById('dropdownContainer').setAttribute('hidden', 'hidden');
+    //         }
+    //     });
         
 
 
