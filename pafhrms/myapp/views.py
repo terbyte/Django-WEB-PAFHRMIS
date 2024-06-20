@@ -95,26 +95,60 @@ def save_placement_update(request):
 
 def placement_update_extension(request):
     if request.method == 'POST':
+        afpsn = request.POST.get('afpsn')
+        rank = request.POST.get('rank')
+        last_name = request.POST.get('last_name')
+        first_name = request.POST.get('first_name')
+        middle_name = request.POST.get('middle_name')
+        suffix = request.POST.get('suffix')
+        mother_unit = request.POST.get('unit')
+        new_unit = request.POST.get('new_unit')
+        reassignment_date = request.POST.get('reassignmentDate')
+        assignment_category = request.POST.get('assignmentcategory')
+        duration = request.POST.get('duration')
+        dateeffective_until = request.POST.get('formattedNewDate')
+        upload_file = request.FILES.get('uploadOrder')  # Correct variable name
+
+        if 'uploadOrder' in request.FILES:
+            upload_file = request.FILES['uploadOrder']
+            print("FILE")
+        else:
+            print("No file uploaded")
+
+        print("======duration until =====", calculate_due_date(duration,reassignment_date))
+        # Calculate the due date based on the duration
+        reassignment_effective_date_until = calculate_due_date(duration,reassignment_date)
+
+        print("======DEBUG=====")
+        print("AFPSN ", afpsn)
+        print("RANK ", rank)
+        print("FULLNAME ", last_name + first_name + middle_name + suffix)
+        print("OLD unit ", mother_unit)
+        print("NEW UNIT ", new_unit)
+        print("REASSIGNED DATE ", reassignment_date)
+        print("ASSIGNED CATEGORY ", assignment_category)
+        print("DURATION ", duration)
+        print("EFFECTIVE DATE UNTIL ", dateeffective_until)
+        print("reassignment_effective_date_until  ", dateeffective_until)
+
         try:
             personnel_id = request.POST.get('personnel_id')
-            personnel_items = Placement.objects.filter(LAST_NAME="CABALLERO")
-
-            print("------------------------------------",personnel_items)
+            personnel_items = Placement.objects.filter(AFPSN=personnel_id)
             if not personnel_items.exists():
                 return JsonResponse({'success': False, 'error': 'Personnel not found'})
+
+         
             personnel_items.update(
-                AFPSN = request.POST.get('afpsn'),
-                RANK = request.POST.get('rank'),
-                LAST_NAME = request.POST.get('last_name'),
-                FIRST_NAME = request.POST.get('first_name'),
-                MIDDLE_NAME = request.POST.get('middle_name'),
-                SUFFIX = request.POST.get('suffix'),
-                MOTHER_UNIT = request.POST.get('unit'),
-                REASSIGN_EFFECTIVEDDATE = request.POST.get('reassignmentDate'),
-                ASSIGNMENT_CATEGORY = request.POST.get('assignmentcategory'),
-                DURATION = request.POST.get('duration'),
-                REASSIGN_EFFECTIVEDDATE_UNTIL = request.POST.get('formattedNewDate'),
-                ORDER_UPLOADFILE = request.FILES.get('uploadOrder'),  # Correct variable name
+                AFPSN=afpsn,
+                REASSIGN_EFFECTIVEDDATE=reassignment_date,
+                ASSIGNMENT_CATEGORY=assignment_category,
+                REASSIGN_EFFECTIVEDDATE_UNTIL=reassignment_effective_date_until,
+
+
+
+
+
+                # ORDER_UPLOADFILE = request.FILES.get('uploadOrder'),  # Correct variable name
             )
             return JsonResponse({'success': True})
         except Exception as e:

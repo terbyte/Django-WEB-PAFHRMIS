@@ -461,17 +461,13 @@ document.getElementById('durationtxt').addEventListener('change', computeDate);
 
     $(document).ready(function() {
       $('.openModalButton').click(function() {
-
-        $('#personnel_id').val(personnel_id);
-        var rank = $(this).data('rank');
+        var personnelId = $(this).data('afpsn'); // Assuming 'afpsn' is the unique identifier
         var afpsn = $(this).data('afpsn'); // Assuming 'afpsn' is the unique identifier
-        var lastname = $(this).data('lastname');
-        var firstname = $(this).data('firstname');
-        var middlename = $(this).data('middlename');
-        var suffix = $(this).data('suffix');
         var mother_unit = $(this).data('unit');
-        var reassignmentDate = $(this).data('reassignmentDate');
-        // var new_unit = $(this).data('new_unit');
+        var reassignmentDate = $(this).data('untildatelbl');
+        console.log("--------------------")
+
+        $('#personnel_id').val(personnelId);
 
 
 

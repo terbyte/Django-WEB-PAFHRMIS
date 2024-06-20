@@ -12,11 +12,11 @@
             <th class="sortable" data-sort="AFPSN">AFPSN</th>
             <th class="sortable" data-sort="FULL_NAME">FULL NAME</th>
             <th class="sortable" data-sort="MOTHER_UNIT">MOTHER UNIT</th>
-            <th class="sortable" data-sort="REASSIGN_EFFECTIVEDDATE">DS/TDY EFFECTIVE DATE</th>
             <th class="sortable" data-sort="NEW_UNIT">TEMPORARY UNIT</th>
-            <th class="sortable" data-sort="ASSIGNMENT_CATEGORY">DS/TDY CATEGORY</th>
-            <th class="sortable" data-sort="DURATION">DURATION</th>
+            <th class="sortable" data-sort="ASSIGNMENT_CATEGORY">CATEGORY</th>
+            <th class="sortable" data-sort="REASSIGN_EFFECTIVEDDATE">DS/TDY EFFECTIVE DATE</th>
             <th class="sortable" data-sort="REASSIGN_EFFECTIVEDDATE_UNTIL">ASSIGNMENT END DATE</th>
+            <th class="sortable" data-sort="DURATION">DURATION</th>
             <th class="sortable" data-sort="TIME_ELAPSED">TIME ELAPSED</th>
             <th class="sortable" data-sort="TIME_ELAPSED">ACTION</th>
         </tr>
@@ -30,11 +30,11 @@
             <td>{{ person.AFPSN }}</td>
             <td>{{ person.FIRST_NAME }} {{ person.MIDDLE_NAME }} {{ person.LAST_NAME }}</td>
             <td>{{ person.MOTHER_UNIT }}</td>
-            <td>{{ person.REASSIGN_EFFECTIVEDDATE }}</td>
             <td>{{ person.NEW_UNIT }}</td>
             <td>{{ person.ASSIGNMENT_CATEGORY }}</td>
-            <td>{{ person.DURATION }} </td>
+            <td>{{ person.REASSIGN_EFFECTIVEDDATE }}</td>
             <td>{{ person.REASSIGN_EFFECTIVEDDATE_UNTIL }}</td>
+            <td>{{ person.DURATION }} </td>
             <td class="time-elapsed"></td>
 
             <td>
