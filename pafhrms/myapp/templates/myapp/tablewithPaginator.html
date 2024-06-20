@@ -62,6 +62,7 @@
 </table>
 
 
+
   {% include 'modals/updateModal.html' %}
   
  <script>
@@ -107,13 +108,6 @@ $(document).ready(function() {
         var dateoflastetadsot = $(this).data('dateoflastetadsot');
 
 
-        // Swal.fire({
-        //             title: 'Updated Successfully',
-        //             text: 'Your data has been updated successfully!'+lastEtad,
-        //             icon: 'success',
-        //             confirmButtonText: 'OK'
-        //         });
-
         // POPULATING DATA TO MODAL 
         $('#ranktxt').val(rank);
         $('#lastnametxt').val(lastname);
@@ -141,24 +135,6 @@ $(document).ready(function() {
         $('#pilotratingtxt').val(pilotrating);
         $('#hpmetxt').val(hpme);
 
-        // Swal.fire({
-        //             title: 'Updated Successfully',
-        //             text: 'value: ' +classification,
-        //             icon: 'success',
-        //             confirmButtonText: 'OK'
-        //             });
-        //   console.log(classification);
-
-
-        // if (classification === "Regular" || classification === "Regular ") {
-        //   $('#tohide').hide();
-        // }else if (classification === "Reserve" || classification === "Reserve "){
-        //   $('#tohide').show();
-
-        // }
-        // if (category === "ENLISTED PERSONNEL") {
-        //   $('#tohide').show();
-        // } 
  
      
         if (category === "ENLISTED PERSONNEL") {

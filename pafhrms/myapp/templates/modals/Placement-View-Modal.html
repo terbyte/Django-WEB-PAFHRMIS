@@ -238,72 +238,23 @@
               
               <div class="col-md-6">
                 <div class="mb-4">
-                  <label >Branch of Service</label>
-                  <input type="text" id="bostxt" name="bostxt" class="form-control" placeholder="Branch of Service" disabled>
+                  <label >Present DS/TDY Unit</label>
+                  <input type="text" id="new_unittxt" name="new_unit" class="form-control" placeholder="Branch of Service" disabled>
                 </div>
               </div>
             </div>
 
             <div class="mb-3">
-              <label class="form-label">Reassignment Unit</label>
-              <select id="new_unit" name="new_unit" class="form-select" required>
-                <option selected></option>
-                <option>GHQ</option>
-                <option>HPAF</option>
-                <option>PAFHRMC-A/U</option>
-                <option>PAFHRMC</option>
-                <option>AFPWSSUS</option>
-                <option>AIBDC</option>
-                <option>ADC</option>
-                <option>AMC</option>
-                <option>ACC</option>
-                <option>AETDC</option>
-                <option>ARFC</option>
-                <option>TOWNOL</option>
-                <option>TOWSOL</option>
-                <option>TOWCEN</option>
-                <option>TOWWEST</option>
-                <option>TOWEASTMIN</option>
-                <option>TOWWESTMIN</option>
-                <option>355AEW</option>
-                <option>300AISW</option>
-                <option>900AFWG</option>
-                <option>950CEWW</option>
-                <option>AFFC</option>
-                <option>AFSSG</option>
-                <option>HSSG</option>
-                <option>PAFCMOG</option>
-                <option>PAFHRMC</option>
-                <option>NOLCOM</option>
-                <option>SOLCOM</option>
-                <option>WESCOM</option>
-                <option>VISCOM</option>
-                <option>WESTMINCOM</option>
-                <option>EASTMINCOM</option>
-                <option>JTF-NCR</option>
-              </select>
+              <label  class="form-label">Assignment Category</label>
+              <input type="text" class="form-control" id="assignmentcategorytxt" class="form-control" name="assignmentcategory" placeholder="Assignment Category"readonly>
             </div>
-
-            
-
-            
-
 
             <div class="mb-3">
               <label  class="form-label">Reassignment Effective Date</label>
               <input type="date" class="form-control" id="reassignmentDate" name="reassignmentDate" required>
             </div>
 
-            <div class="mb-3">
-              <label  class="form-label">Assignment Category</label>
-                <select name="assignmentcategory" id="assignmentcategorytxt" class="form-control">
-                  <optgroup label="Category">
-                    <option>Assign</option>
-                  <option>Detached Service</option>
-                  <option>Temporary Duty</option>
-                  </optgroup>
-              </select>
-            </div>
+            
 
             <div class="mb-3" id="dropdownContainer" hidden>
               <label class="form-label">Assignment effective date until:</label>
@@ -315,6 +266,7 @@
                   <option>6 Months</option>
                   <option>1 Year</option>
                   <option>2 Years</option>
+                  <option>NO DEADLINE</option>
                 </optgroup>
               </select>
             </div>
@@ -329,7 +281,7 @@
           </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-              <button type="submit" class="btn btn-primary">Save changes</button>
+              <button type="submit" class="btn btn-primary">Extend</button>
             </div>
           </form>
         </div>
@@ -346,6 +298,64 @@
 <!-- /alert section -->
 
   <script>
+
+$(document).ready(function() {
+    $('.openModalButton').click(function() {
+        var rank = $(this).data('rank');
+        var lastname = $(this).data('lastname');
+        var firstname = $(this).data('firstname');
+        var middlename = $(this).data('middlename');
+        if (middlename === "nan") {
+            middlename = '';
+        }
+        var suffix = $(this).data('suffix');
+        if (suffix === "nan") {
+          suffix = '';
+        }
+        var afpsn = $(this).data('afpsn');
+        var unit = $(this).data('unit');
+        var subunit = $(this).data('subunit');
+        var birthday = $(this).data('birthday');
+        var contactnum = $(this).data('contactnumber');
+        if (contactnum === "None") {
+          contactnum = '';
+        }
+        var sex = $(this).data('sex');
+        var address = $(this).data('address');
+        var classification = $(this).data('classification');
+        var sourceofenlistmentcommission = $(this).data('sourceofenlistmentcommission');
+        var category = $(this).data('category');
+        var afsc = $(this).data('afsc');
+        if (afsc === "nan") {
+          afsc = '';
+        }
+        var hpme = $(this).data('hpme');
+        var dateenteredmilitary = $(this).data('dateenteredmilitary');
+        var dateoflastpromotion = $(this).data('datelastpromotion');
+        var lengthofservice = $(this).data('lengthofservice');
+        var dateofcommissionship = $(this).data('dateofcommissionship');
+        var promotion = $(this).data('promotion');
+        var pilotrating = $(this).data('pilotrating');
+
+        var firstTranche = $(this).data('fullreeenlistment');
+        var dateoflastetadsot = $(this).data('dateoflastetadsot');
+        var new_unit = $(this).data('new_unit');
+
+
+        // POPULATING DATA TO MODAL 
+        $('#ranktxt').val(rank);
+        $('#lastnametxt').val(lastname);
+        $('#firstnametxt').val(firstname);
+        $('#middlenametxt').val(middlename);
+        $('#suffixtxt').val(suffix);
+        $('#afpsntxt').val(afpsn);
+        $('#unitDP').val(unit);
+        $('#assignmentcategorytxt').val(new_unit);
+
+
+      });
+});
+
 // if the reaasgined date is empty, do something
 var previousValue = document.getElementById('assignmentcategorytxt').value;
 var untilDateLabel = document.getElementById('untildatelbl');

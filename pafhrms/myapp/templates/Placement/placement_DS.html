@@ -21,6 +21,8 @@
             <th class="sortable" data-sort="TIME_ELAPSED">ACTION</th>
         </tr>
     </thead>
+
+
     <tbody>
         {% for person in persons %}
         <tr data-end-date="{{ person.REASSIGN_EFFECTIVEDDATE_UNTIL }}">
@@ -37,6 +39,16 @@
 
             <td>
                 <button class="btn btn-primary openModalButton"
+                data-rank="{{ person.RANK }}"
+                data-lastname="{{ person.LAST_NAME }}"
+                data-firstname="{{ person.FIRST_NAME }}"
+                data-middlename="{{ person.MIDDLE_NAME }}"
+                data-suffix="{{ person.EXTENSION_NAME }}"
+                data-afpsn="{{ person.AFPSN }}"
+                data-unit="{{ person.MOTHER_UNIT }}"
+                data-new_unit="{{ person.ASSIGNMENT_CATEGORY }}"
+
+
                 data-toggle="modal"
               data-target="#myModal">VIEW</button>
             </td>
@@ -45,6 +57,8 @@
         {% endfor %}
     </tbody>
 </table>
+
+{% include 'modals/Placement-View-Modal.html' %}
 
 <script>
     function calculateTimeElapsedToCurrent(endDate) {
