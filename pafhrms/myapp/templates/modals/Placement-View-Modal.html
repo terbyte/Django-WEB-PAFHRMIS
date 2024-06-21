@@ -235,77 +235,36 @@
                   <input type="text" id="unitDP" name="unit" class="form-control" placeholder="Suffix" readonly>
                 </div>
               </div>
+
+              
               
               <div class="col-md-6">
                 <div class="mb-4">
-                  <label >Branch of Service</label>
-                  <input type="text" id="bostxt" name="bostxt" class="form-control" placeholder="Branch of Service" disabled>
+                  <label >Present DS/TDY Unit</label>
+                  <input type="text" id="new_unittxt" name="new_unit" class="form-control" placeholder="DS unit" disabled>
                 </div>
               </div>
+
+              
+
             </div>
 
-            <div class="mb-3">
-              <label class="form-label">Reassignment Unit</label>
-              <select id="new_unit" name="new_unit" class="form-select" required>
-                <option selected></option>
-                <option>GHQ</option>
-                <option>HPAF</option>
-                <option>PAFHRMC-A/U</option>
-                <option>PAFHRMC</option>
-                <option>AFPWSSUS</option>
-                <option>AIBDC</option>
-                <option>ADC</option>
-                <option>AMC</option>
-                <option>ACC</option>
-                <option>AETDC</option>
-                <option>ARFC</option>
-                <option>TOWNOL</option>
-                <option>TOWSOL</option>
-                <option>TOWCEN</option>
-                <option>TOWWEST</option>
-                <option>TOWEASTMIN</option>
-                <option>TOWWESTMIN</option>
-                <option>355AEW</option>
-                <option>300AISW</option>
-                <option>900AFWG</option>
-                <option>950CEWW</option>
-                <option>AFFC</option>
-                <option>AFSSG</option>
-                <option>HSSG</option>
-                <option>PAFCMOG</option>
-                <option>PAFHRMC</option>
-                <option>NOLCOM</option>
-                <option>SOLCOM</option>
-                <option>WESCOM</option>
-                <option>VISCOM</option>
-                <option>WESTMINCOM</option>
-                <option>EASTMINCOM</option>
-                <option>JTF-NCR</option>
-              </select>
-            </div>
-
-            
-
-            
-
-
-            <div class="mb-3">
-              <label  class="form-label">Reassignment Effective Date</label>
-              <input type="date" class="form-control" id="reassignmentDate" name="reassignmentDate" required>
-            </div>
-
+         
             <div class="mb-3">
               <label  class="form-label">Assignment Category</label>
-                <select name="assignmentcategory" id="assignmentcategorytxt" class="form-control">
-                  <optgroup label="Category">
-                    <option>Assign</option>
-                  <option>Detached Service</option>
-                  <option>Temporary Duty</option>
-                  </optgroup>
-              </select>
+              <input type="text" class="form-control" id="assignmentcategorytxt" class="form-control" name="assignmentcategory" placeholder="Assignment Category"readonly>
             </div>
 
-            <div class="mb-3" id="dropdownContainer" hidden>
+            
+
+
+            <div class="mb-3">
+              <label  class="form-label" hidden>Reassignment Effective Date</label>
+              <input type="date" class="form-control" id="reassignmentDate" name="reassignmentDate" hidden>
+            </div>
+
+
+            <div class="mb-3" id="dropdownContainer">
               <label class="form-label">Assignment effective date until:</label>
 
               <label  class="form-label" name="untildatelbl" id="untildatelbl" > </label>
@@ -375,19 +334,19 @@ document.getElementById('reassignmentDate').addEventListener('change', function(
 // ends 
 
 // hides the dropdown of DS and TDY if dropdown option has value of "assigned"
-  document.getElementById('assignmentcategorytxt').addEventListener('change', function() {
-    var reassignmentDate = document.getElementById('reassignmentDate').value;
-    var selectedCategory = this.value;
-    var dropdownContainer = document.getElementById('dropdownContainer');
-    if ((selectedCategory === 'Detached Service' || selectedCategory === 'Temporary Duty') && !reassignmentDate) {
-      showAlert();
-      this.value = previousValue;
-      dropdownContainer.classList.add('hidden');
-    } else {
-      dropdownContainer.classList.remove('hidden');
-      previousValue = selectedCategory;
-    }
-  });
+  // document.getElementById('assignmentcategorytxt').addEventListener('change', function() {
+  //   var reassignmentDate = document.getElementById('reassignmentDate').value;
+  //   var selectedCategory = this.value;
+  //   var dropdownContainer = document.getElementById('dropdownContainer');
+  //   if ((selectedCategory === 'Detached Service' || selectedCategory === 'Temporary Duty') && !reassignmentDate) {
+  //     showAlert();
+  //     this.value = previousValue;
+  //     dropdownContainer.classList.add('hidden');
+  //   } else {
+  //     dropdownContainer.classList.remove('hidden');
+  //     previousValue = selectedCategory;
+  //   }
+  // });
   
 
 
