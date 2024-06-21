@@ -97,40 +97,22 @@ def placement_update_extension(request):
     if request.method == 'POST':
         afpsn = request.POST.get('afpsn')
         reassignment_date = request.POST.get('reassignmentDate')
-        print("======duration until =====", reassignment_date)
-
         duration = request.POST.get('duration')
-        dateeffective_until = request.POST.get('formattedNewDate')
-        upload_file = request.FILES.get('uploadOrder')  # Correct variable name
-
         if 'uploadOrder' in request.FILES:
             upload_file = request.FILES['uploadOrder']
             print("FILE")
         else:
             print("No file uploaded")
-
-        print("======duration until =====", calculate_due_date(duration,reassignment_date))
         # Calculate the due date based on the duration
         reassignment_effective_date_until = calculate_due_date(duration,reassignment_date)
-
-        print("======DEBUG=====")
-        print("AFPSN ", afpsn)
-        print("REASSIGNED DATE ", reassignment_date)
-        print("DURATION ", duration)
-        print("EFFECTIVE DATE UNTIL ", dateeffective_until)
-        print("reassignment_effective_date_until  ", dateeffective_until)
-
         try:
             personnel_id = request.POST.get('personnel_id')
             personnel_items = Placement.objects.filter(AFPSN=personnel_id)
             if not personnel_items.exists():
                 return JsonResponse({'success': False, 'error': 'Personnel not found'})
-
-         
             personnel_items.update(
                 AFPSN=afpsn,
                 REASSIGN_EFFECTIVEDDATE_UNTIL=reassignment_effective_date_until,
-
                 # ORDER_UPLOADFILE = request.FILES.get('uploadOrder'),  # Correct variable name
             )
             return JsonResponse({'success': True})
