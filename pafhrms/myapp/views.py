@@ -129,7 +129,6 @@ def placement_update_extension(request):
          
             personnel_items.update(
                 AFPSN=afpsn,
-                REASSIGN_EFFECTIVEDDATE=reassignment_date,
                 REASSIGN_EFFECTIVEDDATE_UNTIL=reassignment_effective_date_until,
 
                 # ORDER_UPLOADFILE = request.FILES.get('uploadOrder'),  # Correct variable name
