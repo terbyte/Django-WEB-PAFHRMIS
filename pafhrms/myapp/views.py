@@ -96,15 +96,9 @@ def save_placement_update(request):
 def placement_update_extension(request):
     if request.method == 'POST':
         afpsn = request.POST.get('afpsn')
-        rank = request.POST.get('rank')
-        last_name = request.POST.get('last_name')
-        first_name = request.POST.get('first_name')
-        middle_name = request.POST.get('middle_name')
-        suffix = request.POST.get('suffix')
-        mother_unit = request.POST.get('unit')
-        new_unit = request.POST.get('new_unit')
         reassignment_date = request.POST.get('reassignmentDate')
-        assignment_category = request.POST.get('assignmentcategory')
+        print("======duration until =====", reassignment_date)
+
         duration = request.POST.get('duration')
         dateeffective_until = request.POST.get('formattedNewDate')
         upload_file = request.FILES.get('uploadOrder')  # Correct variable name
@@ -121,12 +115,7 @@ def placement_update_extension(request):
 
         print("======DEBUG=====")
         print("AFPSN ", afpsn)
-        print("RANK ", rank)
-        print("FULLNAME ", last_name + first_name + middle_name + suffix)
-        print("OLD unit ", mother_unit)
-        print("NEW UNIT ", new_unit)
         print("REASSIGNED DATE ", reassignment_date)
-        print("ASSIGNED CATEGORY ", assignment_category)
         print("DURATION ", duration)
         print("EFFECTIVE DATE UNTIL ", dateeffective_until)
         print("reassignment_effective_date_until  ", dateeffective_until)
@@ -141,12 +130,7 @@ def placement_update_extension(request):
             personnel_items.update(
                 AFPSN=afpsn,
                 REASSIGN_EFFECTIVEDDATE=reassignment_date,
-                ASSIGNMENT_CATEGORY=assignment_category,
                 REASSIGN_EFFECTIVEDDATE_UNTIL=reassignment_effective_date_until,
-
-
-
-
 
                 # ORDER_UPLOADFILE = request.FILES.get('uploadOrder'),  # Correct variable name
             )
