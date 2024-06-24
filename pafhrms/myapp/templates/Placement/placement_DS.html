@@ -63,7 +63,7 @@
 {% include 'modals/Placement-View-Modal.html' %}
 
 <script>
-    function calculateTimeElapsedToCurrent(endDate) {
+    function calculateTimeElapsedToCurrent(endDate, category, afpsn, newUnit) {
     if (endDate === "None" || endDate === null) {
         return "None";
     }
@@ -84,8 +84,43 @@
         months += 12;
     }
 
-    return `${years} years ${months} months ${days} days`;
+    const elapsed = `${years} years ${months} months ${days} days`;
+
+    if (elapsed === "0 years 0 months 0 days" && category === "Assign") {
+        // Make AJAX call to update database
+        $.ajax({
+            url: "{% url 'update_placement' %}",
+            type: "POST",
+            data: {
+                afpsn: afpsn,
+                new_unit: newUnit,
+                csrfmiddlewaretoken: "{{ csrf_token }}"
+            },
+            success: function(response) {
+                console.log("Placement updated successfully");
+            },
+            error: function(xhr, errmsg, err) {
+                console.error("Error updating placement: ", errmsg);
+            }
+        });
+    }
+
+    return elapsed;
 }
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    const rows = document.querySelectorAll('tbody tr');
+    rows.forEach(row => {
+        const endDate = row.getAttribute('data-end-date');
+        const category = row.querySelector('td:nth-child(6)').textContent.trim();
+        const afpsn = row.querySelector('td:nth-child(2)').textContent.trim();
+        const newUnit = row.querySelector('td:nth-child(5)').textContent.trim();
+        const timeElapsedCell = row.querySelector('.time-elapsed');
+        const timeElapsed = calculateTimeElapsedToCurrent(endDate, category, afpsn, newUnit);
+        timeElapsedCell.textContent = timeElapsed;
+    });
+});
+
 
 
 

@@ -32,7 +32,38 @@ def calculate_due_date(duration,reassignment_date):
     return None 
 
 
-            
+
+
+
+def update_placement(request):
+    if request.method == 'POST':
+        afpsn = request.POST.get('afpsn')
+        new_unit = request.POST.get('new_unit')
+        
+        # Delete all instances from Placement
+        placements = Placement.objects.filter(AFPSN=afpsn)
+        if not placements.exists():
+            return JsonResponse({'error': 'Placement not found'}, status=404)
+        
+        for placement in placements:
+            placement.delete()
+        
+        # Update the UNIT in PersonnelItem
+        try:
+            personnel_item = PersonnelItem.objects.get(SERIAL_NUMBER=afpsn)
+            personnel_item.UNIT = new_unit
+            personnel_item.save()
+        except PersonnelItem.DoesNotExist:
+            return JsonResponse({'error': 'PersonnelItem not found'}, status=404)
+
+        return JsonResponse({'success': 'Placement updated successfully'})
+    return JsonResponse({'error': 'Invalid request method'}, status=400)
+
+
+
+
+
+
 
 
 def Tranche(request):
