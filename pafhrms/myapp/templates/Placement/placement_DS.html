@@ -86,7 +86,8 @@
 
     const elapsed = `${years} years ${months} months ${days} days`;
 
-    if (elapsed === "0 years 0 months 0 days" && category === "Assign") {
+    // if (elapsed === "0 years 0 months 0 days" && category === "Assign") {
+    if (elapsed === "0 years 0 months 0 days") {
         // Make AJAX call to update database
         $.ajax({
             url: "{% url 'update_placement' %}",
@@ -94,6 +95,7 @@
             data: {
                 afpsn: afpsn,
                 new_unit: newUnit,
+                category:category,
                 csrfmiddlewaretoken: "{{ csrf_token }}"
             },
             success: function(response) {
@@ -124,48 +126,45 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
 
 
-    document.addEventListener('DOMContentLoaded', (event) => {
-        const rows = document.querySelectorAll('tbody tr');
-        rows.forEach(row => {
-            const endDate = row.getAttribute('data-end-date');
-            const timeElapsedCell = row.querySelector('.time-elapsed');
-            const timeElapsed = calculateTimeElapsedToCurrent(endDate);
-            timeElapsedCell.textContent = timeElapsed;
-        });
-
-        const headers = document.querySelectorAll('th.sortable');
-        headers.forEach(header => {
-            header.addEventListener('click', () => {
-                const sortKey = header.getAttribute('data-sort');
-                const isAscending = header.classList.contains('desc');
-                sortTable(sortKey, !isAscending);
-                headers.forEach(h => h.classList.remove('desc'));
-                if (!isAscending) header.classList.add('desc');
-            });
+document.addEventListener('DOMContentLoaded', (event) => {
+    const rows = document.querySelectorAll('tbody tr');
+    rows.forEach(row => {
+        const endDate = row.getAttribute('data-end-date');
+        const timeElapsedCell = row.querySelector('.time-elapsed');
+        const timeElapsed = calculateTimeElapsedToCurrent(endDate);
+        timeElapsedCell.textContent = timeElapsed;
+    });
+    const headers = document.querySelectorAll('th.sortable');
+    headers.forEach(header => {
+        header.addEventListener('click', () => {
+            const sortKey = header.getAttribute('data-sort');
+            const isAscending = header.classList.contains('desc');
+            sortTable(sortKey, !isAscending);
+            headers.forEach(h => h.classList.remove('desc'));
+            if (!isAscending) header.classList.add('desc');
         });
     });
-
-    function sortTable(sortKey, ascending) {
-        const tbody = document.querySelector('tbody');  
-        const rows = Array.from(tbody.querySelectorAll('tr'));
-        rows.sort((a, b) => {
-            const aData = getCellValue(a, sortKey);
-            const bData = getCellValue(b, sortKey);
-            if (aData < bData) return ascending ? -1 : 1;
-            if (aData > bData) return ascending ? 1 : -1;
-            return 0;
-        });
-        rows.forEach(row => tbody.appendChild(row));
+});
+function sortTable(sortKey, ascending) {
+    const tbody = document.querySelector('tbody');  
+    const rows = Array.from(tbody.querySelectorAll('tr'));
+    rows.sort((a, b) => {
+        const aData = getCellValue(a, sortKey);
+        const bData = getCellValue(b, sortKey);
+        if (aData < bData) return ascending ? -1 : 1;
+        if (aData > bData) return ascending ? 1 : -1;
+        return 0;
+    });
+    rows.forEach(row => tbody.appendChild(row));
+}
+function getCellValue(row, sortKey) {
+    if (sortKey === 'TIME_ELAPSED') {
+        const endDate = row.getAttribute('data-end-date');
+        return new Date() - new Date(endDate);
+    } else {
+        return row.querySelector(`td:nth-child(${getColumnIndex(sortKey)})`).textContent.trim();
     }
-
-    function getCellValue(row, sortKey) {
-        if (sortKey === 'TIME_ELAPSED') {
-            const endDate = row.getAttribute('data-end-date');
-            return new Date() - new Date(endDate);
-        } else {
-            return row.querySelector(`td:nth-child(${getColumnIndex(sortKey)})`).textContent.trim();
-        }
-    }
+}
 
     function getColumnIndex(sortKey) {
         const headers = document.querySelectorAll('th');

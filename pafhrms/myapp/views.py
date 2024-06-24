@@ -39,22 +39,33 @@ def update_placement(request):
     if request.method == 'POST':
         afpsn = request.POST.get('afpsn')
         new_unit = request.POST.get('new_unit')
-        
+        category = request.POST.get('category')
+        Assign = "Assign"
+        print("==============================",category)
+
         # Delete all instances from Placement
         placements = Placement.objects.filter(AFPSN=afpsn)
         if not placements.exists():
             return JsonResponse({'error': 'Placement not found'}, status=404)
-        
         for placement in placements:
             placement.delete()
-        
         # Update the UNIT in PersonnelItem
         try:
             personnel_item = PersonnelItem.objects.get(SERIAL_NUMBER=afpsn)
             personnel_item.UNIT = new_unit
+            personnel_item.SUB_UNIT = "None"
             personnel_item.save()
         except PersonnelItem.DoesNotExist:
             return JsonResponse({'error': 'PersonnelItem not found'}, status=404)
+        
+        if category != "Assign":
+            print("==============================",category , "DS OR TDY")
+            # Delete all instances from Placement
+            placements = Placement.objects.filter(AFPSN=afpsn)
+            if not placements.exists():
+                return JsonResponse({'error': 'Placement not found'}, status=404)
+            for placement in placements:
+                placement.delete()
 
         return JsonResponse({'success': 'Placement updated successfully'})
     return JsonResponse({'error': 'Invalid request method'}, status=400)
