@@ -513,6 +513,7 @@ def save_placement_update(request):
         duration = request.POST.get('duration')
         dateeffective_until = request.POST.get('formattedNewDate')
         upload_file = request.FILES.get('uploadOrder')  # Correct variable name
+
         if 'uploadOrder' in request.FILES:
             upload_file = request.FILES['uploadOrder']
             print("FILE")
@@ -539,6 +540,7 @@ def save_placement_update(request):
         if assignment_category == "Assign":
             print("HEY LOVE! ",reassignment_date)
             reassignment_effective_date_until = reassignment_date
+            duration = "None"
         # print("UPLOAD FILE ", upload_file)
 
 
@@ -556,7 +558,7 @@ def save_placement_update(request):
             ASSIGNMENT_CATEGORY=assignment_category,
             REASSIGN_EFFECTIVEDDATE_UNTIL=reassignment_effective_date_until,
             DURATION=duration,
-            # ORDER_UPLOADFILE=upload_file
+            ORDER_UPLOADFILE=upload_file
         )
         placement.save()
         return HttpResponse('Data uploaded successfully.')
