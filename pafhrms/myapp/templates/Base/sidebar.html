@@ -14,44 +14,61 @@
 </head>
 
 <body>
-    
-		
 	<div class="wrapper d-flex align-items-stretch">
-			<nav id="sidebar">
-				<div class="p-4 pt-5">
+		<nav id="sidebar">
+			<div class="p-4 pt-5">
 		  		<a href="" class="img logo rounded-circle mb-5" style="background-image: url(/static/img/logo.png);"></a>
 	        
-                <ul class="list-unstyled components mb-5">
-                    <li>
-                        <!-- <li  class="active"> -->
-                        <a href="{% url 'index' %}">Personnel Records</a>
-                    </li>
+        <ul class="list-unstyled components mb-5">
+            <li>
+                <!-- <li  class="active"> -->
+                <a href="{% url 'index' %}">Personnel Records</a>
+            </li>
 
-	                <!-- <li>
-                    <a href="{% url 'placement' %}">Placement</a>
-	                </li>
 
-                    -->
-	                <!-- <li>
-                    <a href="{% url 'Tranche' %}">Reenlistment</a>
-	                </li> -->
+            <li>
+                <!-- <li  class="active"> -->
+                <a href="{% url 'unit_records' %}">Unit Records</a>
+            </li>
+
+            
+
+
+
             <li>
                  <!--  -->
                  <a href="#placementSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Placement</a>
                  <ul class="collapse list-unstyled" id="placementSubmenu">
-                   <li>
-                       <a href="{% url 'placement_officer' %}">Officer</a>
-                 </li>
-                 <li>
-                     <a href="{% url 'placement_enlisted' %}">Enlisted Personnel</a>
-                 </li>
-                 <li>
-                    <a href="{% url 'placement_DS' %}">DS Monitoring</a>
-                </li>
-                <li>
-                    <a href="">Personnel Monitoring</a>
-                </li>
+                    <li>
+                        <a href="{% url 'placement_officer' %}">Officer</a>
+                    </li>
+
+                    <li>
+                        <a href="{% url 'placement_enlisted' %}">Enlisted Personnel</a>
+                    </li>
+
+                    <li>
+                        <a href="{% url 'placement_DS' %}">DS Monitoring</a>
+                    </li>
+
+                    <li>
+                        <a href="{% url 'placement_DS' %}">Assignment Monitoring</a>
+            </li>
+
+
+           
+
+
+            
          </ul>
+         
+
+         
+
+
+
+
+         
              <!--  -->
              <a href="#ReenlistmentSubmenuenlisted" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Reenlistment</a>
              <ul class="collapse list-unstyled" id="ReenlistmentSubmenuenlisted">
@@ -69,6 +86,7 @@
                     <a href="">Medical for full Reenlistment</a>
                 </li>
             </ul>
+            
                 
 
                 <a href="#schoolingSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Schooling</a>
@@ -154,6 +172,8 @@
                     </li>
                 </ul>
             </li>
+            
+
             <li>
                 <a href="#attritionSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">ATTRITION</a>
                 <ul class="collapse list-unstyled" id="attritionSubmenu">
@@ -175,6 +195,10 @@
 	        </ul>
 	      </div>
     	</nav>
+
+
+
+
         <!-- <div class="theme-wrapper">
         <i class="bx bxs-moon theme-icon"></i>
         <p>Dark Theme</p>

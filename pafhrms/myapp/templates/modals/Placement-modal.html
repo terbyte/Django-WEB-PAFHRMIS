@@ -374,11 +374,14 @@ document.getElementById('reassignmentDate').addEventListener('change', function(
     var reassignmentDate = document.getElementById('reassignmentDate').value;
     var selectedCategory = this.value;
     var dropdownContainer = document.getElementById('dropdownContainer');
+
+    
     if ((selectedCategory === 'Detached Service' || selectedCategory === 'Temporary Duty') && !reassignmentDate) {
       showAlert();
       this.value = previousValue;
       dropdownContainer.classList.add('hidden');
     } else {
+      
       dropdownContainer.classList.remove('hidden');
       previousValue = selectedCategory;
     }
@@ -394,6 +397,21 @@ function computeDate() {
   var reassignmentDate = new Date(reassignmentDateValue);
   var durationSelect = document.getElementById('durationtxt');
   var selectedDuration = durationSelect.value;
+
+ 
+
+  var assignmentcategory = document.getElementById('assignmentcategorytxt');
+  var selectedCategory = assignmentcategory.value;
+
+
+if (assignmentCategory.value === "Assign") {
+        endDate.value = reassignmentDate.value;
+        endDateContainer.style.display = 'none';
+        durationOption.style.display = 'none';
+        return;
+      } 
+
+
 
   var yearsToAdd = 0;
   var monthsToAdd = 0;
@@ -426,6 +444,9 @@ function computeDate() {
   var formattedNewDate = day + "-" + month + "-" + year;
 
   document.getElementById('untildatelbl').textContent = formattedNewDate;
+
+
+
 }
 
 
@@ -434,6 +455,9 @@ document.getElementById('reassignmentDate').addEventListener('change', computeDa
 
 // Add event listener to duration dropdown
 document.getElementById('durationtxt').addEventListener('change', computeDate);
+
+
+
 
 
   document.getElementById('closeAlertBtn').addEventListener('click', function() {

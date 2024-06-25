@@ -80,6 +80,9 @@ def update_placement(request):
 def Tranche(request):
     return render(request, 'reenlistment/Tranche.html')
 
+def unit_records(request):
+    return render(request, 'Unit_Records/unit_records.html')
+
 def format_date(date):
     if date:
         try:
@@ -516,7 +519,7 @@ def save_placement_update(request):
         else:
             print("No file uploaded")
 
-        print("======duration until =====", calculate_due_date(duration,reassignment_date))
+        
         # Calculate the due date based on the duration
         reassignment_effective_date_until = calculate_due_date(duration,reassignment_date)
 
@@ -531,6 +534,11 @@ def save_placement_update(request):
         print("DURATION ", duration)
         print("EFFECTIVE DATE UNTIL ", dateeffective_until)
         print("reassignment_effective_date_until  ", dateeffective_until)
+
+
+        if assignment_category == "Assign":
+            print("HEY LOVE! ",reassignment_date)
+            reassignment_effective_date_until = reassignment_date
         # print("UPLOAD FILE ", upload_file)
 
 

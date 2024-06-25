@@ -36,6 +36,24 @@ class PersonnelItem(models.Model):
 
 
 
+# old
+# class Placement(models.Model):
+#     AFPSN = models.CharField(max_length=200)
+#     RANK = models.CharField(max_length=200)
+#     LAST_NAME = models.CharField(max_length=200)
+#     FIRST_NAME = models.CharField(max_length=200)
+#     MIDDLE_NAME = models.CharField(max_length=200)
+#     SUFFIX = models.CharField(max_length=200)
+#     MOTHER_UNIT = models.CharField(max_length=200)
+#     NEW_UNIT = models.CharField(max_length=200)
+#     REASSIGN_EFFECTIVEDDATE = models.DateField()
+#     ASSIGNMENT_CATEGORY = models.CharField(max_length=200)
+#     DURATION     = models.CharField(max_length=200, blank=True, null=True)
+#     REASSIGN_EFFECTIVEDDATE_UNTIL = models.DateField( blank=True, null=True)
+#     ORDER_UPLOADFILE = models.FileField(upload_to='media/')
+
+#     class Meta:
+#         db_table="placementinfo"
 
 class Placement(models.Model):
     AFPSN = models.CharField(max_length=200)
@@ -48,12 +66,12 @@ class Placement(models.Model):
     NEW_UNIT = models.CharField(max_length=200)
     REASSIGN_EFFECTIVEDDATE = models.DateField()
     ASSIGNMENT_CATEGORY = models.CharField(max_length=200)
-    DURATION     = models.CharField(max_length=200, blank=True, null=True)
-    REASSIGN_EFFECTIVEDDATE_UNTIL = models.DateField( blank=True, null=True)
+    DURATION = models.CharField(max_length=200, blank=True, null=True)
+    REASSIGN_EFFECTIVEDDATE_UNTIL = models.DateField(blank=True, null=True)
     ORDER_UPLOADFILE = models.FileField(upload_to='media/')
 
     class Meta:
-        db_table="placementinfo"
+        db_table = "placementinfo"
 
 
     
