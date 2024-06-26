@@ -63,6 +63,30 @@
 {% include 'modals/Placement-View-Modal.html' %}
 
 <script>
+
+document.addEventListener('DOMContentLoaded', function() {
+    const rows = document.querySelectorAll('tbody tr');
+    const thresholdDays = 5 * 30; // 5 months
+
+    rows.forEach(row => {
+        const endDate = row.getAttribute('data-end-date');
+        const category = row.querySelector('td:nth-child(6)').textContent.trim();
+        const afpsn = row.querySelector('td:nth-child(2)').textContent.trim();
+        const newUnit = row.querySelector('td:nth-child(5)').textContent.trim();
+        const timeElapsedCell = row.querySelector('.time-elapsed');
+        const timeElapsed = calculateTimeElapsedToCurrent(endDate, category, afpsn, newUnit);
+        timeElapsedCell.textContent = timeElapsed;
+
+        // Highlight row if time elapsed is less than 5 months
+        if (timeElapsed !== "None" && timeElapsed < "0 years 1 months 0 days") {
+            row.style.backgroundColor = '#ffb4a2'; // Change this to your preferred color
+        }
+    });
+});
+
+
+
+
     function calculateTimeElapsedToCurrent(endDate, category, afpsn, newUnit) {
     if (endDate === "None" || endDate === null) {
         return "None";
