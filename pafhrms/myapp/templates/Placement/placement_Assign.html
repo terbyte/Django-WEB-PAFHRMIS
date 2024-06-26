@@ -70,11 +70,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     rows.forEach(row => {
         const endDate = row.getAttribute('data-end-date');
-        const category = row.querySelector('td:nth-child(6)').textContent.trim();
-        const afpsn = row.querySelector('td:nth-child(2)').textContent.trim();
-        const newUnit = row.querySelector('td:nth-child(5)').textContent.trim();
+
         const timeElapsedCell = row.querySelector('.time-elapsed');
-        const timeElapsed = calculateTimeElapsedToCurrent(endDate, category, afpsn, newUnit);
+        const timeElapsed = calculateTimeElapsedToCurrent(endDate);
         timeElapsedCell.textContent = timeElapsed;
 
         // Highlight row if time elapsed is less than 5 months
