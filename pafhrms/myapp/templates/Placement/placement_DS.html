@@ -124,6 +124,24 @@ document.addEventListener('DOMContentLoaded', (event) => {
 });
 
 
+document.addEventListener('DOMContentLoaded', function() {
+    const rows = document.querySelectorAll('tbody tr');
+    const thresholdDays = 5 * 30; // 5 months
+
+    rows.forEach(row => {
+        const endDate = row.getAttribute('data-end-date');
+
+        const timeElapsedCell = row.querySelector('.time-elapsed');
+        const timeElapsed = calculateTimeElapsedToCurrent(endDate);
+        timeElapsedCell.textContent = timeElapsed;
+
+        // Highlight row if time elapsed is less than 5 months
+        if (timeElapsed !== "None" && timeElapsed < "0 years 1 months 0 days") {
+            row.style.backgroundColor = '#ffb4a2'; // Change this to your preferred color
+        }
+    });
+});
+
 
 
 document.addEventListener('DOMContentLoaded', (event) => {

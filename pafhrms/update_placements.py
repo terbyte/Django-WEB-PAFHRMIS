@@ -24,3 +24,7 @@ class Command(BaseCommand):
         # Remove placements with other categories
         other_placements = Placement.objects.exclude(category='Assign')
         other_placements.delete()
+
+
+
+# i dont know what is this used for. but it is not used in any page yet

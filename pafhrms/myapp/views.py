@@ -87,6 +87,57 @@ def Tranche(request):
     return render(request, 'reenlistment/Tranche.html')
 
 def unit_records(request):
+    # last_name_query = request.GET.get('last_name')
+    # first_name_query = request.GET.get('first_name')
+    # middle_name_query = request.GET.get('middle_name')
+    # suffix_query = request.GET.get('suffix')
+    # afsn_query = request.GET.get('afsn')
+    # rank_query = request.GET.get('rank')
+    # category_query = request.GET.get('category')
+    # sex_query = request.GET.get('sex')
+    # unit_query = request.GET.get('unit')
+    
+    # filters = Q()
+    # if last_name_query:
+    #     filters &= Q(LAST_NAME__icontains=last_name_query)
+    # if first_name_query:
+    #     filters &= Q(FIRST_NAME__icontains=first_name_query)
+    # if middle_name_query:
+    #     filters &= Q(MIDDLE_NAME__icontains=middle_name_query)
+    # if suffix_query and suffix_query != "Suffix":
+    #     filters &= Q(EXTENSION_NAME__icontains=suffix_query)
+    # if afsn_query:
+    #     filters &= Q(SERIAL_NUMBER__icontains=afsn_query)  # Change this to 'SERIAL_NUMBER'
+    # if rank_query and rank_query != "Rank":
+    #     filters &= Q(RANK__icontains=rank_query)
+    # if category_query and category_query != "Category":
+    #     filters &= Q(CATEGORY__icontains=category_query)
+    # if sex_query and sex_query != "Sex":
+    #     filters &= Q(SEX__icontains=sex_query)
+    # if unit_query:
+    #     filters &= Q(UNIT__icontains=unit_query)
+    
+    # persons = PersonnelItem.objects.filter(filters)
+    
+    # paginator = Paginator(persons, 10)
+    # page_num = request.GET.get("page")
+    # persons = paginator.get_page(page_num)
+    
+    # return render(request, 'myapp/index.html', {
+    #     'persons': persons,
+    #     'last_name_query': last_name_query,
+    #     'first_name_query': first_name_query,
+    #     'middle_name_query': middle_name_query,
+    #     'suffix_query': suffix_query,
+    #     'afsn_query': afsn_query,
+    #     'rank_query': rank_query,
+    #     'category_query': category_query,
+    #     'sex_query': sex_query,
+    #     'unit_query': unit_query,
+    # })
+
+
+
     return render(request, 'Unit_Records/unit_records.html')
 
 def format_date(date):
@@ -501,6 +552,7 @@ def placement_DS(request):
         'unit_query': unit_query,
         'category_query': category_queries,
     })
+
 
 
 # SAVING REASSIGNMENT ON MODAL WHEN ASSINGING TO OTHER UNIT OR DS/TDY

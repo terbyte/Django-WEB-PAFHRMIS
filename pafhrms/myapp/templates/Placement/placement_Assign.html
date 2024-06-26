@@ -15,7 +15,6 @@
             <th class="sortable" data-sort="NEW_UNIT">TEMPORARY UNIT</th>
             <th class="sortable" data-sort="ASSIGNMENT_CATEGORY">CATEGORY</th>
             <th class="sortable" data-sort="REASSIGN_EFFECTIVEDDATE">DS/TDY EFFECTIVE DATE</th>
-            <th class="sortable" data-sort="REASSIGN_EFFECTIVEDDATE_UNTIL">ASSIGNMENT END DATE</th>
             <th class="sortable" data-sort="DURATION">DURATION</th>
             <th class="sortable" data-sort="TIME_ELAPSED">TIME ELAPSED</th>
             <th class="sortable" data-sort="TIME_ELAPSED">ACTION</th>
@@ -33,7 +32,6 @@
             <td>{{ person.NEW_UNIT }}</td>
             <td>{{ person.ASSIGNMENT_CATEGORY }}</td>
             <td>{{ person.REASSIGN_EFFECTIVEDDATE }}</td>
-            <td>{{ person.REASSIGN_EFFECTIVEDDATE_UNTIL }}</td>
             <td>{{ person.DURATION }} </td>
             <td class="time-elapsed"></td>
 
@@ -48,7 +46,6 @@
                 data-unit="{{ person.MOTHER_UNIT }}"
                 data-unit_category="{{ person.ASSIGNMENT_CATEGORY }}"
                 data-new_unit="{{ person.NEW_UNIT }}"
-                data-reassigneffectivedate_until="{{ person.REASSIGN_EFFECTIVEDDATE_UNTIL |date:'Y-m-d' }}"
 
 
                 data-toggle="modal"
