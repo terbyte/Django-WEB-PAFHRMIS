@@ -1,0 +1,225 @@
+{% extends 'Base/base.html' %}
+
+{% block content %}
+<h2>ASSIGN MONITORING</h2>
+{% include 'myapp/searchforms.html' %}
+
+</head>
+<table class="table table-responsive-sm table-bordered table-striped table-sm" id="sortableTable">
+    <thead>
+        <tr>
+            <th class="sortable" data-sort="RANK">RANK</th>
+            <th class="sortable" data-sort="AFPSN">AFPSN</th>
+            <th class="sortable" data-sort="FULL_NAME">FULL NAME</th>
+            <th class="sortable" data-sort="MOTHER_UNIT">MOTHER UNIT</th>
+            <th class="sortable" data-sort="NEW_UNIT">TEMPORARY UNIT</th>
+            <th class="sortable" data-sort="ASSIGNMENT_CATEGORY">CATEGORY</th>
+            <th class="sortable" data-sort="REASSIGN_EFFECTIVEDDATE">DS/TDY EFFECTIVE DATE</th>
+            <th class="sortable" data-sort="REASSIGN_EFFECTIVEDDATE_UNTIL">ASSIGNMENT END DATE</th>
+            <th class="sortable" data-sort="DURATION">DURATION</th>
+            <th class="sortable" data-sort="TIME_ELAPSED">TIME ELAPSED</th>
+            <th class="sortable" data-sort="TIME_ELAPSED">ACTION</th>
+        </tr>
+    </thead>
+
+
+    <tbody>
+        {% for person in persons %}
+        <tr data-end-date="{{ person.REASSIGN_EFFECTIVEDDATE_UNTIL }}">
+            <td>{{ person.RANK }}</td>
+            <td>{{ person.AFPSN }}</td>
+            <td>{{ person.FIRST_NAME }} {{ person.MIDDLE_NAME }} {{ person.LAST_NAME }}</td>
+            <td>{{ person.MOTHER_UNIT }}</td>
+            <td>{{ person.NEW_UNIT }}</td>
+            <td>{{ person.ASSIGNMENT_CATEGORY }}</td>
+            <td>{{ person.REASSIGN_EFFECTIVEDDATE }}</td>
+            <td>{{ person.REASSIGN_EFFECTIVEDDATE_UNTIL }}</td>
+            <td>{{ person.DURATION }} </td>
+            <td class="time-elapsed"></td>
+
+            <td>
+                <button class="btn btn-primary openModalButton"
+                data-rank="{{ person.RANK }}"
+                data-lastname="{{ person.LAST_NAME }}"
+                data-firstname="{{ person.FIRST_NAME }}"
+                data-middlename="{{ person.MIDDLE_NAME }}"
+                data-suffix="{{ person.EXTENSION_NAME }}"
+                data-afpsn="{{ person.AFPSN }}"
+                data-unit="{{ person.MOTHER_UNIT }}"
+                data-unit_category="{{ person.ASSIGNMENT_CATEGORY }}"
+                data-new_unit="{{ person.NEW_UNIT }}"
+                data-reassigneffectivedate_until="{{ person.REASSIGN_EFFECTIVEDDATE_UNTIL |date:'Y-m-d' }}"
+
+
+                data-toggle="modal"
+              data-target="#myModal">VIEW</button>
+            </td>
+
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% include 'modals/Placement-View-Modal.html' %}
+
+<script>
+    function calculateTimeElapsedToCurrent(endDate, category, afpsn, newUnit) {
+    if (endDate === "None" || endDate === null) {
+        return "None";
+    }
+
+    const end = new Date(endDate);
+    const now = new Date();
+
+    let years = end.getFullYear() - now.getFullYear();
+    let months = end.getMonth() - now.getMonth();
+    let days = end.getDate() - now.getDate();
+
+    if (days < 0) {
+        months -= 1;
+        days += new Date(now.getFullYear(), now.getMonth(), 0).getDate();
+    }
+    if (months < 0) {
+        years -= 1;
+        months += 12;
+    }
+
+    const elapsed = `${years} years ${months} months ${days} days`;
+
+    // if (elapsed === "0 years 0 months 0 days" && category === "Assign") {
+    if (elapsed === "0 years 0 months 0 days") {
+        // Make AJAX call to update database
+        $.ajax({
+            url: "{% url 'update_placement' %}",
+            type: "POST",
+            data: {
+                afpsn: afpsn,
+                new_unit: newUnit,
+                category:category,
+                csrfmiddlewaretoken: "{{ csrf_token }}"
+            },
+            success: function(response) {
+                console.log("Placement updated successfully");
+            },
+            error: function(xhr, errmsg, err) {
+                console.error("Error updating placement: ", errmsg);
+            }
+        });
+    }
+
+    return elapsed;
+}
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    const rows = document.querySelectorAll('tbody tr');
+    rows.forEach(row => {
+        const endDate = row.getAttribute('data-end-date');
+        const category = row.querySelector('td:nth-child(6)').textContent.trim();
+        const afpsn = row.querySelector('td:nth-child(2)').textContent.trim();
+        const newUnit = row.querySelector('td:nth-child(5)').textContent.trim();
+        const timeElapsedCell = row.querySelector('.time-elapsed');
+        const timeElapsed = calculateTimeElapsedToCurrent(endDate, category, afpsn, newUnit);
+        timeElapsedCell.textContent = timeElapsed;
+    });
+});
+
+
+
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    const rows = document.querySelectorAll('tbody tr');
+    rows.forEach(row => {
+        const endDate = row.getAttribute('data-end-date');
+        const timeElapsedCell = row.querySelector('.time-elapsed');
+        const timeElapsed = calculateTimeElapsedToCurrent(endDate);
+        timeElapsedCell.textContent = timeElapsed;
+    });
+    const headers = document.querySelectorAll('th.sortable');
+    headers.forEach(header => {
+        header.addEventListener('click', () => {
+            const sortKey = header.getAttribute('data-sort');
+            const isAscending = header.classList.contains('desc');
+            sortTable(sortKey, !isAscending);
+            headers.forEach(h => h.classList.remove('desc'));
+            if (!isAscending) header.classList.add('desc');
+        });
+    });
+});
+function sortTable(sortKey, ascending) {
+    const tbody = document.querySelector('tbody');  
+    const rows = Array.from(tbody.querySelectorAll('tr'));
+    rows.sort((a, b) => {
+        const aData = getCellValue(a, sortKey);
+        const bData = getCellValue(b, sortKey);
+        if (aData < bData) return ascending ? -1 : 1;
+        if (aData > bData) return ascending ? 1 : -1;
+        return 0;
+    });
+    rows.forEach(row => tbody.appendChild(row));
+}
+function getCellValue(row, sortKey) {
+    if (sortKey === 'TIME_ELAPSED') {
+        const endDate = row.getAttribute('data-end-date');
+        return new Date() - new Date(endDate);
+    } else {
+        return row.querySelector(`td:nth-child(${getColumnIndex(sortKey)})`).textContent.trim();
+    }
+}
+
+    function getColumnIndex(sortKey) {
+        const headers = document.querySelectorAll('th');
+        for (let i = 0; i < headers.length; i++) {
+            if (headers[i].getAttribute('data-sort') === sortKey) {
+                return i + 1; // nth-child is 1-based
+            }
+        }
+        return -1;
+    }
+
+</script>
+
+
+<nav aria-label="...">
+    <ul class="pagination">
+        {% if persons.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page=1">&laquo; first</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ persons.previous_page_number }}">previous</a>
+            </li>
+        {% else %}
+            <li class="page-item disabled">
+                <span class="page-link">&laquo; first</span>
+            </li>
+            <li class="page-item disabled">
+                <span class="page-link">previous</span>
+            </li>
+        {% endif %}
+
+        <li class="page-item">
+            <span class="page-link">
+                Page {{ persons.number }} of {{ persons.paginator.num_pages }}
+            </span>
+        </li>
+
+        {% if persons.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ persons.next_page_number }}">next</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ persons.paginator.num_pages }}">last &raquo;</a>
+            </li>
+        {% else %}
+            <li class="page-item disabled">
+                <span class="page-link">next</span>
+            </li>
+            <li class="page-item disabled">
+                <span class="page-link">last &raquo;</span>
+            </li>
+        {% endif %}
+    </ul>
+</nav>
+  
+
+{% endblock %}

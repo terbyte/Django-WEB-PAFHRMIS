@@ -11,7 +11,8 @@ urlpatterns = [
     path('Inactive_Personnel/', views.inactivepersonnel, name='Inactive_Personnel'),
     path('update_personnel/', views.update_personnel, name='update_personnel'),  # Add this line 
     path('Tranche/', views.Tranche, name='Tranche'),  
-    
+
+    # Placement
     path('placement/', views.placement_officer, name='placement'),
     path('placement/placement_officer', views.placement_officer, name='placement_officer'),
     path('placement/placement_enlisted', views.placement_enlisted, name='placement_enlisted'),
@@ -19,6 +20,7 @@ urlpatterns = [
     path('placement/placement_DS', views.placement_DS, name='placement_DS'),
     path('placement/placement_DS_extension', views.placement_update_extension, name='placement_DS_extension'),
     path('placement/update_placement', views.update_placement, name='update_placement'),
+    path('placement/placement_Assign', views.placement_Assign, name='placement_Assign'),
 
     # Unit Records
     path('placement/unit_records', views.unit_records, name='unit_records'),
