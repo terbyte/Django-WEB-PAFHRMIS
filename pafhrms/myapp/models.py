@@ -69,6 +69,7 @@ class Placement(models.Model):
     DURATION = models.CharField(max_length=200, blank=True, null=True)
     REASSIGN_EFFECTIVEDDATE_UNTIL = models.DateField(blank=True, null=True)
     ORDER_UPLOADFILE = models.FileField(upload_to='orders/')
+    IS_ARCHIVED = models.BooleanField(default=False)
 
     class Meta:
         db_table = "placementinfo"

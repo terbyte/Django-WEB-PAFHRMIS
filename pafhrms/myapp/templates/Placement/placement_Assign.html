@@ -87,25 +87,46 @@ document.addEventListener('DOMContentLoaded', function() {
     const elapsed = `${years} years ${months} months ${days} days`;
 
     // if (elapsed === "0 years 0 months 0 days" && category === "Assign") {
+    // if (elapsed === "0 years 0 months 0 days") {
+    //     // Make AJAX call to update database
+    //     $.ajax({
+    //         url: "{% url 'update_placement' %}",
+    //         type: "POST",
+    //         data: {
+    //             afpsn: afpsn,
+    //             new_unit: newUnit,
+    //             category:category,
+    //             csrfmiddlewaretoken: "{{ csrf_token }}"
+    //         },
+    //         success: function(response) {
+    //             console.log("Placement updated successfully");
+    //         },
+    //         error: function(xhr, errmsg, err) {
+    //             console.error("Error updating placement: ", errmsg);
+    //         }
+    //     });
+    // }
+
     if (elapsed === "0 years 0 months 0 days") {
-        // Make AJAX call to update database
-        $.ajax({
-            url: "{% url 'update_placement' %}",
-            type: "POST",
-            data: {
-                afpsn: afpsn,
-                new_unit: newUnit,
-                category:category,
-                csrfmiddlewaretoken: "{{ csrf_token }}"
-            },
-            success: function(response) {
-                console.log("Placement updated successfully");
-            },
-            error: function(xhr, errmsg, err) {
-                console.error("Error updating placement: ", errmsg);
-            }
-        });
-    }
+    // Make AJAX call to update database
+    $.ajax({
+        url: "{% url 'update_placement' %}",
+        type: "POST",
+        data: {
+            afpsn: afpsn,
+            new_unit: newUnit,
+            category: category,
+            archived: true,  // Include the archived field
+            csrfmiddlewaretoken: "{{ csrf_token }}"
+        },
+        success: function(response) {
+            console.log("Placement updated successfully");
+        },
+        error: function(xhr, errmsg, err) {
+            console.error("Error updating placement: ", errmsg);
+        }
+    });
+}
 
     return elapsed;
 }
@@ -157,6 +178,8 @@ function sortTable(sortKey, ascending) {
     });
     rows.forEach(row => tbody.appendChild(row));
 }
+
+
 function getCellValue(row, sortKey) {
     if (sortKey === 'TIME_ELAPSED') {
         const endDate = row.getAttribute('data-end-date');
