@@ -340,142 +340,187 @@
 </div>
 <!-- /alert section -->
 
-  <script>
-// if the reaasgined date is empty, do something
-var previousValue = document.getElementById('assignmentcategorytxt').value;
-var untilDateLabel = document.getElementById('untildatelbl');
+    <script>
+  // if the reaasgined date is empty, do something
+  var previousValue = document.getElementById('assignmentcategorytxt').value;
+  var untilDateLabel = document.getElementById('untildatelbl');
 
-document.getElementById('reassignmentDate').addEventListener('change', function() {
-  //populate date to untildatelbl
-  // Get the value of the reassignmentDate input
-  var reassignmentDateValue = document.getElementById('reassignmentDate').value;
-  // Convert the input date string to a Date object
-  var reassignmentDate = new Date(reassignmentDateValue);
-  var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
-                "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-  // Format the date as "dd-mmm-yyyy"
-  var formattedDate = ("0" + reassignmentDate.getDate()).slice(-2) + "-" + 
-                      months[reassignmentDate.getMonth()] + "-" + 
-                      reassignmentDate.getFullYear();
-  // Get the label element by its ID
-  // new var format = dd-mm-yyyy
-  var formattedDate2 = reassignmentDate.toLocaleDateString('en-GB');
-  var untildatelbl = document.getElementById('untildatelbl');
-  // Set the text content of the label
-  untildatelbl.textContent = formattedDate2;
+  document.getElementById('reassignmentDate').addEventListener('change', function() {
+    //populate date to untildatelbl
+    // Get the value of the reassignmentDate input
+    var reassignmentDateValue = document.getElementById('reassignmentDate').value;
+    // Convert the input date string to a Date object
+    var reassignmentDate = new Date(reassignmentDateValue);
+    var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    // Format the date as "dd-mmm-yyyy"
+    var formattedDate = ("0" + reassignmentDate.getDate()).slice(-2) + "-" + 
+                        months[reassignmentDate.getMonth()] + "-" + 
+                        reassignmentDate.getFullYear();
+    // Get the label element by its ID
+    // new var format = dd-mm-yyyy
+    var formattedDate2 = reassignmentDate.toLocaleDateString('en-GB');
+    var untildatelbl = document.getElementById('untildatelbl');
+    // Set the text content of the label
+    untildatelbl.textContent = formattedDate2;
 
 
-});
-
-// ends 
-
-// hides the dropdown of DS and TDY if dropdown option has value of "assigned"
-  document.getElementById('assignmentcategorytxt').addEventListener('change', function() {
-    var reassignmentDate = document.getElementById('reassignmentDate').value;
-    var selectedCategory = this.value;
-    var dropdownContainer = document.getElementById('dropdownContainer');
-
-    
-    if ((selectedCategory === 'Detached Service' || selectedCategory === 'Temporary Duty') && !reassignmentDate) {
-      showAlert();
-      this.value = previousValue;
-      dropdownContainer.classList.add('hidden');
-    } else {
-      
-      dropdownContainer.classList.remove('hidden');
-      previousValue = selectedCategory;
-    }
   });
+
+  // ends 
+
+  // hides the dropdown of DS and TDY if dropdown option has value of "assigned"
+    document.getElementById('assignmentcategorytxt').addEventListener('change', function() {
+      var reassignmentDate = document.getElementById('reassignmentDate').value;
+      var selectedCategory = this.value;
+      var dropdownContainer = document.getElementById('dropdownContainer');
+
+      
+      if ((selectedCategory === 'Detached Service' || selectedCategory === 'Temporary Duty') && !reassignmentDate) {
+        showAlert();
+        this.value = previousValue;
+        dropdownContainer.classList.add('hidden');
+      } else {
+        
+        dropdownContainer.classList.remove('hidden');
+        previousValue = selectedCategory;
+      }
+    });
+    
+
+
+  // event for duration drop down
+  function computeDate() {
+    var reassignmentDateValue = document.getElementById('reassignmentDate').value;
+    if (!reassignmentDateValue) return; // Return if reassignment date is not set
+
+    var reassignmentDate = new Date(reassignmentDateValue);
+    var durationSelect = document.getElementById('durationtxt');
+    var selectedDuration = durationSelect.value;
+
   
 
-
-// event for duration drop down
-function computeDate() {
-  var reassignmentDateValue = document.getElementById('reassignmentDate').value;
-  if (!reassignmentDateValue) return; // Return if reassignment date is not set
-
-  var reassignmentDate = new Date(reassignmentDateValue);
-  var durationSelect = document.getElementById('durationtxt');
-  var selectedDuration = durationSelect.value;
-
- 
-
-  var assignmentcategory = document.getElementById('assignmentcategorytxt');
-  var selectedCategory = assignmentcategory.value;
+    var assignmentcategory = document.getElementById('assignmentcategorytxt');
+    var selectedCategory = assignmentcategory.value;
 
 
-if (selectedCategory === "Assign") {
-        endDate = reassignmentDate;
+  if (selectedCategory === "Assign") {
+          endDate = reassignmentDate;
 
-        return;
-      } 
+          return;
+        } 
 
 
 
-  var yearsToAdd = 0;
-  var monthsToAdd = 0;
+    var yearsToAdd = 0;
+    var monthsToAdd = 0;
 
-  switch (selectedDuration) {
-    case "6 Months":
-      monthsToAdd = 6;
-      break;
-    case "1 Year":
-      yearsToAdd = 1;
-      break;
-    case "2 Years":
-      yearsToAdd = 2;
-      break;
-    default:
-      break;
+    switch (selectedDuration) {
+      case "6 Months":
+        monthsToAdd = 6;
+        break;
+      case "1 Year":
+        yearsToAdd = 1;
+        break;
+      case "2 Years":
+        yearsToAdd = 2;
+        break;
+      default:
+        break;
+    }
+
+    var newDate = new Date(reassignmentDate);
+    newDate.setMonth(newDate.getMonth() + monthsToAdd);
+    newDate.setFullYear(newDate.getFullYear() + yearsToAdd);
+
+    if (newDate.getDate() !== reassignmentDate.getDate()) {
+      newDate.setDate(0);
+    }
+
+    var day = ("0" + newDate.getDate()).slice(-2);
+    var month = ("0" + (newDate.getMonth() + 1)).slice(-2);
+    var year = newDate.getFullYear();
+    var formattedNewDate = day + "-" + month + "-" + year;
+
+    document.getElementById('untildatelbl').textContent = formattedNewDate;
+
+
+
   }
 
-  var newDate = new Date(reassignmentDate);
-  newDate.setMonth(newDate.getMonth() + monthsToAdd);
-  newDate.setFullYear(newDate.getFullYear() + yearsToAdd);
 
-  if (newDate.getDate() !== reassignmentDate.getDate()) {
-    newDate.setDate(0);
-  }
+  // Add event listener to reassignment date picker
+  document.getElementById('reassignmentDate').addEventListener('change', computeDate);
 
-  var day = ("0" + newDate.getDate()).slice(-2);
-  var month = ("0" + (newDate.getMonth() + 1)).slice(-2);
-  var year = newDate.getFullYear();
-  var formattedNewDate = day + "-" + month + "-" + year;
-
-  document.getElementById('untildatelbl').textContent = formattedNewDate;
-
-
-
-}
-
-
-// Add event listener to reassignment date picker
-document.getElementById('reassignmentDate').addEventListener('change', computeDate);
-
-// Add event listener to duration dropdown
-document.getElementById('durationtxt').addEventListener('change', computeDate);
+  // Add event listener to duration dropdown
+  document.getElementById('durationtxt').addEventListener('change', computeDate);
 
 
 
 
 
-  document.getElementById('closeAlertBtn').addEventListener('click', function() {
-    hideAlert();
+    document.getElementById('closeAlertBtn').addEventListener('click', function() {
+      hideAlert();
+    });
+
+    function showAlert() {
+      var alertBox = document.getElementById('alertBox');
+      alertBox.style.display = 'block';
+    }
+
+    function hideAlert() {
+      var alertBox = document.getElementById('alertBox');
+      alertBox.style.display = 'none';
+      
+    }
+
+  // =======================================
+  $(document).ready(function() {
+      // Add change event listener to the file input
+      $('#uploadOrder').change(function() {
+          // Get the name of the selected file
+          var fileName = $(this).val().split('\\').pop();
+          // Display the file name in the custom file label
+          $('.custom-file-label').text(fileName);
+      });
   });
 
-  function showAlert() {
-    var alertBox = document.getElementById('alertBox');
-    alertBox.style.display = 'block';
-  }
 
-  function hideAlert() {
-    var alertBox = document.getElementById('alertBox');
-    alertBox.style.display = 'none';
-    
-  }
 
-// =======================================
-    $(document).ready(function() {
+      $(document).ready(function() {
+        $('.openModalButton').click(function() {
+
+          $('#personnel_id').val(personnel_id);
+          var rank = $(this).data('rank');
+          var afpsn = $(this).data('afpsn'); // Assuming 'afpsn' is the unique identifier
+          var lastname = $(this).data('lastname');
+          var firstname = $(this).data('firstname');
+          var middlename = $(this).data('middlename');
+          var suffix = $(this).data('suffix');
+          var mother_unit = $(this).data('unit');
+
+          // Populate the subunit dropdown based on the selected unit
+
+        });
+      });
+
+
+      var selectElement = document.getElementById('assignmentcategorytxt');
+          // Add event listener for change event
+          selectElement.addEventListener('change', function(event) {
+              // Get the selected option
+              var selectedOption = event.target.value;
+              // Check if the selected option is not "Assigned"
+              if (selectedOption !== 'Assign') {
+                document.getElementById('dropdownContainer').removeAttribute('hidden');
+              }else{
+                document.getElementById('dropdownContainer').setAttribute('hidden', 'hidden');
+              }
+          });
+          
+
+
+          $(document).ready(function() {
     // Add change event listener to the file input
     $('#uploadOrder').change(function() {
         // Get the name of the selected file
@@ -483,106 +528,65 @@ document.getElementById('durationtxt').addEventListener('change', computeDate);
         // Display the file name in the custom file label
         $('.custom-file-label').text(fileName);
     });
-});
 
+    $('#PlacementupdateForm').submit(function(event) {
+        // Prevent the default form submission behavior
+        event.preventDefault();
 
+        // Create FormData object
+        var formData = new FormData(this);
 
-    $(document).ready(function() {
-      $('.openModalButton').click(function() {
+        // Manually append file input to FormData (if needed)
+        // formData.append('uploadOrder', $('#uploadOrder')[0].files[0]);
 
-        $('#personnel_id').val(personnel_id);
-        var rank = $(this).data('rank');
-        var afpsn = $(this).data('afpsn'); // Assuming 'afpsn' is the unique identifier
-        var lastname = $(this).data('lastname');
-        var firstname = $(this).data('firstname');
-        var middlename = $(this).data('middlename');
-        var suffix = $(this).data('suffix');
-        var mother_unit = $(this).data('unit');
+        var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
 
-        // Populate the subunit dropdown based on the selected unit
+        // Perform AJAX request to submit the form data
+        $.ajax({
+            url: '{% url "placement_update" %}', // Replace with the URL of your server-side script
+            method: 'POST',
+            data: formData,
+            processData: false, // Prevent jQuery from processing data
+            contentType: false, // Prevent jQuery from setting content type
+            headers: {
+                'X-CSRFToken': csrfToken
+            },
+            success: function(response) {
+                if (response.success) {
+                    console.log('Data updated successfully!');
 
-      });
-    });
+                    // Optionally, show a success message to the user
+                    Swal.fire({
+                        title: 'Updated Successfully',
+                        text: 'Your data has been updated successfully!',
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    });
+                } else {
+                    // Optionally, show an error message to the user
+                    Swal.fire({
+                        title: 'Update Failed',
+                        text: response.error,
+                        icon: 'error',
+                        confirmButtonText: 'Try Again'
+                    });
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Error updating data:', error);
 
-
-    var selectElement = document.getElementById('assignmentcategorytxt');
-        // Add event listener for change event
-        selectElement.addEventListener('change', function(event) {
-            // Get the selected option
-            var selectedOption = event.target.value;
-            // Check if the selected option is not "Assigned"
-            if (selectedOption !== 'Assign') {
-              document.getElementById('dropdownContainer').removeAttribute('hidden');
-            }else{
-              document.getElementById('dropdownContainer').setAttribute('hidden', 'hidden');
-            }
-        });
-        
-
-
-        $('#PlacementupdateForm').submit(function(event) {
-    // Prevent the default form submission behavior
-         event.preventDefault();
-    
-    // Serialize form data
-    var formData = $(this).serialize();
-    var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
-
-    // Perform AJAX request to submit the form data
-    $.ajax({
-        url: '{% url "placement_update" %}', // Replace with the URL of your server-side script
-        method: 'POST',
-        data: formData,
-      
-        headers: {
-            'X-CSRFToken': csrfToken
-        },
-
-        success: function(response) {
-        
-            if (response.success) {
-                console.log('Data updated successfully!');
-
-                
-                // Optionally, show a success message to the user
-                Swal.fire({
-                    title: 'Updated Successfully',
-                    text: 'Your data has been updated successfully!',
-                    icon: 'success',
-                    confirmButtonText: 'OK'
-                });
-            } else {
-                // console.error('Error updating data:', response.error);
-                
                 // Optionally, show an error message to the user
                 Swal.fire({
                     title: 'Update Failed',
-                    text: response.error,
+                    text: 'Unexpected error occurred while updating data. Please try again later.',
                     icon: 'error',
                     confirmButtonText: 'Try Again'
                 });
-           
-          }
-        },
-        error: function(xhr, status, error) {
-            console.error('Error updating data:', error);
-            
-            
-            // Optionally, show an error message to the user
-            Swal.fire({
-                title: 'Update Failed',
-                text: 'Unexpected error occurred while updating data. Please try again later.',
-                icon: 'error',
-                confirmButtonText: 'Try Again'
-            });
-
-         }
-        
+            }
+        });
     });
-    
 });
 
+    </script>
 
-  </script>
-
-  
+    
