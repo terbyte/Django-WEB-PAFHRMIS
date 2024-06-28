@@ -17,6 +17,8 @@ from django.http import HttpResponseBadRequest, HttpResponse
 from datetime import datetime, timedelta
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
+import os
+from django.conf import settings  # Import settings
 
 
 def calculate_due_date(duration,reassignment_date):
@@ -644,14 +646,7 @@ def placement_Assign(request):
 
 
 
-
 # SAVING REASSIGNMENT ON MODAL WHEN ASSINGING TO OTHER UNIT OR DS/TDY
-from django.shortcuts import render
-from django.http import HttpResponse
-from django.conf import settings  # Import settings
-from .models import Placement
-import os
-
 def save_placement_update(request):
     if request.method == 'POST':
         afpsn = request.POST.get('afpsn')
@@ -667,31 +662,25 @@ def save_placement_update(request):
         duration = request.POST.get('duration')
         dateeffective_until = request.POST.get('formattedNewDate')
         upload_file = request.FILES.get('uploadOrder')
-
         # Calculate the due date based on the duration
         reassignment_effective_date_until = calculate_due_date(duration, reassignment_date)
-
         if assignment_category == "Assign":
             reassignment_effective_date_until = reassignment_date
             duration = "None"
+
 
         # Create the folder for saving the file if it doesn't exist
         folder_name = f"{afpsn}_{last_name}{first_name}{middle_name}{suffix}"
         folder_path = os.path.join(settings.MEDIA_ROOT, folder_name)
         if not os.path.exists(folder_path):
             os.makedirs(folder_path)
-        print(f"Folder path: {folder_path}")  # Debugging
 
         # Save the uploaded file to the designated folder
         if upload_file:
             file_path = os.path.join(folder_path, upload_file.name)
-            print(f"File path: {file_path}")  # Debugging
             with open(file_path, 'wb+') as destination:
                 for chunk in upload_file.chunks():
                     destination.write(chunk)
-            print(f"----------------------File {upload_file.name} uploaded successfully")  # Debugging
-        else:
-            print("No file uploaded")  # Debugging
 
         # Create the Placement instance
         placement = Placement(
@@ -711,10 +700,22 @@ def save_placement_update(request):
         )
         placement.save()
 
-        return HttpResponse('Data uploaded successfully.')
-    
-    return render(request, 'Placement-modal.html')
+        # Debug output for verification
+        print("======DEBUG=====")
+        print("AFPSN:", afpsn)
+        print("RANK:", rank)
+        print("FULLNAME:", f"{last_name} {first_name} {middle_name} {suffix}")
+        print("OLD UNIT:", mother_unit)
+        print("NEW UNIT:", new_unit)
+        print("REASSIGNED DATE:", reassignment_date)
+        print("ASSIGNMENT CATEGORY:", assignment_category)
+        print("DURATION:", duration)
+        print("EFFECTIVE DATE UNTIL:", dateeffective_until)
+        print("REASSIGN EFFECTIVE DATE UNTIL:", reassignment_effective_date_until)
 
+        # return HttpResponse('Data uploaded successfully.')
+    
+    return render(request, 'modals/Placement-modal.html')
 
 
 

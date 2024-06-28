@@ -1,0 +1,35 @@
+ $(document).ready(function() {
+    // Function to calculate the length of service
+    function calculateLengthOfService(enlistmentDate) {
+    const today = new Date();
+    const enteredDate = new Date(enlistmentDate);
+    let years = today.getFullYear() - enteredDate.getFullYear();
+    let months = today.getMonth() - enteredDate.getMonth();
+    let days = today.getDate() - enteredDate.getDate();
+
+    if (days < 0) {
+      months -= 1;
+      days += new Date(today.getFullYear(), today.getMonth(), 0).getDate(); // Get days in previous month
+    }
+    if (months < 0) {
+      years -= 1;
+      months += 12;
+    }
+
+    return `${years} years, ${months} months, ${days} days`;
+  }
+
+  $(document).ready(function() {
+    $('#enlistmentdatetxt').change(function() {
+      const enlistmentDate = $(this).val();
+      const lengthOfService = calculateLengthOfService(enlistmentDate);
+      $('#lengthofservicetxt').val(lengthOfService);
+    });
+
+    // If you want to prepopulate the length of service when opening the modal
+    $('.openModalButton').click(function() {
+      const enlistmentDate = $('#enlistmentdatetxt').val();
+      const lengthOfService = calculateLengthOfService(enlistmentDate);
+      $('#lengthofservicetxt').val(lengthOfService);
+    });
+  });
