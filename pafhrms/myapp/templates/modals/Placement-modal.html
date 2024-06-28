@@ -344,20 +344,15 @@
 
 
 // MAKE THE REASSIGNMENT EFFECTIVE DATEPICKER NOT ALLOW YOU TO PICK PRIOR TODAY
-
         var today = new Date();
         var day = String(today.getDate()).padStart(2, '0');
         var month = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
         var year = today.getFullYear();
-
         // Format today's date as YYYY-MM-DD
         var todayDate = year + '-' + month + '-' + day;
-
         // Set the min attribute of the date input to today's date
         document.getElementById('reassignmentDate').setAttribute('min', todayDate);
         // ENDS
-
-
 
 
 
@@ -366,7 +361,6 @@
   // if the reaasgined date is empty, do something
   var previousValue = document.getElementById('assignmentcategorytxt').value;
   var untilDateLabel = document.getElementById('untildatelbl');
-
   document.getElementById('reassignmentDate').addEventListener('change', function() {
     //populate date to untildatelbl
     // Get the value of the reassignmentDate input
@@ -385,58 +379,43 @@
     var untildatelbl = document.getElementById('untildatelbl');
     // Set the text content of the label
     untildatelbl.textContent = formattedDate2;
-
-
   });
-
   // ends 
+
+
 
   // hides the dropdown of DS and TDY if dropdown option has value of "assigned"
     document.getElementById('assignmentcategorytxt').addEventListener('change', function() {
       var reassignmentDate = document.getElementById('reassignmentDate').value;
       var selectedCategory = this.value;
       var dropdownContainer = document.getElementById('dropdownContainer');
-
-      
       if ((selectedCategory === 'Detached Service' || selectedCategory === 'Temporary Duty') && !reassignmentDate) {
         showAlert();
         this.value = previousValue;
         dropdownContainer.classList.add('hidden');
       } else {
-        
         dropdownContainer.classList.remove('hidden');
         previousValue = selectedCategory;
       }
     });
     
 
-
   // event for duration drop down
   function computeDate() {
     var reassignmentDateValue = document.getElementById('reassignmentDate').value;
     if (!reassignmentDateValue) return; // Return if reassignment date is not set
-
     var reassignmentDate = new Date(reassignmentDateValue);
     var durationSelect = document.getElementById('durationtxt');
     var selectedDuration = durationSelect.value;
-
-  
-
     var assignmentcategory = document.getElementById('assignmentcategorytxt');
     var selectedCategory = assignmentcategory.value;
-
-
   if (selectedCategory === "Assign") {
           endDate = reassignmentDate;
-
           return;
         } 
 
-
-
     var yearsToAdd = 0;
     var monthsToAdd = 0;
-
     switch (selectedDuration) {
       case "6 Months":
         monthsToAdd = 6;
@@ -454,24 +433,18 @@
     var newDate = new Date(reassignmentDate);
     newDate.setMonth(newDate.getMonth() + monthsToAdd);
     newDate.setFullYear(newDate.getFullYear() + yearsToAdd);
-
     if (newDate.getDate() !== reassignmentDate.getDate()) {
       newDate.setDate(0);
     }
-
     var day = ("0" + newDate.getDate()).slice(-2);
     var month = ("0" + (newDate.getMonth() + 1)).slice(-2);
     var year = newDate.getFullYear();
     var formattedNewDate = day + "-" + month + "-" + year;
-
     document.getElementById('untildatelbl').textContent = formattedNewDate;
-
   }
-
 
   // Add event listener to reassignment date picker
   document.getElementById('reassignmentDate').addEventListener('change', computeDate);
-
   // Add event listener to duration dropdown
   document.getElementById('durationtxt').addEventListener('change', computeDate);
 
@@ -505,8 +478,6 @@
       });
   });
 
-
-
       $(document).ready(function() {
         $('.openModalButton').click(function() {
 
@@ -524,7 +495,6 @@
         });
       });
 
-
       var selectElement = document.getElementById('assignmentcategorytxt');
           // Add event listener for change event
           selectElement.addEventListener('change', function(event) {
@@ -537,8 +507,6 @@
                 document.getElementById('dropdownContainer').setAttribute('hidden', 'hidden');
               }
           });
-          
-
 
           $(document).ready(function() {
     // Add change event listener to the file input
