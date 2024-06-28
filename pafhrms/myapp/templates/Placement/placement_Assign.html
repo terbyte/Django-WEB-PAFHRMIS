@@ -5,7 +5,10 @@
 {% include 'myapp/searchforms.html' %}
 
 </head>
+<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.css">
+<link rel="stylesheet" href="./customfonts.css">
 <table class="table table-responsive-sm table-bordered table-striped table-sm" id="sortableTable">
+   
     <thead>
         <tr>
             <th class="sortable" data-sort="RANK">RANK</th>
@@ -16,6 +19,8 @@
             <th class="sortable" data-sort="ASSIGNMENT_CATEGORY">CATEGORY</th>
             <th class="sortable" data-sort="REASSIGN_EFFECTIVEDDATE">ASSIGNMENT EFFECTIVE DATE</th>
             <th class="sortable" data-sort="TIME_ELAPSED">TIME ELAPSED</th>
+            <th class="sortable">ACTION</th>
+
         </tr>
     </thead>
 
@@ -32,10 +37,20 @@
             <td>{{ person.REASSIGN_EFFECTIVEDDATE }}</td>
             <td class="time-elapsed"></td>
 
+            static/icons/eye (36px).png
+
+            <td>
+                <button class="btn btn-info" data-toggle="modal" data-target="#myModal-{{ person.pk }}">
+                    <i class=" fa fa-eye"></i>
+                </button>
+            </td>
+
 
         </tr>
         {% endfor %}
+        
     </tbody>
+    
 </table>
 
 {% include 'modals/Placement-View-Modal.html' %}
@@ -223,6 +238,7 @@ function getCellValue(row, sortKey) {
         {% endif %}
     </ul>
 </nav>
-  
+
 
 {% endblock %}
+
