@@ -340,7 +340,29 @@
 </div>
 <!-- /alert section -->
 
-    <script>
+<script>
+
+
+// MAKE THE REASSIGNMENT EFFECTIVE DATEPICKER NOT ALLOW YOU TO PICK PRIOR TODAY
+
+        var today = new Date();
+        var day = String(today.getDate()).padStart(2, '0');
+        var month = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
+        var year = today.getFullYear();
+
+        // Format today's date as YYYY-MM-DD
+        var todayDate = year + '-' + month + '-' + day;
+
+        // Set the min attribute of the date input to today's date
+        document.getElementById('reassignmentDate').setAttribute('min', todayDate);
+        // ENDS
+
+
+
+
+
+
+    
   // if the reaasgined date is empty, do something
   var previousValue = document.getElementById('assignmentcategorytxt').value;
   var untilDateLabel = document.getElementById('untildatelbl');
@@ -443,8 +465,6 @@
     var formattedNewDate = day + "-" + month + "-" + year;
 
     document.getElementById('untildatelbl').textContent = formattedNewDate;
-
-
 
   }
 
