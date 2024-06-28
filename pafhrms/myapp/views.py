@@ -551,7 +551,7 @@ def placement_DS(request):
     
     category_queries = ['Detached Service', 'Temporary Duty']
     
-    filters = Q(IS_ARCHIVED=False)
+    filters = Q(IS_ARCHIVED =False)
     if last_name_query:
         filters &= Q(LAST_NAME__icontains=last_name_query)
     if first_name_query:
@@ -601,6 +601,7 @@ def placement_Assign(request):
     sex_query = request.GET.get('sex')
     unit_query = request.GET.get('unit')
     category_query = 'Assign'
+    
 
     filters = Q(IS_ARCHIVED=False)  # Add this line to exclude archived records
     if last_name_query:
@@ -642,52 +643,55 @@ def placement_Assign(request):
     })
 
 
+
+
 # SAVING REASSIGNMENT ON MODAL WHEN ASSINGING TO OTHER UNIT OR DS/TDY
+from django.shortcuts import render
+from django.http import HttpResponse
+from django.conf import settings  # Import settings
+from .models import Placement
+import os
+
 def save_placement_update(request):
     if request.method == 'POST':
         afpsn = request.POST.get('afpsn')
         rank = request.POST.get('rank')
         last_name = request.POST.get('last_name')
         first_name = request.POST.get('first_name')
-        middle_name = request.POST.get('middle_name')
-        suffix = request.POST.get('suffix')
+        middle_name = request.POST.get('middle_name', '')  # Default to empty string if not provided
+        suffix = request.POST.get('suffix', '')  # Default to empty string if not provided
         mother_unit = request.POST.get('unit')
         new_unit = request.POST.get('new_unit')
         reassignment_date = request.POST.get('reassignmentDate')
         assignment_category = request.POST.get('assignmentcategory')
         duration = request.POST.get('duration')
         dateeffective_until = request.POST.get('formattedNewDate')
-        upload_file = request.FILES.get('uploadOrder')  # Correct variable name
+        upload_file = request.FILES.get('uploadOrder')
 
-        if 'uploadOrder' in request.FILES:
-            upload_file = request.FILES['uploadOrder']
-            print("FILE")
-        else:
-            print("No file uploaded")
-
-        
         # Calculate the due date based on the duration
-        reassignment_effective_date_until = calculate_due_date(duration,reassignment_date)
-
-        print("======DEBUG=====")
-        print("AFPSN ", afpsn)
-        print("RANK ", rank)
-        print("FULLNAME ", last_name + first_name + middle_name + suffix)
-        print("OLD unit ", mother_unit)
-        print("NEW UNIT ", new_unit)
-        print("REASSIGNED DATE ", reassignment_date)
-        print("ASSIGNED CATEGORY ", assignment_category)
-        print("DURATION ", duration)
-        print("EFFECTIVE DATE UNTIL ", dateeffective_until)
-        print("reassignment_effective_date_until  ", dateeffective_until)
-
+        reassignment_effective_date_until = calculate_due_date(duration, reassignment_date)
 
         if assignment_category == "Assign":
-            print("HEY LOVE! ",reassignment_date)
             reassignment_effective_date_until = reassignment_date
             duration = "None"
-        # print("UPLOAD FILE ", upload_file)
 
+        # Create the folder for saving the file if it doesn't exist
+        folder_name = f"{afpsn}_{last_name}{first_name}{middle_name}{suffix}"
+        folder_path = os.path.join(settings.MEDIA_ROOT, folder_name)
+        if not os.path.exists(folder_path):
+            os.makedirs(folder_path)
+        print(f"Folder path: {folder_path}")  # Debugging
+
+        # Save the uploaded file to the designated folder
+        if upload_file:
+            file_path = os.path.join(folder_path, upload_file.name)
+            print(f"File path: {file_path}")  # Debugging
+            with open(file_path, 'wb+') as destination:
+                for chunk in upload_file.chunks():
+                    destination.write(chunk)
+            print(f"----------------------File {upload_file.name} uploaded successfully")  # Debugging
+        else:
+            print("No file uploaded")  # Debugging
 
         # Create the Placement instance
         placement = Placement(
@@ -703,11 +707,17 @@ def save_placement_update(request):
             ASSIGNMENT_CATEGORY=assignment_category,
             REASSIGN_EFFECTIVEDDATE_UNTIL=reassignment_effective_date_until,
             DURATION=duration,
-            ORDER_UPLOADFILE=upload_file
+            ORDER_UPLOADFILE=upload_file  # This saves the file path in the database
         )
         placement.save()
+
         return HttpResponse('Data uploaded successfully.')
+    
     return render(request, 'Placement-modal.html')
+
+
+
+
 
 
 #  PLACEMENT UPDATING EXTENSION

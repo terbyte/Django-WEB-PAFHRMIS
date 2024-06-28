@@ -5,9 +5,22 @@ from .fields import CustomDateField, CustomDateInput
 from myapp.models import Placement  #models.py
 
 
+
+
+
 class UploadFileForm(forms.Form):
     file = forms.FileField()
 
+class UploadOrderForm(forms.Form):
+    uploadOrder = forms.FileField()
+
+
+
+
+
+
+
+# this class aint working
 
 class PersonnelItemForm(forms.ModelForm):
     BIRTHDAY = forms.DateField(widget=CustomDateInput(), input_formats=['%d-%b-%Y'], required=False)
@@ -21,7 +34,7 @@ class PersonnelItemForm(forms.ModelForm):
         model = PersonnelItem
         fields = '__all__'
 
-
+# this class aint working
 class Placement(forms.ModelForm):  
     class Meta:  
         model = Placement  
@@ -31,3 +44,5 @@ class Placement(forms.ModelForm):
             super(Placement, self).__init__(*args, **kwargs)
             for field_name, field in self.fields.items():
                 field.widget.attrs['class'] = 'form-control'   
+
+
