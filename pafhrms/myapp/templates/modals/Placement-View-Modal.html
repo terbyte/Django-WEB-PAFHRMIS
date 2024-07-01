@@ -279,9 +279,9 @@
               <label class="form-label">Upload Order</label>
               
               <div class="custom-file">
-                  <input type="file" class="form-control custom-file-input" id="uploadOrder" name="uploadOrder">
-                  <label class="custom-file-label" >Choose file...</label>
-              </div>
+                <input type="file" class="form-control custom-file-input" id="uploadOrder" name="uploadOrder" required>
+                <label class="custom-file-label" >Choose file...</label>
+            </div>
           </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
@@ -423,6 +423,14 @@ document.getElementById('durationtxt').addEventListener('change', computeDate);
     });
 });
 
+$('#uploadOrder').change(function() {
+        // Get the name of the selected file
+        var fileName = $(this).val().split('\\').pop();
+        // Display the file name in the custom file label
+        $('.custom-file-label').text(fileName);
+    });
+
+
 
 
     $(document).ready(function() {
@@ -482,65 +490,61 @@ document.getElementById('durationtxt').addEventListener('change', computeDate);
         
 
 
-        $('#PlacementupdateForm').submit(function(event) {
+$('#PlacementupdateForm').submit(function(event) {
     // Prevent the default form submission behavior
-         event.preventDefault();
-    
-    // Serialize form data
-    var formData = $(this).serialize();
-    var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
+    event.preventDefault();
+
+        // Create FormData object
+        var formData = new FormData(this);
+
+        // Manually append file input to FormData (if needed)
+        // formData.append('uploadOrder', $('#uploadOrder')[0].files[0]);
+
+        var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
 
     // Perform AJAX request to submit the form data
     $.ajax({
-        url: '{% url "placement_DS_extension" %}', // Replace with the URL of your server-side script
-        method: 'POST',
-        data: formData,
-      
-        headers: {
-            'X-CSRFToken': csrfToken
-        },
+            url: '{% url "placement_DS_extension" %}', // Replace with the URL of your server-side script
+            method: 'POST',
+            data: formData,
+            processData: false, // Prevent jQuery from processing data
+            contentType: false, // Prevent jQuery from setting content type
+            headers: {
+                'X-CSRFToken': csrfToken
+            },
+            success: function(response) {
+                if (response.success) {
+                    console.log('Data updated successfully!');
 
-        success: function(response) {
-        
-            if (response.success) {
-                console.log('Data updated successfully!');
+                    // Optionally, show a success message to the user
+                    Swal.fire({
+                        title: 'Updated Successfully',
+                        text: 'Your data has been updated successfully!',
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    });
+                } else {
+                    // Optionally, show an error message to the user
+                    Swal.fire({
+                        title: 'Update Failed',
+                        text: response.error,
+                        icon: 'error',
+                        confirmButtonText: 'Try Again'
+                    });
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Error updating data:', error);
 
-                
-                // Optionally, show a success message to the user
-                Swal.fire({
-                    title: 'Updated Successfully',
-                    text: 'Your data has been updated successfully!',
-                    icon: 'success',
-                    confirmButtonText: 'OK'
-                });
-            } else {
-                // console.error('Error updating data:', response.error);
-                
                 // Optionally, show an error message to the user
                 Swal.fire({
                     title: 'Update Failed',
-                    text: response.error,
+                    text: 'Unexpected error occurred while updating data. Please try again later.',
                     icon: 'error',
                     confirmButtonText: 'Try Again'
                 });
-           
-          }
-        },
-        error: function(xhr, status, error) {
-            console.error('Error updating data:', error);
-            
-            
-            // Optionally, show an error message to the user
-            Swal.fire({
-                title: 'Update Failed',
-                text: 'An error occurred while updating data. Please try again later.',
-                icon: 'error',
-                confirmButtonText: 'Try Again'
-            });
-
-         }
-        
-    });
+            }
+        });
     
 });
 

@@ -727,6 +727,26 @@ def placement_update_extension(request):
         afpsn = request.POST.get('afpsn')
         reassignment_date = request.POST.get('reassignmentDate')
         duration = request.POST.get('duration')
+        last_name = request.POST.get('last_name')
+        first_name = request.POST.get('first_name')
+        middle_name = request.POST.get('middle_name', '')  # Default to empty string if not provided
+        suffix = request.POST.get('suffix', '')  # Default to empty string if not provided
+        print("DURATION AND REASSSIGN DATE ",duration , reassignment_date)
+        upload_file = request.FILES.get('uploadOrder')
+
+        # Create the folder for saving the file if it doesn't exist
+        folder_name = f"{afpsn}_{last_name}{first_name}{middle_name}{suffix}"
+        folder_path = os.path.join(settings.MEDIA_ROOT, folder_name)
+        if not os.path.exists(folder_path):
+            os.makedirs(folder_path)
+
+        # Save the uploaded file to the designated folder
+        if upload_file:
+            file_path = os.path.join(folder_path, upload_file.name)
+            with open(file_path, 'wb+') as destination:
+                for chunk in upload_file.chunks():
+                    destination.write(chunk)
+
         if 'uploadOrder' in request.FILES:
             upload_file = request.FILES['uploadOrder']
             print("FILE")
@@ -742,7 +762,7 @@ def placement_update_extension(request):
             personnel_items.update(
                 AFPSN=afpsn,
                 REASSIGN_EFFECTIVEDDATE_UNTIL=reassignment_effective_date_until,
-                # ORDER_UPLOADFILE = request.FILES.get('uploadOrder'),  # Correct variable name
+                ORDER_UPLOADFILE = request.FILES.get('uploadOrder'),  # Correct variable name
             )
             return JsonResponse({'success': True})
         except Exception as e:
