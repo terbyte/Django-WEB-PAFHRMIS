@@ -121,10 +121,6 @@ def update_placement(request):
 
 
 
-
-def Tranche(request):
-    return render(request, 'reenlistment/Tranche.html')
-
 def unit_records(request):
     # last_name_query = request.GET.get('last_name')
     # first_name_query = request.GET.get('first_name')
@@ -772,3 +768,103 @@ def placement_update_extension(request):
 
 
 
+# REENLISTMENT
+# For DATE OF NEXT FULL REENLISTMENT
+def Tranche(request):
+   
+    category_query = ('ENLISTED PERSONNEL')
+    unit_query = request.GET.get('unit')
+    sub_unit_query = request.GET.get('sub_unit')
+    dnfr_query = request.GET.get('dnfr_query')
+
+    filters = Q()
+    if category_query and category_query:
+        filters &= Q(CATEGORY__icontains=category_query)
+    if category_query and category_query != "Category":
+        filters &= Q(CATEGORY__icontains=category_query)
+    if unit_query:
+        filters &= Q(UNIT__icontains=unit_query)
+    if sub_unit_query:
+        filters &= Q(SUB_UNIT__icontains=sub_unit_query)
+    if dnfr_query:
+        filters &= Q(DATE_LASTFULL_REENLISTMENT__icontains=dnfr_query)
+       
+    persons = PersonnelItem.objects.filter(filters)
+    paginator = Paginator(persons, 10)
+    page_num = request.GET.get("page")
+    persons = paginator.get_page(page_num)
+    
+    return render(request, 'reenlistment/Tranche.html', {
+        'persons': persons,
+        'category_query': category_query,
+        'unit_query': unit_query,
+        'sub_unit_query': sub_unit_query,
+        'dnfr_query': dnfr_query,         
+    })
+
+
+
+# for DATE OF 2ND TRANCHE
+def Tranches(request):
+    dnfr_query = request.GET.get('dnfr_query')
+    filters = Q()
+    if dnfr_query:
+        filters &= Q(DATE_OF_LAST_FULL_REENLISTMENT__icontains=dnfr_query)    
+    persons = PersonnelItem.objects.filter(filters)
+    paginator = Paginator(persons, 10)
+    page_num = request.GET.get("page")
+    persons = paginator.get_page(page_num)
+    return render(request, 'reenlistment/Tranches.html', {
+        'persons': persons,
+        'dnfr_query': dnfr_query,
+    })
+
+
+
+#for MEDICAL FOR 2ND TRANCHE
+def Medicalforfullreenlistment(request):
+    unit_query = request.GET.get('unit')
+    sub_unit_query = request.GET.get('sub_unit')
+    dnfr_query = request.GET.get('dnfr_query')
+    filters = Q()
+    if unit_query:
+        filters &= Q(UNIT__icontains=unit_query)
+    if sub_unit_query:
+        filters &= Q(SUB_UNIT__icontains=sub_unit_query)
+    if dnfr_query:
+        filters &= Q(DATE_OF_LAST_FULL_REENLISTMENT__icontains=dnfr_query)    
+    persons = PersonnelItem.objects.filter(filters)
+    paginator = Paginator(persons, 10)
+    page_num = request.GET.get("page")
+    persons = paginator.get_page(page_num)
+    return render(request, 'reenlistment/Medicalforfullreenlistment.html', {
+        'persons': persons,
+        'unit_query': unit_query,
+        'sub_unit_query': sub_unit_query,
+        'dnfr_query': dnfr_query,
+    })
+
+
+
+#MEDICAL FOR FULL REENLISTMENT
+def Mforfullreenlistment(request):
+    unit_query = request.GET.get('unit')
+    sub_unit_query = request.GET.get('sub_unit')
+    dnfr_query = request.GET.get('dnfr_query')
+    filters = Q()
+    if unit_query:
+        filters &= Q(UNIT__icontains=unit_query)
+    if sub_unit_query:
+        filters &= Q(SUB_UNIT__icontains=sub_unit_query)
+    if dnfr_query:
+        filters &= Q(DATE_OF_LAST_FULL_REENLISTMENT__icontains=dnfr_query)    
+    persons = PersonnelItem.objects.filter(filters)
+    paginator = Paginator(persons, 10)
+    page_num = request.GET.get("page")
+    persons = paginator.get_page(page_num)
+    return render(request, 'reenlistment/Mforfullreenlistment.html', {
+        'persons': persons,
+        'unit_query': unit_query,
+        'sub_unit_query': sub_unit_query,
+        'dnfr_query': dnfr_query,
+    })

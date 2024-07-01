@@ -25,6 +25,13 @@ urlpatterns = [
     # Unit Records
     path('placement/unit_records', views.unit_records, name='unit_records'),
 
+    # Reenlistment
+    path('reenlistment/Tranche/', views.Tranche, name='Tranche'),
+    path('Tranches/', views.Tranches, name='Tranches'),
+    path('Medicalforfullreenlistment/', views.Medicalforfullreenlistment, name='Medicalforfullreenlistment'),
+    path('Mforfullreenlistment/', views.Mforfullreenlistment, name='Mforfullreenlistment'),  
+    path('placement/', views.placement_officer, name='placement'),
+
 
     
 

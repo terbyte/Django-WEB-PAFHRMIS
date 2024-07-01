@@ -15,7 +15,7 @@
 <table id="sortableTable" class="table table-responsive-sm table-bordered table-striped table-sm">
   <thead>
     <tr>
-      <th>#</th>
+      <th>No.</th>
       <th>AFPSN</th>
       <th>RANK</th>
       <th>NAME</th>
@@ -23,9 +23,9 @@
       <th>SURNAME</th>
       <th>UNIT</th>
       <th>SUB-UNIT</th>
-      <th>CONTACT NUMBER</th>
+      <th>CP #</th>
       <th class="sortable category-column" data-sort="DATE OF FULL LAST ENLISTMENT">DATE_LASTFULL_REENLISTMENT</th>
-      <th>DATE OF NEXT FULL REENLISTMENT</th>
+      <th>DATE OF 2ND TRANCHE MEDICAL</th>
     </tr>
   </thead>
   <tbody>
@@ -41,7 +41,7 @@
         <td>{{ person.SUB_UNIT }}</td>
         <td>{{ person.CONTACT_NUMBER }}</td>
         <td class="category-column">{{ person.DATE_LASTFULL_REENLISTMENT }}</td>
-        <td class="next-reenlistment-date">{{ person.DATE_LASTFULL_REENLISTMENT }}</td> <!-- Placeholder for dynamic update -->
+        <td class="MedicalforfullreenlistmentTable">{{ person.DATE_LASTFULL_REENLISTMENT }}</td> <!-- Placeholder for dynamic update -->
       </tr>
     {% endfor %}
   </tbody>
@@ -76,8 +76,8 @@ $(document).ready(function() {
     // Calculate and update the date of next full reenlistment for each row
     $('table tbody tr').each(function() {
         var lastFullReenlistmentDate = $(this).find('td:eq(9)').text(); // Assuming 9th column is DATE_LASTFULL_REENLISTMENT
-        var newDateOfLastFullReenlistment = addYearsToDate(lastFullReenlistmentDate, 6);
-        $(this).find('td:eq(10)').text(newDateOfLastFullReenlistment); // Update 10th column with the calculated date
+        var MedicalforfullreenlistmentTable = addYearsToDate(lastFullReenlistmentDate, 2);
+        $(this).find('td:eq(10)').text(MedicalforfullreenlistmentTable); // Update 10th column with the calculated date
     });
 
     // Export to PDF functionality
@@ -177,7 +177,7 @@ document.getElementById('printButton').addEventListener('click', function() {
               <a class="page-link" href="?page={{ persons.previous_page_number }}">previous</a>
           </li>
       {% else %}
-          <li class="page-item disabled">
+          <li class="page-item disabled"> 
               <span class="page-link">&laquo; first</span>
           </li>
           <li class="page-item disabled">
