@@ -6,7 +6,6 @@
 
 </head>
 <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.css">
-<link rel="stylesheet" href="./customfonts.css">
 <table class="table table-responsive-sm table-bordered table-striped table-sm" id="sortableTable">
    
     <thead>
@@ -39,9 +38,22 @@
 
          
             <td>
-                <button class="btn btn-info" data-toggle="modal" data-target="#myModal-{{ person.pk }}">
-                    <i class=" fa fa-eye"></i>
+                <button class="btn btn-actions openModalButton" 
+                data-lastname="{{ person.LAST_NAME }}"
+                  data-firstname="{{ person.FIRST_NAME }}"
+                  data-middlename="{{ person.MIDDLE_NAME }}"
+                  data-suffix="{{ person.EXTENSION_NAME }}"
+                  data-afpsn="{{ person.SERIAL_NUMBER }}"
+                  data-unit="{{ person.UNIT }}"
+                  data-rank="{{ person.RANK }}"
+                  data-bos="{{ person.BOS }}"
+
+                  data-toggle="modal"
+                  data-target="#myModal">
+                  
+                <i class=" fa fa-eye"></i>
                 </button>
+
             </td>
 
 
@@ -52,9 +64,41 @@
     
 </table>
 
-{% include 'modals/Placement-View-Modal.html' %}
+{% include 'modals/Placement-view-files.html' %}
 
 <script>
+// modal opens
+$(document).ready(function() {
+    
+    $('.openModalButton').click(function() {
+        var lastname = $(this).data('lastname');
+        var firstname = $(this).data('firstname');
+        var middlename = $(this).data('middlename');
+        var suffix = $(this).data('suffix');
+        var rank = $(this).data('rank');
+        var bos = $(this).data('bos');
+        if (suffix === "nan") {
+          suffix= '';
+            }
+        var afpsn = $(this).data('afpsn');
+        var unit = $(this).data('unit');
+
+
+        $('#fullnametxt').val(lastname +" "+firstname+" "+middlename+" "+suffix);
+        $('#lastnametxt').val(lastname);
+        $('#firstnametxt').val(firstname);
+        $('#middlenametxt').val(middlename);
+        $('#suffixtxt').val(suffix);
+        $('#unitDP').val(unit);  
+
+        $('#afpsntxt').val(afpsn);
+        $('#ranktxt').val(rank);  
+        $('#bostxt').val(bos); 
+
+    });
+});
+
+
 
 document.addEventListener('DOMContentLoaded', function() {
     const rows = document.querySelectorAll('tbody tr');

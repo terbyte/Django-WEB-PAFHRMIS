@@ -8290,6 +8290,17 @@ a[data-toggle="collapse"] {
     
   }
 
+  .btn.btn-actions {
+    background: #588157;
+    width: 50%;
+    color: white;
+    border-color: #a3b18a; }
+    .btn.btn-actions:hover, .btn.btn-actions:focus {
+      background: #3a5a40 !important;
+      /* border-color: #f8b739 !important;  */
+      
+    }
+
 .footer p {
   color: rgba(255, 255, 255, 0.5); }
 
