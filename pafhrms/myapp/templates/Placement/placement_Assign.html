@@ -44,21 +44,8 @@
 
          
             <td>
-                <button class="btn btn-primary openModalButton" 
-                onclick="showFiles('{{ person.AFPSN }}')"
-                
-                  data-lastname="{{ person.LAST_NAME }}"
-                  data-firstname="{{ person.FIRST_NAME }}"
-                  data-middlename="{{ person.MIDDLE_NAME }}"
-                  data-suffix="{{ person.EXTENSION_NAME }}"
-                  data-afpsn="{{ person.SERIAL_NUMBER }}"
-                  data-unit="{{ person.UNIT }}"
-                  data-rank="{{ person.RANK }}"
-                  data-bos="{{ person.BOS }}"
-
-                  data-toggle="modal"
-                  data-target="#myModal">
-                <i class=" fa fa-eye"></i>
+               <button class="btn btn-primary openModalButton" onclick="showFiles('{{ person.AFPSN }}')" data-toggle="modal" data-target="#fileModal">
+                    <i class="fa fa-eye"></i>
                 </button>
 
             </td>
@@ -68,45 +55,48 @@
 
         </tr>
         {% endfor %}
-        
     </tbody>
-    
 </table>
 
-
-
-
-    <!-- Modal -->
-    <div id="fileModal" style="display:none;">
-        <div>
-            <h2>Files</h2>
-            <ul id="fileList"></ul>
-            <button onclick="closeModal()">Close</button>
+<!-- modal -->
+<div class="modal fade" id="fileModal" tabindex="-1" role="dialog" aria-labelledby="fileModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="fileModalLabel">Files</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
         </div>
+        <div class="modal-body">
+          <ul id="fileList"></ul>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
     </div>
-
-
-
+  </div>
 <script>
 
+    
 function showFiles(AFPSN) {
-            $.ajax({
-                url: `orders/${AFPSN}/`,  // Ensure the URL pattern matches
-                method: 'GET',
-                success: function(data) {
-                    $('#fileList').empty();
-                    data.files.forEach(function(file) {
-                        $('#fileList').append(`<li><a href="${file.url}">${file.name}</a></li>`);
-                    });
-                    $('#fileModal').show();
-                }
+    $.ajax({
+        url: `orders/${AFPSN}/`,  // Ensure the URL pattern matches
+        method: 'GET',
+        success: function(data) {
+            $('#fileList').empty();
+            data.files.forEach(function(file) {
+                $('#fileList').append(`<li><a href="${file.url}">${file.name}</a></li>`);
             });
+            $('#fileModal').modal('show');  // Use Bootstrap's modal method
         }
+    });
+}
 
-        function closeModal() {
-            $('#fileModal').hide();
-        }
-
+function closeModal() {
+    $('#fileModal').modal('hide');  // Use Bootstrap's modal method
+}
 
 // modal opens
 $(document).ready(function() {
