@@ -21,6 +21,7 @@ urlpatterns = [
     path('placement/placement_DS_extension', views.placement_update_extension, name='placement_DS_extension'),
     path('placement/update_placement', views.update_placement, name='update_placement'),
     path('placement/placement_Assign', views.placement_Assign, name='placement_Assign'),
+    path('placement/orders/<str:afpsn>/', views.user_files, name='orders'),
 
     # Unit Records
     path('placement/unit_records', views.unit_records, name='unit_records'),

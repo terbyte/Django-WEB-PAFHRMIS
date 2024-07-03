@@ -5,7 +5,22 @@
 {% include 'myapp/searchforms.html' %}
 
 </head>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.css">
+
+
+
+
 <table class="table table-responsive-sm table-bordered table-striped table-sm" id="sortableTable">
    
     <thead>
@@ -39,7 +54,9 @@
          
             <td>
                 <button class="btn btn-primary openModalButton" 
-                data-lastname="{{ person.LAST_NAME }}"
+                onclick="showFiles('{{ person.AFPSN }}')"
+                
+                  data-lastname="{{ person.LAST_NAME }}"
                   data-firstname="{{ person.FIRST_NAME }}"
                   data-middlename="{{ person.MIDDLE_NAME }}"
                   data-suffix="{{ person.EXTENSION_NAME }}"
@@ -50,11 +67,12 @@
 
                   data-toggle="modal"
                   data-target="#myModal">
-                  
                 <i class=" fa fa-eye"></i>
                 </button>
 
             </td>
+
+        
 
 
         </tr>
@@ -64,9 +82,41 @@
     
 </table>
 
-{% include 'modals/Placement-view-files.html' %}
+
+
+
+    <!-- Modal -->
+    <div id="fileModal" style="display:none;">
+        <div>
+            <h2>Files</h2>
+            <ul id="fileList"></ul>
+            <button onclick="closeModal()">Close</button>
+        </div>
+    </div>
+
+
 
 <script>
+
+function showFiles(AFPSN) {
+            $.ajax({
+                url: `orders/${AFPSN}/`,  // Ensure the URL pattern matches
+                method: 'GET',
+                success: function(data) {
+                    $('#fileList').empty();
+                    data.files.forEach(function(file) {
+                        $('#fileList').append(`<li><a href="${file.url}">${file.name}</a></li>`);
+                    });
+                    $('#fileModal').show();
+                }
+            });
+        }
+
+        function closeModal() {
+            $('#fileModal').hide();
+        }
+
+
 // modal opens
 $(document).ready(function() {
     

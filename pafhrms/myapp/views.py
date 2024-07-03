@@ -35,6 +35,12 @@ def calculate_due_date(duration,reassignment_date):
 
 
 
+def user_files(request, afpsn):
+    files = Placement.objects.filter(AFPSN=afpsn)
+    file_list = [{'name': file.ORDER_UPLOADFILE.name, 'url': file.ORDER_UPLOADFILE.url} for file in files]
+    print(" listssssssssssss ",file_list)
+    return JsonResponse({'files': file_list})
+
 
 def update_placement(request):
     if request.method == 'POST':
@@ -75,60 +81,113 @@ def update_placement(request):
     return JsonResponse({'error': 'Invalid request method'}, status=400)
 
 
+def index(request):
+    last_name_query = request.GET.get('last_name')
+    first_name_query = request.GET.get('first_name')
+    middle_name_query = request.GET.get('middle_name')
+    suffix_query = request.GET.get('suffix')
+    afsn_query = request.GET.get('afsn')
+    rank_query = request.GET.get('rank')
+    category_query = request.GET.get('category')
+    sex_query = request.GET.get('sex')
+    unit_query = request.GET.get('unit')
+    
+    filters = Q()
+    if last_name_query:
+        filters &= Q(LAST_NAME__icontains=last_name_query)
+    if first_name_query:
+        filters &= Q(FIRST_NAME__icontains=first_name_query)
+    if middle_name_query:
+        filters &= Q(MIDDLE_NAME__icontains=middle_name_query)
+    if suffix_query and suffix_query != "Suffix":
+        filters &= Q(EXTENSION_NAME__icontains=suffix_query)
+    if afsn_query:
+        filters &= Q(AFPSN__icontains=afsn_query) 
+    if rank_query and rank_query != "Rank":
+        filters &= Q(RANK__icontains=rank_query)
+    if category_query and category_query != "Category":
+        filters &= Q(CATEGORY__icontains=category_query)
+    if sex_query and sex_query != "Sex":
+        filters &= Q(SEX__icontains=sex_query)
+    if unit_query:
+        filters &= Q(UNIT__icontains=unit_query)
+    
+    persons = PersonnelItem.objects.filter(filters)
+
+
+    
+    paginator = Paginator(persons, 10)
+    page_num = request.GET.get("page")
+    persons = paginator.get_page(page_num)
+    
+    return render(request, 'myapp/index.html', {
+        'persons': persons,
+        'last_name_query': last_name_query,
+        'first_name_query': first_name_query,
+        'middle_name_query': middle_name_query,
+        'suffix_query': suffix_query,
+        'afsn_query': afsn_query,
+        'rank_query': rank_query,
+        'category_query': category_query,
+        'sex_query': sex_query,
+        'unit_query': unit_query,
+    })
 
 
 
 
 def unit_records(request):
-    # last_name_query = request.GET.get('last_name')
-    # first_name_query = request.GET.get('first_name')
-    # middle_name_query = request.GET.get('middle_name')
-    # suffix_query = request.GET.get('suffix')
-    # afsn_query = request.GET.get('afsn')
-    # rank_query = request.GET.get('rank')
-    # category_query = request.GET.get('category')
-    # sex_query = request.GET.get('sex')
-    # unit_query = request.GET.get('unit')
+    last_name_query = request.GET.get('last_name')
+    first_name_query = request.GET.get('first_name')
+    middle_name_query = request.GET.get('middle_name')
+    suffix_query = request.GET.get('suffix')
+    afsn_query = request.GET.get('afsn')
+    rank_query = request.GET.get('rank')
+    category_query = request.GET.get('category')
+    sex_query = request.GET.get('sex')
+    unit_query = request.GET.get('unit')
     
-    # filters = Q()
-    # if last_name_query:
-    #     filters &= Q(LAST_NAME__icontains=last_name_query)
-    # if first_name_query:
-    #     filters &= Q(FIRST_NAME__icontains=first_name_query)
-    # if middle_name_query:
-    #     filters &= Q(MIDDLE_NAME__icontains=middle_name_query)
-    # if suffix_query and suffix_query != "Suffix":
-    #     filters &= Q(EXTENSION_NAME__icontains=suffix_query)
-    # if afsn_query:
-    #     filters &= Q(SERIAL_NUMBER__icontains=afsn_query)  # Change this to 'SERIAL_NUMBER'
-    # if rank_query and rank_query != "Rank":
-    #     filters &= Q(RANK__icontains=rank_query)
-    # if category_query and category_query != "Category":
-    #     filters &= Q(CATEGORY__icontains=category_query)
-    # if sex_query and sex_query != "Sex":
-    #     filters &= Q(SEX__icontains=sex_query)
-    # if unit_query:
-    #     filters &= Q(UNIT__icontains=unit_query)
+    print("------------------------------------------------",unit_query)
+
+    filters = Q()
+    if last_name_query:
+        filters &= Q(LAST_NAME__icontains=last_name_query)
+    if first_name_query:
+        filters &= Q(FIRST_NAME__icontains=first_name_query)
+    if middle_name_query:
+        filters &= Q(MIDDLE_NAME__icontains=middle_name_query)
+    if suffix_query and suffix_query != "Suffix":
+        filters &= Q(EXTENSION_NAME__icontains=suffix_query)
+    if afsn_query:
+        filters &= Q(AFPSN__icontains=afsn_query) 
+    if rank_query and rank_query != "Rank":
+        filters &= Q(RANK__icontains=rank_query)
+    if category_query and category_query != "Category":
+        filters &= Q(CATEGORY__icontains=category_query)
+    if sex_query and sex_query != "Sex":
+        filters &= Q(SEX__icontains=sex_query)
+    if unit_query:
+        filters &= Q(UNIT__icontains=unit_query)
     
-    # persons = PersonnelItem.objects.filter(filters)
+    persons = PersonnelItem.objects.filter(filters)
     
-    # paginator = Paginator(persons, 10)
-    # page_num = request.GET.get("page")
-    # persons = paginator.get_page(page_num)
+    paginator = Paginator(persons, 10)
+    page_num = request.GET.get("page")
+    persons = paginator.get_page(page_num)
     
-    # return render(request, 'myapp/index.html', {
-    #     'persons': persons,
-    #     'last_name_query': last_name_query,
-    #     'first_name_query': first_name_query,
-    #     'middle_name_query': middle_name_query,
-    #     'suffix_query': suffix_query,
-    #     'afsn_query': afsn_query,
-    #     'rank_query': rank_query,
-    #     'category_query': category_query,
-    #     'sex_query': sex_query,
-    #     'unit_query': unit_query,
-    # })
-    return render(request, 'Unit_Records/unit_records.html')
+    return render(request, 'Unit_Records/unit_records.html', {
+        'persons': persons,
+        'last_name_query': last_name_query,
+        'first_name_query': first_name_query,
+        'middle_name_query': middle_name_query,
+        'suffix_query': suffix_query,
+        'afsn_query': afsn_query,
+        'rank_query': rank_query,
+        'category_query': category_query,
+        'sex_query': sex_query,
+        'unit_query': unit_query,
+    })
+    
 
 
 
@@ -266,55 +325,6 @@ def display_file_data(request):
         
 
 
-def index(request):
-    last_name_query = request.GET.get('last_name')
-    first_name_query = request.GET.get('first_name')
-    middle_name_query = request.GET.get('middle_name')
-    suffix_query = request.GET.get('suffix')
-    afsn_query = request.GET.get('afsn')
-    rank_query = request.GET.get('rank')
-    category_query = request.GET.get('category')
-    sex_query = request.GET.get('sex')
-    unit_query = request.GET.get('unit')
-    
-    filters = Q()
-    if last_name_query:
-        filters &= Q(LAST_NAME__icontains=last_name_query)
-    if first_name_query:
-        filters &= Q(FIRST_NAME__icontains=first_name_query)
-    if middle_name_query:
-        filters &= Q(MIDDLE_NAME__icontains=middle_name_query)
-    if suffix_query and suffix_query != "Suffix":
-        filters &= Q(EXTENSION_NAME__icontains=suffix_query)
-    if afsn_query:
-        filters &= Q(SERIAL_NUMBER__icontains=afsn_query)  # Change this to 'SERIAL_NUMBER'
-    if rank_query and rank_query != "Rank":
-        filters &= Q(RANK__icontains=rank_query)
-    if category_query and category_query != "Category":
-        filters &= Q(CATEGORY__icontains=category_query)
-    if sex_query and sex_query != "Sex":
-        filters &= Q(SEX__icontains=sex_query)
-    if unit_query:
-        filters &= Q(UNIT__icontains=unit_query)
-    
-    persons = PersonnelItem.objects.filter(filters)
-    
-    paginator = Paginator(persons, 10)
-    page_num = request.GET.get("page")
-    persons = paginator.get_page(page_num)
-    
-    return render(request, 'myapp/index.html', {
-        'persons': persons,
-        'last_name_query': last_name_query,
-        'first_name_query': first_name_query,
-        'middle_name_query': middle_name_query,
-        'suffix_query': suffix_query,
-        'afsn_query': afsn_query,
-        'rank_query': rank_query,
-        'category_query': category_query,
-        'sex_query': sex_query,
-        'unit_query': unit_query,
-    })
 
 
 
@@ -623,7 +633,7 @@ def save_placement_update(request):
 
 
         # Create the folder for saving the file if it doesn't exist
-        folder_name = f"{afpsn}_{last_name}{first_name}{middle_name}{suffix}"
+        folder_name = f"{afpsn}_{last_name}"
         folder_path = os.path.join(settings.MEDIA_ROOT, folder_name)
         if not os.path.exists(folder_path):
             os.makedirs(folder_path)
@@ -652,21 +662,6 @@ def save_placement_update(request):
             ORDER_UPLOADFILE=upload_file  # This saves the file path in the database
         )
         placement.save()
-
-        # Debug output for verification
-        print("======DEBUG=====")
-        print("AFPSN:", afpsn)
-        print("RANK:", rank)
-        print("FULLNAME:", f"{last_name} {first_name} {middle_name} {suffix}")
-        print("OLD UNIT:", mother_unit)
-        print("NEW UNIT:", new_unit)
-        print("REASSIGNED DATE:", reassignment_date)
-        print("ASSIGNMENT CATEGORY:", assignment_category)
-        print("DURATION:", duration)
-        print("EFFECTIVE DATE UNTIL:", dateeffective_until)
-        print("REASSIGN EFFECTIVE DATE UNTIL:", reassignment_effective_date_until)
-
-        # return HttpResponse('Data uploaded successfully.')
     
     return render(request, 'modals/Placement-modal.html')
 

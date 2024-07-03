@@ -178,114 +178,28 @@
             {% csrf_token %}
             <input type="hidden" id="personnel_id" name="personnel_id">
         
-            <!-- First Row: Form elements aligned in two columns -->
-            <div class="row justify-content-center">
-              <div class="col-md-6">
-                <div class="mb-4">
-                  <label >Rank</label>
-                  <input name="rank" id="ranktxt" class="form-control" readonly>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="mb-4">
-                  <label >AFPSN</label>
-                  <input type="text" id="afpsntxt" name="afpsn" class="form-control" placeholder="AFPSN" readonly>
-                </div>
-              </div>
-            </div>
+
+
+
             
-        
-            <!-- Second Row: Form elements aligned in two columns -->
-            <div class="row justify-content-center">
-              <div class="col-md-6">
-                <div class="mb-4">
-                  <label >Last Name</label>
-                  <input type="text" id="lastnametxt" name="last_name" class="form-control" placeholder="Last Name" readonly>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="mb-4">
-                  <label >First Name</label>
-                  <input type="text" id="firstnametxt" name="first_name" class="form-control" placeholder="First Name" readonly>
-                </div>
-              </div>
-            </div>
-        
-            <!-- Third Row: Form elements aligned in two columns -->
-            <div class="row justify-content-center">
-              <div class="col-md-6">
-                <div class="mb-4">
-                  <label >Middle Name</label>
-                  <input type="text" id="middlenametxt" name="middle_name" class="form-control" placeholder="Middle Name" readonly>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="mb-4">
-                  <label >Suffix</label>
-                  <input type="text" id="suffixtxt" name="suffix" class="form-control" placeholder="Suffix" readonly>
-                </div>
-              </div>
-            </div>
-        
-            <!-- Fourth Row: Present Unit and new Textbox -->
-            <div class="row justify-content-center">
-              <div class="col-md-6">
-                <div class="mb-4">
-                  <label class="form-label">Present Mother Unit</label >
-                  <input type="text" id="unitDP" name="unit" class="form-control" placeholder="Suffix" readonly>
-                </div>
-              </div>
-
-              
-              
-              <div class="col-md-6">
-                <div class="mb-4">
-                  <label >Present DS/TDY Unit</label>
-                  <input type="text" id="new_unittxt" name="new_unit" class="form-control" placeholder="DS unit" disabled>
-                </div>
-              </div>
-
-              
-
-            </div>
-
-         
-            <div class="mb-3">
-              <label  class="form-label">Assignment Category</label>
-              <input type="text" class="form-control" id="assignmentcategorytxt" class="form-control" name="assignmentcategory" placeholder="Assignment Category"readonly>
-            </div>
-
-            <div class="mb-3">
-              <label  class="form-label" hidden>Reassignment Effective Date</label>
-              <input type="date" class="form-control" id="reassignmentDate" name="reassignmentDate" hidden>
-            </div>
-
-
-            <div class="mb-3" id="dropdownContainer">
-              <label class="form-label">Duration of Extension </label>
-
-              
-
-              <select name="duration" id="durationtxt" class="form-control">
-                <optgroup label="Duration">
-                  <option selected>6 Months</option>
-                  <option>1 Year</option>
-                  <option>2 Years</option>
-                </optgroup>
-              </select>
-            </div>
+            <h1>{{ person.LAST_NAME }}'s Uploaded Files</h1>
             
-            <div class="mb-3">
-              <label class="form-label">Upload Order</label>
+            <ul>
+                {% for document in documents %}
+                    <li><a href="{{ document.ORDER_UPLOADFILE.url }}" target="_blank">{{ document.ORDER_UPLOADFILE.name }}</a></li>
+                {% empty %}
+                    <li>No files uploaded.</li>
+                {% endfor %}
+            </ul>
+
               
-              <div class="custom-file">
-                <input type="file" class="form-control custom-file-input" id="uploadOrder" name="uploadOrder" required>
-                <label class="custom-file-label" >Choose file...</label>
-            </div>
+            
+
+
+            
           </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-              <button type="submit" class="btn btn-primary">Extend</button>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
           </form>
         </div>
