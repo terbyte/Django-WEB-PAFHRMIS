@@ -46,6 +46,7 @@ class Placement(models.Model):
     SUFFIX = models.CharField(max_length=200)
     MOTHER_UNIT = models.CharField(max_length=200)
     NEW_UNIT = models.CharField(max_length=200)
+    SUB_UNIT = models.CharField(max_length=200, blank=True, null=True)
     REASSIGN_EFFECTIVEDDATE = models.DateField()
     ASSIGNMENT_CATEGORY = models.CharField(max_length=200)
     DURATION = models.CharField(max_length=200, blank=True, null=True)
