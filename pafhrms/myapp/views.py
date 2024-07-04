@@ -721,8 +721,6 @@ def placement_update_extension(request):
 
 
 # REENLISTMENT
-
-# REENLISTMENT
 # For DATE OF NEXT FULL REENLISTMENT
 def Tranche(request):
    
@@ -760,9 +758,15 @@ def Tranche(request):
 
 # for DATE OF 2ND TRANCHE
 def Tranches(request):
+    unit_query = request.GET.get('unit')
+    sub_unit_query = request.GET.get('sub_unit')
     category_query = ('ENLISTED PERSONNEL')
     dnfr_query = request.GET.get('dnfr_query')
     filters = Q()
+    if unit_query:
+        filters &= Q(UNIT__icontains=unit_query)
+    if sub_unit_query:
+        filters &= Q(SUB_UNIT__icontains=sub_unit_query)
     if category_query and category_query:
         filters &= Q(CATEGORY__icontains=category_query)
     if category_query and category_query != "Category":
@@ -775,8 +779,10 @@ def Tranches(request):
     persons = paginator.get_page(page_num)
     return render(request, 'reenlistment/Tranches.html', {
         'persons': persons,
-        'category_query': category_query,
         'dnfr_query': dnfr_query,
+        'category_query': category_query,
+        'unit_query': unit_query,
+        'sub_unit_query': sub_unit_query,
     })
 
 
@@ -808,9 +814,8 @@ def Medicalforfullreenlistment(request):
         'sub_unit_query': sub_unit_query,
         'dnfr_query': dnfr_query,
         'category_query': category_query,
+
     })
-
-
 
 #MEDICAL FOR FULL REENLISTMENT
 def Mforfullreenlistment(request):
