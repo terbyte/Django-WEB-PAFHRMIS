@@ -139,37 +139,20 @@ def index(request):
 
 
 def unit_records(request):
-    last_name_query = request.GET.get('last_name')
-    first_name_query = request.GET.get('first_name')
-    middle_name_query = request.GET.get('middle_name')
-    suffix_query = request.GET.get('suffix')
-    afsn_query = request.GET.get('afsn')
-    rank_query = request.GET.get('rank')
-    category_query = request.GET.get('category')
-    sex_query = request.GET.get('sex')
-    unit_query = request.GET.get('unitDP')
-    sub_unit_query = request.GET.get('SubunitDP')
+    unit_query = request.GET.get('unitDP', '')
+    sub_unit_query = request.GET.get('SubunitDP', '')
+    category_query = request.GET.get('AsgmntCategoryDP', '')
+
     
-    print("------------------------------------------------",unit_query)
+    context = {
+        'unitDP': unit_query,
+        'SubunitDP': sub_unit_query,
+        'AsgmntCategoryDP': category_query,
+    }
 
     filters = Q()
-    if last_name_query:
-        filters &= Q(LAST_NAME__icontains=last_name_query)
-    if first_name_query:
-        filters &= Q(FIRST_NAME__icontains=first_name_query)
-    if middle_name_query:
-        filters &= Q(MIDDLE_NAME__icontains=middle_name_query)
-    if suffix_query and suffix_query != "Suffix":
-        filters &= Q(EXTENSION_NAME__icontains=suffix_query)
-    if afsn_query:
-        filters &= Q(AFPSN__icontains=afsn_query) 
-    if rank_query and rank_query != "Rank":
-        filters &= Q(RANK__icontains=rank_query)
     if category_query and category_query != "Category":
         filters &= Q(CATEGORY__icontains=category_query)
-    if sex_query and sex_query != "Sex":
-        filters &= Q(SEX__icontains=sex_query)
-        
     if unit_query:
         filters &= Q(UNIT__icontains=unit_query)
     if sub_unit_query:
@@ -183,14 +166,7 @@ def unit_records(request):
     
     return render(request, 'Unit_Records/unit_records.html', {
         'persons': persons,
-        'last_name_query': last_name_query,
-        'first_name_query': first_name_query,
-        'middle_name_query': middle_name_query,
-        'suffix_query': suffix_query,
-        'afsn_query': afsn_query,
-        'rank_query': rank_query,
         'category_query': category_query,
-        'sex_query': sex_query,
         'unit_query': unit_query,
         'sub_unit_query': sub_unit_query,
     })
@@ -730,22 +706,19 @@ def placement_update_extension(request):
 # REENLISTMENT
 # For DATE OF NEXT FULL REENLISTMENT
 def Tranche(request):
-   
-    category_query = ('ENLISTED PERSONNEL')
+    category_query = 'ENLISTED PERSONNEL'
     unit_query = request.GET.get('unit')
     sub_unit_query = request.GET.get('sub_unit')
-    dnfr_query = request.GET.get('dnfr_query')
+    dnfr_query = request.GET.get('dnfr')
 
     filters = Q()
-    if category_query and category_query:
+    if category_query:
         filters &= Q(CATEGORY__icontains=category_query)
-    if category_query and category_query != "Category":
-        filters &= Q(CATEGORY__icontains=category_query)
-    if unit_query:
+    if unit_query and unit_query != "UNIT":
         filters &= Q(UNIT__icontains=unit_query)
-    if sub_unit_query:
+    if sub_unit_query and sub_unit_query != "SUB UNIT":
         filters &= Q(SUB_UNIT__icontains=sub_unit_query)
-    if dnfr_query:
+    if dnfr_query and dnfr_query != "YEAR":
         filters &= Q(DATE_LASTFULL_REENLISTMENT__icontains=dnfr_query)
        
     persons = PersonnelItem.objects.filter(filters)
