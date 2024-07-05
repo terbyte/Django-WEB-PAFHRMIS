@@ -315,6 +315,7 @@
               <select name="duration" id="durationtxt" class="form-control">
                 <optgroup label="Duration">
                   <option>6 Months</option>
+                  <option>8 Months</option>
                   <option>1 Year</option>
                   <option>2 Years</option>
                 </optgroup>
@@ -469,6 +470,9 @@
     switch (selectedDuration) {
       case "6 Months":
         monthsToAdd = 6;
+        break;
+      case "8 Months":
+        monthsToAdd = 8;
         break;
       case "1 Year":
         yearsToAdd = 1;

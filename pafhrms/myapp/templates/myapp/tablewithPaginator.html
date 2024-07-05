@@ -135,6 +135,17 @@ $(document).ready(function() {
         $('#pilotratingtxt').val(pilotrating);
         $('#hpmetxt').val(hpme);
 
+
+        if (classification === "Regular" || classification === "Regular " || classification === "REGULAR") {
+          $('#tohide').hide();
+        }else if (classification === "Reserve" || classification === "Reserve "|| classification === "RESERVE"){
+          $('#tohide').show();
+
+        }
+        if (category === "ENLISTED PERSONNEL") {
+          $('#tohide').show();
+        } 
+
  
      
         if (category === "ENLISTED PERSONNEL") {

@@ -25,6 +25,8 @@ def calculate_due_date(duration,reassignment_date):
     reassignment_date = datetime.strptime(reassignment_date, "%Y-%m-%d")
     if duration == '6 Months':
         return reassignment_date + relativedelta(months=6)
+    elif duration == '8 Months':
+        return reassignment_date + relativedelta(months=8)
     elif duration == '1 Year':
         return reassignment_date + relativedelta(years=1)
     elif duration == '2 Years':
