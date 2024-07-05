@@ -4,7 +4,7 @@
   <div class="input-group mb-2">
     
       <div class="form-group col-md-4">
-        <select id="unitDP" class="form-control">
+        <select id="unitDP" name="unitDP" class="form-control">
           <option selected>UNIT</option>
         <option>GHQ</option>
         <option>HPAF</option>
@@ -42,14 +42,14 @@
     </div>
     
     <div class="form-group col-md-4">
-      <select id="SubunitDP" class="form-control">
+      <select id="SubunitDP" name="SubunitDP" class="form-control">
         <option selected>SUB UNIT</option>
         
       </select>
   </div>
 
   <div class="form-group col-md-4">
-    <select id="unitDP" class="form-control">
+    <select id="AsgmntCategoryDP" class="form-control">
       <option selected>ASSIGNMENT CATEGORY</option>
       <option>Assign</option>
       <option>Detached Service</option>
@@ -70,18 +70,18 @@
 </form>
 
 <script>
-  // Get the current year
-  var currentYear = new Date().getFullYear();
-  //calculte year ends
-  var yearends = currentYear +10;
-  var startYear = 2024;
-  var yearDropdown = document.getElementById('yearDropdown');
-  for (var year = startYear; year <= yearends; year++) {
-      var option = document.createElement('option');
-      option.value = year;
-      option.textContent = year;
-      yearDropdown.appendChild(option);
-  }
+  // // Get the current year
+  // var currentYear = new Date().getFullYear();
+  // //calculte year ends
+  // var yearends = currentYear +10;
+  // var startYear = 2024;
+  // var yearDropdown = document.getElementById('yearDropdown');
+  // for (var year = startYear; year <= yearends; year++) {
+  //     var option = document.createElement('option');
+  //     option.value = year;
+  //     option.textContent = year;
+  //     yearDropdown.appendChild(option);
+  // }
 
 
 
@@ -98,16 +98,20 @@
             'AFGH', '1301st DD'],
             'ADC': ['HADC', '5FW', '580ACWW', '960AMDG', 'PADCC', 'ADAC'],
             'AMC':['HAMC', '205THW', '220AW', '250PAW', '505SRG'],
+            'TOWWEST':['HTOWWEST', 'TOG 7', '570th ABG'],
             'ACC': ['HACC', '15SW', '710SPOW'],
             'AETDC': [ 'HAETDC', 'PAFOS', 'PAFOCS', 'PAFFS', 'PAFNCOS', 'PAFTSS',
             'PAFBMS', 'PAFLTC', 'PAFALEN', '440AMG', 'TDC', 'AWC'],
             'ARFC': ['HAFRC', '1ARCEN', '2ARCEN', '3ARCEN', '4ARCEN', '5ARCEN', '6ARCEN', '7ARCEN', '8ARCEN'],
             'PAFHRMC-A/U': [],
+            'PAFHRMC': [],
             'GHQ': ['OJ1', 'OJ2', 'OJ3', 'OJ4', 'OJ5', 'OJ6', 'OJ7', 'OJ8', 'OJ9', 'OJ10', 'AFPCC','OTAG', 'OTPMG', 'OTCCHS', 'OTJAG', 'AFPPDO', 'OTQMG', 'OTSG', 'AFPSEO','AFPHRO', 'OTCN', 'OTCDS', 'OSPS', 'AFPIMAC', 'AFPREO', 'AFPEBSO', 'OTCE','AFP K9', 'AFPCOC', 'CEISO', 'CGEASH', 'OAFPSM', 'GHQTS', 'PMO', 'OSJA','ODCOP', 'ONAF', 'GHQPFO'],
             'AFPWSSUS': ['PMA', 'AFPETDC', 'CEISSAFP', 'CRSAFP', 'ISAFP', 'AFPHSC', 'AFP SOCOM', 'AFPFC', 'AFPPS', 'AFPPKOC', 'AFPCES', 'AFPMCC', 'PSG', 'AFPPGMC', 'AFPCYBER', 'AFPRESCOM', 'DND'],
           };
 
-        // Get the dropdown elements  
+
+          
+        // Get the dropdown elements
         const unitDP = document.getElementById('unitDP');
         const SubunitDP = document.getElementById('SubunitDP');
         

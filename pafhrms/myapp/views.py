@@ -104,7 +104,7 @@ def index(request):
     if suffix_query and suffix_query != "Suffix":
         filters &= Q(EXTENSION_NAME__icontains=suffix_query)
     if afsn_query:
-        filters &= Q(AFPSN__icontains=afsn_query) 
+        filters &= Q(SERIAL_NUMBER__icontains=afsn_query) 
     if rank_query and rank_query != "Rank":
         filters &= Q(RANK__icontains=rank_query)
     if category_query and category_query != "Category":
@@ -147,7 +147,8 @@ def unit_records(request):
     rank_query = request.GET.get('rank')
     category_query = request.GET.get('category')
     sex_query = request.GET.get('sex')
-    unit_query = request.GET.get('unit')
+    unit_query = request.GET.get('unitDP')
+    sub_unit_query = request.GET.get('SubunitDP')
     
     print("------------------------------------------------",unit_query)
 
@@ -168,8 +169,11 @@ def unit_records(request):
         filters &= Q(CATEGORY__icontains=category_query)
     if sex_query and sex_query != "Sex":
         filters &= Q(SEX__icontains=sex_query)
+        
     if unit_query:
         filters &= Q(UNIT__icontains=unit_query)
+    if sub_unit_query:
+        filters &= Q(SUB_UNIT__icontains=sub_unit_query)
     
     persons = PersonnelItem.objects.filter(filters)
     
@@ -188,6 +192,7 @@ def unit_records(request):
         'category_query': category_query,
         'sex_query': sex_query,
         'unit_query': unit_query,
+        'sub_unit_query': sub_unit_query,
     })
     
 
