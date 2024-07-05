@@ -168,43 +168,45 @@ document.getElementById('printButton').addEventListener('click', function() {
 });
 </script>
 <nav aria-label="...">
-  <ul class="pagination">
-      {% if persons.has_previous %}
-          <li class="page-item">
-              <a class="page-link" href="?page=1">&laquo; first</a>
-          </li>
-          <li class="page-item">
-              <a class="page-link" href="?page={{ persons.previous_page_number }}">previous</a>
-          </li>
-      {% else %}
-          <li class="page-item disabled"> 
-              <span class="page-link">&laquo; first</span>
-          </li>
-          <li class="page-item disabled">
-              <span class="page-link">previous</span>
-          </li>
-      {% endif %}
-      <li class="page-item">
-          <span class="page-link">
-              Page {{ persons.number }} of {{ persons.paginator.num_pages }}
-          </span>
-      </li>
-      {% if persons.has_next %}
-          <li class="page-item">
-              <a class="page-link" href="?page={{ persons.next_page_number }}">next</a>
-          </li>
-          <li class="page-item">
-              <a class="page-link" href="?page={{ persons.paginator.num_pages }}">last &raquo;</a>
-          </li>
-      {% else %}
-          <li class="page-item disabled">
-              <span class="page-link">next</span>
-          </li>
-          <li class="page-item disabled">
-              <span class="page-link">last &raquo;</span>
-          </li>
-      {% endif %}
-  </ul>
+    <ul class="pagination">
+        {% if persons.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page=1{% if last_name_query %}&last_name={{ last_name_query }}{% endif %}{% if first_name_query %}&first_name={{ first_name_query }}{% endif %}{% if middle_name_query %}&middle_name={{ middle_name_query }}{% endif %}{% if suffix_query %}&suffix={{ suffix_query }}{% endif %}{% if afsn_query %}&afsn={{ afsn_query }}{% endif %}{% if rank_query %}&rank={{ rank_query }}{% endif %}{% if category_query %}&category={{ category_query }}{% endif %}{% if sex_query %}&sex={{ sex_query }}{% endif %}{% if unit_query %}&unit={{ unit_query }}{% endif %}">&laquo; first</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ persons.previous_page_number }}{% if last_name_query %}&last_name={{ last_name_query }}{% endif %}{% if first_name_query %}&first_name={{ first_name_query }}{% endif %}{% if middle_name_query %}&middle_name={{ middle_name_query }}{% endif %}{% if suffix_query %}&suffix={{ suffix_query }}{% endif %}{% if afsn_query %}&afsn={{ afsn_query }}{% endif %}{% if rank_query %}&rank={{ rank_query }}{% endif %}{% if category_query %}&category={{ category_query }}{% endif %}{% if sex_query %}&sex={{ sex_query }}{% endif %}{% if unit_query %}&unit={{ unit_query }}{% endif %}">previous</a>
+            </li>
+        {% else %}
+            <li class="page-item disabled">
+                <span class="page-link">&laquo; first</span>
+            </li>
+            <li class="page-item disabled">
+                <span class="page-link">previous</span>
+            </li>
+        {% endif %}
+
+        <li class="page-item">
+            <span class="page-link">
+                Page {{ persons.number }} of {{ persons.paginator.num_pages }}
+            </span>
+        </li>
+
+        {% if persons.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ persons.next_page_number }}{% if last_name_query %}&last_name={{ last_name_query }}{% endif %}{% if first_name_query %}&first_name={{ first_name_query }}{% endif %}{% if middle_name_query %}&middle_name={{ middle_name_query }}{% endif %}{% if suffix_query %}&suffix={{ suffix_query }}{% endif %}{% if afsn_query %}&afsn={{ afsn_query }}{% endif %}{% if rank_query %}&rank={{ rank_query }}{% endif %}{% if category_query %}&category={{ category_query }}{% endif %}{% if sex_query %}&sex={{ sex_query }}{% endif %}{% if unit_query %}&unit={{ unit_query }}{% endif %}">next</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ persons.paginator.num_pages }}{% if last_name_query %}&last_name={{ last_name_query }}{% endif %}{% if first_name_query %}&first_name={{ first_name_query }}{% endif %}{% if middle_name_query %}&middle_name={{ middle_name_query }}{% endif %}{% if suffix_query %}&suffix={{ suffix_query }}{% endif %}{% if afsn_query %}&afsn={{ afsn_query }}{% endif %}{% if rank_query %}&rank={{ rank_query }}{% endif %}{% if category_query %}&category={{ category_query }}{% endif %}{% if sex_query %}&sex={{ sex_query }}{% endif %}{% if unit_query %}&unit={{ unit_query }}{% endif %}">last &raquo;</a>
+            </li>
+        {% else %}
+            <li class="page-item disabled">
+                <span class="page-link">next</span>
+            </li>
+            <li class="page-item disabled">
+                <span class="page-link">last &raquo;</span>
+            </li>
+        {% endif %}
+    </ul>
 </nav>
 
 {% endblock %}
