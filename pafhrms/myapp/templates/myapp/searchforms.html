@@ -1,4 +1,4 @@
-<form>
+<form method="GET">
   <div class="input-group mb-3">
     <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name="last_name" placeholder="Last Name" {% if last_name_query %}value="{{ last_name_query }}"{% endif %}>
     <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name="first_name" placeholder="First Name" {% if first_name_query %}value="{{ first_name_query }}"{% endif %}>
@@ -17,7 +17,7 @@
   <div class="input-group mb-3">
     <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name="afsn" placeholder="AFSN" {% if afsn_query %}value="{{ afsn_query }}"{% endif %}>
       <div class="form-group col-md-2">
-        <select id="inputState" name = "rank" class="form-control">
+        <select id="inputState" name="rank" class="form-control">
           <option selected>Rank</option>
           <optgroup label="Officer">
             <option value="GEN">GEN</option>
@@ -60,9 +60,6 @@
             <option>Female</option>
           </select>
       </div>
-      <!-- THIS ONE WORKS, DONT DELETE YET, IT NEEDS TO SEARCH UNIT FROM DROPDOWN UNIT CREATED BELOW HERE -->
-      <!-- <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name="unit" placeholder="Unit"> -->
-      
       <select name="unit_search" class="form-control">
         <option selected>UNIT</option>
         <option>GHQ</option>
@@ -98,7 +95,6 @@
         <option >EASTMINCOM</option>
         <option >JTF-NCR</option>
       </select>
-      
     </div>
   <div class="form-group">
       <button type="submit" class="btn btn-primary">Search</button>
