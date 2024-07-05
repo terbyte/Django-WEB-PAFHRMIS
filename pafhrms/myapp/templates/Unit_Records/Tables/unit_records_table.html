@@ -71,15 +71,15 @@ $(document).ready(function() {
 
   </script>
 
-
 <nav aria-label="...">
     <ul class="pagination">
         {% if persons.has_previous %}
             <li class="page-item">
-                <a class="page-link" href="?page=1{% if last_name_query %}&last_name={{ last_name_query }}{% endif %}{% if first_name_query %}&first_name={{ first_name_query }}{% endif %}{% if middle_name_query %}&middle_name={{ middle_name_query }}{% endif %}{% if suffix_query %}&suffix={{ suffix_query }}{% endif %}{% if afsn_query %}&afsn={{ afsn_query }}{% endif %}{% if rank_query %}&rank={{ rank_query }}{% endif %}{% if category_query %}&category={{ category_query }}{% endif %}{% if sex_query %}&sex={{ sex_query }}{% endif %}{% if unit_query %}&unit={{ unit_query }}{% endif %}">&laquo; first</a>
+                <a class="page-link" href="?page=1{% if unit_query %}&unit={{ unit_query }}{% endif %}{% if sub_unit_query %}&sub_unit={{ sub_unit_query }}{% endif %}">&laquo; first</a>
             </li>
             <li class="page-item">
-                <a class="page-link" href="?page={{ persons.previous_page_number }}{% if last_name_query %}&last_name={{ last_name_query }}{% endif %}{% if first_name_query %}&first_name={{ first_name_query }}{% endif %}{% if middle_name_query %}&middle_name={{ middle_name_query }}{% endif %}{% if suffix_query %}&suffix={{ suffix_query }}{% endif %}{% if afsn_query %}&afsn={{ afsn_query }}{% endif %}{% if rank_query %}&rank={{ rank_query }}{% endif %}{% if category_query %}&category={{ category_query }}{% endif %}{% if sex_query %}&sex={{ sex_query }}{% endif %}{% if unit_query %}&unit={{ unit_query }}{% endif %}">previous</a>
+                <a class="page-link" href="?page={% if unit_query %}&unit={{ unit_query }}{% endif %}
+                {% if sub_unit_query %}&sub_unit={{ sub_unit_query }}{% endif %}">previous</a>
             </li>
         {% else %}
             <li class="page-item disabled">
@@ -98,10 +98,10 @@ $(document).ready(function() {
 
         {% if persons.has_next %}
             <li class="page-item">
-                <a class="page-link" href="?page={{ persons.next_page_number }}{% if last_name_query %}&last_name={{ last_name_query }}{% endif %}{% if first_name_query %}&first_name={{ first_name_query }}{% endif %}{% if middle_name_query %}&middle_name={{ middle_name_query }}{% endif %}{% if suffix_query %}&suffix={{ suffix_query }}{% endif %}{% if afsn_query %}&afsn={{ afsn_query }}{% endif %}{% if rank_query %}&rank={{ rank_query }}{% endif %}{% if category_query %}&category={{ category_query }}{% endif %}{% if sex_query %}&sex={{ sex_query }}{% endif %}{% if unit_query %}&unit={{ unit_query }}{% endif %}">next</a>
+                <a class="page-link" href="?page={{ persons.next_page_number }}{% if last_name_query %}&last_name={{ last_name_query }}{% endif %}{% if first_name_query %}&first_name={{ first_name_query }}{% endif %}{% if middle_name_query %}&middle_name={{ middle_name_query }}{% endif %}{% if suffix_query %}&suffix={{ suffix_query }}{% endif %}{% if afsn_query %}&afsn={{ afsn_query }}{% endif %}{% if rank_query %}&rank={{ rank_query }}{% endif %}{% if category_query %}&category={{ category_query }}{% endif %}{% if sex_query %}&sex={{ sex_query }}{% endif %}{% if unit_query %}&unit={{ unit_query }}{% endif %}{% if sub_unit_query %}&sub_unit={{ sub_unit_query }}{% endif %}">next</a>
             </li>
             <li class="page-item">
-                <a class="page-link" href="?page={{ persons.paginator.num_pages }}{% if last_name_query %}&last_name={{ last_name_query }}{% endif %}{% if first_name_query %}&first_name={{ first_name_query }}{% endif %}{% if middle_name_query %}&middle_name={{ middle_name_query }}{% endif %}{% if suffix_query %}&suffix={{ suffix_query }}{% endif %}{% if afsn_query %}&afsn={{ afsn_query }}{% endif %}{% if rank_query %}&rank={{ rank_query }}{% endif %}{% if category_query %}&category={{ category_query }}{% endif %}{% if sex_query %}&sex={{ sex_query }}{% endif %}{% if unit_query %}&unit={{ unit_query }}{% endif %}">last &raquo;</a>
+                <a class="page-link" href="?page={{ persons.paginator.num_pages }}{% if last_name_query %}&last_name={{ last_name_query }}{% endif %}{% if first_name_query %}&first_name={{ first_name_query }}{% endif %}{% if middle_name_query %}&middle_name={{ middle_name_query }}{% endif %}{% if suffix_query %}&suffix={{ suffix_query }}{% endif %}{% if afsn_query %}&afsn={{ afsn_query }}{% endif %}{% if rank_query %}&rank={{ rank_query }}{% endif %}{% if category_query %}&category={{ category_query }}{% endif %}{% if sex_query %}&sex={{ sex_query }}{% endif %}{% if unit_query %}&unit={{ unit_query }}{% endif %}{% if sub_unit_query %}&sub_unit={{ sub_unit_query }}{% endif %}">last &raquo;</a>
             </li>
         {% else %}
             <li class="page-item disabled">
