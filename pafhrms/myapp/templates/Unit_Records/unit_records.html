@@ -1,149 +1,111 @@
 {% extends 'Base/base.html' %}
 {% block content %}
-<form>
-  <div class="input-group mb-2">
-    
-      <div class="form-group col-md-4">
-        <select id="unitDP" name="unitDP" class="form-control">
-          <option selected value="">UNIT</option>
-        <option>GHQ</option>
-        <option>HPAF</option>
-        <option>PAFHRMC-A/U</option>
-        <option>AFPWSSUS</option>
-        <option>AIBDC</option>
-        <option>ADC</option>
-        <option>AMC</option>
-        <option>ACC</option>
-        <option>AETDC</option>
-        <option>ARFC</option>
-        <option >TOWNOL</option>
-        <option >TOWSOL</option>
-        <option >TOWCEN</option>
-        <option >TOWWEST</option>
-        <option >TOWEASTMIN</option>
-        <option >TOWWESTMIN</option>
-        <option >355AEW</option>
-        <option >300AISW</option>
-        <option >900AFWG</option>
-        <option >950CEWW</option>
-        <option >AFFC</option>
-        <option >AFSSG</option>
-        <option >HSSG</option>
-        <option >PAFCMOG</option>
-        <option >PAFHRMC</option>
-        <option >NOLCOM</option>
-        <option >SOLCOM</option>
-        <option >WESCOM</option>
-        <option >VISCOM</option>
-        <option >WESTMINCOM</option>
-        <option >EASTMINCOM</option>
-        <option >JTF-NCR</option>
-        </select>
-    </div>
-    
-    <div class="form-group col-md-4">
-      <select id="SubunitDP" name="SubunitDP" class="form-control">
-        <option selected>SUB UNIT</option>
-        
-      </select>
-  </div>
+<head>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<form method="GET" action="{% url 'unit_records' %}">
+    <div class="input-group mb-3">
+        <div class="form-group col-md-4">
+            <select name="unit" id="unit" class="form-control">
+                <option {% if not unit_query %}selected{% endif %}>UNIT</option>
+                <option value="GHQ" {% if unit_query == "GHQ" %}selected{% endif %}>GHQ</option>
+                <option value="HPAF" {% if unit_query == "HPAF" %}selected{% endif %}>HPAF</option>
+                <option value="PAFHRMC-A/U" {% if unit_query == "PAFHRMC-A/U" %}selected{% endif %}>PAFHRMC-A/U</option>
+                <option value="AFPWSSUS" {% if unit_query == "AFPWSSUS" %}selected{% endif %}>AFPWSSUS</option>
+                <option value="AIBDC" {% if unit_query == "AIBDC" %}selected{% endif %}>AIBDC</option>
+                <option value="ADC" {% if unit_query == "ADC" %}selected{% endif %}>ADC</option>
+                <option value="AMC" {% if unit_query == "AMC" %}selected{% endif %}>AMC</option>
+                <option value="ACC" {% if unit_query == "ACC" %}selected{% endif %}>ACC</option>
+                <option value="AETDC" {% if unit_query == "AETDC" %}selected{% endif %}>AETDC</option>
+                <option value="ARFC" {% if unit_query == "ARFC" %}selected{% endif %}>ARFC</option>
+                <option value="TOWNOL" {% if unit_query == "TOWNOL" %}selected{% endif %}>TOWNOL</option>
+                <option value="TOWSOL" {% if unit_query == "TOWSOL" %}selected{% endif %}>TOWSOL</option>
+                <option value="TOWCEN" {% if unit_query == "TOWCEN" %}selected{% endif %}>TOWCEN</option>
+                <option value="TOWWEST" {% if unit_query == "TOWWEST" %}selected{% endif %}>TOWWEST</option>
+                <option value="TOWEASTMIN" {% if unit_query == "TOWEASTMIN" %}selected{% endif %}>TOWEASTMIN</option>
+                <option value="TOWWESTMIN" {% if unit_query == "TOWWESTMIN" %}selected{% endif %}>TOWWESTMIN</option>
+                <option value="355AEW" {% if unit_query == "355AEW" %}selected{% endif %}>355AEW</option>
+                <option value="300AISW" {% if unit_query == "300AISW" %}selected{% endif %}>300AISW</option>
+                <option value="900AFWG" {% if unit_query == "900AFWG" %}selected{% endif %}>900AFWG</option>
+                <option value="950CEWW" {% if unit_query == "950CEWW" %}selected{% endif %}>950CEWW</option>
+                <option value="AFFC" {% if unit_query == "AFFC" %}selected{% endif %}>AFFC</option>
+                <option value="AFSSG" {% if unit_query == "AFSSG" %}selected{% endif %}>AFSSG</option>
+                <option value="HSSG" {% if unit_query == "HSSG" %}selected{% endif %}>HSSG</option>
+                <option value="PAFCMOG" {% if unit_query == "PAFCMOG" %}selected{% endif %}>PAFCMOG</option>
+                <option value="PAFHRMC" {% if unit_query == "PAFHRMC" %}selected{% endif %}>PAFHRMC</option>
+                <option value="NOLCOM" {% if unit_query == "NOLCOM" %}selected{% endif %}>NOLCOM</option>
+                <option value="SOLCOM" {% if unit_query == "SOLCOM" %}selected{% endif %}>SOLCOM</option>
+                <option value="WESCOM" {% if unit_query == "WESCOM" %}selected{% endif %}>WESCOM</option>
+                <option value="VISCOM" {% if unit_query == "VISCOM" %}selected{% endif %}>VISCOM</option>
+                <option value="WESTMINCOM" {% if unit_query == "WESTMINCOM" %}selected{% endif %}>WESTMINCOM</option>
+                <option value="EASTMINCOM" {% if unit_query == "EASTMINCOM" %}selected{% endif %}>EASTMINCOM</option>
+                <option value="JTF-NCR" {% if unit_query == "JTF-NCR" %}selected{% endif %}>JTF-NCR</option>
 
-  <div class="form-group col-md-4">
-    <select id="AsgmntCategoryDP" class="form-control">
-      <option selected>ASSIGNMENT CATEGORY</option>
-      <option>Assign</option>
-      <option>Detached Service</option>
-      <option>Temporary Duty</option>
-
-
-    </select>
-</div>
+                  </select>
+            </select>
+        </div>
+        <div class="form-group col-md-4">
+            <select name="sub_unit" id="sub_unit" class="form-control">
+                <option {% if not sub_unit_query %}selected{% endif %}>SUB UNIT</option>
+                <!-- Options will be populated by JavaScript -->
+            </select>
+        </div>
       
-  </div>
-
-
-
-
-  <div class="form-group">
-      <button type="submit" class="btn btn-primary">Search</button>
-  </div>
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Search</button>
+    </div>
 </form>
 
 
 
-
-<!-- THE SCRIPT ON HERE IS CONNECTED TO PLACEMENT-MODAL.HTML -->
-
-
-<!-- <script>
-  // // Get the current year
-  // var currentYear = new Date().getFullYear();
-  // //calculte year ends
-  // var yearends = currentYear +10;
-  // var startYear = 2024;
-  // var yearDropdown = document.getElementById('yearDropdown');
-  // for (var year = startYear; year <= yearends; year++) {
-  //     var option = document.createElement('option');
-  //     option.value = year;
-  //     option.textContent = year;
-  //     yearDropdown.appendChild(option);
-  // }
-
-
-
-  // Object mapping units to their respective subunits
-  const unitSubunitMap = {
-            'HPAF': ['OCG', 'OVC', 'OCAS', 'OSAS', 'AFCC', 'OAFIG', 'OSS', 'AFSO', 'OESPA',
-            'AFSMO', 'AFPAO', 'OAFIA', 'OAFSM', 'OAFA', 'OAFPM', 'OAJA', 'OCAC',
-            'OCSAF', 'OCAFDS', 'OCNAF', 'OAFCE', 'OCHCA', 'AFREO', 'AFIMAO',
-            'AFCLOAC', 'OAFGAD', 'ACOFAS, A-1', 'ACOFAS, A-2', 'ACOFAS, A-3',
-            'ACOFAS, A-4', 'ACOFAS, A-5', 'ACOFAS, A-6', 'ACOFAS, A-7', 'ACOFAS, A-8',
-            'ACOFAS, A-9', 'ACOFAS, A-10'],
-            'AIBDC':  ['HAIBDC', '520th ABG', '530th ABG', '540th ABG', '550th ABG',
-            '560th ABG', '585th ABG', '590th ABG', '600ABG', '970th HECG',
-            'AFGH', '1301st DD'],
-            'ADC': ['HADC', '5FW', '580ACWW', '960AMDG', 'PADCC', 'ADAC'],
-            'AMC':['HAMC', '205THW', '220AW', '250PAW', '505SRG'],
-            'TOWWEST':['HTOWWEST', 'TOG 7', '570th ABG'],
-            'ACC': ['HACC', '15SW', '710SPOW'],
-            'AETDC': [ 'HAETDC', 'PAFOS', 'PAFOCS', 'PAFFS', 'PAFNCOS', 'PAFTSS',
-            'PAFBMS', 'PAFLTC', 'PAFALEN', '440AMG', 'TDC', 'AWC'],
-            'ARFC': ['HAFRC', '1ARCEN', '2ARCEN', '3ARCEN', '4ARCEN', '5ARCEN', '6ARCEN', '7ARCEN', '8ARCEN'],
-            'PAFHRMC-A/U': [],
-            'PAFHRMC': [],
-            'GHQ': ['OJ1', 'OJ2', 'OJ3', 'OJ4', 'OJ5', 'OJ6', 'OJ7', 'OJ8', 'OJ9', 'OJ10', 'AFPCC','OTAG', 'OTPMG', 'OTCCHS', 'OTJAG', 'AFPPDO', 'OTQMG', 'OTSG', 'AFPSEO','AFPHRO', 'OTCN', 'OTCDS', 'OSPS', 'AFPIMAC', 'AFPREO', 'AFPEBSO', 'OTCE','AFP K9', 'AFPCOC', 'CEISO', 'CGEASH', 'OAFPSM', 'GHQTS', 'PMO', 'OSJA','ODCOP', 'ONAF', 'GHQPFO'],
-            'AFPWSSUS': ['PMA', 'AFPETDC', 'CEISSAFP', 'CRSAFP', 'ISAFP', 'AFPHSC', 'AFP SOCOM', 'AFPFC', 'AFPPS', 'AFPPKOC', 'AFPCES', 'AFPMCC', 'PSG', 'AFPPGMC', 'AFPCYBER', 'AFPRESCOM', 'DND'],
-          };
-
-
-          
-        // Get the dropdown elements
-        const unitDP = document.getElementById('unitDP');
-        const SubunitDP = document.getElementById('SubunitDP');
-        
-        // Event listener for unit dropdown change
-        unitDP.addEventListener('change', function() {
-            // Get selected unit
-            const selectedUnit = unitDP.value;
-
-            // Clear previous subunit options
-            SubunitDP.innerHTML = '<option value="">--Select Subunit--</option>';
-
-            // If a valid unit is selected, populate subunits
-            if (selectedUnit) {
-                const subunits = unitSubunitMap[selectedUnit];
-                subunits.forEach(function(subunit) {
-                    const option = document.createElement('option');
-                    option.value = subunit;
-                    option.textContent = subunit;
-                    SubunitDP.appendChild(option);
-                });
-            }
-        });
-</script> -->
-
+<!-- THIS IS FOR TABLE TAG -->
 {% include 'Unit_Records/Tables/unit_records_table.html' %}
 
+
+
+
+
+<script>
+    $(document).ready(function() {
+        var subUnits = {
+            'GHQ': ['OJ1', 'OJ2', 'OJ3', 'OJ4', 'OJ5', 'OJ6', 'OJ7', 'OJ8', 'OJ9', 'OJ10', 'AFPCC','OTAG', 'OTPMG', 'OTCCHS', 'OTJAG', 'AFPPDO', 'OTQMG', 'OTSG', 'AFPSEO','AFPHRO', 'OTCN', 'OTCDS', 'OSPS', 'AFPIMAC', 'AFPREO', 'AFPEBSO', 'OTCE','AFP K9', 'AFPCOC', 'CEISO', 'CGEASH', 'OAFPSM', 'GHQTS', 'PMO', 'OSJA','ODCOP', 'ONAF', 'GHQPFO'],
+            'HPAF': ['OCG', 'OVC', 'OCAS', 'OSAS', 'AFCC', 'OAFIG', 'OSS', 'AFSO', 'OESPA','AFSMO', 'AFPAO', 'OAFIA', 'OAFSM', 'OAFA', 'OAFPM', 'OAJA', 'OCAC','OCSAF', 'OCAFDS', 'OCNAF', 'OAFCE', 'OCHCA', 'AFREO', 'AFIMAO','AFCLOAC', 'OAFGAD', 'ACOFAS, A-1', 'ACOFAS, A-2', 'ACOFAS, A-3','ACOFAS, A-4', 'ACOFAS, A-5', 'ACOFAS, A-6', 'ACOFAS, A-7', 'ACOFAS, A-8','ACOFAS, A-9', 'ACOFAS, A-10'],
+            'AIBDC':  ['HAIBDC', '520th ABG', '530th ABG', '540th ABG', '550th ABG','560th ABG', '585th ABG', '590th ABG', '600ABG', '970th HECG','AFGH', '1301st DD'],
+            'ADC': ['HADC', '5FW', '580ACWW', '960AMDG', 'PADCC', 'ADAC'],
+            'AMC':['HAMC', '205THW', '220AW', '250PAW', '505SRG'],
+            'ACC': ['HACC', '15SW', '710SPOW'],
+            'TOWWEST': ['HTOWWEST', 'TOG 7', '570th ABG'],
+            'AETDC': [ 'HAETDC', 'PAFOS', 'PAFOCS', 'PAFFS', 'PAFNCOS', 'PAFTSS','PAFBMS', 'PAFLTC', 'PAFALEN', '440AMG', 'TDC', 'AWC'],
+            'ARFC': ['HAFRC', '1st ARCEN', '2nd ARCEN', '3rd ARCEN', '4th ARCEN', '5th ARCEN', '6th ARCEN', '7th ARCEN', '8th ARCEN'],  
+            'AFPWSSUS': ['PMA', 'AFPETDC', 'CEISSAFP', 'CRSAFP', 'ISAFP', 'AFPHSC', 'AFP SOCOM', 'AFPFC', 'AFPPS', 'AFPPKOC', 'AFPCES', 'AFPMCC', 'PSG', 'AFPPGMC', 'AFPCYBER', 'AFPRESCOM', 'DND'],
+    };
+ 
+        function populateSubUnits(unit) {
+            var subUnitSelect = $('#sub_unit');
+            subUnitSelect.empty();
+            subUnitSelect.append('<option>SUB UNIT</option>');
+            if (unit in subUnits) {
+                subUnits[unit].forEach(function(subUnit) {
+                    subUnitSelect.append('<option value="' + subUnit + '">' + subUnit + '</option>');
+                });
+            }
+        }
+
+        $('#unit').change(function() {
+            var unit = $(this).val();
+            populateSubUnits(unit);
+        });
+
+        // Populate sub_units if unit is already selected
+        var selectedUnit = "{{ unit_query }}";
+        if (selectedUnit) {
+            populateSubUnits(selectedUnit);
+            $('#sub_unit').val("{{ sub_unit_query }}");
+        }
+    });
+
+
+</script>
+
 {% endblock %}
-
-

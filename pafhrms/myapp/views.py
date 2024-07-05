@@ -138,39 +138,40 @@ def index(request):
 
 
 
-def unit_records(request):
-    unit_query = request.GET.get('unitDP', '')
-    sub_unit_query = request.GET.get('SubunitDP', '')
-    category_query = request.GET.get('AsgmntCategoryDP', '')
+# def unit_records(request):
+#     unit_query = request.GET.get('unitDP', '')
+#     sub_unit_query = request.GET.get('SubunitDP', '')
+#     category_query = request.GET.get('AsgmntCategoryDP', '')
 
     
-    context = {
-        'unitDP': unit_query,
-        'SubunitDP': sub_unit_query,
-        'AsgmntCategoryDP': category_query,
-    }
+#     context = {
+#         'unitDP': unit_query,
+#         'SubunitDP': sub_unit_query,
+#         'AsgmntCategoryDP': category_query,
+#     }
 
-    filters = Q()
-    if category_query and category_query != "Category":
-        filters &= Q(CATEGORY__icontains=category_query)
-    if unit_query:
-        filters &= Q(UNIT__icontains=unit_query)
-    if sub_unit_query:
-        filters &= Q(SUB_UNIT__icontains=sub_unit_query)
+#     filters = Q()
+#     if category_query and category_query != "Category":
+#         filters &= Q(CATEGORY__icontains=category_query)
+#     if unit_query:
+#         filters &= Q(UNIT__icontains=unit_query)
+#     if sub_unit_query:
+#         filters &= Q(SUB_UNIT__icontains=sub_unit_query)
     
-    persons = PersonnelItem.objects.filter(filters)
+#     persons = PersonnelItem.objects.filter(filters)
     
-    paginator = Paginator(persons, 10)
-    page_num = request.GET.get("page")
-    persons = paginator.get_page(page_num)
+#     paginator = Paginator(persons, 10)
+#     page_num = request.GET.get("page")
+#     persons = paginator.get_page(page_num)
     
-    return render(request, 'Unit_Records/unit_records.html', {
-        'persons': persons,
-        'category_query': category_query,
-        'unit_query': unit_query,
-        'sub_unit_query': sub_unit_query,
-    })
+#     return render(request, 'Unit_Records/unit_records.html', {
+#         'persons': persons,
+#         'category_query': category_query,
+#         'unit_query': unit_query,
+#         'sub_unit_query': sub_unit_query,
+#     })
     
+
 
 
 
@@ -701,6 +702,31 @@ def placement_update_extension(request):
     return JsonResponse({'success': False, 'error': 'Invalid request'})
 
 
+
+# UNIT RECORDS
+
+def unit_records(request):
+    unit_query = request.GET.get('unit')
+    sub_unit_query = request.GET.get('sub_unit')
+
+    filters = Q()
+
+    if unit_query and unit_query != "UNIT":
+        filters &= Q(UNIT__icontains=unit_query)
+    if sub_unit_query and sub_unit_query != "SUB UNIT":
+        filters &= Q(SUB_UNIT__icontains=sub_unit_query)
+
+       
+    persons = PersonnelItem.objects.filter(filters)
+    paginator = Paginator(persons, 10)
+    page_num = request.GET.get("page")
+    persons = paginator.get_page(page_num)
+    
+    return render(request, 'Unit_Records/unit_records.html', {
+        'persons': persons,
+        'unit_query': unit_query,
+        'sub_unit_query': sub_unit_query,
+    })
 
 
 # REENLISTMENT
