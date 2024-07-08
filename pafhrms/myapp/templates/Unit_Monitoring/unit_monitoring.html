@@ -46,10 +46,22 @@
         </div>
         <div class="form-group col-md-4">
             <select name="sub_unit" id="sub_unit" class="form-control">
-                <option {% if not sub_unit_query %}selected{% endif %}>SUB UNIT</option>
+                <option {% if not sub_unit_query %}selected{% endif %}></option>
                 <!-- Options will be populated by JavaScript -->
             </select>
         </div>
+
+<!-- 
+        <div class="form-group col-md-4">
+            <select name="categoryDP" id="categoryDP" class="form-control">
+              <option selected>ASSIGNMENT CATEGORY</option>
+              <option>Assign</option>
+              <option>Detached Service</option>
+              <option>Temporary Duty</option>
+        
+        
+            </select>
+        </div> -->
       
     </div>
     <div class="form-group">
@@ -84,7 +96,7 @@
         function populateSubUnits(unit) {
             var subUnitSelect = $('#sub_unit');
             subUnitSelect.empty();
-            subUnitSelect.append('<option>SUB UNIT</option>');
+            subUnitSelect.append('<option></option>');
             if (unit in subUnits) {
                 subUnits[unit].forEach(function(subUnit) {
                     subUnitSelect.append('<option value="' + subUnit + '">' + subUnit + '</option>');

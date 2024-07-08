@@ -705,18 +705,18 @@ def placement_update_extension(request):
 
 # UNIT MONITORING
 
+def tabler(tableName,):
+    print("enters tabler")
+
 def unit_monitoring(request):
     unit_query = request.GET.get('unit')
     sub_unit_query = request.GET.get('sub_unit')
 
     filters = Q()
-
     if unit_query and unit_query != "UNIT":
         filters &= Q(UNIT__icontains=unit_query)
     if sub_unit_query and sub_unit_query != "SUB UNIT":
         filters &= Q(SUB_UNIT__icontains=sub_unit_query)
-
-       
     persons = PersonnelItem.objects.filter(filters)
     paginator = Paginator(persons, 10)
     page_num = request.GET.get("page")
