@@ -24,7 +24,7 @@ urlpatterns = [
     path('placement/orders/<str:afpsn>/', views.user_files, name='orders'),
 
     # Unit Records
-    path('placement/unit_records', views.unit_records, name='unit_records'),
+    path('placement/unit_monitoring', views.unit_monitoring, name='unit_monitoring'),
 
     # Reenlistment
     path('reenlistment/Tranche/', views.Tranche, name='Tranche'),

@@ -138,7 +138,7 @@ def index(request):
 
 
 
-# def unit_records(request):
+# def unit_monitoring(request):
 #     unit_query = request.GET.get('unitDP', '')
 #     sub_unit_query = request.GET.get('SubunitDP', '')
 #     category_query = request.GET.get('AsgmntCategoryDP', '')
@@ -164,7 +164,7 @@ def index(request):
 #     page_num = request.GET.get("page")
 #     persons = paginator.get_page(page_num)
     
-#     return render(request, 'Unit_Records/unit_records.html', {
+#     return render(request, 'unit_monitoring/unit_monitoring.html', {
 #         'persons': persons,
 #         'category_query': category_query,
 #         'unit_query': unit_query,
@@ -703,9 +703,9 @@ def placement_update_extension(request):
 
 
 
-# UNIT RECORDS
+# UNIT MONITORING
 
-def unit_records(request):
+def unit_monitoring(request):
     unit_query = request.GET.get('unit')
     sub_unit_query = request.GET.get('sub_unit')
 
@@ -722,7 +722,7 @@ def unit_records(request):
     page_num = request.GET.get("page")
     persons = paginator.get_page(page_num)
     
-    return render(request, 'Unit_Records/unit_records.html', {
+    return render(request, 'Unit_Monitoring/unit_monitoring.html', {
         'persons': persons,
         'unit_query': unit_query,
         'sub_unit_query': sub_unit_query,

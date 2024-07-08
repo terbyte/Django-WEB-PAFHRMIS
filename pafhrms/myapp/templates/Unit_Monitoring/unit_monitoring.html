@@ -3,7 +3,7 @@
 <head>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
-<form method="GET" action="{% url 'unit_records' %}">
+<form method="GET" action="{% url 'unit_monitoring' %}">
     <div class="input-group mb-3">
         <div class="form-group col-md-4">
             <select name="unit" id="unit" class="form-control">
@@ -60,7 +60,7 @@
 
 
 <!-- THIS IS FOR TABLE TAG -->
-{% include 'Unit_Records/Tables/unit_records_table.html' %}
+{% include 'Unit_Monitoring/Tables/unit_monitoring_table.html' %}
 
 
 
