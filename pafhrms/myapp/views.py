@@ -645,9 +645,14 @@ def save_placement_update(request):
             DURATION=duration,
             ORDER_UPLOADFILE=upload_file  # This saves the file path in the database
         )
-        placement.save()
-    
+        try:
+            placement.save()
+            return JsonResponse({'success': True})
+        except Exception as e:
+            return JsonResponse({'success': False, 'error': str(e)})
+
     return render(request, 'modals/Placement-modal.html')
+
 
 
 
