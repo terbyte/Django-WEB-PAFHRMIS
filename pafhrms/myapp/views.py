@@ -298,8 +298,12 @@ def custom_404(request, exception):
 
 
 
-def inactivepersonnel(request):
-    return render(request,"myapp/InactivePersonnel.html",{})
+def for_Separation(request):
+    return render(request,"Inactive/for_Seperation.html",{})
+
+def lists_inactive(request):
+    return render(request,"Inactive/lists_inactive.html",{})
+
 
 
 

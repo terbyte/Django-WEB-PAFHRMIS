@@ -1,9 +1,22 @@
 {% extends 'Base/base.html' %}
 
-{% block content %}
 
-<form>
-    <h1>Inactive Personnel</h1>
+{% block title %}PAFHRMIS{% endblock %}
+
+{% block content %}
+<h2>Personnel Records</h2>
+
+{% include 'myapp/searchforms.html' %}
+{% include 'myapp/tablewithPaginator.html' %}
+
+
+{% endblock %}
+
+
+
+
+<!-- <form>
+    <h1>For Seperation</h1>
       <div class="input-group mb-3">
         <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" placeholder="Last Name">
         <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" placeholder="First Name">
@@ -48,6 +61,4 @@
     <div class="form-group">
         <a href="" class="btn btn-primary">SEARCH</a>
     </div>
-  </form>
-
-  {% endblock %}
+  </form> -->

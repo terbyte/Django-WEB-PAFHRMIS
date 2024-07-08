@@ -8,7 +8,6 @@ urlpatterns = [
     # path("<int:id>/", views.index, name="index"),
     path('', views.index, name='index'),
     path('upload_excel/', views.upload_excel, name='upload_excel'),
-    path('Inactive_Personnel/', views.inactivepersonnel, name='Inactive_Personnel'),
     path('update_personnel/', views.update_personnel, name='update_personnel'),  # Add this line 
     path('Tranche/', views.Tranche, name='Tranche'),  
 
@@ -32,6 +31,11 @@ urlpatterns = [
     path('Medicalforfullreenlistment/', views.Medicalforfullreenlistment, name='Medicalforfullreenlistment'),
     path('Mforfullreenlistment/', views.Mforfullreenlistment, name='Mforfullreenlistment'),  
     path('placement/', views.placement_officer, name='placement'),
+
+    # INACTIVE
+    path('for_Seperation/', views.for_Separation, name='for_Seperation'),
+    path('lists_inactive/', views.lists_inactive, name='lists_inactive'),
+
 
 
     
