@@ -708,6 +708,8 @@ def placement_update_extension(request):
 def tabler(tableName,):
     print("enters tabler")
 
+    
+
 def unit_monitoring(request):
     unit_query = request.GET.get('unit')
     sub_unit_query = request.GET.get('sub_unit')
