@@ -164,6 +164,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
     if (elapsed === "0 years 0 months 0 days"  || years <0 ) {
+        
 
     // Make AJAX call to update database
     $.ajax({
@@ -178,6 +179,7 @@ document.addEventListener('DOMContentLoaded', function() {
         },
         success: function(response) {
             console.log("Placement updated successfully");
+            location.reload();
         },
         error: function(xhr, errmsg, err) {
             console.error("Error updating placement: ", errmsg);

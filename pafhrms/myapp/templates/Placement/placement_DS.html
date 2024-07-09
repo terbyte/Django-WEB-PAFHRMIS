@@ -101,6 +101,7 @@
             },
             success: function(response) {
                 console.log("Placement updated successfully");
+                location.reload();
             },
             error: function(xhr, errmsg, err) {
                 console.error("Error updating placement: ", errmsg);
