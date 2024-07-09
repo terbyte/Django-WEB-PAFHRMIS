@@ -163,7 +163,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const elapsed = `${years} years ${months} months ${days} days`;
 
 
-    if (elapsed === "0 years 0 months 0 days") {
+    if (elapsed === "0 years 0 months 0 days"  || years <0 ) {
+
     // Make AJAX call to update database
     $.ajax({
         url: "{% url 'update_placement' %}",

@@ -1,48 +1,19 @@
 {% extends 'Base/base.html' %}
 {% block content %}
-<head>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-</head>
 <form method="GET" action="{% url 'Tranche' %}">
     <div class="input-group mb-3">
         <div class="form-group col-md-4">
             <select name="unit" id="unit" class="form-control">
                 <option {% if not unit_query %}selected{% endif %}>UNIT</option>
                 <option value="GHQ" {% if unit_query == "GHQ" %}selected{% endif %}>GHQ</option>
-                <option value="HPAF" {% if unit_query == "HPAF" %}selected{% endif %}>HPAF</option>
-                <option value="PAFHRMC-A/U" {% if unit_query == "PAFHRMC-A/U" %}selected{% endif %}>PAFHRMC-A/U</option>
+                <option value="PAFHRMC A/U" {% if unit_query == "PAFHRMC A/U" %}selected{% endif %}>PAFHRMC A/U</option>
                 <option value="AFPWSSUS" {% if unit_query == "AFPWSSUS" %}selected{% endif %}>AFPWSSUS</option>
-                <option value="AIBDC" {% if unit_query == "AIBDC" %}selected{% endif %}>AIBDC</option>
-                <option value="ADC" {% if unit_query == "ADC" %}selected{% endif %}>ADC</option>
-                <option value="AMC" {% if unit_query == "AMC" %}selected{% endif %}>AMC</option>
-                <option value="ACC" {% if unit_query == "ACC" %}selected{% endif %}>ACC</option>
-                <option value="AETDC" {% if unit_query == "AETDC" %}selected{% endif %}>AETDC</option>
-                <option value="ARFC" {% if unit_query == "ARFC" %}selected{% endif %}>ARFC</option>
-                <option value="TOWNOL" {% if unit_query == "TOWNOL" %}selected{% endif %}>TOWNOL</option>
-                <option value="TOWSOL" {% if unit_query == "TOWSOL" %}selected{% endif %}>TOWSOL</option>
-                <option value="TOWCEN" {% if unit_query == "TOWCEN" %}selected{% endif %}>TOWCEN</option>
-                <option value="TOWWEST" {% if unit_query == "TOWWEST" %}selected{% endif %}>TOWWEST</option>
-                <option value="TOWEASTMIN" {% if unit_query == "TOWEASTMIN" %}selected{% endif %}>TOWEASTMIN</option>
-                <option value="TOWWESTMIN" {% if unit_query == "TOWWESTMIN" %}selected{% endif %}>TOWWESTMIN</option>
-                <option value="355AEW" {% if unit_query == "355AEW" %}selected{% endif %}>355AEW</option>
-                <option value="300AISW" {% if unit_query == "300AISW" %}selected{% endif %}>300AISW</option>
-                <option value="900AFWG" {% if unit_query == "900AFWG" %}selected{% endif %}>900AFWG</option>
-                <option value="950CEWW" {% if unit_query == "950CEWW" %}selected{% endif %}>950CEWW</option>
-                <option value="AFFC" {% if unit_query == "AFFC" %}selected{% endif %}>AFFC</option>
-                <option value="AFSSG" {% if unit_query == "AFSSG" %}selected{% endif %}>AFSSG</option>
-                <option value="HSSG" {% if unit_query == "HSSG" %}selected{% endif %}>HSSG</option>
-                <option value="PAFCMOG" {% if unit_query == "PAFCMOG" %}selected{% endif %}>PAFCMOG</option>
-                <option value="PAFHRMC" {% if unit_query == "PAFHRMC" %}selected{% endif %}>PAFHRMC</option>
-                <option value="NOLCOM" {% if unit_query == "NOLCOM" %}selected{% endif %}>NOLCOM</option>
                 <option value="SOLCOM" {% if unit_query == "SOLCOM" %}selected{% endif %}>SOLCOM</option>
                 <option value="WESCOM" {% if unit_query == "WESCOM" %}selected{% endif %}>WESCOM</option>
                 <option value="VISCOM" {% if unit_query == "VISCOM" %}selected{% endif %}>VISCOM</option>
                 <option value="WESTMINCOM" {% if unit_query == "WESTMINCOM" %}selected{% endif %}>WESTMINCOM</option>
                 <option value="EASTMINCOM" {% if unit_query == "EASTMINCOM" %}selected{% endif %}>EASTMINCOM</option>
-                <option value="JTF-NCR" {% if unit_query == "JTF-NCR" %}selected{% endif %}>JTF-NCR"</option>
-
-
-                  </select>
+                <option value="JTF-NCR" {% if unit_query == "JTF-NCR" %}selected{% endif %}>JTF-NCR</option>
             </select>
         </div>
         <div class="form-group col-md-4">
@@ -54,9 +25,7 @@
         <div class="form-group col-md-2">
             <select id="dnfr" name="dnfr" class="form-control">
                 <option {% if not dnfr_query %}selected{% endif %}>YEAR</option>
-                <!-- <option value="2024" {% if dnfr_query == "2024" %}selected{% endif %}>2024</option>
-                <option value="2023" {% if dnfr_query == "2023" %}selected{% endif %}>2023</option> -->
-                <!-- Add year options as needed -->
+                <!-- Options will be populated by JavaScript -->
             </select>
         </div>
     </div>
@@ -64,6 +33,10 @@
         <button type="submit" class="btn btn-primary">Search</button>
     </div>
 </form>
+
+<button id="exportPdf" class="btn btn-danger">Export to PDF</button>
+<button id="exportExcel" class="btn btn-success">Export to Excel</button>
+<button id="printButton" class="btn btn-success">Print Table</button><br><br>
 
 <table class="table table-responsive-sm table-bordered table-striped table-sm">
     <thead>
@@ -77,42 +50,61 @@
             <th>UNIT</th>
             <th>SUB-UNIT</th>
             <th>CP #</th>
-            <th>DATE_LASTFULL_REENLISTMENT</th>
+            <th>DATE OF NEXT FULL REENLISTMENT</th>
         </tr>
     </thead>
     <tbody>
         {% for person in persons %}
-            <tr>
-                <td>{{ forloop.counter }}</td>
-                <td>{{ person.SERIAL_NUMBER }}</td>
-                <td>{{ person.RANK }}</td>
-                <td>{{ person.FIRST_NAME }}</td>
-                <td>{{ person.MIDDLE_NAME }}</td>
-                <td>{{ person.LAST_NAME }}</td>
-                <td>{{ person.UNIT }}</td>
-                <td>{{ person.SUB_UNIT }}</td>
-                <td>{{ person.CONTACT_NUMBER }}</td>
-                <td>{{ person.DATE_LASTFULL_REENLISTMENT }}</td>
-            </tr>
-        {% endfor %}
+    {% with start_number=persons.start_index %}
+        <tr>
+            <td>{{ start_number|add:forloop.counter0 }}</td>
+            <td>{{ person.SERIAL_NUMBER }}</td>
+            <td>{{ person.RANK }}</td>
+            <td>{{ person.FIRST_NAME }}</td>
+            <td>{{ person.MIDDLE_NAME }}</td>
+            <td>{{ person.LAST_NAME }}</td>
+            <td>{{ person.UNIT }}</td>
+            <td>{{ person.SUB_UNIT }}</td>
+            <td>{{ person.CONTACT_NUMBER }}</td>
+            <td>{{ person.DATE_NEXTFULL_REENLISTMENT }}</td>
+        </tr>
+    {% endwith %}
+{% endfor %}
     </tbody>
 </table>
+
+<!-- Pagination -->
+<div class="pagination">
+    <span class="step-links">
+        {% if persons.has_previous %}
+            <a href="?unit={{ unit_query|default:''|urlencode }}&sub_unit={{ sub_unit_query|default:''|urlencode }}&dnfr={{ dnfr_query|default:''|urlencode }}&page=1">&laquo; first</a>
+            <a href="?unit={{ unit_query|default:''|urlencode }}&sub_unit={{ sub_unit_query|default:''|urlencode }}&dnfr={{ dnfr_query|default:''|urlencode }}&page={{ persons.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ persons.number }} of {{ persons.paginator.num_pages }}.
+        </span>
+
+        {% if persons.has_next %}
+            <a href="?unit={{ unit_query|default:''|urlencode }}&sub_unit={{ sub_unit_query|default:''|urlencode }}&dnfr={{ dnfr_query|default:''|urlencode }}&page={{ persons.next_page_number }}">next</a>
+            <a href="?unit={{ unit_query|default:''|urlencode }}&sub_unit={{ sub_unit_query|default:''|urlencode }}&dnfr={{ dnfr_query|default:''|urlencode }}&page={{ persons.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.13/jspdf.plugin.autotable.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
 
 <script>
     $(document).ready(function() {
         var subUnits = {
-            'GHQ': ['OJ1', 'OJ2', 'OJ3', 'OJ4', 'OJ5', 'OJ6', 'OJ7', 'OJ8', 'OJ9', 'OJ10', 'AFPCC','OTAG', 'OTPMG', 'OTCCHS', 'OTJAG', 'AFPPDO', 'OTQMG', 'OTSG', 'AFPSEO','AFPHRO', 'OTCN', 'OTCDS', 'OSPS', 'AFPIMAC', 'AFPREO', 'AFPEBSO', 'OTCE','AFP K9', 'AFPCOC', 'CEISO', 'CGEASH', 'OAFPSM', 'GHQTS', 'PMO', 'OSJA','ODCOP', 'ONAF', 'GHQPFO'],
-            'HPAF': ['OCG', 'OVC', 'OCAS', 'OSAS', 'AFCC', 'OAFIG', 'OSS', 'AFSO', 'OESPA','AFSMO', 'AFPAO', 'OAFIA', 'OAFSM', 'OAFA', 'OAFPM', 'OAJA', 'OCAC','OCSAF', 'OCAFDS', 'OCNAF', 'OAFCE', 'OCHCA', 'AFREO', 'AFIMAO','AFCLOAC', 'OAFGAD', 'ACOFAS, A-1', 'ACOFAS, A-2', 'ACOFAS, A-3','ACOFAS, A-4', 'ACOFAS, A-5', 'ACOFAS, A-6', 'ACOFAS, A-7', 'ACOFAS, A-8','ACOFAS, A-9', 'ACOFAS, A-10'],
-            'AIBDC':  ['HAIBDC', '520th ABG', '530th ABG', '540th ABG', '550th ABG','560th ABG', '585th ABG', '590th ABG', '600ABG', '970th HECG','AFGH', '1301st DD'],
-            'ADC': ['HADC', '5FW', '580ACWW', '960AMDG', 'PADCC', 'ADAC'],
-            'AMC':['HAMC', '205THW', '220AW', '250PAW', '505SRG'],
-            'ACC': ['HACC', '15SW', '710SPOW'],
-            'TOWWEST': ['HTOWWEST', 'TOG 7', '570th ABG'],
-            'AETDC': [ 'HAETDC', 'PAFOS', 'PAFOCS', 'PAFFS', 'PAFNCOS', 'PAFTSS','PAFBMS', 'PAFLTC', 'PAFALEN', '440AMG', 'TDC', 'AWC'],
-            'ARFC': ['HAFRC', '1st ARCEN', '2nd ARCEN', '3rd ARCEN', '4th ARCEN', '5th ARCEN', '6th ARCEN', '7th ARCEN', '8th ARCEN'],  
-            'AFPWSSUS': ['PMA', 'AFPETDC', 'CEISSAFP', 'CRSAFP', 'ISAFP', 'AFPHSC', 'AFP SOCOM', 'AFPFC', 'AFPPS', 'AFPPKOC', 'AFPCES', 'AFPMCC', 'PSG', 'AFPPGMC', 'AFPCYBER', 'AFPRESCOM', 'DND'],
-    };
- 
+            "GHQ": ["OJ1"],
+            "TOWWEST": ["570th ABG", "HTOWWEST", "TOG 7"],
+            "TOWEASTMIN": []
+        };
+
         function populateSubUnits(unit) {
             var subUnitSelect = $('#sub_unit');
             subUnitSelect.empty();
@@ -135,20 +127,155 @@
             populateSubUnits(selectedUnit);
             $('#sub_unit').val("{{ sub_unit_query }}");
         }
+
+        // Populate year dropdown and retain selected year
+        var selectedYear = "{{ dnfr_query }}";
+        var startYear = 2022;
+        var yearends = startYear + 10;
+        var yearDropdown = $('#dnfr');
+        
+        for (var year = startYear; year <= yearends; year++) {
+            var option = $('<option>', {
+                value: year,
+                text: year,
+                selected: (year == selectedYear)
+            });
+            yearDropdown.append(option);
+        }
+        function fetchAllTableData(callback) {
+        let printContent = '';
+
+        // Recursive function to fetch data from each page
+        function fetchPage(pageNum) {
+            $.get(window.location.pathname, {
+                unit: "{{ unit_query|default:'' }}",
+                sub_unit: "{{ sub_unit_query|default:'' }}",
+                dnfr: "{{ dnfr_query|default:'' }}",
+                page: pageNum || 1  // Fetch page 1 by default
+            }).done(function(data) {
+                $(data).find('tbody tr').each(function() {
+                    printContent += '<tr>' + $(this).html() + '</tr>';
+                });
+
+                // If there are more pages, recursively fetch them
+                const hasNextPage = $(data).find('.pagination a:contains("next")').length > 0;
+                if (hasNextPage) {
+                    fetchPage(pageNum + 1);
+                } else {
+                    // All pages fetched, invoke the callback with the complete table content
+                    callback(printContent);
+                }
+            });
+        }
+
+        // Start fetching from the first page
+        fetchPage(1);
+    }
+
+    // Event listener for export to PDF button
+    $('#exportPdf').click(function() {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF({
+            orientation: 'landscape', // Set PDF orientation to landscape
+        });
+
+        // Fetch all table data
+        fetchAllTableData(function(tableContent) {
+            // Create a temporary table to extract headers
+            const tempTable = $('<table><thead>' + $('table thead').html() + '</thead><tbody>' + tableContent + '</tbody></table>');
+
+            // Extract headers from temporary table
+            const headers = [];
+            tempTable.find('thead th').each(function() {
+                headers.push($(this).text().trim());
+            });
+
+            // Construct rows array for autoTable
+            const rows = [];
+            tempTable.find('tbody tr').each(function() {
+                const rowData = [];
+                $(this).find('td').each(function() {
+                    rowData.push($(this).text().trim());
+                });
+                rows.push(rowData);
+            });
+
+            // Generate PDF using jsPDF autoTable
+            doc.autoTable({
+                head: [headers],
+                body: rows
+            });
+
+            doc.save('table.pdf');  // Save the generated PDF as 'table.pdf'
+        });
     });
 
-     // Get the current year
-  var currentYear = new Date().getFullYear();
-  //calculte year ends
-  var startYear = 2022;
-  var yearends = startYear +10;
-  var yearDropdown = document.getElementById('dnfr');
-  for (var year = startYear; year <= yearends; year++) {
-      var option = document.createElement('option');
-      option.value = year;
-      option.textContent = year;
-      yearDropdown.appendChild(option);
-  }
+        // Export to Excel functionality
+        $('#exportExcel').click(function() {
+            const table = document.querySelector('table');
+            let data = [];
+            table.querySelectorAll('tr').forEach(row => {
+                let rowData = [];
+                row.querySelectorAll('th, td').forEach(cell => {
+                    rowData.push(cell.innerText);
+                });
+                data.push(rowData);
+            });
+
+            const ws = XLSX.utils.aoa_to_sheet(data);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+            XLSX.writeFile(wb, 'table.xlsx');
+        });
+
+        // Print table functionality
+        $('#printButton').click(function() {
+            let printContent = '';
+
+            // Function to fetch data from all pages
+            function fetchAllPages(pageNum) {
+                $.get(window.location.pathname, {
+                    unit: "{{ unit_query|default:'' }}",
+                    sub_unit: "{{ sub_unit_query|default:'' }}",
+                    dnfr: "{{ dnfr_query|default:'' }}",
+                    page: pageNum || 1  // Fetch page 1 by default
+                }).done(function(data) {
+                    $(data).find('tbody tr').each(function() {
+                        printContent += '<tr>' + $(this).html() + '</tr>';
+                    });
+
+                    // If there are more pages, recursively fetch them
+                    const hasNextPage = $(data).find('.pagination a:contains("next")').length > 0;
+                    if (hasNextPage) {
+                        fetchAllPages(pageNum + 1);
+                    } else {
+                        // All pages fetched, now open new window and print
+                        const newWindow = window.open('', '', 'height=600,width=800');
+                        newWindow.document.write('<html><head><title>PAFHRMC</title>');
+                        newWindow.document.write('<style>table {width: 100%;border-collapse: collapse;margin-bottom: 20px;} th, td {border: 1px solid black;padding: 8px;text-align: left;} th {background-color: #f2f2f2;} h1 {text-align: center;} .footer {text-align: center; font-size: 12px; margin-top: 20px;} .watermark {position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-45deg); opacity: 0.5; font-size: 100px; color: #d3d3d3;} @page { size: landscape; }</style>');
+                        newWindow.document.write('</head><body>');
+                        newWindow.document.write('<h1>PAFHRMCXXXX</h1>');
+                        newWindow.document.write('<div class="watermark">CONFIDENTIAL</div>');
+                        newWindow.document.write('<table class="table table-bordered table-striped">');
+                        newWindow.document.write('<thead>' + $('table thead').html() + '</thead>');
+                        newWindow.document.write('<tbody>' + printContent + '</tbody>');
+                        newWindow.document.write('</table>');
+                        newWindow.document.write('<div class="footer">');
+                        newWindow.document.write('Printed on: ' + new Date().toLocaleString() + '<br>DEVELOPED BY PAFHRMC CAD/MISD');
+                        newWindow.document.write('</div>');
+                        newWindow.document.write('</body></html>');
+
+                        newWindow.document.close();
+                        newWindow.print();
+                    }
+                });
+            }
+
+            // Start fetching from the first page
+            fetchAllPages(1);
+        });
+
+    });
 </script>
 
 {% endblock %}

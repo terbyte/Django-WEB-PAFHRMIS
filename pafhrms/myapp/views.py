@@ -60,14 +60,13 @@ def update_placement(request):
             placement.IS_ARCHIVED = True
             placement.save()
 
-        # Update the UNIT in PersonnelItem
-        try:
-            personnel_item = PersonnelItem.objects.get(SERIAL_NUMBER=afpsn)
-            personnel_item.UNIT = new_unit
-            personnel_item.SUB_UNIT = "None"
-            personnel_item.save()
-        except PersonnelItem.DoesNotExist:
-            return JsonResponse({'error': 'PersonnelItem not found'}, status=404)
+        # try:
+        #     personnel_item = PersonnelItem.objects.get(SERIAL_NUMBER=afpsn)
+        #     personnel_item.UNIT = new_unit
+        #     personnel_item.SUB_UNIT = "None"
+        #     personnel_item.save()
+        # except PersonnelItem.DoesNotExist:
+        #     return JsonResponse({'error': 'PersonnelItem not found'}, status=404)
         
         if category != "Assign":
             print("==============================", category, "DS OR TDY")
@@ -78,6 +77,12 @@ def update_placement(request):
             for placement in placements:
                 placement.IS_ARCHIVED = True
                 placement.save()
+        # Update the UNIT in PersonnelItem if The category is assign
+        else:
+            personnel_item = PersonnelItem.objects.get(SERIAL_NUMBER=afpsn)
+            personnel_item.UNIT = new_unit
+            personnel_item.SUB_UNIT = "None"
+            personnel_item.save()
 
         return JsonResponse({'success': 'Placement updated successfully'})
     return JsonResponse({'error': 'Invalid request method'}, status=400)
@@ -755,14 +760,26 @@ def Tranche(request):
         filters &= Q(UNIT__icontains=unit_query)
     if sub_unit_query and sub_unit_query != "SUB UNIT":
         filters &= Q(SUB_UNIT__icontains=sub_unit_query)
-    if dnfr_query and dnfr_query != "YEAR":
-        filters &= Q(DATE_LASTFULL_REENLISTMENT__icontains=dnfr_query)
-       
+
     persons = PersonnelItem.objects.filter(filters)
+
+    # Calculate DATE OF NEXT FULL REENLISTMENT
+    for person in persons:
+        if person.DATE_LASTFULL_REENLISTMENT:
+            person.DATE_NEXTFULL_REENLISTMENT = person.DATE_LASTFULL_REENLISTMENT + timedelta(days=6*365)  # Roughly adding 6 years
+
+    if dnfr_query and dnfr_query != "YEAR":
+        try:
+            dnfr_year = int(dnfr_query)
+            persons = [person for person in persons if person.DATE_NEXTFULL_REENLISTMENT and person.DATE_NEXTFULL_REENLISTMENT.year == dnfr_year]
+        except ValueError:
+            # Handle the case where dnfr_query is not a valid integer
+            persons = []  # or handle this scenario appropriately
+
     paginator = Paginator(persons, 10)
     page_num = request.GET.get("page")
     persons = paginator.get_page(page_num)
-    
+
     return render(request, 'reenlistment/Tranche.html', {
         'persons': persons,
         'category_query': category_query,
@@ -774,91 +791,131 @@ def Tranche(request):
 
 
 # for DATE OF 2ND TRANCHE
+# for DATE OF 2ND TRANCHE
 def Tranches(request):
+    category_query = 'ENLISTED PERSONNEL'
     unit_query = request.GET.get('unit')
     sub_unit_query = request.GET.get('sub_unit')
-    category_query = ('ENLISTED PERSONNEL')
-    dnfr_query = request.GET.get('dnfr_query')
+    dnfr_query = request.GET.get('dnfr')
+
     filters = Q()
-    if unit_query:
+    if category_query:
+        filters &= Q(CATEGORY__icontains=category_query)
+    if unit_query and unit_query != "UNIT":
         filters &= Q(UNIT__icontains=unit_query)
-    if sub_unit_query:
+    if sub_unit_query and sub_unit_query != "SUB UNIT":
         filters &= Q(SUB_UNIT__icontains=sub_unit_query)
-    if category_query and category_query:
-        filters &= Q(CATEGORY__icontains=category_query)
-    if category_query and category_query != "Category":
-        filters &= Q(CATEGORY__icontains=category_query)
-    if dnfr_query:
-        filters &= Q(DATE_OF_LAST_FULL_REENLISTMENT__icontains=dnfr_query)    
+
     persons = PersonnelItem.objects.filter(filters)
+
+    # Calculate DATE OF NEXT FULL REENLISTMENT
+    for person in persons:
+        if person.DATE_LASTFULL_REENLISTMENT:
+            person.DATE_NEXTFULL_REENLISTMENT = person.DATE_LASTFULL_REENLISTMENT + timedelta(days=3*365)  # Roughly adding 6 years
+
+    if dnfr_query and dnfr_query != "YEAR":
+        try:
+            dnfr_year = int(dnfr_query)
+            persons = [person for person in persons if person.DATE_NEXTFULL_REENLISTMENT and person.DATE_NEXTFULL_REENLISTMENT.year == dnfr_year]
+        except ValueError:
+            # Handle the case where dnfr_query is not a valid integer
+            persons = []  # or handle this scenario appropriately
+
     paginator = Paginator(persons, 10)
     page_num = request.GET.get("page")
     persons = paginator.get_page(page_num)
+
     return render(request, 'reenlistment/Tranches.html', {
         'persons': persons,
-        'dnfr_query': dnfr_query,
         'category_query': category_query,
         'unit_query': unit_query,
         'sub_unit_query': sub_unit_query,
+        'dnfr_query': dnfr_query,         
     })
-
 
 
 #for MEDICAL FOR 2ND TRANCHE
 def Medicalforfullreenlistment(request):
-    category_query = ('ENLISTED PERSONNEL')
+    category_query = 'ENLISTED PERSONNEL'
     unit_query = request.GET.get('unit')
     sub_unit_query = request.GET.get('sub_unit')
-    dnfr_query = request.GET.get('dnfr_query')
+    dnfr_query = request.GET.get('dnfr')
+
     filters = Q()
-    if category_query and category_query:
+    if category_query:
         filters &= Q(CATEGORY__icontains=category_query)
-    if category_query and category_query != "Category":
-        filters &= Q(CATEGORY__icontains=category_query)
-    if unit_query:
+    if unit_query and unit_query != "UNIT":
         filters &= Q(UNIT__icontains=unit_query)
-    if sub_unit_query:
+    if sub_unit_query and sub_unit_query != "SUB UNIT":
         filters &= Q(SUB_UNIT__icontains=sub_unit_query)
-    if dnfr_query:
-        filters &= Q(DATE_OF_LAST_FULL_REENLISTMENT__icontains=dnfr_query)    
+
     persons = PersonnelItem.objects.filter(filters)
+
+    # Calculate DATE OF NEXT FULL REENLISTMENT
+    for person in persons:
+        if person.DATE_LASTFULL_REENLISTMENT:
+            person.DATE_NEXTFULL_REENLISTMENT = person.DATE_LASTFULL_REENLISTMENT + timedelta(days=2*365)  # Roughly adding 6 years
+
+    if dnfr_query and dnfr_query != "YEAR":
+        try:
+            dnfr_year = int(dnfr_query)
+            persons = [person for person in persons if person.DATE_NEXTFULL_REENLISTMENT and person.DATE_NEXTFULL_REENLISTMENT.year == dnfr_year]
+        except ValueError:
+            # Handle the case where dnfr_query is not a valid integer
+            persons = []  # or handle this scenario appropriately
+
     paginator = Paginator(persons, 10)
     page_num = request.GET.get("page")
     persons = paginator.get_page(page_num)
+
     return render(request, 'reenlistment/Medicalforfullreenlistment.html', {
         'persons': persons,
+        'category_query': category_query,
         'unit_query': unit_query,
         'sub_unit_query': sub_unit_query,
-        'dnfr_query': dnfr_query,
-        'category_query': category_query,
-
+        'dnfr_query': dnfr_query,         
     })
+
+
 
 #MEDICAL FOR FULL REENLISTMENT
 def Mforfullreenlistment(request):
-    category_query = ('ENLISTED PERSONNEL')
+    category_query = 'ENLISTED PERSONNEL'
     unit_query = request.GET.get('unit')
     sub_unit_query = request.GET.get('sub_unit')
-    dnfr_query = request.GET.get('dnfr_query')
+    dnfr_query = request.GET.get('dnfr')
+
     filters = Q()
-    if category_query and category_query:
+    if category_query:
         filters &= Q(CATEGORY__icontains=category_query)
-    if category_query and category_query != "Category":
-        filters &= Q(CATEGORY__icontains=category_query)
-    if unit_query:
+    if unit_query and unit_query != "UNIT":
         filters &= Q(UNIT__icontains=unit_query)
-    if sub_unit_query:
+    if sub_unit_query and sub_unit_query != "SUB UNIT":
         filters &= Q(SUB_UNIT__icontains=sub_unit_query)
-    if dnfr_query:
-        filters &= Q(DATE_OF_LAST_FULL_REENLISTMENT__icontains=dnfr_query)    
+
     persons = PersonnelItem.objects.filter(filters)
+
+    # Calculate DATE OF NEXT FULL REENLISTMENT
+    for person in persons:
+        if person.DATE_LASTFULL_REENLISTMENT:
+            person.DATE_NEXTFULL_REENLISTMENT = person.DATE_LASTFULL_REENLISTMENT + timedelta(days=5*365)  # Roughly adding 6 years
+
+    if dnfr_query and dnfr_query != "YEAR":
+        try:
+            dnfr_year = int(dnfr_query)
+            persons = [person for person in persons if person.DATE_NEXTFULL_REENLISTMENT and person.DATE_NEXTFULL_REENLISTMENT.year == dnfr_year]
+        except ValueError:
+            # Handle the case where dnfr_query is not a valid integer
+            persons = []  # or handle this scenario appropriately
+
     paginator = Paginator(persons, 10)
     page_num = request.GET.get("page")
     persons = paginator.get_page(page_num)
+
     return render(request, 'reenlistment/Mforfullreenlistment.html', {
         'persons': persons,
+        'category_query': category_query,
         'unit_query': unit_query,
         'sub_unit_query': sub_unit_query,
-        'dnfr_query': dnfr_query,
-        'category_query': category_query,
+        'dnfr_query': dnfr_query,         
     })

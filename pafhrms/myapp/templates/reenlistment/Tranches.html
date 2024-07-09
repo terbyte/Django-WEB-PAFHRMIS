@@ -1,212 +1,280 @@
 {% extends 'Base/base.html' %}
-
 {% block content %}
-
-{% include 'reenlistment/Tables/reenlistmentTable.html' %}
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.13/jspdf.plugin.autotable.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
+<form method="GET" action="{% url 'Tranches' %}">
+    <div class="input-group mb-3">
+        <div class="form-group col-md-4">
+            <select name="unit" id="unit" class="form-control">
+                <option {% if not unit_query %}selected{% endif %}>UNIT</option>
+                <option value="GHQ" {% if unit_query == "GHQ" %}selected{% endif %}>GHQ</option>
+                <option value="PAFHRMC A/U" {% if unit_query == "PAFHRMC A/U" %}selected{% endif %}>PAFHRMC A/U</option>
+                <option value="AFPWSSUS" {% if unit_query == "AFPWSSUS" %}selected{% endif %}>AFPWSSUS</option>
+                <option value="SOLCOM" {% if unit_query == "SOLCOM" %}selected{% endif %}>SOLCOM</option>
+                <option value="WESCOM" {% if unit_query == "WESCOM" %}selected{% endif %}>WESCOM</option>
+                <option value="VISCOM" {% if unit_query == "VISCOM" %}selected{% endif %}>VISCOM</option>
+                <option value="WESTMINCOM" {% if unit_query == "WESTMINCOM" %}selected{% endif %}>WESTMINCOM</option>
+                <option value="EASTMINCOM" {% if unit_query == "EASTMINCOM" %}selected{% endif %}>EASTMINCOM</option>
+                <option value="JTF-NCR" {% if unit_query == "JTF-NCR" %}selected{% endif %}>JTF-NCR</option>
+            </select>
+        </div>
+        <div class="form-group col-md-4">
+            <select name="sub_unit" id="sub_unit" class="form-control">
+                <option {% if not sub_unit_query %}selected{% endif %}>SUB UNIT</option>
+                <!-- Options will be populated by JavaScript -->
+            </select>
+        </div>
+        <div class="form-group col-md-2">
+            <select id="dnfr" name="dnfr" class="form-control">
+                <option {% if not dnfr_query %}selected{% endif %}>YEAR</option>
+                <!-- Options will be populated by JavaScript -->
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Search</button>
+    </div>
+</form>
 
 <button id="exportPdf" class="btn btn-danger">Export to PDF</button>
 <button id="exportExcel" class="btn btn-success">Export to Excel</button>
 <button id="printButton" class="btn btn-success">Print Table</button><br><br>
 
-<table id="sortableTable" class="table table-responsive-sm table-bordered table-striped table-sm">
-  <thead>
-    <tr>
-      <th>No.</th>
-      <th>AFPSN</th>
-      <th>RANK</th>
-      <th>NAME</th>
-      <th>MIDDLE NAME</th>
-      <th>SURNAME</th>
-      <th>UNIT</th>
-      <th>SUB-UNIT</th>
-      <th>CP #</th>
-      <th class="sortable category-column" data-sort="DATE OF FULL LAST ENLISTMENT">DATE_LASTFULL_REENLISTMENT</th>
-      <th>DATE OF 2ND TRANCHE</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for person in persons %}
-      <tr>
-        <td>{{ forloop.counter }}</td>
-        <td>{{ person.SERIAL_NUMBER }}</td>
-        <td>{{ person.RANK }}</td>
-        <td>{{ person.FIRST_NAME }}</td>
-        <td>{{ person.MIDDLE_NAME }}</td>
-        <td>{{ person.LAST_NAME }}</td>
-        <td>{{ person.UNIT }}</td>
-        <td>{{ person.SUB_UNIT }}</td>
-        <td>{{ person.CONTACT_NUMBER }}</td>
-        <td class="category-column">{{ person.DATE_LASTFULL_REENLISTMENT }}</td>
-        <td class="newDateOfSecondTranche">{{ person.DATE_LASTFULL_REENLISTMENT }}</td> <!-- Placeholder for dynamic update -->
-      </tr>
-    {% endfor %}
-  </tbody>
+<table class="table table-responsive-sm table-bordered table-striped table-sm">
+    <thead>
+        <tr>
+            <th>No.</th>
+            <th>AFPSN</th>
+            <th>RANK</th>
+            <th>NAME</th>
+            <th>MIDDLE NAME</th>
+            <th>SURNAME</th>
+            <th>UNIT</th>
+            <th>SUB-UNIT</th>
+            <th>CP #</th>
+            <th>DATE OF 2ND TRANCHE</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for person in persons %}
+    {% with start_number=persons.start_index %}
+        <tr>
+            <td>{{ start_number|add:forloop.counter0 }}</td>
+            <td>{{ person.SERIAL_NUMBER }}</td>
+            <td>{{ person.RANK }}</td>
+            <td>{{ person.FIRST_NAME }}</td>
+            <td>{{ person.MIDDLE_NAME }}</td>
+            <td>{{ person.LAST_NAME }}</td>
+            <td>{{ person.UNIT }}</td>
+            <td>{{ person.SUB_UNIT }}</td>
+            <td>{{ person.CONTACT_NUMBER }}</td>
+            <td>{{ person.DATE_NEXTFULL_REENLISTMENT }}</td>
+        </tr>
+    {% endwith %}
+{% endfor %}
+    </tbody>
 </table>
-<style>
-  .category-column {
-      display: none;
-  }
-</style>
-<script>
-$(document).ready(function() {
-    // Function to add years to a given date and format it as "Day, Mon, Year"
-    function addYearsToDate(dateStr, years) {
-        var date = new Date(dateStr);
-        date.setFullYear(date.getFullYear() + years);
 
-        // Days of the week and months arrays for formatting
-        var daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-        var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-
-        // Get day of the week, month, day, and year
-        var dayOfWeek = daysOfWeek[date.getDay()];
-        var month = months[date.getMonth()];
-        var day = date.getDate();
-        var year = date.getFullYear();
-
-        // Format the date as "Day, Mon, Year"
-        var formattedDate =  day + ' ' + month + ', ' + year;
-        return formattedDate;
-    }
-
-    // Calculate and update the date of next full reenlistment for each row
-    $('table tbody tr').each(function() {
-        var lastFullReenlistmentDate = $(this).find('td:eq(9)').text(); // Assuming 9th column is DATE_LASTFULL_REENLISTMENT
-        var newDateOfSecondTranche = addYearsToDate(lastFullReenlistmentDate, 3);
-        $(this).find('td:eq(10)').text(newDateOfSecondTranche); // Update 10th column with the calculated date
-    });
-
-    // Export to PDF functionality
-    document.getElementById('exportPdf').addEventListener('click', function() {
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF();
-
-        const table = document.querySelector('table');
-        const rows = [];
-        table.querySelectorAll('tr').forEach(row => {
-            const rowData = [];
-            row.querySelectorAll('th, td').forEach(cell => {
-                rowData.push(cell.innerText);
-            });
-            rows.push(rowData);
-        });
-
-        doc.autoTable({
-            head: [rows[0]],
-            body: rows.slice(1)
-        });
-
-        doc.save('table.pdf');
-    });
-
-    // Export to Excel functionality
-    document.getElementById('exportExcel').addEventListener('click', function() {
-        const table = document.querySelector('table');
-        let data = [];
-        table.querySelectorAll('tr').forEach(row => {
-            let rowData = [];
-            row.querySelectorAll('th, td').forEach(cell => {
-                rowData.push(cell.innerText);
-            });
-            data.push(rowData);
-        });
-
-        const ws = XLSX.utils.aoa_to_sheet(data);
-        const wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
-        XLSX.writeFile(wb, 'table.xlsx');
-    });
-
-   // Print table functionality
-document.getElementById('printButton').addEventListener('click', function() {
-    const table = document.getElementById('sortableTable').cloneNode(true);
-    const headerRow = table.querySelector('thead tr');
-    const rows = table.querySelectorAll('tbody tr');
-
-    // Remove the category-column header cell
-    const categoryHeader = headerRow.querySelector('th.category-column');
-    if (categoryHeader) {
-        headerRow.removeChild(categoryHeader);
-    }
-
-    // Remove the category-column cells
-    rows.forEach(row => {
-        const categoryColumn = row.querySelector('td.category-column');
-        if (categoryColumn) {
-            row.removeChild(categoryColumn);
-        }
-    });
-
-    const printContent = table.outerHTML;
-    const newWindow = window.open('', '', 'height=600,width=800');
-
-    // Build the HTML structure with header, table, and footer
-    newWindow.document.write('<html><head><title>PAFHRMC</title>');
-    newWindow.document.write('<style>');
-    newWindow.document.write('table {width: 100%;border-collapse: collapse;margin-bottom: 20px;}');
-    newWindow.document.write('th, td {border: 1px solid black;padding: 8px;text-align: left;}');
-    newWindow.document.write('th {background-color: #f2f2f2;}');
-    newWindow.document.write('h1 {text-align: center;}');
-    newWindow.document.write('.footer {text-align: center; font-size: 12px; margin-top: 20px;}');  // Footer styles
-    newWindow.document.write('</style>');
-    newWindow.document.write('</head><body>');
-    newWindow.document.write('<h1>PAFHRMC</h1>');
-    newWindow.document.write(printContent);
-
-    // Add the footer content
-    newWindow.document.write('<div class="footer">');
-    newWindow.document.write('Printed on: ' + new Date().toLocaleString() + '<br>DEVELOPED BY PAFHRMC CAD/MISD');
-    newWindow.document.write('</div>');
-    newWindow.document.write('</body></html>');
-    newWindow.document.close();
-    newWindow.print();
-});
-});
-</script>
-<nav aria-label="...">
-    <ul class="pagination">
+<!-- Pagination -->
+<div class="pagination">
+    <span class="step-links">
         {% if persons.has_previous %}
-            <li class="page-item">
-                <a class="page-link" href="?page=1{% if last_name_query %}&last_name={{ last_name_query }}{% endif %}{% if first_name_query %}&first_name={{ first_name_query }}{% endif %}{% if middle_name_query %}&middle_name={{ middle_name_query }}{% endif %}{% if suffix_query %}&suffix={{ suffix_query }}{% endif %}{% if afsn_query %}&afsn={{ afsn_query }}{% endif %}{% if rank_query %}&rank={{ rank_query }}{% endif %}{% if category_query %}&category={{ category_query }}{% endif %}{% if sex_query %}&sex={{ sex_query }}{% endif %}{% if unit_query %}&unit={{ unit_query }}{% endif %}">&laquo; first</a>
-            </li>
-            <li class="page-item">
-                <a class="page-link" href="?page={{ persons.previous_page_number }}{% if last_name_query %}&last_name={{ last_name_query }}{% endif %}{% if first_name_query %}&first_name={{ first_name_query }}{% endif %}{% if middle_name_query %}&middle_name={{ middle_name_query }}{% endif %}{% if suffix_query %}&suffix={{ suffix_query }}{% endif %}{% if afsn_query %}&afsn={{ afsn_query }}{% endif %}{% if rank_query %}&rank={{ rank_query }}{% endif %}{% if category_query %}&category={{ category_query }}{% endif %}{% if sex_query %}&sex={{ sex_query }}{% endif %}{% if unit_query %}&unit={{ unit_query }}{% endif %}">previous</a>
-            </li>
-        {% else %}
-            <li class="page-item disabled">
-                <span class="page-link">&laquo; first</span>
-            </li>
-            <li class="page-item disabled">
-                <span class="page-link">previous</span>
-            </li>
+            <a href="?unit={{ unit_query|default:''|urlencode }}&sub_unit={{ sub_unit_query|default:''|urlencode }}&dnfr={{ dnfr_query|default:''|urlencode }}&page=1">&laquo; first</a>
+            <a href="?unit={{ unit_query|default:''|urlencode }}&sub_unit={{ sub_unit_query|default:''|urlencode }}&dnfr={{ dnfr_query|default:''|urlencode }}&page={{ persons.previous_page_number }}">previous</a>
         {% endif %}
 
-        <li class="page-item">
-            <span class="page-link">
-                Page {{ persons.number }} of {{ persons.paginator.num_pages }}
-            </span>
-        </li>
+        <span class="current">
+            Page {{ persons.number }} of {{ persons.paginator.num_pages }}.
+        </span>
 
         {% if persons.has_next %}
-            <li class="page-item">
-                <a class="page-link" href="?page={{ persons.next_page_number }}{% if last_name_query %}&last_name={{ last_name_query }}{% endif %}{% if first_name_query %}&first_name={{ first_name_query }}{% endif %}{% if middle_name_query %}&middle_name={{ middle_name_query }}{% endif %}{% if suffix_query %}&suffix={{ suffix_query }}{% endif %}{% if afsn_query %}&afsn={{ afsn_query }}{% endif %}{% if rank_query %}&rank={{ rank_query }}{% endif %}{% if category_query %}&category={{ category_query }}{% endif %}{% if sex_query %}&sex={{ sex_query }}{% endif %}{% if unit_query %}&unit={{ unit_query }}{% endif %}">next</a>
-            </li>
-            <li class="page-item">
-                <a class="page-link" href="?page={{ persons.paginator.num_pages }}{% if last_name_query %}&last_name={{ last_name_query }}{% endif %}{% if first_name_query %}&first_name={{ first_name_query }}{% endif %}{% if middle_name_query %}&middle_name={{ middle_name_query }}{% endif %}{% if suffix_query %}&suffix={{ suffix_query }}{% endif %}{% if afsn_query %}&afsn={{ afsn_query }}{% endif %}{% if rank_query %}&rank={{ rank_query }}{% endif %}{% if category_query %}&category={{ category_query }}{% endif %}{% if sex_query %}&sex={{ sex_query }}{% endif %}{% if unit_query %}&unit={{ unit_query }}{% endif %}">last &raquo;</a>
-            </li>
-        {% else %}
-            <li class="page-item disabled">
-                <span class="page-link">next</span>
-            </li>
-            <li class="page-item disabled">
-                <span class="page-link">last &raquo;</span>
-            </li>
+            <a href="?unit={{ unit_query|default:''|urlencode }}&sub_unit={{ sub_unit_query|default:''|urlencode }}&dnfr={{ dnfr_query|default:''|urlencode }}&page={{ persons.next_page_number }}">next</a>
+            <a href="?unit={{ unit_query|default:''|urlencode }}&sub_unit={{ sub_unit_query|default:''|urlencode }}&dnfr={{ dnfr_query|default:''|urlencode }}&page={{ persons.paginator.num_pages }}">last &raquo;</a>
         {% endif %}
-    </ul>
-</nav>
+    </span>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.13/jspdf.plugin.autotable.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        var subUnits = {
+            "GHQ": ["OJ1"],
+            "TOWWEST": ["570th ABG", "HTOWWEST", "TOG 7"],
+            "TOWEASTMIN": []
+        };
+
+        function populateSubUnits(unit) {
+            var subUnitSelect = $('#sub_unit');
+            subUnitSelect.empty();
+            subUnitSelect.append('<option>SUB UNIT</option>');
+            if (unit in subUnits) {
+                subUnits[unit].forEach(function(subUnit) {
+                    subUnitSelect.append('<option value="' + subUnit + '">' + subUnit + '</option>');
+                });
+            }
+        }
+
+        $('#unit').change(function() {
+            var unit = $(this).val();
+            populateSubUnits(unit);
+        });
+
+        // Populate sub_units if unit is already selected
+        var selectedUnit = "{{ unit_query }}";
+        if (selectedUnit) {
+            populateSubUnits(selectedUnit);
+            $('#sub_unit').val("{{ sub_unit_query }}");
+        }
+
+        // Populate year dropdown and retain selected year
+        var selectedYear = "{{ dnfr_query }}";
+        var startYear = 2022;
+        var yearends = startYear + 10;
+        var yearDropdown = $('#dnfr');
+        
+        for (var year = startYear; year <= yearends; year++) {
+            var option = $('<option>', {
+                value: year,
+                text: year,
+                selected: (year == selectedYear)
+            });
+            yearDropdown.append(option);
+        }
+        function fetchAllTableData(callback) {
+        let printContent = '';
+
+        // Recursive function to fetch data from each page
+        function fetchPage(pageNum) {
+            $.get(window.location.pathname, {
+                unit: "{{ unit_query|default:'' }}",
+                sub_unit: "{{ sub_unit_query|default:'' }}",
+                dnfr: "{{ dnfr_query|default:'' }}",
+                page: pageNum || 1  // Fetch page 1 by default
+            }).done(function(data) {
+                $(data).find('tbody tr').each(function() {
+                    printContent += '<tr>' + $(this).html() + '</tr>';
+                });
+
+                // If there are more pages, recursively fetch them
+                const hasNextPage = $(data).find('.pagination a:contains("next")').length > 0;
+                if (hasNextPage) {
+                    fetchPage(pageNum + 1);
+                } else {
+                    // All pages fetched, invoke the callback with the complete table content
+                    callback(printContent);
+                }
+            });
+        }
+
+        // Start fetching from the first page
+        fetchPage(1);
+    }
+
+    // Event listener for export to PDF button
+    $('#exportPdf').click(function() {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF({
+            orientation: 'landscape', // Set PDF orientation to landscape
+        });
+
+        // Fetch all table data
+        fetchAllTableData(function(tableContent) {
+            // Create a temporary table to extract headers
+            const tempTable = $('<table><thead>' + $('table thead').html() + '</thead><tbody>' + tableContent + '</tbody></table>');
+
+            // Extract headers from temporary table
+            const headers = [];
+            tempTable.find('thead th').each(function() {
+                headers.push($(this).text().trim());
+            });
+
+            // Construct rows array for autoTable
+            const rows = [];
+            tempTable.find('tbody tr').each(function() {
+                const rowData = [];
+                $(this).find('td').each(function() {
+                    rowData.push($(this).text().trim());
+                });
+                rows.push(rowData);
+            });
+
+            // Generate PDF using jsPDF autoTable
+            doc.autoTable({
+                head: [headers],
+                body: rows
+            });
+
+            doc.save('table.pdf');  // Save the generated PDF as 'table.pdf'
+        });
+    });
+
+        // Export to Excel functionality
+        $('#exportExcel').click(function() {
+            const table = document.querySelector('table');
+            let data = [];
+            table.querySelectorAll('tr').forEach(row => {
+                let rowData = [];
+                row.querySelectorAll('th, td').forEach(cell => {
+                    rowData.push(cell.innerText);
+                });
+                data.push(rowData);
+            });
+
+            const ws = XLSX.utils.aoa_to_sheet(data);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+            XLSX.writeFile(wb, 'table.xlsx');
+        });
+
+        // Print table functionality
+        $('#printButton').click(function() {
+            let printContent = '';
+
+            // Function to fetch data from all pages
+            function fetchAllPages(pageNum) {
+                $.get(window.location.pathname, {
+                    unit: "{{ unit_query|default:'' }}",
+                    sub_unit: "{{ sub_unit_query|default:'' }}",
+                    dnfr: "{{ dnfr_query|default:'' }}",
+                    page: pageNum || 1  // Fetch page 1 by default
+                }).done(function(data) {
+                    $(data).find('tbody tr').each(function() {
+                        printContent += '<tr>' + $(this).html() + '</tr>';
+                    });
+
+                    // If there are more pages, recursively fetch them
+                    const hasNextPage = $(data).find('.pagination a:contains("next")').length > 0;
+                    if (hasNextPage) {
+                        fetchAllPages(pageNum + 1);
+                    } else {
+                        // All pages fetched, now open new window and print
+                        const newWindow = window.open('', '', 'height=600,width=800');
+                        newWindow.document.write('<html><head><title>PAFHRMC</title>');
+                        newWindow.document.write('<style>table {width: 100%;border-collapse: collapse;margin-bottom: 20px;} th, td {border: 1px solid black;padding: 8px;text-align: left;} th {background-color: #f2f2f2;} h1 {text-align: center;} .footer {text-align: center; font-size: 12px; margin-top: 20px;} .watermark {position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-45deg); opacity: 0.5; font-size: 100px; color: #d3d3d3;} @page { size: landscape; }</style>');
+                        newWindow.document.write('</head><body>');
+                        newWindow.document.write('<h1>PAFHRMCXXXX</h1>');
+                        newWindow.document.write('<div class="watermark">CONFIDENTIAL</div>');
+                        newWindow.document.write('<table class="table table-bordered table-striped">');
+                        newWindow.document.write('<thead>' + $('table thead').html() + '</thead>');
+                        newWindow.document.write('<tbody>' + printContent + '</tbody>');
+                        newWindow.document.write('</table>');
+                        newWindow.document.write('<div class="footer">');
+                        newWindow.document.write('Printed on: ' + new Date().toLocaleString() + '<br>DEVELOPED BY PAFHRMC CAD/MISD');
+                        newWindow.document.write('</div>');
+                        newWindow.document.write('</body></html>');
+                        newWindow.document.close();
+                        newWindow.print();
+                    }
+                });
+            }
+
+            // Start fetching from the first page
+            fetchAllPages(1);
+        });
+
+    });
+</script>
 
 {% endblock %}
