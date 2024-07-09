@@ -63,8 +63,11 @@
 
 {% include 'modals/Placement-View-Modal.html' %}
 
+
 <script>
+
     function calculateTimeElapsedToCurrent(endDate, category, afpsn, newUnit) {
+
     if (endDate === "None" || endDate === null) {
         return "None";
     }
@@ -101,7 +104,6 @@
             },
             success: function(response) {
                 console.log("Placement updated successfully");
-                location.reload();
             },
             error: function(xhr, errmsg, err) {
                 console.error("Error updating placement: ", errmsg);
