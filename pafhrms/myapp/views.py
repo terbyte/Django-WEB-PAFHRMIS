@@ -264,35 +264,45 @@ def upload_excel(request):
                     return None
             else:
                 return None
+            
+        # Function to convert strings to uppercase, handling NaN values
+        def to_upper(value):
+            if pd.isna(value):
+                return ''
+            return str(value).upper()
+        
         try:
             df = pd.read_excel(file_path)
             for index, row in df.iterrows():
+                serial_number = row.iloc[5]
+                # Check if the entry with the same serial number already exists
+                if not PersonnelItem.objects.filter(SERIAL_NUMBER=serial_number).exists():
                     PersonnelItem.objects.create(
-                    RANK=row.iloc[0],
-                    LAST_NAME=row.iloc[1],
-                    FIRST_NAME=row.iloc[2],
-                    MIDDLE_NAME=row.iloc[3],
-                    EXTENSION_NAME=row.iloc[4],
-                    SERIAL_NUMBER=row.iloc[5],
-                    BOS=row.iloc[6],
-                    SEX=row.iloc[7],
-                    BIRTHDAY=convert_date(row.iloc[8]),
-                    CONTACT_NUMBER=row.iloc[9],
-                    ADDRESS=row.iloc[10],
-                    CLASSIFICATION=row.iloc[11],
-                    CATEGORY=row.iloc[12],
-                    SOURCE_OF_ENLISTMENT_COMMISION=row.iloc[13],
-                    PILOT_RATED_NON_RATED=row.iloc[14],
-                    AFSC=row.iloc[15],
-                    HIGHEST_PME_COURSES=row.iloc[16],
-                    EFFECTIVE_DATE_APPOINTMENT=convert_date(row.iloc[17]),
-                    EFFECTIVE_DATE_ENTERED=convert_date(row.iloc[18]),
-                    DATE_LAST_PROMOTION_APPOINTMENT=convert_date(row.iloc[19]),
-                    UNIT=row.iloc[20],
-                    SUB_UNIT=row.iloc[21],
-                    DATE_LASTFULL_REENLISTMENT=convert_date(row.iloc[22]),
-                    DATE_LAST_ETAD=convert_date(row.iloc[23])
-                )
+                        RANK=row.iloc[0],
+                        LAST_NAME=to_upper(row.iloc[1]),  # Convert to uppercase
+                        FIRST_NAME=to_upper(row.iloc[2]),  # Convert to uppercase
+                        MIDDLE_NAME=to_upper(row.iloc[3]),  # Convert to uppercase
+                        EXTENSION_NAME=to_upper(row.iloc[4]),  # Convert to uppercase
+                        SERIAL_NUMBER=serial_number,
+                        BOS=row.iloc[6],
+                        SEX=row.iloc[7],
+                        BIRTHDAY=convert_date(row.iloc[8]),
+                        CONTACT_NUMBER=row.iloc[9],
+                        ADDRESS=row.iloc[10],
+                        CLASSIFICATION=row.iloc[11],
+                        CATEGORY=row.iloc[12],
+                        SOURCE_OF_ENLISTMENT_COMMISION=row.iloc[13],
+                        PILOT_RATED_NON_RATED=row.iloc[14],
+                        AFSC=row.iloc[15],
+                        HIGHEST_PME_COURSES=row.iloc[16],
+                        EFFECTIVE_DATE_APPOINTMENT=convert_date(row.iloc[17]),
+                        EFFECTIVE_DATE_ENTERED=convert_date(row.iloc[18]),
+                        DATE_LAST_PROMOTION_APPOINTMENT=convert_date(row.iloc[19]),
+                        UNIT=row.iloc[20],
+                        SUB_UNIT=row.iloc[21],
+                        DATE_LASTFULL_REENLISTMENT=convert_date(row.iloc[22]),
+                        DATE_LAST_ETAD=convert_date(row.iloc[23])
+                    )
             return HttpResponse('Data uploaded successfully.')
         except Exception as e:
             return HttpResponse(f'Error: {e}')
