@@ -1,0 +1,150 @@
+{% extends 'Base/base.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Collapsed Card Example</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Font Awesome CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        .card {
+            margin-bottom: 20px;
+        }
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #f0f0f0;
+            padding: 10px 15px;
+            border-bottom: none;
+            cursor: pointer;
+        }
+        .card-title {
+            margin-bottom: 0;
+        }
+        .btn-tool {
+            padding: 5px;
+            background-color: transparent;
+            border: none;
+            transition: transform 0.7s ease;
+        }
+        .btn-tool.collapsed .fa-plus {
+            display: inline-block;
+        }
+        .btn-tool .fa-plus {
+            display: none;
+        }
+        .btn-tool.collapsed .fa-minus {
+            display: none;
+        }
+        .btn-tool .fa-minus {
+            display: inline-block;
+        }
+        .card-body {
+            overflow: hidden;
+            transition: height 0.7s ease;
+            padding: 15px; /* Adjust padding to add more space around content */
+            margin-bottom: 20px; /* Additional margin at the bottom of the card-body */
+        }
+        .card.collapsed .card-body {
+            height: 0;
+            padding: 0; /* Remove padding when collapsed */
+            margin-bottom: 0; /* Remove margin when collapsed */
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="card collapsed">
+        <div class="card-header" onclick="toggleCollapse(this)">
+            <h3 class="card-title">GUAS</h3>
+            <!-- Toggle button with icon -->
+            <button type="button" class="btn btn-tool collapsed">
+                <i class="fas fa-plus"></i>
+                <i class="fas fa-minus"></i>
+            </button>
+        </div>
+        <div class="card-body">
+            <!-- Table or content that you want to collapse -->
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>UNIT</th>
+                        <th>Officers Count</th>
+                        <th>Enlisted Count</th>
+                        <th>DS</th>
+                        <th>TOTAL</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for unit in units_of_interest %}
+                    <tr>
+                        <td>{{ unit }}</td>
+                        <td>
+                            {% for count in unit_counts %}
+                            {% if count.UNIT == unit %}
+                            {{ count.officers_count }}
+                            {% endif %}
+                            {% endfor %}
+                        </td>
+                        <td>
+                            {% for count in unit_counts %}
+                            {% if count.UNIT == unit %}
+                            {{ count.enlisted_count }}
+                            {% endif %}
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var card = document.querySelector('.card');
+        var cardBody = card.querySelector('.card-body');
+        var btnTool = card.querySelector('.btn-tool');
+
+        // Check if the card is initially collapsed or not
+        if (card.classList.contains('collapsed')) {
+            cardBody.style.height = '0';
+            cardBody.style.paddingTop = '0';
+            cardBody.style.paddingBottom = '0';
+        } else {
+            cardBody.style.height = cardBody.scrollHeight + 'px';
+        }
+    });
+
+    function toggleCollapse(header) {
+        var card = header.closest('.card');
+        var cardBody = card.querySelector('.card-body');
+        var btnTool = card.querySelector('.btn-tool');
+
+        // Toggle the 'collapsed' class on the card and update the button icon
+        card.classList.toggle('collapsed');
+        btnTool.classList.toggle('collapsed');
+        var isOpen = !card.classList.contains('collapsed');
+        if (isOpen) {
+            cardBody.style.height = cardBody.scrollHeight + 'px';
+            cardBody.style.paddingTop = '';
+            cardBody.style.paddingBottom = '';
+        } else {
+            cardBody.style.height = '0';
+            cardBody.style.paddingTop = '0';
+            cardBody.style.paddingBottom = '0';
+        }
+    }
+</script>
+
+{% endblock %}

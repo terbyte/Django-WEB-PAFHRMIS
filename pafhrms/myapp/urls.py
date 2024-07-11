@@ -22,8 +22,9 @@ urlpatterns = [
     path('placement/placement_Assign', views.placement_Assign, name='placement_Assign'),
     path('placement/orders/<str:afpsn>/', views.user_files, name='orders'),
 
-    # Unit Records
+    # Unit Monitoring 
     path('Unit_Monitoring/unit_monitoring', views.unit_monitoring, name='unit_monitoring'),
+    path('Unit_Monitoring/unit_dashboard', views.unit_dashboard, name='unit_dashboard'),
 
     # Reenlistment
     path('reenlistment/Tranche/', views.Tranche, name='Tranche'),

@@ -21,9 +21,10 @@ import os
 from django.conf import settings  # Import settings
 from django.shortcuts import render, redirect
 from django.views.decorators.http import require_POST
+from .models import PersonnelFile
 from .models import PersonnelItem, PersonnelFile
 from django.http import JsonResponse
-from .models import PersonnelFile
+from django.db.models import Count, Q
 
 
 def calculate_due_date(duration,reassignment_date):
@@ -775,6 +776,18 @@ def tabler(tableName,):
 
     
 
+
+
+
+
+
+
+
+
+
+
+
+
 def unit_monitoring(request):
     unit_query = request.GET.get('unit')
     sub_unit_query = request.GET.get('sub_unit')
@@ -794,6 +807,75 @@ def unit_monitoring(request):
         'unit_query': unit_query,
         'sub_unit_query': sub_unit_query,
     })
+
+
+
+# UNIT MONITORING
+def unit_dashboard(request):
+    # Retrieve selected unit from request.GET
+    selected_unit = request.GET.get('selected_unit')
+
+    # Define units of interest (you can adjust this list as needed)
+    units_of_interest = [
+        'GHQ',
+        'PAFHRMC A/U',
+        'AFPWSSUS',
+        'NOLCOM',
+        'SOLCOM',
+        'WESCOM',
+        'VISCOM',
+        'WESTMINCOM',
+        'EASTMINCOM',
+        'JTF-NCR',
+        'TOWWEST',
+
+    ]
+
+    # Initialize filters with Q objects
+    filters = Q()
+
+    # Filter by selected unit if provided and valid
+    if selected_unit and selected_unit in units_of_interest:
+        filters &= Q(UNIT__exact=selected_unit)
+
+    # Query to get counts of officers and enlisted personnel for the selected unit
+    unit_counts = (
+        PersonnelItem.objects
+        .filter(filters)
+        .values('UNIT')
+        .annotate(
+            officers_count=Count('pk', filter=Q(CATEGORY='OFFICER')),
+            enlisted_count=Count('pk', filter=Q(CATEGORY='ENLISTED PERSONNEL'))
+        )
+    )
+
+    # Render the template with context data
+    return render(request, 'Unit_Monitoring/unit_dashboard.html', {
+        'selected_unit': selected_unit,
+        'units_of_interest': units_of_interest,
+        'unit_counts': unit_counts,
+    })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 # REENLISTMENT
