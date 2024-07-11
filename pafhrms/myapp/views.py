@@ -19,6 +19,11 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 import os
 from django.conf import settings  # Import settings
+from django.shortcuts import render, redirect
+from django.views.decorators.http import require_POST
+from .models import PersonnelItem, PersonnelFile
+from django.http import JsonResponse
+from .models import PersonnelFile
 
 
 def calculate_due_date(duration,reassignment_date):
@@ -99,7 +104,7 @@ def index(request):
     sex_query = request.GET.get('sex')
     unit_query = request.GET.get('unit')
     
-    filters = Q()
+    filters = Q(IS_ACTIVE =True)
     if last_name_query:
         filters &= Q(LAST_NAME__icontains=last_name_query)
     if first_name_query:
@@ -143,39 +148,26 @@ def index(request):
 
 
 
-# def unit_monitoring(request):
-#     unit_query = request.GET.get('unitDP', '')
-#     sub_unit_query = request.GET.get('SubunitDP', '')
-#     category_query = request.GET.get('AsgmntCategoryDP', '')
+def get_files(request, serial_number):
+    person = PersonnelItem.objects.get(SERIAL_NUMBER=serial_number)
+    files = PersonnelFile.objects.filter(personnel=person)
+    file_list = [{'name': f.file.name, 'url': f.file.url} for f in files]
+    return JsonResponse({'files': file_list})
 
+@require_POST
+def update_reenlistment_date(request):
+    serial_number = request.POST['serial_number']
+    new_date = request.POST['date_lastfull_reenlistment']
     
-#     context = {
-#         'unitDP': unit_query,
-#         'SubunitDP': sub_unit_query,
-#         'AsgmntCategoryDP': category_query,
-#     }
-
-#     filters = Q()
-#     if category_query and category_query != "Category":
-#         filters &= Q(CATEGORY__icontains=category_query)
-#     if unit_query:
-#         filters &= Q(UNIT__icontains=unit_query)
-#     if sub_unit_query:
-#         filters &= Q(SUB_UNIT__icontains=sub_unit_query)
+    person = PersonnelItem.objects.get(SERIAL_NUMBER=serial_number)
+    person.DATE_LASTFULL_REENLISTMENT = new_date
     
-#     persons = PersonnelItem.objects.filter(filters)
+    if 'pdf_file' in request.FILES:
+        file = request.FILES['pdf_file']
+        PersonnelFile.objects.create(personnel=person, file=file)
     
-#     paginator = Paginator(persons, 10)
-#     page_num = request.GET.get("page")
-#     persons = paginator.get_page(page_num)
-    
-#     return render(request, 'unit_monitoring/unit_monitoring.html', {
-#         'persons': persons,
-#         'category_query': category_query,
-#         'unit_query': unit_query,
-#         'sub_unit_query': sub_unit_query,
-#     })
-    
+    person.save()
+    return redirect('Tranche')
 
 
 
@@ -314,7 +306,56 @@ def custom_404(request, exception):
 
 
 def for_Separation(request):
-    return render(request,"Inactive/for_Seperation.html",{})
+    last_name_query = request.GET.get('last_name')
+    first_name_query = request.GET.get('first_name')
+    middle_name_query = request.GET.get('middle_name')
+    suffix_query = request.GET.get('suffix')
+    afsn_query = request.GET.get('afsn')
+    rank_query = request.GET.get('rank')
+    classification_query = request.GET.get('classification')
+    sex_query = request.GET.get('sex')
+    unit_query = request.GET.get('unit')
+    
+    filters = Q(IS_ACTIVE =True)
+    if last_name_query:
+        filters &= Q(LAST_NAME__icontains=last_name_query)
+    if first_name_query:
+        filters &= Q(FIRST_NAME__icontains=first_name_query)
+    if middle_name_query:
+        filters &= Q(MIDDLE_NAME__icontains=middle_name_query)
+    if suffix_query and suffix_query != "Suffix":
+        filters &= Q(EXTENSION_NAME__icontains=suffix_query)
+    if afsn_query:
+        filters &= Q(SERIAL_NUMBER__icontains=afsn_query)  # Change this to 'SERIAL_NUMBER'
+    if rank_query and rank_query != "Rank":
+        filters &= Q(RANK__icontains=rank_query)
+    if classification_query and classification_query != "Classification":
+        filters &= Q(CLASSIFICATION__icontains=classification_query)
+    if sex_query and sex_query != "Sex":
+        filters &= Q(SEX__icontains=sex_query)
+    if unit_query:
+        filters &= Q(UNIT__icontains=unit_query)
+    
+    persons = PersonnelItem.objects.filter(filters)
+    
+    paginator = Paginator(persons, 10)
+    page_num = request.GET.get("page")
+    persons = paginator.get_page(page_num)
+    
+    return render(request, 'Inactive/for_Seperation.html', {
+        'persons': persons,
+        'last_name_query': last_name_query,
+        'first_name_query': first_name_query,
+        'middle_name_query': middle_name_query,
+        'suffix_query': suffix_query,
+        'afsn_query': afsn_query,
+        'rank_query': rank_query,
+        'classification_query': classification_query,
+        'sex_query': sex_query,
+        'unit_query': unit_query,
+    })
+    
+    # return render(request,"Inactive/for_Seperation.html",{})
 
 def lists_inactive(request):
     return render(request,"Inactive/lists_inactive.html",{})

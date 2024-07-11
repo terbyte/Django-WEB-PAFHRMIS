@@ -35,6 +35,12 @@ urlpatterns = [
     # INACTIVE
     path('for_Seperation/', views.for_Separation, name='for_Seperation'),
     path('lists_inactive/', views.lists_inactive, name='lists_inactive'),
+    
+
+    # 
+    path('update_reenlistment_date/', views.update_reenlistment_date, name='update_reenlistment_date'),  
+    path('get_files/<str:serial_number>/', views.get_files, name='get_files'),
+
 
 
 
