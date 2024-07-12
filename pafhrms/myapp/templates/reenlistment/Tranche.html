@@ -87,7 +87,7 @@
             <th>CP #</th>
             <th>DATE OF LAST FULL REENLISTMENT</th>
             <th>DATE OF NEXT FULL REENLISTMENT</th>
-            <th>DATE EDIT</th>
+            <th>DATE UPDATE </th>
             <th>FILES UPLOADED</th>
         </tr>
     </thead>
@@ -110,13 +110,13 @@
                 <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editModal"
                         data-serialnumber="{{ person.SERIAL_NUMBER }}"
                         data-lastfullreenlistment="{{ person.DATE_LASTFULL_REENLISTMENT }}">
-                    Edit
+                    UPDATE
                 </button>
             </td>
             <td>
-                <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#viewFilesModal"
+                <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#viewFilesModal"
                         data-serialnumber="{{ person.SERIAL_NUMBER }}">
-                    View Files
+                    ORDER
                 </button>
             </td>
         </tr>
@@ -156,6 +156,7 @@
         </div>
     </div>
 </div>
+
 
 <!-- View Files Modal -->
 <div class="modal fade" id="viewFilesModal" tabindex="-1" role="dialog" aria-labelledby="viewFilesModalLabel" aria-hidden="true">
@@ -245,14 +246,12 @@
         {% endif %}
     </span>
 </div>
-
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.13/jspdf.plugin.autotable.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
 
 <script>
-    
     $(document).ready(function() {
         var subUnits = {
             'GHQ': ['OJ1', 'OJ2', 'OJ3', 'OJ4', 'OJ5', 'OJ6', 'OJ7', 'OJ8', 'OJ9', 'OJ10', 'AFPCC','OTAG', 'OTPMG', 'OTCCHS', 'OTJAG', 'AFPPDO', 'OTQMG', 'OTSG', 'AFPSEO','AFPHRO', 'OTCN', 'OTCDS', 'OSPS', 'AFPIMAC', 'AFPREO', 'AFPEBSO', 'OTCE','AFP K9', 'AFPCOC', 'CEISO', 'CGEASH', 'OAFPSM', 'GHQTS', 'PMO', 'OSJA','ODCOP', 'ONAF', 'GHQPFO'],
