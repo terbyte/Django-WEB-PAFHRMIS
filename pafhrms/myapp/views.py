@@ -793,13 +793,60 @@ def unit_monitoring(request):
 
 
 
-# UNIT MONITORING
+# # UNIT MONITORING
+# def unit_dashboard(request):
+#     # Retrieve selected unit from request.GET
+#     selected_unit = request.GET.get('selected_unit')
+
+#     # Define units of interest (you can adjust this list as needed)
+#     units_of_interest = [
+#         'GHQ',
+#         'PAFHRMC',
+#         'AFPWSSUS',
+#         'NOLCOM',
+#         'SOLCOM',
+#         'WESCOM',
+#         'VISCOM',
+#         'WESTMINCOM',
+#         'EASTMINCOM',
+#         'JTF-NCR',
+#         'TOWWEST',
+
+#     ]
+
+#     # Initialize filters with Q objects
+#     filters = Q()
+
+#     # Filter by selected unit if provided and valid
+#     if selected_unit and selected_unit in units_of_interest:
+#         filters &= Q(UNIT__exact=selected_unit)
+
+#     # Query to get counts of officers and enlisted personnel for the selected unit
+#     unit_counts = (
+#         PersonnelItem.objects
+#         .filter(filters)
+#         .values('UNIT')
+#         .annotate(
+#             officers_count=Count('pk', filter=Q(CATEGORY='OFFICER')),
+#             enlisted_count=Count('pk', filter=Q(CATEGORY='ENLISTED PERSONNEL'))
+#         )
+#     )
+
+#     # Render the template with context data
+#     return render(request, 'Unit_Monitoring/unit_dashboard.html', {
+#         'selected_unit': selected_unit,
+#         'units_of_interest': units_of_interest,
+#         'unit_counts': unit_counts,
+#     })
+
+
+
+
+
 def unit_dashboard(request):
-    # Retrieve selected unit from request.GET
     selected_unit = request.GET.get('selected_unit')
 
-    # Define units of interest (you can adjust this list as needed)
-    units_of_interest = [
+    GUAS_units = [
         'GHQ',
         'PAFHRMC',
         'AFPWSSUS',
@@ -811,20 +858,54 @@ def unit_dashboard(request):
         'EASTMINCOM',
         'JTF-NCR',
         'TOWWEST',
-
     ]
 
-    # Initialize filters with Q objects
-    filters = Q()
+    units_of_interest2 = [
+        'GHQ',
+        'HPAF',
+        'PAFHRMC A/U',
+        'PAFHRMC',
+        'AFPWSSUS',
+        'AIBDC',
+        'ADC',
+        'AMC',
+        'ACC',
+        'AETDC',
+        'ARFC',
+        'TOWNOL',
+        'TOWSOL',
+        'TOWCEN',
+        'TOWWEST',
+        'TOWEASTMIN',
+        '355AEW',
+        '300AISW',
+        '900AFWG',
+        '950CEWW',
+        'AFFC',
+        'AFSSG',
+        'HSSG',
+        'PAFCMOG',
+        'NOLCOM',
+        'SOLCOM',
+        'WESCOM',
+        'VISCOM',
+        'WESTMINCOM',
+        'EASTMINCOM',
+        'JTF-NCR',
+    ]
 
-    # Filter by selected unit if provided and valid
-    if selected_unit and selected_unit in units_of_interest:
-        filters &= Q(UNIT__exact=selected_unit)
+    filters1 = Q()
+    filters2 = Q()
 
-    # Query to get counts of officers and enlisted personnel for the selected unit
-    unit_counts = (
+    if selected_unit and selected_unit in GUAS_units:
+        filters1 &= Q(UNIT__exact=selected_unit)
+
+    if selected_unit and selected_unit in units_of_interest2:
+        filters2 &= Q(UNIT__exact=selected_unit)
+
+    unit_counts1 = (
         PersonnelItem.objects
-        .filter(filters)
+        .filter(filters1)
         .values('UNIT')
         .annotate(
             officers_count=Count('pk', filter=Q(CATEGORY='OFFICER')),
@@ -832,11 +913,23 @@ def unit_dashboard(request):
         )
     )
 
-    # Render the template with context data
+    unit_counts2 = (
+        PersonnelItem.objects
+        .filter(filters2)
+        .values('UNIT')
+        .annotate(
+            officers_count=Count('pk', filter=Q(CATEGORY='OFFICER')),
+            enlisted_count=Count('pk', filter=Q(CATEGORY='ENLISTED PERSONNEL'))
+        )
+    )
+
     return render(request, 'Unit_Monitoring/unit_dashboard.html', {
         'selected_unit': selected_unit,
-        'units_of_interest': units_of_interest,
-        'unit_counts': unit_counts,
+        'units_of_interest1': GUAS_units,
+        'unit_counts1': unit_counts1,
+
+        'units_of_interest2': units_of_interest2,
+        'unit_counts2': unit_counts2,
     })
 
 
@@ -844,11 +937,60 @@ def unit_dashboard(request):
 
 
 
+#     ALLPAF_units = [
+#         'GHQ',
+#         'HPAF',
+#         'PAFHRMC A/U',
+#         'PAFHRMC',
+#         'AFPWSSUS',
+#         'AIBDC',
+#         'ADC',
+#         'AMC',
+#         'ACC',
+#         'AETDC',
+#         'ARFC',
+#         'TOWNOL',
+#         'TOWSOL',
+#         'TOWCEN',
+#         'TOWWEST',
+#         'TOWEASTMIN',
+#         '355AEW',
+#         '300AISW',
+#         '900AFWG',
+#         '950CEWW',
+#         'AFFC',
+#         'AFSSG',
+#         'HSSG',
+#         'PAFCMOG',
+#         'NOLCOM',
+#         'SOLCOM',
+#         'WESCOM',
+#         'VISCOM',
+#         'WESTMINCOM',
+#         'EASTMINCOM',
+#         'JTF-NCR',
+
+#     ]
+
+#     Guas_units = [
+#         'GHQ',
+#         'PAFHRMC',
+#         'AFPWSSUS',
+#         'NOLCOM',
+#         'SOLCOM',
+#         'WESCOM',
+#         'VISCOM',
+#         'WESTMINCOM',
+#         'EASTMINCOM',
+#         'JTF-NCR',
+#         'TOWWEST',
+
+#     ]
 
 
-
-
-
+#     PAFHRMC_au = [
+#         'PAFHRMC A/U'
+#     ]
 
 
 

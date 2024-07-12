@@ -1,11 +1,12 @@
 {% extends 'Base/base.html' %}
 {% block content %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Collapsed Card Example</title>
+    <title>Unit Dashboard</title>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <!-- Font Awesome CSS -->
@@ -30,7 +31,7 @@
             padding: 5px;
             background-color: transparent;
             border: none;
-            transition: transform 0.7s ease;
+            transition: transform 0.3s ease;
         }
         .btn-tool.collapsed .fa-plus {
             display: inline-block;
@@ -46,30 +47,30 @@
         }
         .card-body {
             overflow: hidden;
-            transition: height 0.7s ease;
-            padding: 15px; /* Adjust padding to add more space around content */
-            margin-bottom: 20px; /* Additional margin at the bottom of the card-body */
+            transition: height 0.3s ease;
+            padding: 15px;
+            margin-bottom: 20px;
         }
         .card.collapsed .card-body {
             height: 0;
-            padding: 0; /* Remove padding when collapsed */
-            margin-bottom: 0; /* Remove margin when collapsed */
+            padding: 0;
+            margin-bottom: 0;
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div class="card collapsed">
-        <div class="card-header" onclick="toggleCollapse(this)">
+    <!-- First Accordion Section -->
+    <div class="card">
+        <div class="card-header" onclick="toggleCollapse('accordion1')">
             <h3 class="card-title">GUAS</h3>
-            <!-- Toggle button with icon -->
-            <button type="button" class="btn btn-tool collapsed">
-                <i class="fas fa-plus"></i>
+            <!-- Collapse button -->
+            <button type="button" class="btn btn-tool">
                 <i class="fas fa-minus"></i>
             </button>
         </div>
-        <div class="card-body">
+        <div class="card-body" id="accordion1">
             <!-- Table or content that you want to collapse -->
             <table class="table">
                 <thead>
@@ -103,21 +104,18 @@
             </table>
         </div>
     </div>
-</div>
 
-    <!-- Second Accordion Section (Example with different units) -->
-<div class="container">
-    <div class="card collapsed">
-        <div class="card-header" onclick="toggleCollapse(this)">
-            <h3 class="card-title">GUAS</h3>
-            <!-- Toggle button with icon -->
-            <button type="button" class="btn btn-tool collapsed">
-                <i class="fas fa-plus"></i>
+    <!-- Second Accordion Section -->
+    <div class="card">
+        <div class="card-header" onclick="toggleCollapse('accordion2')">
+            <h3 class="card-title">Second Accordion Section</h3>
+            <!-- Collapse button -->
+            <button type="button" class="btn btn-tool">
                 <i class="fas fa-minus"></i>
             </button>
         </div>
-        <div class="card-body">
-            <!-- Table or content that you want to collapse -->
+        <div class="card-body" id="accordion2">
+            <!-- Table or content for the second accordion -->
             <table class="table">
                 <thead>
                     <tr>
@@ -150,46 +148,19 @@
             </table>
         </div>
     </div>
-</div>
 
+</div>
 
 </body>
 </html>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var card = document.querySelector('.card');
-        var cardBody = card.querySelector('.card-body');
-        var btnTool = card.querySelector('.btn-tool');
-
-        // Check if the card is initially collapsed or not
-        if (card.classList.contains('collapsed')) {
-            cardBody.style.height = '0';
-            cardBody.style.paddingTop = '0';
-            cardBody.style.paddingBottom = '0';
-        } else {
-            cardBody.style.height = cardBody.scrollHeight + 'px';
-        }
-    });
-
-    function toggleCollapse(header) {
-        var card = header.closest('.card');
-        var cardBody = card.querySelector('.card-body');
-        var btnTool = card.querySelector('.btn-tool');
-
-        // Toggle the 'collapsed' class on the card and update the button icon
+    function toggleCollapse(id) {
+        var cardBody = document.getElementById(id);
+        var card = cardBody.closest('.card');
+        
+        // Toggle the 'collapsed' class on the card
         card.classList.toggle('collapsed');
-        btnTool.classList.toggle('collapsed');
-        var isOpen = !card.classList.contains('collapsed');
-        if (isOpen) {
-            cardBody.style.height = cardBody.scrollHeight + 'px';
-            cardBody.style.paddingTop = '';
-            cardBody.style.paddingBottom = '';
-        } else {
-            cardBody.style.height = '0';
-            cardBody.style.paddingTop = '0';
-            cardBody.style.paddingBottom = '0';
-        }
     }
 </script>
 
