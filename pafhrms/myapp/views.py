@@ -771,23 +771,6 @@ def placement_update_extension(request):
 
 # UNIT MONITORING
 
-def tabler(tableName,):
-    print("enters tabler")
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
 def unit_monitoring(request):
     unit_query = request.GET.get('unit')
     sub_unit_query = request.GET.get('sub_unit')
@@ -818,7 +801,7 @@ def unit_dashboard(request):
     # Define units of interest (you can adjust this list as needed)
     units_of_interest = [
         'GHQ',
-        'PAFHRMC A/U',
+        'PAFHRMC',
         'AFPWSSUS',
         'NOLCOM',
         'SOLCOM',
