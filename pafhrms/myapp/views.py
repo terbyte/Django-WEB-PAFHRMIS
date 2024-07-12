@@ -792,57 +792,6 @@ def unit_monitoring(request):
     })
 
 
-
-# # UNIT MONITORING
-# def unit_dashboard(request):
-#     # Retrieve selected unit from request.GET
-#     selected_unit = request.GET.get('selected_unit')
-
-#     # Define units of interest (you can adjust this list as needed)
-#     units_of_interest = [
-#         'GHQ',
-#         'PAFHRMC',
-#         'AFPWSSUS',
-#         'NOLCOM',
-#         'SOLCOM',
-#         'WESCOM',
-#         'VISCOM',
-#         'WESTMINCOM',
-#         'EASTMINCOM',
-#         'JTF-NCR',
-#         'TOWWEST',
-
-#     ]
-
-#     # Initialize filters with Q objects
-#     filters = Q()
-
-#     # Filter by selected unit if provided and valid
-#     if selected_unit and selected_unit in units_of_interest:
-#         filters &= Q(UNIT__exact=selected_unit)
-
-#     # Query to get counts of officers and enlisted personnel for the selected unit
-#     unit_counts = (
-#         PersonnelItem.objects
-#         .filter(filters)
-#         .values('UNIT')
-#         .annotate(
-#             officers_count=Count('pk', filter=Q(CATEGORY='OFFICER')),
-#             enlisted_count=Count('pk', filter=Q(CATEGORY='ENLISTED PERSONNEL'))
-#         )
-#     )
-
-#     # Render the template with context data
-#     return render(request, 'Unit_Monitoring/unit_dashboard.html', {
-#         'selected_unit': selected_unit,
-#         'units_of_interest': units_of_interest,
-#         'unit_counts': unit_counts,
-#     })
-
-
-
-
-
 def unit_dashboard(request):
     selected_unit = request.GET.get('selected_unit')
 
@@ -920,7 +869,6 @@ def unit_dashboard(request):
             enlisted_count=Count('pk', filter=Q(CATEGORY='ENLISTED PERSONNEL'))
         )
     )
-
     ALLPAF_unit_counts = (
         PersonnelItem.objects
         .filter(ALLPAF_units_filters)
@@ -930,7 +878,6 @@ def unit_dashboard(request):
             enlisted_count=Count('pk', filter=Q(CATEGORY='ENLISTED PERSONNEL'))
         )
     )
-
     PAFHRMC_au_counts = (
         PersonnelItem.objects
         .filter(PAFHRMC_au_filters)
@@ -941,86 +888,42 @@ def unit_dashboard(request):
         )
     )
 
+    # Aggregating assignment categories from Placement model
+    placement_counts = (
+        Placement.objects
+        .values('NEW_UNIT')
+        .annotate(
+            detached_service_count=Count('pk', filter=Q(ASSIGNMENT_CATEGORY='Detached Service')),
+            temporary_duty_count=Count('pk', filter=Q(ASSIGNMENT_CATEGORY='Temporary Duty'))
+        )
+    )
+
+    # Convert placement counts to a dictionary for easy lookup
+    placement_counts_dict = {item['NEW_UNIT']: item for item in placement_counts}
+
+    # Update counts with assignment category data
+    def update_counts(unit_counts):
+        for unit in unit_counts:
+            unit_name = unit['UNIT']
+            if unit_name in placement_counts_dict:
+                unit.update(placement_counts_dict[unit_name])
+            else:
+                unit['detached_service_count'] = 0
+                unit['temporary_duty_count'] = 0
+
+    update_counts(GUAS_unit_counts)
+    update_counts(ALLPAF_unit_counts)
+    update_counts(PAFHRMC_au_counts)
+
     return render(request, 'Unit_Monitoring/unit_dashboard.html', {
         'selected_unit': selected_unit,
         'GUAS_units': GUAS_units,
         'GUAS_unit_counts': GUAS_unit_counts,
-
         'ALLPAF_units': ALLPAF_units,
         'ALLPAF_unit_counts': ALLPAF_unit_counts,
-
-
         'PAFHRMC_au': PAFHRMC_au,
         'PAFHRMC_au_counts': PAFHRMC_au_counts,
     })
-
-
-
-
-
-
-#     ALLPAF_units = [
-#         'GHQ',
-#         'HPAF',
-#         'PAFHRMC A/U',
-#         'PAFHRMC',
-#         'AFPWSSUS',
-#         'AIBDC',
-#         'ADC',
-#         'AMC',
-#         'ACC',
-#         'AETDC',
-#         'ARFC',
-#         'TOWNOL',
-#         'TOWSOL',
-#         'TOWCEN',
-#         'TOWWEST',
-#         'TOWEASTMIN',
-#         '355AEW',
-#         '300AISW',
-#         '900AFWG',
-#         '950CEWW',
-#         'AFFC',
-#         'AFSSG',
-#         'HSSG',
-#         'PAFCMOG',
-#         'NOLCOM',
-#         'SOLCOM',
-#         'WESCOM',
-#         'VISCOM',
-#         'WESTMINCOM',
-#         'EASTMINCOM',
-#         'JTF-NCR',
-
-#     ]
-
-#     Guas_units = [
-#         'GHQ',
-#         'PAFHRMC',
-#         'AFPWSSUS',
-#         'NOLCOM',
-#         'SOLCOM',
-#         'WESCOM',
-#         'VISCOM',
-#         'WESTMINCOM',
-#         'EASTMINCOM',
-#         'JTF-NCR',
-#         'TOWWEST',
-
-#     ]
-
-
-#     PAFHRMC_au = [
-#         'PAFHRMC A/U'
-#     ]
-
-
-
-
-
-
-
-
 
 
 

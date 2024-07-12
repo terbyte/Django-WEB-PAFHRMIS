@@ -90,8 +90,8 @@
                         <th colspan="3"></th>
                       </tr>
                     <tr>
-                        <th>OFFICER'S COUNT</th>
-                        <th>ENLISTED PERSONNEL COUNT</th>
+                        <th>OFFICER</th>
+                        <th>ENLISTED PERSONNEL</th>
                         <th>DS / TDY</th>
                         <th>TOTAL</th>
                     </tr>
@@ -106,11 +106,28 @@
                                     {{ count.officers_count }}
                                 {% endif %}
                             {% endfor %}
+
+                            
                         </td>
                         <td>
                             {% for count in GUAS_unit_counts %}
                                 {% if count.UNIT == unit %}
                                     {{ count.enlisted_count }}
+                                {% endif %}
+                            {% endfor %}
+                        </td>
+
+                        <td>
+                            {% for count in GUAS_unit_counts %}
+                                {% if count.UNIT == unit %}
+                                    {{ count.detached_service_count }} / {{ count.temporary_duty_count }}
+                                {% endif %}
+                            {% endfor %}
+                        </td>
+                        <td>
+                            {% for count in GUAS_unit_counts %}
+                                {% if count.UNIT == unit %}
+                                    {{ count.officers_count|add:count.enlisted_count|add:count.detached_service_count|add:count.temporary_duty_count }}
                                 {% endif %}
                             {% endfor %}
                         </td>
