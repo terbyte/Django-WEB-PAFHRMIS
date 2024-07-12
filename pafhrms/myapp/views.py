@@ -860,7 +860,7 @@ def unit_dashboard(request):
         'TOWWEST',
     ]
 
-    units_of_interest2 = [
+    ALLPAF_units = [
         'GHQ',
         'HPAF',
         'PAFHRMC A/U',
@@ -894,18 +894,26 @@ def unit_dashboard(request):
         'JTF-NCR',
     ]
 
-    filters1 = Q()
-    filters2 = Q()
+    PAFHRMC_au = [
+        'PAFHRMC A/U'
+    ]
+
+    guas_filters = Q()
+    ALLPAF_units_filters = Q()
+    PAFHRMC_au_filters = Q()
 
     if selected_unit and selected_unit in GUAS_units:
-        filters1 &= Q(UNIT__exact=selected_unit)
+        guas_filters &= Q(UNIT__exact=selected_unit)
 
-    if selected_unit and selected_unit in units_of_interest2:
-        filters2 &= Q(UNIT__exact=selected_unit)
+    if selected_unit and selected_unit in ALLPAF_units:
+        ALLPAF_units_filters &= Q(UNIT__exact=selected_unit)
+    
+    if selected_unit and selected_unit in PAFHRMC_au:
+        PAFHRMC_au_filters &= Q(UNIT__exact=selected_unit)
 
-    unit_counts1 = (
+    GUAS_unit_counts = (
         PersonnelItem.objects
-        .filter(filters1)
+        .filter(guas_filters)
         .values('UNIT')
         .annotate(
             officers_count=Count('pk', filter=Q(CATEGORY='OFFICER')),
@@ -913,9 +921,19 @@ def unit_dashboard(request):
         )
     )
 
-    unit_counts2 = (
+    ALLPAF_unit_counts = (
         PersonnelItem.objects
-        .filter(filters2)
+        .filter(ALLPAF_units_filters)
+        .values('UNIT')
+        .annotate(
+            officers_count=Count('pk', filter=Q(CATEGORY='OFFICER')),
+            enlisted_count=Count('pk', filter=Q(CATEGORY='ENLISTED PERSONNEL'))
+        )
+    )
+
+    PAFHRMC_au_counts = (
+        PersonnelItem.objects
+        .filter(PAFHRMC_au_filters)
         .values('UNIT')
         .annotate(
             officers_count=Count('pk', filter=Q(CATEGORY='OFFICER')),
@@ -925,11 +943,15 @@ def unit_dashboard(request):
 
     return render(request, 'Unit_Monitoring/unit_dashboard.html', {
         'selected_unit': selected_unit,
-        'units_of_interest1': GUAS_units,
-        'unit_counts1': unit_counts1,
+        'GUAS_units': GUAS_units,
+        'GUAS_unit_counts': GUAS_unit_counts,
 
-        'units_of_interest2': units_of_interest2,
-        'unit_counts2': unit_counts2,
+        'ALLPAF_units': ALLPAF_units,
+        'ALLPAF_unit_counts': ALLPAF_unit_counts,
+
+
+        'PAFHRMC_au': PAFHRMC_au,
+        'PAFHRMC_au_counts': PAFHRMC_au_counts,
     })
 
 
