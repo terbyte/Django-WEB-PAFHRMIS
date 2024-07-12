@@ -792,55 +792,22 @@ def unit_monitoring(request):
     })
 
 
+
 def unit_dashboard(request):
     selected_unit = request.GET.get('selected_unit')
 
     GUAS_units = [
-        'GHQ',
-        'PAFHRMC',
-        'AFPWSSUS',
-        'NOLCOM',
-        'SOLCOM',
-        'WESCOM',
-        'VISCOM',
-        'WESTMINCOM',
-        'EASTMINCOM',
-        'JTF-NCR',
-        'TOWWEST',
+        'GHQ', 'PAFHRMC', 'AFPWSSUS', 'NOLCOM', 'SOLCOM', 'WESCOM', 
+        'VISCOM', 'WESTMINCOM', 'EASTMINCOM', 'JTF-NCR', 'TOWWEST',
     ]
 
     ALLPAF_units = [
-        'GHQ',
-        'HPAF',
-        'PAFHRMC A/U',
-        'PAFHRMC',
-        'AFPWSSUS',
-        'AIBDC',
-        'ADC',
-        'AMC',
-        'ACC',
-        'AETDC',
-        'ARFC',
-        'TOWNOL',
-        'TOWSOL',
-        'TOWCEN',
-        'TOWWEST',
-        'TOWEASTMIN',
-        '355AEW',
-        '300AISW',
-        '900AFWG',
-        '950CEWW',
-        'AFFC',
-        'AFSSG',
-        'HSSG',
-        'PAFCMOG',
-        'NOLCOM',
-        'SOLCOM',
-        'WESCOM',
-        'VISCOM',
-        'WESTMINCOM',
-        'EASTMINCOM',
-        'JTF-NCR',
+        'GHQ', 'HPAF', 'PAFHRMC A/U', 'PAFHRMC', 'AFPWSSUS', 'AIBDC', 
+        'ADC', 'AMC', 'ACC', 'AETDC', 'ARFC', 'TOWNOL', 'TOWSOL', 
+        'TOWCEN', 'TOWWEST', 'TOWEASTMIN', '355AEW', '300AISW', 
+        '900AFWG', '950CEWW', 'AFFC', 'AFSSG', 'HSSG', 'PAFCMOG', 
+        'NOLCOM', 'SOLCOM', 'WESCOM', 'VISCOM', 'WESTMINCOM', 
+        'EASTMINCOM', 'JTF-NCR',
     ]
 
     PAFHRMC_au = [
@@ -889,8 +856,13 @@ def unit_dashboard(request):
     )
 
     # Aggregating assignment categories from Placement model
+    placement_filters = Q(IS_ARCHIVED=False)
+    if selected_unit:
+        placement_filters &= Q(NEW_UNIT__exact=selected_unit)
+
     placement_counts = (
         Placement.objects
+        .filter(placement_filters)
         .values('NEW_UNIT')
         .annotate(
             detached_service_count=Count('pk', filter=Q(ASSIGNMENT_CATEGORY='Detached Service')),
@@ -924,8 +896,6 @@ def unit_dashboard(request):
         'PAFHRMC_au': PAFHRMC_au,
         'PAFHRMC_au_counts': PAFHRMC_au_counts,
     })
-
-
 
 
 # REENLISTMENT
