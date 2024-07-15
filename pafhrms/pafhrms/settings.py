@@ -25,6 +25,8 @@ FILE_UPLOAD_HANDLERS = [
     "django.core.files.uploadhandler.TemporaryFileUploadHandler",
 ]
 
+
+
 # Adjust these settings as needed
 DATA_UPLOAD_MAX_MEMORY_SIZE = 2621440  # 2.5 MB
 FILE_UPLOAD_MAX_MEMORY_SIZE = 2621440  # 2.5 MB
@@ -39,8 +41,8 @@ SECRET_KEY = 'django-insecure-gffcnvqf#&#mi))#x7r@mvnx%n*#3g9=f&+v@g3qodeby(*#_y
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '192.168.110.195']
+# ALLOWED_HOSTS = []
 
 # Application definition
 
