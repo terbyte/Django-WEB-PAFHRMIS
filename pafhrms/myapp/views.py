@@ -304,7 +304,7 @@ def upload_excel(request):
 def custom_404(request, exception):
     return render(request, 'other/404.html', status=404)
 
-
+# INACTIVE FOR SEPARATION
 
 def for_Separation(request):
     last_name_query = request.GET.get('last_name')
@@ -361,7 +361,58 @@ def for_Separation(request):
 def lists_inactive(request):
     return render(request,"Inactive/lists_inactive.html",{})
 
+# def set_inactive(request):
+#     if request.method == 'POST':
+#         try:
+#             personnel_id = request.POST.get('personnel_id')
+#             personnel_items = PersonnelItem.objects.filter(SERIAL_NUMBER=personnel_id)
+#             if not personnel_items.exists():
+#                 return JsonResponse({'success': False, 'error': 'Personnel not found'})
 
+            
+#             personnel_items.update(
+#                 LAST_NAME=request.POST.get('last_name'),
+#                 FIRST_NAME=request.POST.get('first_name'),
+#                 MIDDLE_NAME=request.POST.get('middle_name'),
+#                 EXTENSION_NAME=request.POST.get('suffix'),
+#                 ADDRESS=request.POST.get('address'),
+#                 RANK=request.POST.get('rank'),
+#                 AFSC=request.POST.get('afsc'),
+#                 UNIT=request.POST.get('unit'),
+#                 SUB_UNIT=request.POST.get('subunit'),
+#                 CONTACT_NUMBER=request.POST.get('contactnum'),
+#                 HIGHEST_PME_COURSES=request.POST.get('hpme'),
+#                 PILOT_RATED_NON_RATED=request.POST.get('pilotrating'),
+#                 DATE_LAST_PROMOTION_APPOINTMENT=format_date(request.POST.get('promotion')),
+#                 DATE_LASTFULL_REENLISTMENT=format_date(request.POST.get('fullreeenlistment')),
+#                 DATE_LAST_ETAD=format_date(request.POST.get('dateoflastetadsot'))
+#             )
+#             return JsonResponse({'success': True})
+#         except Exception as e:
+#             return JsonResponse({'success': False, 'error': str(e)})
+
+#     return JsonResponse({'success': False, 'error': 'Invalid request'})
+
+
+@require_POST
+def set_inactive(request):
+    serial_number = request.POST.get('afpsn')
+    is_active = request.POST.get('status') == 'Active'
+    upload_order = request.FILES.get('separation_uploadOrder')
+
+    try:
+        person = PersonnelItem.objects.get(SERIAL_NUMBER=serial_number)
+        person.IS_ACTIVE = is_active
+
+        if upload_order:
+            PersonnelFile.objects.create(personnel=person, file=upload_order)
+
+        person.save()
+        response = {'success': True}
+    except PersonnelItem.DoesNotExist:
+        response = {'success': False, 'error': 'Personnel item not found'}
+
+    return JsonResponse(response)
 
 
 def display_file_data(request):
@@ -856,13 +907,8 @@ def unit_dashboard(request):
     )
 
     # Aggregating assignment categories from Placement model
-    placement_filters = Q(IS_ARCHIVED=False)
-    if selected_unit:
-        placement_filters &= Q(NEW_UNIT__exact=selected_unit)
-
     placement_counts = (
         Placement.objects
-        .filter(placement_filters)
         .values('NEW_UNIT')
         .annotate(
             detached_service_count=Count('pk', filter=Q(ASSIGNMENT_CATEGORY='Detached Service')),

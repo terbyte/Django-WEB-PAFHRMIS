@@ -36,6 +36,7 @@ urlpatterns = [
     # INACTIVE
     path('for_Seperation/', views.for_Separation, name='for_Seperation'),
     path('lists_inactive/', views.lists_inactive, name='lists_inactive'),
+    path('set_inactive/', views.set_inactive, name='set_inactive'),
     
 
     # 

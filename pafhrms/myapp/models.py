@@ -25,7 +25,9 @@ class PersonnelItem(models.Model):
     SUB_UNIT = models.CharField(max_length=200, blank=True, null=True)
     DATE_LASTFULL_REENLISTMENT = models.DateField(blank=True, null=True)
     DATE_LAST_ETAD = models.DateField(blank=True, null=True)
+    INACTIVITY_REASON=models.CharField(max_length=200, blank=True, null=True)
     IS_ACTIVE = models.BooleanField(default=True)
+
 
 class PersonnelFile(models.Model):
     personnel = models.ForeignKey(PersonnelItem, related_name='files', on_delete=models.CASCADE)
