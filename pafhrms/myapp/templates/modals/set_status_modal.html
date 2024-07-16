@@ -135,6 +135,16 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
   <script>
+    $(document).ready(function() {
+      // Add change event listener to the file input
+      $('#separation_uploadOrder').change(function() {
+          // Get the name of the selected file
+          var fileName = $(this).val().split('\\').pop();
+          // Display the file name in the custom file label
+          $('.custom-file-label').text(fileName);
+      });
+  });
+
   
 $('#InactivityForm').submit(function(event) {
 // true or false if active

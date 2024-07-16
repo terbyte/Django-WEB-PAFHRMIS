@@ -3,7 +3,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
 from django.core.files.storage import FileSystemStorage
 from .forms import UploadFileForm
-import openpyxl
+from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
 from django.core.paginator import Paginator
 from django.http import JsonResponse
@@ -356,63 +356,85 @@ def for_Separation(request):
         'unit_query': unit_query,
     })
     
-    # return render(request,"Inactive/for_Seperation.html",{})
 
 def lists_inactive(request):
-    return render(request,"Inactive/lists_inactive.html",{})
+    last_name_query = request.GET.get('last_name')
+    first_name_query = request.GET.get('first_name')
+    middle_name_query = request.GET.get('middle_name')
+    suffix_query = request.GET.get('suffix')
+    afsn_query = request.GET.get('afsn')
+    rank_query = request.GET.get('rank')
+    classification_query = request.GET.get('classification')
+    sex_query = request.GET.get('sex')
+    unit_query = request.GET.get('unit')
+    
+    filters = Q(IS_ACTIVE =False)
+    if last_name_query:
+        filters &= Q(LAST_NAME__icontains=last_name_query)
+    if first_name_query:
+        filters &= Q(FIRST_NAME__icontains=first_name_query)
+    if middle_name_query:
+        filters &= Q(MIDDLE_NAME__icontains=middle_name_query)
+    if suffix_query and suffix_query != "Suffix":
+        filters &= Q(EXTENSION_NAME__icontains=suffix_query)
+    if afsn_query:
+        filters &= Q(SERIAL_NUMBER__icontains=afsn_query)  # Change this to 'SERIAL_NUMBER'
+    if rank_query and rank_query != "Rank":
+        filters &= Q(RANK__icontains=rank_query)
+    if classification_query and classification_query != "Classification":
+        filters &= Q(CLASSIFICATION__icontains=classification_query)
+    if sex_query and sex_query != "Sex":
+        filters &= Q(SEX__icontains=sex_query)
+    if unit_query:
+        filters &= Q(UNIT__icontains=unit_query)
+    
+    persons = PersonnelItem.objects.filter(filters)
+    
+    paginator = Paginator(persons, 10)
+    page_num = request.GET.get("page")
+    persons = paginator.get_page(page_num)
+    
+    return render(request, 'Inactive/lists_inactive.html', {
+        'persons': persons,
+        'last_name_query': last_name_query,
+        'first_name_query': first_name_query,
+        'middle_name_query': middle_name_query,
+        'suffix_query': suffix_query,
+        'afsn_query': afsn_query,
+        'rank_query': rank_query,
+        'classification_query': classification_query,
+        'sex_query': sex_query,
+        'unit_query': unit_query,
+    })
 
-# def set_inactive(request):
-#     if request.method == 'POST':
-#         try:
-#             personnel_id = request.POST.get('personnel_id')
-#             personnel_items = PersonnelItem.objects.filter(SERIAL_NUMBER=personnel_id)
-#             if not personnel_items.exists():
-#                 return JsonResponse({'success': False, 'error': 'Personnel not found'})
-
-            
-#             personnel_items.update(
-#                 LAST_NAME=request.POST.get('last_name'),
-#                 FIRST_NAME=request.POST.get('first_name'),
-#                 MIDDLE_NAME=request.POST.get('middle_name'),
-#                 EXTENSION_NAME=request.POST.get('suffix'),
-#                 ADDRESS=request.POST.get('address'),
-#                 RANK=request.POST.get('rank'),
-#                 AFSC=request.POST.get('afsc'),
-#                 UNIT=request.POST.get('unit'),
-#                 SUB_UNIT=request.POST.get('subunit'),
-#                 CONTACT_NUMBER=request.POST.get('contactnum'),
-#                 HIGHEST_PME_COURSES=request.POST.get('hpme'),
-#                 PILOT_RATED_NON_RATED=request.POST.get('pilotrating'),
-#                 DATE_LAST_PROMOTION_APPOINTMENT=format_date(request.POST.get('promotion')),
-#                 DATE_LASTFULL_REENLISTMENT=format_date(request.POST.get('fullreeenlistment')),
-#                 DATE_LAST_ETAD=format_date(request.POST.get('dateoflastetadsot'))
-#             )
-#             return JsonResponse({'success': True})
-#         except Exception as e:
-#             return JsonResponse({'success': False, 'error': str(e)})
-
-#     return JsonResponse({'success': False, 'error': 'Invalid request'})
 
 
-@require_POST
+
 def set_inactive(request):
-    serial_number = request.POST.get('afpsn')
-    is_active = request.POST.get('status') == 'Active'
-    upload_order = request.FILES.get('separation_uploadOrder')
+    if request.method == 'POST':
+        serial_number = request.POST.get('afpsn')
+        inactivity_reason = request.POST.get('Inactivitycategory')
+        upload_order = request.FILES.get('separation_uploadOrder')
 
-    try:
-        person = PersonnelItem.objects.get(SERIAL_NUMBER=serial_number)
-        person.IS_ACTIVE = is_active
+        try:
+            person = PersonnelItem.objects.get(SERIAL_NUMBER=serial_number)
+            person.IS_ACTIVE = False  # Set to inactive
+            person.INACTIVITY_REASON = inactivity_reason
 
-        if upload_order:
-            PersonnelFile.objects.create(personnel=person, file=upload_order)
+            if upload_order:
+                PersonnelFile.objects.create(personnel=person, file=upload_order)
 
-        person.save()
-        response = {'success': True}
-    except PersonnelItem.DoesNotExist:
-        response = {'success': False, 'error': 'Personnel item not found'}
+            person.save()
+            response = {'success': True}
+        except ObjectDoesNotExist:
+            response = {'success': False, 'error': 'Personnel item not found'}
+        except Exception as e:
+            response = {'success': False, 'error': str(e)}
 
-    return JsonResponse(response)
+        return JsonResponse(response)
+    else:
+        return JsonResponse({'success': False, 'error': 'Invalid request method'})
+
 
 
 def display_file_data(request):
