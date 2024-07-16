@@ -1,102 +1,25 @@
 {% extends 'Base/base.html' %}
 {% block content %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Collapsed Card Example</title>
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <!-- Font Awesome CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <style>
-        .container{
-
-        }
-        th{text-align:center}
-
-
-
-        .thead {
-        font-family: sans-serif;
-        text-align: center;
-        max-width: 100%;
-        overflow-x: scroll;
-    }
-
-        .card {
-            max-width: 50rem;
-            margin-bottom: 10px;
-            margin-left: -10px;
-        }
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: #f0f0f0;
-            padding: 10px 15px;
-            border-bottom: none;
-            cursor: pointer;
-        }
-        .card-title {
-            margin-bottom: 0;
-        }
-        .btn-tool {
-            padding: 5px;
-            background-color: transparent;
-            border: none;
-            transition: transform 0.7s ease;
-        }
-        .btn-tool.collapsed .fa-plus {
-            display: inline-block;
-        }
-        .btn-tool .fa-plus {
-            display: none;
-        }
-        .btn-tool.collapsed .fa-minus {
-            display: none;
-        }
-        .btn-tool .fa-minus {
-            display: inline-block;
-        }
-        .card-body {
-            overflow: hidden;
-            transition: height 0.7s ease;
-            padding: 15px; /* Adjust padding to add more space around content */
-            margin-bottom: 20px; /* Additional margin at the bottom of the card-body */
-        }
-        .card.collapsed .card-body {
-            height: 0;
-            padding: 0; /* Remove padding when collapsed */
-            margin-bottom: 0; /* Remove margin when collapsed */
-        }
-    </style>
-</head>
-<body>
-
-
-<div class="bottompart">
-    <!-- first Accordion Section (Example with different units) -->
-<div class="container">
-    <div class="card collapsed">
-        <div class="card-header" onclick="toggleCollapse(this)">
-            <h3 class="card-title">GUAS</h3>
-            <!-- Toggle button with icon -->
-            <button type="button" class="btn btn-tool collapsed">
-                <i class="fas fa-plus"></i>
-                <i class="fas fa-minus"></i>
-            </button>
-        </div>
-        <div class="card-body">
-            <!-- Table or content that you want to collapse -->
+    <ul class="nav nav-pills mb-3" id="myTab" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link active" id="tab-guas" data-toggle="tab" href="#tabpanel-guas" role="tab">GUAS</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="tab-pafhrmc" data-toggle="tab" href="#tabpanel-pafhrmc" role="tab">PAFHRMC A/U</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="tab-allunits" data-toggle="tab" href="#tabpanel-allunits" role="tab" >ALL UNITS</a>
+        </li>
+      </ul>
+      <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="tabpanel-guas" role="tabpanel">
             <table class="table">
                 <thead>
                     <tr>
                         <th rowspan="4" colspan="1">UNIT</th>
                         <th colspan="2">ACTUAL</th>
                         <th colspan="3"></th>
-                      </tr>
+                    </tr>
                     <tr>
                         <th>OFFICER</th>
                         <th>ENLISTED PERSONNEL</th>
@@ -144,72 +67,39 @@
                 </tbody>
             </table>
         </div>
-    </div>
-</div>
-
-
-
-    <!-- Third Accordion Section (Example with different units) -->
-    <div class="container">
-        <div class="card collapsed">
-            <div class="card-header" onclick="toggleCollapse(this)">
-                <h3 class="card-title">PAFHRMC A/U</h3>
-                <!-- Toggle button with icon -->
-                <button type="button" class="btn btn-tool collapsed">
-                    <i class="fas fa-plus"></i>
-                    <i class="fas fa-minus"></i>
-                </button>
-            </div>
-            <div class="card-body">
-                <!-- Table or content that you want to collapse -->
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>UNIT</th>
-                            <th>Officers Count</th>
-                            <th>Enlisted Count</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for unit in PAFHRMC_au %}
-                        <tr>
-                            <td>{{ unit }}</td>
-                            <td>
-                                {% for count in PAFHRMC_au_counts %}
-                                    {% if count.UNIT == unit %}
-                                        {{ count.officers_count }}
-                                    {% endif %}
-                                {% endfor %}
-                            </td>
-                            <td>
-                                {% for count in PAFHRMC_au_counts %}
-                                    {% if count.UNIT == unit %}
-                                        {{ count.enlisted_count }}
-                                    {% endif %}
-                                {% endfor %}
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
+        <div class="tab-pane fade" id="tabpanel-pafhrmc" role="tabpanel" >
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>UNIT</th>
+                        <th>Officers Count</th>
+                        <th>Enlisted Count</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for unit in PAFHRMC_au %}
+                    <tr>
+                        <td>{{ unit }}</td>
+                        <td>
+                            {% for count in PAFHRMC_au_counts %}
+                                {% if count.UNIT == unit %}
+                                    {{ count.officers_count }}
+                                {% endif %}
+                            {% endfor %}
+                        </td>
+                        <td>
+                            {% for count in PAFHRMC_au_counts %}
+                                {% if count.UNIT == unit %}
+                                    {{ count.enlisted_count }}
+                                {% endif %}
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
-    </div>
-
-
-        <!-- Second Accordion Section (Example with different units) -->
-<div class="container">
-    <div class="card collapsed">
-        <div class="card-header" onclick="toggleCollapse(this)">
-            <h3 class="card-title">ALL PAF UNITS</h3>
-            <!-- Toggle button with icon -->
-            <button type="button" class="btn btn-tool collapsed">
-                <i class="fas fa-plus"></i>
-                <i class="fas fa-minus"></i>
-            </button>
-        </div>
-        <div class="card-body">
-            <!-- Table or content that you want to collapse -->
+        <div class="tab-pane fade" id="tabpanel-allunits" role="tabpanel">
             <table class="table">
                 <thead>
                     <tr>
@@ -242,161 +132,42 @@
                 </tbody>
             </table>
         </div>
-    </div>
-</div>
+      </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var card = document.querySelector('.card');
+            var cardBody = card.querySelector('.card-body');
+            var btnTool = card.querySelector('.btn-tool');
 
+            // Check if the card is initially collapsed or not
+            if (card.classList.contains('collapsed')) {
+                cardBody.style.height = '0';
+                cardBody.style.paddingTop = '0';
+                cardBody.style.paddingBottom = '0';
+            } else {
+                cardBody.style.height = cardBody.scrollHeight + 'px';
+            }
+        });
 
+        function toggleCollapse(header) {
+            var card = header.closest('.card');
+            var cardBody = card.querySelector('.card-body');
+            var btnTool = card.querySelector('.btn-tool');
 
-</div>
-
-
-</body>
-</html>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var card = document.querySelector('.card');
-        var cardBody = card.querySelector('.card-body');
-        var btnTool = card.querySelector('.btn-tool');
-
-        // Check if the card is initially collapsed or not
-        if (card.classList.contains('collapsed')) {
-            cardBody.style.height = '0';
-            cardBody.style.paddingTop = '0';
-            cardBody.style.paddingBottom = '0';
-        } else {
-            cardBody.style.height = cardBody.scrollHeight + 'px';
+            // Toggle the 'collapsed' class on the card and update the button icon
+            card.classList.toggle('collapsed');
+            btnTool.classList.toggle('collapsed');
+            var isOpen = !card.classList.contains('collapsed');
+            if (isOpen) {
+                cardBody.style.height = cardBody.scrollHeight + 'px';
+                cardBody.style.paddingTop = '';
+                cardBody.style.paddingBottom = '';
+            } else {
+                cardBody.style.height = '0';
+                cardBody.style.paddingTop = '0';
+                cardBody.style.paddingBottom = '0';
+            }
         }
-    });
-
-    function toggleCollapse(header) {
-        var card = header.closest('.card');
-        var cardBody = card.querySelector('.card-body');
-        var btnTool = card.querySelector('.btn-tool');
-
-        // Toggle the 'collapsed' class on the card and update the button icon
-        card.classList.toggle('collapsed');
-        btnTool.classList.toggle('collapsed');
-        var isOpen = !card.classList.contains('collapsed');
-        if (isOpen) {
-            cardBody.style.height = cardBody.scrollHeight + 'px';
-            cardBody.style.paddingTop = '';
-            cardBody.style.paddingBottom = '';
-        } else {
-            cardBody.style.height = '0';
-            cardBody.style.paddingTop = '0';
-            cardBody.style.paddingBottom = '0';
-        }
-    }
-</script>
-
-
-<!-- 
-<style>.wrapper {
-    font-family: sans-serif;
-    text-align: center;
-    max-width: 100%;
-    overflow-x: scroll;
-  }
-  
-  .table-title {
-    border: 1px solid black;
-    padding-left: 20px;
-    background-color: #eceeef;
-  }
-  
-  table {
-    width: 100%;
-  }
-  
-  table thead tr:first-child th:not(:first-child) {
-    padding: 10px;
-  }
-  
-  table thead tr th {
-    padding: 7px;
-  }
-  
-  table tbody tr:nth-child(even) {
-    background-color: #cfd7e5;
-  }
-  
-  table tbody tr:nth-child(even) td:first-child {
-    background-color: #fff;
-  }
-  
-  table tbody tr td {
-    padding: 10px;
-  }
-  
-  table th,
-  table td {
-    border: 1px solid black;
-  }</style>
-
-  
-<div>
-    <div class="table-title">
-      <h2>Table title here</h2>
-    </div>
-    <table style="table-layout: auto;">
-      <colgroup></colgroup>
-      <thead>
-        <tr>
-          <th rowspan="4" colspan="2"></th>
-          <th colspan="3">Merged header title will go here and centred 1</th>
-          <th colspan="3">Merged header title will go here and centred 2</th>
-        </tr>
-        <tr>
-          <th>COLUMN TITLE 1</th>
-          <th>COLUMN TITLE 2</th>
-          <th>COLUMN TITLE 3</th>
-          <th>COLUMN TITLE 4</th>
-          <th>COLUMN TITLE 5</th>
-          <th>COLUMN TITLE 6</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td rowspan="2">Merged header title will go here and centred vertically</td>
-          <td>ROW TITLE</td>
-          <td>1st January 2020</td>
-          <td>1st January 2020</td>
-          <td>1st January 2020</td>
-          <td>1st January 2020</td> 
-          <td>1st January 2020</td>
-          <td>1st January 2020</td>
-        </tr>
-        <tr>
-          <td>ROW TITLE</td>
-          <td>8th January 2020</td>
-          <td>8th January 2020</td>
-          <td>8th January 2020</td>
-          <td>8th January 2020</td>
-          <td>8th January 2020</td>
-          <td>8th January 2020</td>
-        </tr>
-        <tr>
-          <td rowspan="2">Merged header title will go here and centred vertically</td>
-          <td>ROW TITLE</td>
-          <td>12th January 2020</td>
-          <td>12th January 2020</td>
-          <td>12th January 2020</td>
-          <td>12th January 2020</td>
-          <td>12th January 2020</td>
-          <td>12th January 2020</td>
-        </tr>
-        <tr>
-          <td>ROW TITLE</td>
-          <td>21st January 2020</td>
-          <td>21st January 2020</td>
-          <td>21st January 2020</td>
-          <td>21st January 2020</td>
-          <td>21st January 2020</td>
-          <td>21st January 2020</td>
-        </tr>
-      </tbody>
-    </table>
-  </div> -->
+    </script>
 
 {% endblock %}

@@ -1,133 +1,99 @@
-<!doctype html>
-<html lang="en">
-
-<head>
-    <title>PAHRMIS</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <script src="{% static 'js/jquery.min.js' %}"></script>
-    <script src="{% static 'js/popper.js' %}"></script>
-    <script src="{% static 'js/bootstrap.min.js' %}"></script>
-</head>
-
-<body>
-	<div class="wrapper d-flex align-items-stretch">
-		<nav id="sidebar">
-			<div class="p-4 pt-5">
-		  		<a href="" class="img logo rounded-circle mb-5" style="background-image: url(/static/img/logo.png);"></a>
-	        
-        <ul class="list-unstyled components mb-5">
-            <li>
-                <!-- <li  class="active"> -->
-                <a href="{% url 'index' %}">Personnel Records</a>
-            </li>
+<div class="wrapper d-flex align-items-stretch">
+    <nav id="sidebar">
+        <div class="p-4 pt-5">
+              <a href="" class="img logo rounded-circle mb-5" style="background-image: url(/static/img/logo.png);"></a>
+        
+    <ul class="list-unstyled components mb-5">
+        <li>
+            <!-- <li  class="active"> -->
+            <a href="{% url 'index' %}"><i class="fa-solid fa-users"></i> Personnel Records</a>
+        </li>
 
 
-            <li>
-                <!-- <li  class="active"> -->
-                <a href="{% url 'unit_dashboard' %}">Unit Dashboard</a>
-            </li>
+        <li>
+            <!-- <li  class="active"> -->
+            <a href="{% url 'unit_dashboard' %}"><i class="fas fa-chart-bar"></i> Unit Dashboard</a>
+        </li>
 
-            <li>
-                <!-- <li  class="active"> -->
-                <a href="{% url 'unit_monitoring' %}">Unit Monitoring</a>
-            </li>
-
-            
-
-
-
-            <li>
-                 <!--  -->
-                 <a href="#placementSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Placement</a>
-                 <ul class="collapse list-unstyled" id="placementSubmenu">
-                    <li>
-                        <a href="{% url 'placement_officer' %}">Officer</a>
-                    </li>
-
-                    <li>
-                        <a href="{% url 'placement_enlisted' %}">Enlisted Personnel</a>
-                    </li>
-
-                    <li>
-                        <a href="{% url 'placement_DS' %}">DS/TDY Monitoring</a>
-                    </li>
-
-                    <li>
-                        <a href="{% url 'placement_Assign' %}">Assignment Monitoring</a>
-            </li>
-
-
-           
-
-
-            
-         </ul>
-         
-
-         
-
-
-
-
-         
+        <li>
+            <!-- <li  class="active"> -->
+            <a href="{% url 'unit_monitoring' %}"><i class="fa-solid fa-chart-simple"></i> Unit Monitoring</a>
+        </li>
+        <li>
              <!--  -->
-             <a href="#ReenlistmentSubmenuenlisted" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Reenlistment</a>
-             <ul class="collapse list-unstyled" id="ReenlistmentSubmenuenlisted">
-             
+             <a href="#placementSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Placement</a>
+             <ul class="collapse list-unstyled" id="placementSubmenu">
                 <li>
-                    <a href="{% url 'Tranche' %}">Date of last full reenlistment</a>
+                    <a href="{% url 'placement_officer' %}"><i class="fa-solid fa-caret-up"></i> Officer</a>
                 </li>
+
                 <li>
-                    <a href="{% url 'Tranches' %}">Date of 2nd Tranche</a>
+                    <a href="{% url 'placement_enlisted' %}"><i class="fa-solid fa-diamond"></i> Enlisted Personnel</a>
                 </li>
+
                 <li>
-                    <a href="{% url 'Medicalforfullreenlistment' %}">Medical for 2nd Tranche</a>
+                    <a href="{% url 'placement_DS' %}"><i class="fa-solid fa-chart-simple"></i> DS/TDY Monitoring</a>
                 </li>
+
                 <li>
-                    <a href="{% url 'Mforfullreenlistment' %}">Medical for full Reenlistment</a>
+                    <a href="{% url 'placement_Assign' %}"><i class="fa-solid fa-chart-simple"></i> Assignment Monitoring</a>
                 </li>
-            </ul>
+              </ul>
+     
+         <!--  -->
+         <a href="#ReenlistmentSubmenuenlisted" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa-solid fa-calendar-days"></i>  Reenlistment</a>
+         <ul class="collapse list-unstyled" id="ReenlistmentSubmenuenlisted">
+         
+            <li>
+                <a href="{% url 'Tranche' %}"><i class="fa-regular fa-calendar"></i> Date of last full reenlistment</a>
+            </li>
+            <li>
+                <a href="{% url 'Tranches' %}"><i class="fa-solid fa-calendar-days"></i> Date of 2nd Tranche</a>
+            </li>
+            <li>
+                <a href="{% url 'Medicalforfullreenlistment' %}"><i class="fa-solid fa-file-medical"></i> Medical for 2nd Tranche</a>
+            </li>
+            <li>
+                <a href="{% url 'Mforfullreenlistment' %}"><i class="fa-solid fa-house-medical-circle-check"></i> Medical for full Reenlistment</a>
+            </li>
+        </ul>
+        
             
-                
 
-                <a href="#schoolingSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Schooling</a>
-                <ul class="collapse list-unstyled" id="schoolingSubmenu">
-                    <a href="#schoolingSubmenuofficer" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Officer</a>
-                    <ul class="collapse list-unstyled" id="schoolingSubmenuofficer">
-              
+            <a href="#schoolingSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Schooling</a>
+            <ul class="collapse list-unstyled" id="schoolingSubmenu">
+                <a href="#schoolingSubmenuofficer" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa-solid fa-caret-up"></i> Officer</a>
+                <ul class="collapse list-unstyled" id="schoolingSubmenuofficer">
+          
 
-                        <li>
-                            <a href="">MNSA</a>
-                        </li>
-                        <li>
-                            <a href="">NSA</a>
-                        </li>
-                        <li>
-                            <a href="">CGSC</a>
-                        </li>
-                        <li>
-                            <a href="">SOC</a>
-                        </li>
-                        <li>
-                            <a href="">BAFOC</a>
-                        </li>
-                        <li>
-                            <a href="">TSOAC</a>
-                        </li>
-                        <li>
-                            <a href="">TSOBC</a>
-                        </li>
-                        <li>
-                            <a href="">TASMOC</a>
-                        </li>
+                    <li>
+                        <a href="">MNSA</a>
+                    </li>
+                    <li>
+                        <a href="">NSA</a>
+                    </li>
+                    <li>
+                        <a href="">CGSC</a>
+                    </li>
+                    <li>
+                        <a href="">SOC</a>
+                    </li>
+                    <li>
+                        <a href="">BAFOC</a>
+                    </li>
+                    <li>
+                        <a href="">TSOAC</a>
+                    </li>
+                    <li>
+                        <a href="">TSOBC</a>
+                    </li>
+                    <li>
+                        <a href="">TASMOC</a>
+                    </li>
 
 
-                    </ul>
-                    <a href="#schoolingSubmenuenlisted" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Enlisted Personnel</a>
+                </ul>
+                <a href="#schoolingSubmenuenlisted" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa-solid fa-diamond"></i> Enlisted Personnel</a>
                 <ul class="collapse list-unstyled" id="schoolingSubmenuenlisted">
                 
                     <li>
@@ -143,115 +109,96 @@
                         <a href="">BMT</a>
                     </li>
                 </ul>
-                </ul>
-            </li>
-            <li>
-                <a href="#promotionSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Promotion</a>
-                <ul class="collapse list-unstyled" id="promotionSubmenu">
-                  <li>
-                      <a href="">Officer</a>
-                  </li>
-                  <li>
-                      <a href="">Enlisted Personnel</a>
-                  </li>
-                </ul>
-            </li>
-            <li>
-                <a href="#senioritySubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Seniority Linear List</a>
-                <ul class="collapse list-unstyled" id="senioritySubmenu">
-                  <li>
-                      <a href="">Officer</a>
-                  </li>
-                  <li>
-                      <a href="">Enlisted Personnel</a>
-                  </li>
-                </ul>
-            </li>
-            <li>
-                <a href="#afscSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">AFSC Monitoring</a>
-                <ul class="collapse list-unstyled" id="afscSubmenu">
-                  <li>
-                      <a href="">Priority Courses</a>
-                  </li>
-                  <li>
-                      <a href="">By Unit</a>
-                  </li>
-                </ul>
-            </li>
-            <li>
-                <a href="#etadsotSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">ETAD/SOT</a>
-                <ul class="collapse list-unstyled" id="etadsotSubmenu">
-                    <li>
-                        <a href="">SOT</a>
-                    </li>
-                    <li>
-                        <a href="">2nd ETAD</a>
-                    </li>
-                    <li>
-                        <a href="">1st ETAD</a>
-                    </li>
-                    <li>
-                        <a href="">Provisional</a>
-                    </li>
-                </ul>
-            </li>
-            
+            </ul>
+        </li>
+        <li>
+            <a href="#promotionSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Promotion</a>
+            <ul class="collapse list-unstyled" id="promotionSubmenu">
+              <li>
+                  <a href=""><i class="fa-solid fa-caret-up"></i> Officer</a>
+              </li>
+              <li>
+                  <a href=""><i class="fa-solid fa-diamond"></i> Enlisted Personnel</a>
+              </li>
+            </ul>
+        </li>
+        <li>
+            <a href="#senioritySubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Seniority Linear List</a>
+            <ul class="collapse list-unstyled" id="senioritySubmenu">
+              <li>
+                  <a href="">Officer</a>
+              </li>
+              <li>
+                  <a href="">Enlisted Personnel</a>
+              </li>
+            </ul>
+        </li>
+        <li>
+            <a href="#afscSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">AFSC Monitoring</a>
+            <ul class="collapse list-unstyled" id="afscSubmenu">
+              <li>
+                  <a href="">Priority Courses</a>
+              </li>
+              <li>
+                  <a href="">By Unit</a>
+              </li>
+            </ul>
+        </li>
+        <li>
+            <a href="#etadsotSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">ETAD/SOT</a>
+            <ul class="collapse list-unstyled" id="etadsotSubmenu">
+                <li>
+                    <a href="">SOT</a>
+                </li>
+                <li>
+                    <a href="">2nd ETAD</a>
+                </li>
+                <li>
+                    <a href="">1st ETAD</a>
+                </li>
+                <li>
+                    <a href="">Provisional</a>
+                </li>
+            </ul>
+        </li>
+        
 
-            <li>
-                <a href="#attritionSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">ATTRITION</a>
-                <ul class="collapse list-unstyled" id="attritionSubmenu">
-                  <li>
-                      <a href="">Officer</a>
-                  </li>
-                  <li>
-                      <a href="">Enlisted Personnel</a>
-                  </li>
-                </ul>
-            </li>
+        <li>
+            <a href="#attritionSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">ATTRITION</a>
+            <ul class="collapse list-unstyled" id="attritionSubmenu">
+              <li>
+                  <a href="">Officer</a>
+              </li>
+              <li>
+                  <a href="">Enlisted Personnel</a>
+              </li>
+            </ul>
+        </li>
 
-
-
-
-            <li>
-                <a href="#inactive_Submenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">INACTIVE</a>
-                <ul class="collapse list-unstyled" id="inactive_Submenu">
-                  <li>
-                    <a href="{% url 'for_Seperation' %}">For Seperation</a>
-                  </li>
-                  <li>
-                      <a href="{% url 'lists_inactive' %}">Lists of Inactive Personnel</a>
-                  </li>
-                </ul>
-            </li>
+        <li>
+            <a href="#inactive_Submenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">INACTIVE</a>
+            <ul class="collapse list-unstyled" id="inactive_Submenu">
+              <li>
+                <a href="{% url 'for_Seperation' %}">For Seperation</a>
+              </li>
+              <li>
+                  <a href="{% url 'lists_inactive' %}">Lists of Inactive Personnel</a>
+              </li>
+            </ul>
+        </li>
 
 
 
-            <li>
-                <a href="{% url 'upload_excel' %}">Upload File</a>
-            </li>
-	        </ul>
-	      </div>
-    	</nav>
-
-
-
-
-        <!-- <div class="theme-wrapper">
-        <i class="bx bxs-moon theme-icon"></i>
-        <p>Dark Theme</p>
-        <div class="theme-btn">
-          <span class="theme-ball"></span>
-        </div>
-      </div> -->
-
-
-
-      <script>
-        $(document).ready(function () {
-            $('#sidebar .collapse').on('show.bs.collapse', function () {
-                $('#sidebar .collapse.show').collapse('hide');
-            });
+        <li>
+            <a href="{% url 'upload_excel' %}">Upload File</a>
+        </li>
+        </ul>
+      </div>
+    </nav>
+  <script>
+    $(document).ready(function () {
+        $('#sidebar .collapse').on('show.bs.collapse', function () {
+            $('#sidebar .collapse.show').collapse('hide');
         });
-    </script>
-  </body>
-</html>
+    });
+</script>
