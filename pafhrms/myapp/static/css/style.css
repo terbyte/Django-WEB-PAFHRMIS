@@ -8147,7 +8147,9 @@ a {
   -webkit-transition: .3s all ease;
   -o-transition: .3s all ease;
   transition: .3s all ease;
-  color: #f8b739; }
+  color: blue;
+  
+}
   a:hover, a:focus {
     text-decoration: none !important;
     outline: none !important;

@@ -33,16 +33,10 @@ class PersonnelFile(models.Model):
     personnel = models.ForeignKey(PersonnelItem, related_name='files', on_delete=models.CASCADE)
     file = models.FileField(upload_to='personnel_files/')
     uploaded_at = models.DateTimeField(auto_now_add=True)
-    
-
 
     def __str__(self):
         return f'{self.RANK} {self.LAST_NAME}, {self.FIRST_NAME} {self.MIDDLE_NAME} {self.EXTENSION_NAME}'
     
-
-
-
-
 
 class Placement(models.Model):
     AFPSN = models.CharField(max_length=200)

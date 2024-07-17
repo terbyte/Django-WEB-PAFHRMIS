@@ -178,6 +178,9 @@
         <li>
             <a href="#inactive_Submenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">INACTIVE</a>
             <ul class="collapse list-unstyled" id="inactive_Submenu">
+                <li>
+                    <a href="{% url 'lists_inactive' %}">Inactive Dasboard</a>
+                </li>
               <li>
                 <a href="{% url 'for_Seperation' %}">For Seperation</a>
               </li>
@@ -186,8 +189,6 @@
               </li>
             </ul>
         </li>
-
-
 
         <li>
             <a href="{% url 'upload_excel' %}">Upload File</a>

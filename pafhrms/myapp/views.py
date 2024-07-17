@@ -46,7 +46,6 @@ def calculate_due_date(duration,reassignment_date):
 def user_files(request, afpsn):
     files = Placement.objects.filter(AFPSN=afpsn)
     file_list = [{'name': file.ORDER_UPLOADFILE.name, 'url': file.ORDER_UPLOADFILE.url} for file in files]
-    print(" listssssssssssss ",file_list)
     return JsonResponse({'files': file_list})
 
 
@@ -155,7 +154,7 @@ def get_files(request, serial_number):
     file_list = [{'name': f.file.name, 'url': f.file.url} for f in files]
     return JsonResponse({'files': file_list})
 
-@require_POST
+
 def update_reenlistment_date(request):
     serial_number = request.POST['serial_number']
     new_date = request.POST['date_lastfull_reenlistment']
@@ -436,7 +435,6 @@ def set_inactive(request):
         return JsonResponse({'success': False, 'error': 'Invalid request method'})
 
 
-
 def display_file_data(request):
     if request.method == 'GET':
         form = UploadFileForm(request.GET, request.FILES)
@@ -498,17 +496,6 @@ def Personnel_Records(request):
 
 
 
-
-
-
-# from .models import AFSC
-
-# def autocomplete_afsc(request):
-#     if 'term' in request.GET:
-#         qs = AFSC.objects.filter(code__icontains=request.GET.get('term'))
-#         codes = list(qs.values_list('code', flat=True))
-#         return JsonResponse(codes, safe=False)
-#     return JsonResponse([])
 
 
 
@@ -745,25 +732,31 @@ def save_placement_update(request):
         upload_file = request.FILES.get('uploadOrder')
         # Calculate the due date based on the duration
         reassignment_effective_date_until = calculate_due_date(duration, reassignment_date)
+
         if assignment_category == "Assign":
             reassignment_effective_date_until = reassignment_date
             duration = "None"
 
 
-        # Create the folder for saving the file if it doesn't exist
         folder_name = f"{afpsn}_{last_name}"
         folder_path = os.path.join(settings.MEDIA_ROOT, folder_name)
-        if not os.path.exists(folder_path):
-            os.makedirs(folder_path)
+        
+        # Create the subfolder based on assignment_category
+        category_name = f"{assignment_category}"
+        category_folder_path = os.path.join(folder_path, category_name)
 
-        # Save the uploaded file to the designated folder
+        # Create the folders if they don't exist
+        if not os.path.exists(category_folder_path):
+            os.makedirs(category_folder_path)
+
+        # Save the uploaded file to the designated subfolder    
         if upload_file:
-            file_path = os.path.join(folder_path, upload_file.name)
+            file_path = os.path.join(category_folder_path, upload_file.name)
             with open(file_path, 'wb+') as destination:
                 for chunk in upload_file.chunks():
                     destination.write(chunk)
+            # Create the Placement instance
 
-        # Create the Placement instance
         placement = Placement(
             AFPSN=afpsn,
             RANK=rank,
