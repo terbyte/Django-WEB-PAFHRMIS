@@ -433,22 +433,38 @@ $(document).ready(function() {
       'AETDC': [ 'HAETDC', 'PAFOS', 'PAFOCS', 'PAFFS', 'PAFNCOS', 'PAFTSS','PAFBMS', 'PAFLTC', 'PAFALEN', '440AMG', 'TDC', 'AWC'],
       'ARFC': ['HAFRC', '1st ARCEN', '2nd ARCEN', '3rd ARCEN', '4th ARCEN', '5th ARCEN', '6th ARCEN', '7th ARCEN', '8th ARCEN'],  
       'AFPWSSUS': ['PMA', 'AFPETDC', 'CEISSAFP', 'CRSAFP', 'ISAFP', 'AFPHSC', 'AFP SOCOM', 'AFPFC', 'AFPPS', 'AFPPKOC', 'AFPCES', 'AFPMCC', 'PSG', 'AFPPGMC', 'AFPCYBER', 'AFPRESCOM', 'DND'],
+    'PAFHRMC A/U': ['DS WITHIN PAF', 'DS OUTSIDE PAF', 'ATHLETES', 'TEMPORARY DUTY STATUS', 'FOREIGN SCHOOLING', 'LOCAL SCHOOLING', 'CIVILIAN SCHOOLING', 'FOREIGN DEPLOYMENT', 'SPECIAL DETAILED DRIVER', 'HOSPITALIZED', 'WITH MEDICAL CONDITION', 'AWOL','WITH PENDING CASE','For Retirement/Separation','Transition Assistance Program', 'DS OR TDY', 'Full time AU','Awaiting Assignment/Reassignment','Full time AU', 'Newly Enlisted AM & AW', 'Newly Commissioned Officers'],
+      
+      
+   
     };
+
+ 
+
 
     const subunitDP = document.getElementById('SubunitDP');
     subunitDP.innerHTML = '<option value="">--Select Subunit--</option>';
 
+
+    // WHAT IT DOES IT, IF THE SUB UNIT HAS VALUE WITH "/" IN IT, IT WILL BE A HEADER
     if (unit) {
       const subunits = unitSubunitMap[unit];
       if (subunits) {
         subunits.forEach(function(subunit) {
           const option = document.createElement('option');
-          option.value = subunit;
-          option.textContent = subunit;
+          if (subunit.includes('/')) {
+            option.disabled = true;
+            option.style.fontWeight = 'bold';
+            option.textContent = subunit;
+          } else {
+            option.value = subunit;
+            option.textContent = subunit;
+          }
           subunitDP.appendChild(option);
         });
       }
     }
+
 
     if (selectedSubunit) {  
       $('#SubunitDP').val(selectedSubunit);
