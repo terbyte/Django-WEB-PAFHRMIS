@@ -29,15 +29,6 @@ class PersonnelItem(models.Model):
     IS_ACTIVE = models.BooleanField(default=True)
 
 
-class PersonnelFile(models.Model):
-    personnel = models.ForeignKey(PersonnelItem, related_name='files', on_delete=models.CASCADE)
-    file = models.FileField(upload_to='personnel_files/')
-    uploaded_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f'{self.RANK} {self.LAST_NAME}, {self.FIRST_NAME} {self.MIDDLE_NAME} {self.EXTENSION_NAME}'
-    
-
 class Placement(models.Model):
     AFPSN = models.CharField(max_length=200)
     RANK = models.CharField(max_length=200)
@@ -52,13 +43,16 @@ class Placement(models.Model):
     ASSIGNMENT_CATEGORY = models.CharField(max_length=200)
     DURATION = models.CharField(max_length=200, blank=True, null=True)
     REASSIGN_EFFECTIVEDDATE_UNTIL = models.DateField(blank=True, null=True)
-    ORDER_UPLOADFILE = models.FileField(upload_to='orders/')
     IS_ARCHIVED = models.BooleanField(default=False)
 
     class Meta:
         db_table = "placementinfo"
 
 
+class PersonnelFile(models.Model):
+    placement = models.ForeignKey(Placement, related_name='files', on_delete=models.CASCADE)
+    file = models.FileField(upload_to='orders/')
+    uploaded_at = models.DateTimeField(auto_now_add=True)
     
 
 

@@ -44,9 +44,19 @@ def calculate_due_date(duration,reassignment_date):
 
 
 def user_files(request, afpsn):
-    files = Placement.objects.filter(AFPSN=afpsn)
-    file_list = [{'name': file.ORDER_UPLOADFILE.name, 'url': file.ORDER_UPLOADFILE.url} for file in files]
-    return JsonResponse({'files': file_list})
+    try:
+        # Fetch the Placement instances associated with the given AFPSN
+        placements = Placement.objects.filter(AFPSN=afpsn)
+
+        # Fetch the related PersonnelFile instances
+        files = PersonnelFile.objects.filter(placement__in=placements)
+
+        # Create a list of file details
+        file_list = [{'name': file.file.name, 'url': file.file.url} for file in files]
+        
+        return JsonResponse({'files': file_list, 'success': True})
+    except Exception as e:
+        return JsonResponse({'error': str(e), 'success': False})
 
 
 def update_placement(request):
@@ -737,7 +747,6 @@ def save_placement_update(request):
             reassignment_effective_date_until = reassignment_date
             duration = "None"
 
-
         folder_name = f"{afpsn}_{last_name}"
         folder_path = os.path.join(settings.MEDIA_ROOT, folder_name)
         
@@ -755,8 +764,8 @@ def save_placement_update(request):
             with open(file_path, 'wb+') as destination:
                 for chunk in upload_file.chunks():
                     destination.write(chunk)
-            # Create the Placement instance
 
+        # Create the Placement instance
         placement = Placement(
             AFPSN=afpsn,
             RANK=rank,
@@ -769,11 +778,18 @@ def save_placement_update(request):
             REASSIGN_EFFECTIVEDDATE=reassignment_date,
             ASSIGNMENT_CATEGORY=assignment_category,
             REASSIGN_EFFECTIVEDDATE_UNTIL=reassignment_effective_date_until,
-            DURATION=duration,
-            ORDER_UPLOADFILE=upload_file  # This saves the file path in the database
+            DURATION=duration
         )
         try:
             placement.save()
+
+            if upload_file:
+                personnel_file = PersonnelFile(
+                    placement=placement,
+                    file=upload_file
+                )
+                personnel_file.save()
+
             return JsonResponse({'success': True})
         except Exception as e:
             return JsonResponse({'success': False, 'error': str(e)})
@@ -795,11 +811,9 @@ def placement_update_extension(request):
         upload_file = request.FILES.get('uploadOrder')
         assignment_category = request.POST.get('assignmentcategory')
 
-
-
         folder_name = f"{afpsn}_{last_name}"
         folder_path = os.path.join(settings.MEDIA_ROOT, folder_name)
-        
+
         # Create the subfolder based on assignment_category
         category_name = f"{assignment_category}"
         category_folder_path = os.path.join(folder_path, category_name)
@@ -814,19 +828,26 @@ def placement_update_extension(request):
             with open(file_path, 'wb+') as destination:
                 for chunk in upload_file.chunks():
                     destination.write(chunk)
-            # Create the Placement instance
+
         # Calculate the due date based on the duration
-        reassignment_effective_date_until = calculate_due_date(duration,reassignment_date)
+        reassignment_effective_date_until = calculate_due_date(duration, reassignment_date)
+        
         try:
             personnel_id = request.POST.get('personnel_id')
-            personnel_items = Placement.objects.filter(AFPSN=personnel_id)
-            if not personnel_items.exists():
+            placement = Placement.objects.filter(AFPSN=personnel_id).first()
+            if not placement:
                 return JsonResponse({'success': False, 'error': 'Personnel not found'})
-            personnel_items.update(
-                AFPSN=afpsn,
-                REASSIGN_EFFECTIVEDDATE_UNTIL=reassignment_effective_date_until,
-                ORDER_UPLOADFILE = request.FILES.get('uploadOrder'),  # Correct variable name
-            )
+            
+            placement.REASSIGN_EFFECTIVEDDATE_UNTIL = reassignment_effective_date_until
+            placement.save()
+            
+            if upload_file:
+                personnel_file = PersonnelFile(
+                    placement=placement,
+                    file=upload_file
+                )
+                personnel_file.save()
+            
             return JsonResponse({'success': True})
         except Exception as e:
             return JsonResponse({'success': False, 'error': str(e)})
