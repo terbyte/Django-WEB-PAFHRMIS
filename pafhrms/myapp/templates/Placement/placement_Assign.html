@@ -69,13 +69,39 @@
     
 function showFiles(AFPSN) {
     $.ajax({
-        url: `orders/${AFPSN}/`,  // Ensure the URL pattern matches
+        url: `/orders/${AFPSN}/`,  // Ensure the URL pattern matches
         method: 'GET',
         success: function(data) {
             $('#fileList').empty();
+
+            // Prepare an object to store files under their respective headers
+            const filesByHeader = {};
+
             data.files.forEach(function(file) {
-                $('#fileList').append(`<li><a href="${file.url}">${file.name}</a></li>`);
+                const filePathParts = file.url.split('/');
+                const header = filePathParts[filePathParts.length - 2]; // Use the second-last part as the header
+
+                if (!filesByHeader[header]) {
+                    filesByHeader[header] = [];
+                }
+                filesByHeader[header].push(file);
             });
+
+            // Clear any existing content in the modal body
+            $('#fileList').empty();
+
+            // Iterate over headers and files to populate the modal body
+            for (const header in filesByHeader) {
+                $('#fileList').append(`<h5>${header}</h5>`);
+                const fileList = $('<ul class="list-group"></ul>');
+
+                filesByHeader[header].forEach(function(file) {
+                    fileList.append(`<li class="list-group-item"><a href="${file.url}">${file.name}</a></li>`);
+                });
+
+                $('#fileList').append(fileList);
+            }
+
             $('#fileModal').modal('show');  // Use Bootstrap's modal method
         }
     });

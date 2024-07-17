@@ -169,14 +169,39 @@ def update_reenlistment_date(request):
     serial_number = request.POST['serial_number']
     new_date = request.POST['date_lastfull_reenlistment']
     
-    person = PersonnelItem.objects.get(SERIAL_NUMBER=serial_number)
-    person.DATE_LASTFULL_REENLISTMENT = new_date
+    try:
+        person = PersonnelItem.objects.get(SERIAL_NUMBER=serial_number)
+    except PersonnelItem.DoesNotExist:
+        return JsonResponse({'success': False, 'error': 'Personnel not found'})
     
+    person.DATE_LASTFULL_REENLISTMENT = new_date
+    person.save()
+
     if 'pdf_file' in request.FILES:
         file = request.FILES['pdf_file']
-        PersonnelFile.objects.create(personnel=person, file=file)
-    
-    person.save()
+        afpsn = person.SERIAL_NUMBER  # Assuming you have a field AFPSN in PersonnelItem
+        last_name = person.LAST_NAME  # Assuming you have a field LAST_NAME in PersonnelItem
+
+        # Create the folder structure
+        folder_name = f"{afpsn}_{last_name}"
+        folder_path = os.path.join(settings.MEDIA_ROOT, folder_name, "reenlistmentOrder")
+
+        if not os.path.exists(folder_path):
+            os.makedirs(folder_path)
+
+        # Save the file
+        file_path = os.path.join(folder_path, file.name)
+        with open(file_path, 'wb+') as destination:
+            for chunk in file.chunks():
+                destination.write(chunk)
+        
+        # Assuming you have a placement instance
+        try:
+            placement = Placement.objects.get(AFPSN=afpsn)
+            PersonnelFile.objects.create(placement=placement, file=file_path)
+        except Placement.DoesNotExist:
+            return JsonResponse({'success': False, 'error': 'Placement not found'})
+
     return redirect('Tranche')
 
 
