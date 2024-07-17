@@ -374,6 +374,8 @@
     const subunitDP = document.getElementById('SubunitDP');
     subunitDP.innerHTML = '<option value="">--Select Subunit--</option>';
 
+
+    // WHAT IT DOES IT, IF THE SUB UNIT HAS VALUE WITH "/" IN IT, IT WILL BE A HEADER
     if (unit) {
       const subunits = unitSubunitMap[unit];
       if (subunits) {
