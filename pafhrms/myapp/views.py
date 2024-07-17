@@ -795,27 +795,29 @@ def placement_update_extension(request):
         first_name = request.POST.get('first_name')
         middle_name = request.POST.get('middle_name', '')  # Default to empty string if not provided
         suffix = request.POST.get('suffix', '')  # Default to empty string if not provided
-        print("DURATION AND REASSSIGN DATE ",duration , reassignment_date)
         upload_file = request.FILES.get('uploadOrder')
+        assignment_category = request.POST.get('assignmentcategory')
 
-        # Create the folder for saving the file if it doesn't exist
-        folder_name = f"{afpsn}_{last_name}{first_name}{middle_name}{suffix}"
+
+
+        folder_name = f"{afpsn}_{last_name}"
         folder_path = os.path.join(settings.MEDIA_ROOT, folder_name)
-        if not os.path.exists(folder_path):
-            os.makedirs(folder_path)
+        
+        # Create the subfolder based on assignment_category
+        category_name = f"{assignment_category}"
+        category_folder_path = os.path.join(folder_path, category_name)
 
-        # Save the uploaded file to the designated folder
+        # Create the folders if they don't exist
+        if not os.path.exists(category_folder_path):
+            os.makedirs(category_folder_path)
+
+        # Save the uploaded file to the designated subfolder    
         if upload_file:
-            file_path = os.path.join(folder_path, upload_file.name)
+            file_path = os.path.join(category_folder_path, upload_file.name)
             with open(file_path, 'wb+') as destination:
                 for chunk in upload_file.chunks():
                     destination.write(chunk)
-
-        if 'uploadOrder' in request.FILES:
-            upload_file = request.FILES['uploadOrder']
-            print("FILE")
-        else:
-            print("No file uploaded")
+            # Create the Placement instance
         # Calculate the due date based on the duration
         reassignment_effective_date_until = calculate_due_date(duration,reassignment_date)
         try:
