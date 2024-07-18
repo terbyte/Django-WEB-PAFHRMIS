@@ -24,7 +24,7 @@ urlpatterns = [
 
     # Unit Monitoring 
     path('Unit_Monitoring/unit_monitoring', views.unit_monitoring, name='unit_monitoring'),
-    path('Unit_Monitoring/unit_dashboard', views.unit_dashboard, name='unit_dashboard'),
+    path('Unit_Monitoring/unit_dashboard', views.inactive_Dashboard, name='unit_dashboard'),
 
     # Reenlistment
     path('reenlistment/Tranche/', views.Tranche, name='Tranche'),

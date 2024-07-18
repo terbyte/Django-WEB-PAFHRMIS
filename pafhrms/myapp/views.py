@@ -108,7 +108,7 @@ def index(request):
     first_name_query = request.GET.get('first_name')
     middle_name_query = request.GET.get('middle_name')
     suffix_query = request.GET.get('suffix')
-    afsn_query = request.GET.get('afsn')
+    afpsn_query = request.GET.get('afpsn')
     rank_query = request.GET.get('rank')
     category_query = request.GET.get('category')
     sex_query = request.GET.get('sex')
@@ -123,8 +123,8 @@ def index(request):
         filters &= Q(MIDDLE_NAME__icontains=middle_name_query)
     if suffix_query and suffix_query != "Suffix":
         filters &= Q(EXTENSION_NAME__icontains=suffix_query)
-    if afsn_query:
-        filters &= Q(SERIAL_NUMBER__icontains=afsn_query) 
+    if afpsn_query:
+        filters &= Q(SERIAL_NUMBER__icontains=afpsn_query) 
     if rank_query and rank_query != "Rank":
         filters &= Q(RANK__icontains=rank_query)
     if category_query and category_query != "Category":
@@ -148,7 +148,7 @@ def index(request):
         'first_name_query': first_name_query,
         'middle_name_query': middle_name_query,
         'suffix_query': suffix_query,
-        'afsn_query': afsn_query,
+        'afpsn_query': afpsn_query,
         'rank_query': rank_query,
         'category_query': category_query,
         'sex_query': sex_query,
@@ -345,7 +345,7 @@ def for_Separation(request):
     first_name_query = request.GET.get('first_name')
     middle_name_query = request.GET.get('middle_name')
     suffix_query = request.GET.get('suffix')
-    afsn_query = request.GET.get('afsn')
+    afpsn_query = request.GET.get('afpsn')
     rank_query = request.GET.get('rank')
     classification_query = request.GET.get('classification')
     sex_query = request.GET.get('sex')
@@ -360,8 +360,8 @@ def for_Separation(request):
         filters &= Q(MIDDLE_NAME__icontains=middle_name_query)
     if suffix_query and suffix_query != "Suffix":
         filters &= Q(EXTENSION_NAME__icontains=suffix_query)
-    if afsn_query:
-        filters &= Q(SERIAL_NUMBER__icontains=afsn_query)  # Change this to 'SERIAL_NUMBER'
+    if afpsn_query:
+        filters &= Q(SERIAL_NUMBER__icontains=afpsn_query)  # Change this to 'SERIAL_NUMBER'
     if rank_query and rank_query != "Rank":
         filters &= Q(RANK__icontains=rank_query)
     if classification_query and classification_query != "Classification":
@@ -383,7 +383,7 @@ def for_Separation(request):
         'first_name_query': first_name_query,
         'middle_name_query': middle_name_query,
         'suffix_query': suffix_query,
-        'afsn_query': afsn_query,
+        'afpsn_query': afpsn_query,
         'rank_query': rank_query,
         'classification_query': classification_query,
         'sex_query': sex_query,
@@ -396,7 +396,7 @@ def lists_inactive(request):
     first_name_query = request.GET.get('first_name')
     middle_name_query = request.GET.get('middle_name')
     suffix_query = request.GET.get('suffix')
-    afsn_query = request.GET.get('afsn')
+    afpsn_query = request.GET.get('afpsn')
     rank_query = request.GET.get('rank')
     classification_query = request.GET.get('classification')
     sex_query = request.GET.get('sex')
@@ -411,8 +411,8 @@ def lists_inactive(request):
         filters &= Q(MIDDLE_NAME__icontains=middle_name_query)
     if suffix_query and suffix_query != "Suffix":
         filters &= Q(EXTENSION_NAME__icontains=suffix_query)
-    if afsn_query:
-        filters &= Q(SERIAL_NUMBER__icontains=afsn_query)  # Change this to 'SERIAL_NUMBER'
+    if afpsn_query:
+        filters &= Q(SERIAL_NUMBER__icontains=afpsn_query)  # Change this to 'SERIAL_NUMBER'
     if rank_query and rank_query != "Rank":
         filters &= Q(RANK__icontains=rank_query)
     if classification_query and classification_query != "Classification":
@@ -434,7 +434,7 @@ def lists_inactive(request):
         'first_name_query': first_name_query,
         'middle_name_query': middle_name_query,
         'suffix_query': suffix_query,
-        'afsn_query': afsn_query,
+        'afpsn_query': afpsn_query,
         'rank_query': rank_query,
         'classification_query': classification_query,
         'sex_query': sex_query,
@@ -449,6 +449,7 @@ def set_inactive(request):
         serial_number = request.POST.get('afpsn')
         inactivity_reason = request.POST.get('Inactivitycategory')
         upload_order = request.FILES.get('separation_uploadOrder')
+
 
         try:
             person = PersonnelItem.objects.get(SERIAL_NUMBER=serial_number)
@@ -468,6 +469,8 @@ def set_inactive(request):
         return JsonResponse(response)
     else:
         return JsonResponse({'success': False, 'error': 'Invalid request method'})
+    
+
 
 
 def display_file_data(request):
@@ -484,7 +487,7 @@ def Personnel_Records(request):
     first_name_query = request.GET.get('first_name')
     middle_name_query = request.GET.get('middle_name')
     suffix_query = request.GET.get('suffix')
-    afsn_query = request.GET.get('afsn')
+    afpsn_query = request.GET.get('afpsn')
     rank_query = request.GET.get('rank')
     classification_query = request.GET.get('classification')
     sex_query = request.GET.get('sex')
@@ -499,8 +502,8 @@ def Personnel_Records(request):
         filters &= Q(MIDDLE_NAME__icontains=middle_name_query)
     if suffix_query and suffix_query != "Suffix":
         filters &= Q(EXTENSION_NAME__icontains=suffix_query)
-    if afsn_query:
-        filters &= Q(SERIAL_NUMBER__icontains=afsn_query)  # Change this to 'SERIAL_NUMBER'
+    if afpsn_query:
+        filters &= Q(SERIAL_NUMBER__icontains=afpsn_query)  # Change this to 'SERIAL_NUMBER'
     if rank_query and rank_query != "Rank":
         filters &= Q(RANK__icontains=rank_query)
     if classification_query and classification_query != "Classification":
@@ -522,7 +525,7 @@ def Personnel_Records(request):
         'first_name_query': first_name_query,
         'middle_name_query': middle_name_query,
         'suffix_query': suffix_query,
-        'afsn_query': afsn_query,
+        'afpsn_query': afpsn_query,
         'rank_query': rank_query,
         'classification_query': classification_query,
         'sex_query': sex_query,
@@ -581,7 +584,7 @@ def placement_officer(request):
         'first_name_query': first_name_query,
         'middle_name_query': middle_name_query,
         'suffix_query': suffix_query,
-        'afsn_query': afpsn_query,
+        'afpsn_query': afpsn_query,
         'rank_query': rank_query,
         'category_query': category_query,
         'sex_query': sex_query,
@@ -904,7 +907,7 @@ def unit_monitoring(request):
 
 
 
-def unit_dashboard(request):
+def inactive_Dashboard(request):
     selected_unit = request.GET.get('selected_unit')
 
     GUAS_units = [
