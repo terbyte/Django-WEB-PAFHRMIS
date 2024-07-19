@@ -886,7 +886,7 @@ def placement_update_extension(request):
 
 def unit_monitoring(request):
     unit_query = request.GET.get('unit')
-    sub_unit_query = request.GET.get('sub_unit')
+    sub_unit_query = request.GET.get('SubunitDP')
 
     filters = Q()
     if unit_query and unit_query != "UNIT":
@@ -903,6 +903,7 @@ def unit_monitoring(request):
         'unit_query': unit_query,
         'sub_unit_query': sub_unit_query,
     })
+
 
 
 

@@ -6,127 +6,132 @@
       <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
       <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
       <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<form method="GET" action="{% url 'Tranche' %}">
-    <div class="input-group mb-3">
-        <div class="form-group col-md-4">
-            <select name="unit" id="unit" class="form-control">
-                <option {% if not unit_query %}selected{% endif %}>UNIT</option>
-                <option value="GHQ" {% if unit_query == "GHQ" %}selected{% endif %}>GHQ</option>
-                <option value="HPAF" {% if unit_query == "HPAF" %}selected{% endif %}>HPAF</option>
-                <option value="PAFHRMC A/U" {% if unit_query == "PAFHRMC A/U" %}selected{% endif %}>PAFHRMC A/U</option>
-                <option value="AFPWSSUS" {% if unit_query == "AFPWSSUS" %}selected{% endif %}>AFPWSSUS</option>
-                <option value="AIBDC" {% if unit_query == "AIBDC" %}selected{% endif %}>AIBDC</option>
-                <option value="ADC" {% if unit_query == "ADC" %}selected{% endif %}>ADC</option>
-                <option value="AMC" {% if unit_query == "AMC" %}selected{% endif %}>AMC</option>
-                <option value="ACC" {% if unit_query == "ACC" %}selected{% endif %}>ACC</option>
-                <option value="AETDC" {% if unit_query == "AETDC" %}selected{% endif %}>AETDC</option>
-                <option value="ARFC" {% if unit_query == "ARFC" %}selected{% endif %}>ARFC</option>
-                <option value="TOWNOL" {% if unit_query == "TOWNOL" %}selected{% endif %}>TOWNOL</option>
-                <option value="TOWSOL" {% if unit_query == "TOWSOL" %}selected{% endif %}>TOWSOL</option>
-                <option value="TOWCEN" {% if unit_query == "TOWCEN" %}selected{% endif %}>TOWCEN</option>
-                <option value="TOWWEST" {% if unit_query == "TOWWEST" %}selected{% endif %}>TOWWEST</option>
-                <option value="TOWEASTMIN" {% if unit_query == "TOWEASTMIN" %}selected{% endif %}>TOWEASTMIN</option>
-                <option value="TOWWESTMIN" {% if unit_query == "TOWWESTMIN" %}selected{% endif %}>TOWWESTMIN</option>
-                <option value="355AEW" {% if unit_query == "355AEW" %}selected{% endif %}>355AEW</option>
-                <option value="300AISW" {% if unit_query == "300AISW" %}selected{% endif %}>300AISW</option>
-                <option value="900AFWG" {% if unit_query == "900AFWG" %}selected{% endif %}>900AFWG</option>
-                <option value="950CEWW" {% if unit_query == "950CEWW" %}selected{% endif %}>950CEWW</option>
-                <option value="AFFC" {% if unit_query == "AFFC" %}selected{% endif %}>AFFC</option>
-                <option value="AFSSG" {% if unit_query == "AFSSG" %}selected{% endif %}>AFSSG</option>
-                <option value="HSSG" {% if unit_query == "HSSG" %}selected{% endif %}>HSSG</option>
-                <option value="PAFCMOG" {% if unit_query == "PAFCMOG" %}selected{% endif %}>PAFCMOG</option>
-                <option value="PAFHRMC" {% if unit_query == "PAFHRMC" %}selected{% endif %}>PAFHRMC</option>
-                <option value="NOLCOM" {% if unit_query == "NOLCOM" %}selected{% endif %}>NOLCOM</option>
-                <option value="SOLCOM" {% if unit_query == "SOLCOM" %}selected{% endif %}>SOLCOM</option>
-                <option value="WESCOM" {% if unit_query == "WESCOM" %}selected{% endif %}>WESCOM</option>
-                <option value="VISCOM" {% if unit_query == "VISCOM" %}selected{% endif %}>VISCOM</option>
-                <option value="WESTMINCOM" {% if unit_query == "WESTMINCOM" %}selected{% endif %}>WESTMINCOM</option>
-                <option value="EASTMINCOM" {% if unit_query == "EASTMINCOM" %}selected{% endif %}>EASTMINCOM</option>
-                <option value="JTF-NCR" {% if unit_query == "JTF-NCR" %}selected{% endif %}>JTF-NCR</option>
-</select>
-        </div>
-        <div class="form-group col-md-4">
-            <select name="sub_unit" id="sub_unit" class="form-control">
-                <option {% if not sub_unit_query %}selected{% endif %}>SUB UNIT</option>
-                <!-- Options will be populated by JavaScript -->
-            </select>
-        </div>
-        <div class="form-group col-md-2">
-            <select id="dnfr" name="dnfr" class="form-control">
-                <option {% if not dnfr_query %}selected{% endif %}>YEAR</option>
-                <!-- Options will be populated by JavaScript -->
-            </select>
-        </div>
-    </div>
-    <div class="form-group">
-        <button type="submit" class="btn btn-primary">Search</button>
-    </div>
-</form>
 
-<button id="exportPdf" class="btn btn-danger">Export to PDF</button>
-<button id="exportExcel" class="btn btn-success">Export to Excel</button>
-<button id="printButton" class="btn btn-success">Print Table</button><br><br>
+
+<div class="card mb-2">
+    <div class="card-body pb-0">
+        <form method="GET" action="{% url 'Tranche' %}">
+            <div class="form-row mb-3">
+                <div class="form-group col-md-4">
+                    <select name="unit" id="unit" class="form-control">
+                        <option {% if not unit_query %}selected{% endif %}>UNIT</option>
+                        <option value="GHQ" {% if unit_query == "GHQ" %}selected{% endif %}>GHQ</option>
+                        <option value="HPAF" {% if unit_query == "HPAF" %}selected{% endif %}>HPAF</option>
+                        <option value="PAFHRMC A/U" {% if unit_query == "PAFHRMC A/U" %}selected{% endif %}>PAFHRMC A/U</option>
+                        <option value="AFPWSSUS" {% if unit_query == "AFPWSSUS" %}selected{% endif %}>AFPWSSUS</option>
+                        <option value="AIBDC" {% if unit_query == "AIBDC" %}selected{% endif %}>AIBDC</option>
+                        <option value="ADC" {% if unit_query == "ADC" %}selected{% endif %}>ADC</option>
+                        <option value="AMC" {% if unit_query == "AMC" %}selected{% endif %}>AMC</option>
+                        <option value="ACC" {% if unit_query == "ACC" %}selected{% endif %}>ACC</option>
+                        <option value="AETDC" {% if unit_query == "AETDC" %}selected{% endif %}>AETDC</option>
+                        <option value="ARFC" {% if unit_query == "ARFC" %}selected{% endif %}>ARFC</option>
+                        <option value="TOWNOL" {% if unit_query == "TOWNOL" %}selected{% endif %}>TOWNOL</option>
+                        <option value="TOWSOL" {% if unit_query == "TOWSOL" %}selected{% endif %}>TOWSOL</option>
+                        <option value="TOWCEN" {% if unit_query == "TOWCEN" %}selected{% endif %}>TOWCEN</option>
+                        <option value="TOWWEST" {% if unit_query == "TOWWEST" %}selected{% endif %}>TOWWEST</option>
+                        <option value="TOWEASTMIN" {% if unit_query == "TOWEASTMIN" %}selected{% endif %}>TOWEASTMIN</option>
+                        <option value="TOWWESTMIN" {% if unit_query == "TOWWESTMIN" %}selected{% endif %}>TOWWESTMIN</option>
+                        <option value="355AEW" {% if unit_query == "355AEW" %}selected{% endif %}>355AEW</option>
+                        <option value="300AISW" {% if unit_query == "300AISW" %}selected{% endif %}>300AISW</option>
+                        <option value="900AFWG" {% if unit_query == "900AFWG" %}selected{% endif %}>900AFWG</option>
+                        <option value="950CEWW" {% if unit_query == "950CEWW" %}selected{% endif %}>950CEWW</option>
+                        <option value="AFFC" {% if unit_query == "AFFC" %}selected{% endif %}>AFFC</option>
+                        <option value="AFSSG" {% if unit_query == "AFSSG" %}selected{% endif %}>AFSSG</option>
+                        <option value="HSSG" {% if unit_query == "HSSG" %}selected{% endif %}>HSSG</option>
+                        <option value="PAFCMOG" {% if unit_query == "PAFCMOG" %}selected{% endif %}>PAFCMOG</option>
+                        <option value="PAFHRMC" {% if unit_query == "PAFHRMC" %}selected{% endif %}>PAFHRMC</option>
+                        <option value="NOLCOM" {% if unit_query == "NOLCOM" %}selected{% endif %}>NOLCOM</option>
+                        <option value="SOLCOM" {% if unit_query == "SOLCOM" %}selected{% endif %}>SOLCOM</option>
+                        <option value="WESCOM" {% if unit_query == "WESCOM" %}selected{% endif %}>WESCOM</option>
+                        <option value="VISCOM" {% if unit_query == "VISCOM" %}selected{% endif %}>VISCOM</option>
+                        <option value="WESTMINCOM" {% if unit_query == "WESTMINCOM" %}selected{% endif %}>WESTMINCOM</option>
+                        <option value="EASTMINCOM" {% if unit_query == "EASTMINCOM" %}selected{% endif %}>EASTMINCOM</option>
+                        <option value="JTF-NCR" {% if unit_query == "JTF-NCR" %}selected{% endif %}>JTF-NCR</option>
+        </select>
+                </div>
+                <div class="form-group col-md-4">
+                    <select name="sub_unit" id="sub_unit" class="form-control">
+                        <option {% if not sub_unit_query %}selected{% endif %}>SUB UNIT</option>
+                        <!-- Options will be populated by JavaScript -->
+                    </select>
+                </div>
+                <div class="form-group col-md-4">
+                    <select id="dnfr" name="dnfr" class="form-control">
+                        <option {% if not dnfr_query %}selected{% endif %}>YEAR</option>
+                        <!-- Options will be populated by JavaScript -->
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn bg-gradient-primary customBGTheme btn-block">Search</button>
+            </div>
+        </form>
+    </div>
+</div>     
+
+
+
 
 <!-- Include Bootstrap CSS and JS -->
-<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-<table class="table table-responsive-sm table-bordered table-striped table-sm">
-    <thead>
-        <tr>
-            <th>No.</th>
-            <th>AFPSN</th>
-            <th>RANK</th>
-            <th>NAME</th>
-            <th>MIDDLE NAME</th>
-            <th>SURNAME</th>
-            <th>UNIT</th>
-            <th>SUB-UNIT</th>
-            <th>CP #</th>
-            <th>DATE OF LAST FULL REENLISTMENT</th>
-            <th>DATE OF NEXT FULL REENLISTMENT</th>
-            <th>DATE UPDATE </th>
-            <th>FILES UPLOADED</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for person in persons %}
-        {% with start_number=persons.start_index %}
-        <tr>
-            <td>{{ start_number|add:forloop.counter0 }}</td>
-            <td>{{ person.SERIAL_NUMBER }}</td>
-            <td>{{ person.RANK }}</td>
-            <td>{{ person.FIRST_NAME }}</td>
-            <td>{{ person.MIDDLE_NAME }}</td>
-            <td>{{ person.LAST_NAME }}</td>
-            <td>{{ person.UNIT }}</td>
-            <td>{{ person.SUB_UNIT }}</td>
-            <td>{{ person.CONTACT_NUMBER }}</td>
-            <td>{{ person.DATE_LASTFULL_REENLISTMENT }}</td>
-            <td>{{ person.DATE_NEXTFULL_REENLISTMENT }}</td>
-            <td>
-                <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editModal"
-                        data-serialnumber="{{ person.SERIAL_NUMBER }}"
-                        data-lastfullreenlistment="{{ person.DATE_LASTFULL_REENLISTMENT }}">
-                    UPDATE
-                </button>
-            </td>
-            <td>
-                <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#viewFilesModal"
-                        data-serialnumber="{{ person.SERIAL_NUMBER }}">
-                    ORDER
-                </button>
-            </td>
-        </tr>
-        {% endwith %}
-        {% endfor %}
-    </tbody>
-</table>
-
-
-
+<div class="card mb-4">
+    <div class="card-header pb-0">
+        <h6 class="mx-2">List of Personnel</h6>
+    </div>
+    <div class="card-body">
+        <button id="exportPdf" class="btn bg-gradient-primary customBGTheme">Export to PDF</button>
+        <button id="exportExcel" class="btn bg-gradient-primary customBGTheme">Export to Excel</button>
+        <button id="printButton" class="btn bg-gradient-primary customBGTheme">Print Table</button><br><br>
+        <table class="table table-responsive table-bordered table-striped table-sm">
+            <thead>
+                <tr>
+                    <th>No.</th>
+                    <th>AFPSN</th>
+                    <th>RANK</th>
+                    <th>FULL NAME</th>
+                    <th>UNIT</th>
+                    <th>SUB-UNIT</th>
+                    <th>CP #</th>
+                    <th>DATE OF LAST FULL REENLISTMENT</th>
+                    <th>DATE OF NEXT FULL REENLISTMENT</th>
+                    <th>DATE UPDATE </th>
+                    <th>FILES UPLOADED</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for person in persons %}
+                {% with start_number=persons.start_index %}
+                <tr>
+                    <td>{{ start_number|add:forloop.counter0 }}</td>
+                    <td>{{ person.SERIAL_NUMBER }}</td>
+                    <td>{{ person.RANK }}</td>
+                    <td>{{ person.FIRST_NAME }} {{ person.MIDDLE_NAME }} {{ person.LAST_NAME }} </td>
+                    <td>{{ person.UNIT }}</td>
+                    <td>{{ person.SUB_UNIT }}</td>
+                    <td>{{ person.CONTACT_NUMBER }}</td>
+                    <td>{{ person.DATE_LASTFULL_REENLISTMENT }}</td>
+                    <td>{{ person.DATE_NEXTFULL_REENLISTMENT }}</td>
+                    <td>
+                        <button type="button" class="btn bg-gradient-primary customBGTheme btn-sm" data-toggle="modal" data-target="#editModal"
+                                data-serialnumber="{{ person.SERIAL_NUMBER }}"
+                                data-lastfullreenlistment="{{ person.DATE_LASTFULL_REENLISTMENT }}">
+                            UPDATE
+                        </button>
+                    </td>
+                    <td>
+                        <button type="button" class="btn bg-gradient-primary customBGTheme btn-sm" data-toggle="modal" data-target="#viewFilesModal"
+                                data-serialnumber="{{ person.SERIAL_NUMBER }}">
+                            ORDER
+                        </button>
+                    </td>
+                </tr>
+                {% endwith %}
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
 
 <!-- Edit Modal -->
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
@@ -161,9 +166,6 @@
 </div>
 
 
-
-
-
 <!-- View Files Modal -->
 <div class="modal fade" id="viewFilesModal" tabindex="-1" role="dialog" aria-labelledby="viewFilesModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -186,12 +188,7 @@
     </div>
 </div>
 
-
-
-
-
 <script>
-    
     $('#editModal').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget)
         var serialNumber = button.data('serialnumber')
@@ -222,12 +219,8 @@
                 })
             }
         })
-        
-        
     })
 </script>
-
-
 
 
 <script>
@@ -244,23 +237,67 @@
 </script>
 
 <!-- Pagination -->
-<div class="pagination">
-    <span class="step-links">
+<nav>
+    <ul class="pagination">
         {% if persons.has_previous %}
-            <a href="?unit={{ unit_query|default:''|urlencode }}&sub_unit={{ sub_unit_query|default:''|urlencode }}&dnfr={{ dnfr_query|default:''|urlencode }}&page=1">&laquo; first</a>
-            <a href="?unit={{ unit_query|default:''|urlencode }}&sub_unit={{ sub_unit_query|default:''|urlencode }}&dnfr={{ dnfr_query|default:''|urlencode }}&page={{ persons.previous_page_number }}">previous</a>
+            <li class="page-item">
+                <a class="page-link bg-secondary" href="?unit={{ unit_query|default:''|urlencode }}&sub_unit={{ sub_unit_query|default:''|urlencode }}&dnfr={{ dnfr_query|default:''|urlencode }}&page=1">
+                    <i class="fas fa-chevron-left text-white"></i>
+                    <i class="fas fa-chevron-left text-white"></i>
+                </a>
+            </li>
+            <li class="page-item">
+                <a class="page-link bg-secondary" href="?unit={{ unit_query|default:''|urlencode }}&sub_unit={{ sub_unit_query|default:''|urlencode }}&dnfr={{ dnfr_query|default:''|urlencode }}&page={{ persons.previous_page_number }}">
+                    <i class="fas fa-chevron-left text-white"></i>
+                </a>
+            </li>
+        {% else %}
+            <li class="page-item disabled">
+                <span class="page-link bg-white">
+                    <i class="fas fa-chevron-left text-secondary"></i>
+                    <i class="fas fa-chevron-left text-secondary"></i>
+                </span>
+            </li>
+            <li class="page-item disabled">
+                <span class="page-link bg-white">
+                    <i class="fas fa-chevron-left text-secondary"></i>
+                </span>
+            </li>
         {% endif %}
 
-        <span class="current">
-            Page {{ persons.number }} of {{ persons.paginator.num_pages }}.
-        </span>
+        <li class="page-item">
+            <div class="text-dark mx-4">
+                Page {{ persons.number }} of {{ persons.paginator.num_pages }}.
+            </div> 
+        </li>
 
         {% if persons.has_next %}
-            <a href="?unit={{ unit_query|default:''|urlencode }}&sub_unit={{ sub_unit_query|default:''|urlencode }}&dnfr={{ dnfr_query|default:''|urlencode }}&page={{ persons.next_page_number }}">next</a>
-            <a href="?unit={{ unit_query|default:''|urlencode }}&sub_unit={{ sub_unit_query|default:''|urlencode }}&dnfr={{ dnfr_query|default:''|urlencode }}&page={{ persons.paginator.num_pages }}">last &raquo;</a>
+            <li class="page-item">
+                <a class="page-link bg-secondary" href="?unit={{ unit_query|default:''|urlencode }}&sub_unit={{ sub_unit_query|default:''|urlencode }}&dnfr={{ dnfr_query|default:''|urlencode }}&page={{ persons.next_page_number }}">
+                    <i class="fas fa-chevron-right text-white"></i>
+                </a>
+            </li>
+            <li class="page-item">
+                <a class="page-link bg-secondary" href="?unit={{ unit_query|default:''|urlencode }}&sub_unit={{ sub_unit_query|default:''|urlencode }}&dnfr={{ dnfr_query|default:''|urlencode }}&page={{ persons.paginator.num_pages }}">
+                    <i class="fas fa-chevron-right text-white"></i>
+                    <i class="fas fa-chevron-right text-white"></i>
+                </a>
+            </li>
+        {% else %}
+            <li class="page-item disabled">
+                <span class="page-link bg-white">
+                    <i class="fas fa-chevron-right text-secondary"></i>
+                </span>
+            </li>
+            <li class="page-item disabled">
+                <span class="page-link bg-white">
+                    <i class="fas fa-chevron-right text-secondary"></i>
+                    <i class="fas fa-chevron-right text-secondary"></i>
+                </span>
+            </li>
         {% endif %}
-    </span>
-</div>
+    </ul>
+</nav>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.13/jspdf.plugin.autotable.min.js"></script>

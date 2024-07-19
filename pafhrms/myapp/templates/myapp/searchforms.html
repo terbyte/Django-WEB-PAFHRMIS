@@ -1,107 +1,125 @@
-<form method="GET">
-  <div class="input-group mb-3">
-    <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name="last_name" placeholder="Last Name" {% if last_name_query %}value="{{ last_name_query }}"{% endif %}>
-    <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name="first_name" placeholder="First Name" {% if first_name_query %}value="{{ first_name_query }}"{% endif %}>
-    <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name="middle_name" placeholder="Middle Name" {% if middle_name_query %}value="{{ middle_name_query }}"{% endif %}>
-    <div class="form-group col-md-2">
-      <select id="inputState" name="suffix" class="form-control">
-          <option value="Suffix" selected>Suffix</option>
-          <option value="Jr.">Jr.</option>
-          <option value="Sr.">Sr.</option>
-          <option value="II">II</option>
-          <option value="III">III</option>
-          <option value="Other">Other</option>
-      </select>
-  </div>
-  </div>
-  <div class="input-group mb-3">
-    <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name="afpsn" placeholder="AFPSN" {% if afpsn_query %}value="{{ afpsn_query }}"{% endif %}>
-      <div class="form-group col-md-2">
-        <select id="inputState" name="rank" class="form-control">
-          <option selected>Rank</option>
-          <optgroup label="Officer">
-            <option value="GEN">GEN</option>
-            <option value="LTGEN">LTGEN</option>
-            <option value="BGEN">BGEN</option>
-            <option value="COL">COL</option>
-            <option value="LTC">LTC</option>
-            <option value="MAJ">MAJ</option>
-            <option value="CPT">CPT</option>
-            <option value="1LT">1LT</option>
-            <option value="2LT">2LT</option>
-          </optgroup>
-          <optgroup label="Enlisted Personnel">
-            <option value="CMSgt">CMSgt</option>
-            <option value="SMSgt">SMSgt</option>
-            <option value="MSgt">MSgt</option>
-            <option value="TSg">TSg</option>
-            <option value="SSg">SSg</option>
-            <option value="Sgt">Sgt</option>
-            <option value="A1C">A1C</option>
-            <option value="AW1C">AW1C</option>
-            <option value="A2C">A2C</option>
-            <option value="AW2C">AW2C</option>
-            <option value="AM">AM</option>
-            <option value="AW">AW</option>
-          </optgroup>
-        </select>
+<div class="card mb-2">
+  <div class="card-body pb-0">
+    <form method="GET">
+      <div class="form-group">
+        <div class="form-row">
+          <div class="col-lg-4">
+            <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name="last_name" placeholder="Last Name" {% if last_name_query %}value="{{ last_name_query }}"{% endif %}>
+          </div>
+          <div class="col-lg-3">
+            <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name="first_name" placeholder="First Name" {% if first_name_query %}value="{{ first_name_query }}"{% endif %}>
+          </div>
+          <div class="col-lg-3">
+            <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name="middle_name" placeholder="Middle Name" {% if middle_name_query %}value="{{ middle_name_query }}"{% endif %}>
+          </div>
+          <div class="col-lg-2">
+            <select id="inputState" name="suffix" class="form-control">
+                <option value="Suffix" selected>Suffix</option>
+                <option value="Jr.">Jr.</option>
+                <option value="Sr.">Sr.</option>
+                <option value="II">II</option>
+                <option value="III">III</option>
+                <option value="Other">Other</option>
+            </select>
+          </div>
+        </div>
       </div>
-      <div class="form-group col-md-4">
-          <select id="category_search" name="category" class="form-control">
-            <option selected>Category</option>
-            <option>Officer</option>
-            <option>Enlisted Personnel</option>
-          </select>
+      <div class="form-group">
+        <div class="form-row">
+          <div class="col-lg-2">
+            <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name="afpsn" placeholder="afpsn" {% if afpsn_query %}value="{{ afpsn_query }}"{% endif %}>
+          </div>
+          <div class="col-lg-3">
+            <select id="inputState" name="rank" class="form-control">
+              <option selected>Rank</option>
+              <optgroup label="Officer">
+                <option value="GEN">GEN</option>
+                <option value="LTGEN">LTGEN</option>
+                <option value="BGEN">BGEN</option>
+                <option value="COL">COL</option>
+                <option value="LTC">LTC</option>
+                <option value="MAJ">MAJ</option>
+                <option value="CPT">CPT</option>
+                <option value="1LT">1LT</option>
+                <option value="2LT">2LT</option>
+              </optgroup>
+              <optgroup label="Enlisted Personnel">
+                <option value="CMSgt">CMSgt</option>
+                <option value="SMSgt">SMSgt</option>
+                <option value="MSgt">MSgt</option>
+                <option value="TSg">TSg</option>
+                <option value="SSg">SSg</option>
+                <option value="Sgt">Sgt</option>
+                <option value="A1C">A1C</option>
+                <option value="AW1C">AW1C</option>
+                <option value="A2C">A2C</option>
+                <option value="AW2C">AW2C</option>
+                <option value="AM">AM</option>
+                <option value="AW">AW</option>
+              </optgroup>
+            </select>
+          </div>
+          <div class="col-lg-2">
+            <div class="form-group">
+                <select id="category_search" name="category" class="form-control">
+                  <option selected>Category</option>
+                  <option>Officer</option>
+                  <option>Enlisted Personnel</option>
+                </select>
+            </div>
+          </div>
+          <div class="col-lg-2">
+            <div class="form-group">
+              <select id="sex_search" name="sex" class="form-control">
+                <option selected>Sex</option>
+                <option>Male</option>
+                <option>Female</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-lg-3">
+            <select name="unit" class="form-control">
+              <!-- <option selected>UNIT</option> -->
+              <option {% if not unit_query %}selected{% endif %}>UNIT</option>
+              <option value="GHQ" {% if unit_query == "GHQ" %}selected{% endif %}>GHQ</option>
+              <option value="HPAF" {% if unit_query == "HPAF" %}selected{% endif %}>HPAF</option>
+              <option value="PAFHRMC A/U" {% if unit_query == "PAFHRMC A/U" %}selected{% endif %}>PAFHRMC A/U</option>
+              <option value="AFPWSSUS" {% if unit_query == "AFPWSSUS" %}selected{% endif %}>AFPWSSUS</option>
+              <option value="AIBDC" {% if unit_query == "AIBDC" %}selected{% endif %}>AIBDC</option>
+              <option value="ADC" {% if unit_query == "ADC" %}selected{% endif %}>ADC</option>
+              <option value="AMC" {% if unit_query == "AMC" %}selected{% endif %}>AMC</option>
+              <option value="ACC" {% if unit_query == "ACC" %}selected{% endif %}>ACC</option>
+              <option value="AETDC" {% if unit_query == "AETDC" %}selected{% endif %}>AETDC</option>
+              <option value="ARFC" {% if unit_query == "ARFC" %}selected{% endif %}>ARFC</option>
+              <option value="TOWNOL" {% if unit_query == "TOWNOL" %}selected{% endif %}>TOWNOL</option>
+              <option value="TOWSOL" {% if unit_query == "TOWSOL" %}selected{% endif %}>TOWSOL</option>
+              <option value="TOWCEN" {% if unit_query == "TOWCEN" %}selected{% endif %}>TOWCEN</option>
+              <option value="TOWWEST" {% if unit_query == "TOWWEST" %}selected{% endif %}>TOWWEST</option>
+              <option value="TOWEASTMIN" {% if unit_query == "TOWEASTMIN" %}selected{% endif %}>TOWEASTMIN</option>
+              <option value="TOWWESTMIN" {% if unit_query == "TOWWESTMIN" %}selected{% endif %}>TOWWESTMIN</option>
+              <option value="355AEW" {% if unit_query == "355AEW" %}selected{% endif %}>355AEW</option>
+              <option value="300AISW" {% if unit_query == "300AISW" %}selected{% endif %}>300AISW</option>
+              <option value="900AFWG" {% if unit_query == "900AFWG" %}selected{% endif %}>900AFWG</option>
+              <option value="950CEWW" {% if unit_query == "950CEWW" %}selected{% endif %}>950CEWW</option>
+              <option value="AFFC" {% if unit_query == "AFFC" %}selected{% endif %}>AFFC</option>
+              <option value="AFSSG" {% if unit_query == "AFSSG" %}selected{% endif %}>AFSSG</option>
+              <option value="HSSG" {% if unit_query == "HSSG" %}selected{% endif %}>HSSG</option>
+              <option value="PAFCMOG" {% if unit_query == "PAFCMOG" %}selected{% endif %}>PAFCMOG</option>
+              <option value="PAFHRMC" {% if unit_query == "PAFHRMC" %}selected{% endif %}>PAFHRMC</option>
+              <option value="NOLCOM" {% if unit_query == "NOLCOM" %}selected{% endif %}>NOLCOM</option>
+              <option value="SOLCOM" {% if unit_query == "SOLCOM" %}selected{% endif %}>SOLCOM</option>
+              <option value="WESCOM" {% if unit_query == "WESCOM" %}selected{% endif %}>WESCOM</option>
+              <option value="VISCOM" {% if unit_query == "VISCOM" %}selected{% endif %}>VISCOM</option>
+              <option value="WESTMINCOM" {% if unit_query == "WESTMINCOM" %}selected{% endif %}>WESTMINCOM</option>
+              <option value="EASTMINCOM" {% if unit_query == "EASTMINCOM" %}selected{% endif %}>EASTMINCOM</option>
+              <option value="JTF-NCR" {% if unit_query == "JTF-NCR" %}selected{% endif %}>JTF-NCR</option>
+                </select>
+          </div>
+        </div>
       </div>
-      <div class="form-group col-md-2">
-          <select id="sex_search" name="sex" class="form-control">
-            <option selected>Sex</option>
-            <option>Male</option>
-            <option>Female</option>
-          </select>
+      <div class="form-group">
+          <button type="submit" class="btn bg-gradient-primary btn-block customBGTheme">Search</button>
       </div>
-      <select name="unit" class="form-control">
-        <option selected>UNIT</option>
-        <option {% if not unit_query %}selected{% endif %}>UNIT</option>
-        <option value="GHQ" {% if unit_query == "GHQ" %}selected{% endif %}>GHQ</option>
-        <option value="HPAF" {% if unit_query == "HPAF" %}selected{% endif %}>HPAF</option>
-        <option value="PAFHRMC A/U" {% if unit_query == "PAFHRMC A/U" %}selected{% endif %}>PAFHRMC A/U</option>
-        <option value="AFPWSSUS" {% if unit_query == "AFPWSSUS" %}selected{% endif %}>AFPWSSUS</option>
-        <option value="AIBDC" {% if unit_query == "AIBDC" %}selected{% endif %}>AIBDC</option>
-        <option value="ADC" {% if unit_query == "ADC" %}selected{% endif %}>ADC</option>
-        <option value="AMC" {% if unit_query == "AMC" %}selected{% endif %}>AMC</option>
-        <option value="ACC" {% if unit_query == "ACC" %}selected{% endif %}>ACC</option>
-        <option value="AETDC" {% if unit_query == "AETDC" %}selected{% endif %}>AETDC</option>
-        <option value="ARFC" {% if unit_query == "ARFC" %}selected{% endif %}>ARFC</option>
-        <option value="TOWNOL" {% if unit_query == "TOWNOL" %}selected{% endif %}>TOWNOL</option>
-        <option value="TOWSOL" {% if unit_query == "TOWSOL" %}selected{% endif %}>TOWSOL</option>
-        <option value="TOWCEN" {% if unit_query == "TOWCEN" %}selected{% endif %}>TOWCEN</option>
-        <option value="TOWWEST" {% if unit_query == "TOWWEST" %}selected{% endif %}>TOWWEST</option>
-        <option value="TOWEASTMIN" {% if unit_query == "TOWEASTMIN" %}selected{% endif %}>TOWEASTMIN</option>
-        <option value="TOWWESTMIN" {% if unit_query == "TOWWESTMIN" %}selected{% endif %}>TOWWESTMIN</option>
-        <option value="355AEW" {% if unit_query == "355AEW" %}selected{% endif %}>355AEW</option>
-        <option value="300AISW" {% if unit_query == "300AISW" %}selected{% endif %}>300AISW</option>
-        <option value="900AFWG" {% if unit_query == "900AFWG" %}selected{% endif %}>900AFWG</option>
-        <option value="950CEWW" {% if unit_query == "950CEWW" %}selected{% endif %}>950CEWW</option>
-        <option value="AFFC" {% if unit_query == "AFFC" %}selected{% endif %}>AFFC</option>
-        <option value="AFSSG" {% if unit_query == "AFSSG" %}selected{% endif %}>AFSSG</option>
-        <option value="HSSG" {% if unit_query == "HSSG" %}selected{% endif %}>HSSG</option>
-        <option value="PAFCMOG" {% if unit_query == "PAFCMOG" %}selected{% endif %}>PAFCMOG</option>
-        <option value="PAFHRMC" {% if unit_query == "PAFHRMC" %}selected{% endif %}>PAFHRMC</option>
-        <option value="NOLCOM" {% if unit_query == "NOLCOM" %}selected{% endif %}>NOLCOM</option>
-        <option value="SOLCOM" {% if unit_query == "SOLCOM" %}selected{% endif %}>SOLCOM</option>
-        <option value="WESCOM" {% if unit_query == "WESCOM" %}selected{% endif %}>WESCOM</option>
-        <option value="VISCOM" {% if unit_query == "VISCOM" %}selected{% endif %}>VISCOM</option>
-        <option value="WESTMINCOM" {% if unit_query == "WESTMINCOM" %}selected{% endif %}>WESTMINCOM</option>
-        <option value="EASTMINCOM" {% if unit_query == "EASTMINCOM" %}selected{% endif %}>EASTMINCOM</option>
-        <option value="JTF-NCR" {% if unit_query == "JTF-NCR" %}selected{% endif %}>JTF-NCR</option>
-          </select>
-        
-      </select>
-    </div>
-  <div class="form-group">
-      <button type="submit" class="btn btn-primary">Search</button>
+    </form> 
   </div>
-</form>
-
-
+</div>

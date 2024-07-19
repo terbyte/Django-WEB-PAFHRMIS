@@ -1,70 +1,70 @@
+<div class="card mb-4">
+    <div class="card-header pb-0">
+        <h6 class="mx-2">List of Personnel</h6>
+    </div>
+    <div class="card-body">
+        <table class="table table-responsive-sm table-bordered table-striped table-sm" id="sortableTable">
+            <thead>
+                <tr>
+                    <th class="sortable" data-sort="RANK">Rank</th>
+                    <th class="sortable" data-sort="AFPSN">AFPSN</th>
+                    <th class="sortable" data-sort="FULL_NAME">Full Name</th>
+                    <th class="sortable" data-sort="UNIT">Unit</th>
+                    <th class="sortable" data-sort="SUB_UNIT">Sub-Unit</th>
+                    <th class="sortable" data-sort="CATEGORY">category</th>
 
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for person in persons %}
+                <tr>
+                    <td>{{ person.RANK }}</td>
+                    <td>{{ person.SERIAL_NUMBER }}</td>
+                    <td>{{ person.FIRST_NAME}} {{person.MIDDLE_NAME}} {{person.LAST_NAME}}</td>
+                    <td>{{ person.UNIT }}</td>
+                    <td>{{ person.SUB_UNIT }}</td>
+                    <td>{{ person.CATEGORY }}</td>
 
-<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.css">
+                    <td>
+                    <button class="btn bg-gradient-primary customBGTheme openModalButton"
+                    data-rank="{{ person.RANK }}"
+                    data-lastname="{{ person.LAST_NAME }}"
+                    data-firstname="{{ person.FIRST_NAME }}"
+                    data-middlename="{{ person.MIDDLE_NAME }}"
+                    data-suffix="{{ person.EXTENSION_NAME }}"
+                    data-afpsn="{{ person.SERIAL_NUMBER }}"
+                    data-unit="{{ person.UNIT }}"
+                    data-subunit="{{ person.SUB_UNIT }}"
+                    data-birthday="{{ person.BIRTHDAY|date:'d-b-Y' }}"
+                    data-contactnumber="{{ person.CONTACT_NUMBER }}"
+                    data-sex="{{ person.SEX }}"
+                    data-address="{{ person.ADDRESS }}"
+                    data-classification="{{ person.CLASSIFICATION }}"
+                    data-sourceofenlistmentcommission="{{ person.SOURCE_OF_ENLISTMENT_COMMISION }}"
+                    data-category="{{ person.CATEGORY }}"
+                    data-afsc="{{ person.AFSC }}"
+                    data-hpme="{{ person.HIGHEST_PME_COURSES }}"
+                    data-dateenteredmilitary="{{ person.EFFECTIVE_DATE_ENTERED|date:'d-b-Y' }}"
+                    data-lengthofservice="{{ person.LENGTH_OF_SERVICE }}"
+                    data-pilotrating="{{ person.PILOT_RATED_NON_RATED }}"
+                    data-promotion="{{ person.DATE_LAST_PROMOTION_APPOINTMENT|date:'Y-m-d' }}"
+                    data-dateofcommissionship="{{ person.EFFECTIVE_DATE_APPOINTMENT|date:'d-b-Y' }}"
+                    data-fullreeenlistment="{{ person.DATE_LASTFULL_REENLISTMENT|date:'Y-m-d' }}"
+                    data-dateoflastetadsot="{{ person.DATE_LAST_ETAD|date:'Y-m-d' }}"
 
-<table class="table table-responsive-sm table-bordered table-striped table-sm" id="sortableTable">
-    <thead>
-        <tr>
-            <th class="sortable" data-sort="RANK">Rank</th>
-            <th class="sortable" data-sort="AFPSN">AFPSN</th>
-            <th class="sortable" data-sort="FULL_NAME">Full Name</th>
-            <th class="sortable" data-sort="UNIT">Unit</th>
-            <th class="sortable" data-sort="SUB_UNIT">Sub-Unit</th>
-            <th class="sortable" data-sort="CATEGORY">category</th>
+                    data-toggle="modal"
+                    data-target="#myModal"><i class="fa fa-edit"></i> Edit </button>
+                
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
 
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for person in persons %}
-        <tr>
-            <td>{{ person.RANK }}</td>
-            <td>{{ person.SERIAL_NUMBER }}</td>
-            <td>{{ person.FIRST_NAME}} {{person.MIDDLE_NAME}} {{person.LAST_NAME}}</td>
-            <td>{{ person.UNIT }}</td>
-            <td>{{ person.SUB_UNIT }}</td>
-            <td>{{ person.CATEGORY }}</td>
-
-            <td>
-              <button class="btn btn-primary openModalButton"
-              data-rank="{{ person.RANK }}"
-              data-lastname="{{ person.LAST_NAME }}"
-              data-firstname="{{ person.FIRST_NAME }}"
-              data-middlename="{{ person.MIDDLE_NAME }}"
-              data-suffix="{{ person.EXTENSION_NAME }}"
-              data-afpsn="{{ person.SERIAL_NUMBER }}"
-              data-unit="{{ person.UNIT }}"
-              data-subunit="{{ person.SUB_UNIT }}"
-              data-birthday="{{ person.BIRTHDAY|date:'d-b-Y' }}"
-              data-contactnumber="{{ person.CONTACT_NUMBER }}"
-              data-sex="{{ person.SEX }}"
-              data-address="{{ person.ADDRESS }}"
-              data-classification="{{ person.CLASSIFICATION }}"
-              data-sourceofenlistmentcommission="{{ person.SOURCE_OF_ENLISTMENT_COMMISION }}"
-              data-category="{{ person.CATEGORY }}"
-              data-afsc="{{ person.AFSC }}"
-              data-hpme="{{ person.HIGHEST_PME_COURSES }}"
-              data-dateenteredmilitary="{{ person.EFFECTIVE_DATE_ENTERED|date:'d-b-Y' }}"
-              data-lengthofservice="{{ person.LENGTH_OF_SERVICE }}"
-              data-pilotrating="{{ person.PILOT_RATED_NON_RATED }}"
-              data-promotion="{{ person.DATE_LAST_PROMOTION_APPOINTMENT|date:'Y-m-d' }}"
-              data-dateofcommissionship="{{ person.EFFECTIVE_DATE_APPOINTMENT|date:'d-b-Y' }}"
-              data-fullreeenlistment="{{ person.DATE_LASTFULL_REENLISTMENT|date:'Y-m-d' }}"
-              data-dateoflastetadsot="{{ person.DATE_LAST_ETAD|date:'Y-m-d' }}"
-
-              data-toggle="modal"
-              data-target="#myModal"><i class="fa fa-edit"></i> Edit </button>
-          
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
-
-
-
-  {% include 'modals/updateModal.html' %}
-  
+{% include 'modals/updateModal.html' %}  
  <script>
 $(document).ready(function() {
     $('.openModalButton').click(function() {
@@ -149,7 +149,6 @@ $(document).ready(function() {
  
      
         if (category === "ENLISTED PERSONNEL") {
-          
           $('#commission_enlistment_lbl').text('Date of Enlistment');
           $('#dateoflastetadsottxt').hide();
           $('#dateoflastetadsotlbl').hide();
@@ -162,10 +161,6 @@ $(document).ready(function() {
 
           $('#fullreeenlistmentlbl').show();
           $('#fullreeenlistmenttxt').show();
-          
-
-
-
         } else {
           $('#commission_enlistment_lbl').text('Date of Commission');
 
@@ -179,20 +174,8 @@ $(document).ready(function() {
           $('#dateoflastetadsotlbl').show();
 
           $('#fullreeenlistmentlbl').hide();
-          $('#fullreeenlistmenttxt').hide();
-
-          
+          $('#fullreeenlistmenttxt').hide(); 
         }
-
-
-        
-
-
-
-
-
-
-
     });
 });
 
@@ -235,43 +218,63 @@ $(document).ready(function() {
 
 
 
-<nav aria-label="...">
+<nav>
     <ul class="pagination">
         {% if persons.has_previous %}
             <li class="page-item">
-                <a class="page-link" href="?page=1{% if last_name_query %}&last_name={{ last_name_query }}{% endif %}{% if first_name_query %}&first_name={{ first_name_query }}{% endif %}{% if middle_name_query %}&middle_name={{ middle_name_query }}{% endif %}{% if suffix_query %}&suffix={{ suffix_query }}{% endif %}{% if afpsn_query %}&afpsn={{ afpsn_query }}{% endif %}{% if rank_query %}&rank={{ rank_query }}{% endif %}{% if category_query %}&category={{ category_query }}{% endif %}{% if sex_query %}&sex={{ sex_query }}{% endif %}{% if unit_query %}&unit={{ unit_query }}{% endif %}">&laquo; first</a>
+                <a class="page-link bg-secondary" href="?page=1{% if last_name_query %}&last_name={{ last_name_query }}{% endif %}{% if first_name_query %}&first_name={{ first_name_query }}{% endif %}{% if middle_name_query %}&middle_name={{ middle_name_query }}{% endif %}{% if suffix_query %}&suffix={{ suffix_query }}{% endif %}{% if afpsn_query %}&afpsn={{ afpsn_query }}{% endif %}{% if rank_query %}&rank={{ rank_query }}{% endif %}{% if category_query %}&category={{ category_query }}{% endif %}{% if sex_query %}&sex={{ sex_query }}{% endif %}{% if unit_query %}&unit={{ unit_query }}{% endif %}">
+                    <i class="fas fa-chevron-left text-white"></i>
+                    <i class="fas fa-chevron-left text-white"></i>
+                </a>
             </li>
             <li class="page-item">
-                <a class="page-link" href="?page={{ persons.previous_page_number }}{% if last_name_query %}&last_name={{ last_name_query }}{% endif %}{% if first_name_query %}&first_name={{ first_name_query }}{% endif %}{% if middle_name_query %}&middle_name={{ middle_name_query }}{% endif %}{% if suffix_query %}&suffix={{ suffix_query }}{% endif %}{% if afpsn_query %}&afpsn={{ afpsn_query }}{% endif %}{% if rank_query %}&rank={{ rank_query }}{% endif %}{% if category_query %}&category={{ category_query }}{% endif %}{% if sex_query %}&sex={{ sex_query }}{% endif %}{% if unit_query %}&unit={{ unit_query }}{% endif %}">previous</a>
+                <a class="page-link bg-secondary" href="?page={{ persons.previous_page_number }}{% if last_name_query %}&last_name={{ last_name_query }}{% endif %}{% if first_name_query %}&first_name={{ first_name_query }}{% endif %}{% if middle_name_query %}&middle_name={{ middle_name_query }}{% endif %}{% if suffix_query %}&suffix={{ suffix_query }}{% endif %}{% if afpsn_query %}&afpsn={{ afpsn_query }}{% endif %}{% if rank_query %}&rank={{ rank_query }}{% endif %}{% if category_query %}&category={{ category_query }}{% endif %}{% if sex_query %}&sex={{ sex_query }}{% endif %}{% if unit_query %}&unit={{ unit_query }}{% endif %}">
+                    <i class="fas fa-chevron-left text-white"></i>
+                </a>
             </li>
         {% else %}
             <li class="page-item disabled">
-                <span class="page-link">&laquo; first</span>
+                <span class="page-link bg-white">
+                    <i class="fas fa-chevron-left text-secondary"></i>
+                    <i class="fas fa-chevron-left text-secondary"></i>
+                </span>
             </li>
             <li class="page-item disabled">
-                <span class="page-link">previous</span>
+                <span class="page-link bg-white">
+                    <i class="fas fa-chevron-left text-secondary"></i>
+                </span>
             </li>
         {% endif %}
 
         <li class="page-item">
-            <span class="page-link">
+            <div class="text-dark mx-4">
                 Page {{ persons.number }} of {{ persons.paginator.num_pages }}
-            </span>
+            </div> 
         </li>
 
         {% if persons.has_next %}
             <li class="page-item">
-                <a class="page-link" href="?page={{ persons.next_page_number }}{% if last_name_query %}&last_name={{ last_name_query }}{% endif %}{% if first_name_query %}&first_name={{ first_name_query }}{% endif %}{% if middle_name_query %}&middle_name={{ middle_name_query }}{% endif %}{% if suffix_query %}&suffix={{ suffix_query }}{% endif %}{% if afpsn_query %}&afpsn={{ afpsn_query }}{% endif %}{% if rank_query %}&rank={{ rank_query }}{% endif %}{% if category_query %}&category={{ category_query }}{% endif %}{% if sex_query %}&sex={{ sex_query }}{% endif %}{% if unit_query %}&unit={{ unit_query }}{% endif %}">next</a>
+                <a class="page-link bg-secondary" href="?page={{ persons.next_page_number }}{% if last_name_query %}&last_name={{ last_name_query }}{% endif %}{% if first_name_query %}&first_name={{ first_name_query }}{% endif %}{% if middle_name_query %}&middle_name={{ middle_name_query }}{% endif %}{% if suffix_query %}&suffix={{ suffix_query }}{% endif %}{% if afpsn_query %}&afpsn={{ afpsn_query }}{% endif %}{% if rank_query %}&rank={{ rank_query }}{% endif %}{% if category_query %}&category={{ category_query }}{% endif %}{% if sex_query %}&sex={{ sex_query }}{% endif %}{% if unit_query %}&unit={{ unit_query }}{% endif %}">
+                    <i class="fas fa-chevron-right text-white"></i>
+                </a>
             </li>
             <li class="page-item">
-                <a class="page-link" href="?page={{ persons.paginator.num_pages }}{% if last_name_query %}&last_name={{ last_name_query }}{% endif %}{% if first_name_query %}&first_name={{ first_name_query }}{% endif %}{% if middle_name_query %}&middle_name={{ middle_name_query }}{% endif %}{% if suffix_query %}&suffix={{ suffix_query }}{% endif %}{% if afpsn_query %}&afpsn={{ afpsn_query }}{% endif %}{% if rank_query %}&rank={{ rank_query }}{% endif %}{% if category_query %}&category={{ category_query }}{% endif %}{% if sex_query %}&sex={{ sex_query }}{% endif %}{% if unit_query %}&unit={{ unit_query }}{% endif %}">last &raquo;</a>
+                <a class="page-link bg-secondary" href="?page={{ persons.paginator.num_pages }}{% if last_name_query %}&last_name={{ last_name_query }}{% endif %}{% if first_name_query %}&first_name={{ first_name_query }}{% endif %}{% if middle_name_query %}&middle_name={{ middle_name_query }}{% endif %}{% if suffix_query %}&suffix={{ suffix_query }}{% endif %}{% if afpsn_query %}&afpsn={{ afpsn_query }}{% endif %}{% if rank_query %}&rank={{ rank_query }}{% endif %}{% if category_query %}&category={{ category_query }}{% endif %}{% if sex_query %}&sex={{ sex_query }}{% endif %}{% if unit_query %}&unit={{ unit_query }}{% endif %}">
+                    <i class="fas fa-chevron-right text-white"></i>
+                    <i class="fas fa-chevron-right text-white"></i>
+                </a>
             </li>
         {% else %}
             <li class="page-item disabled">
-                <span class="page-link">next</span>
+                <span class="page-link bg-white">
+                    <i class="fas fa-chevron-right text-secondary"></i>
+                </span>
             </li>
             <li class="page-item disabled">
-                <span class="page-link">last &raquo;</span>
+                <span class="page-link bg-white">
+                    <i class="fas fa-chevron-right text-secondary"></i>
+                    <i class="fas fa-chevron-right text-secondary"></i>
+                </span>
             </li>
         {% endif %}
     </ul>

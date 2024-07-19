@@ -34,10 +34,23 @@
               data-suffix="{{ person.EXTENSION_NAME }}"
               data-afpsn="{{ person.SERIAL_NUMBER }}"
               data-unit="{{ person.UNIT }}"
-              data-bos="{{ person.BOS }}"
-
-
-
+              data-subunit="{{ person.SUB_UNIT }}"
+              data-birthday="{{ person.BIRTHDAY|date:'d-b-Y' }}"
+              data-contactnumber="{{ person.CONTACT_NUMBER }}"
+              data-sex="{{ person.SEX }}"
+              data-address="{{ person.ADDRESS }}"
+              data-classification="{{ person.CLASSIFICATION }}"
+              data-sourceofenlistmentcommission="{{ person.SOURCE_OF_ENLISTMENT_COMMISION }}"
+              data-category="{{ person.CATEGORY }}"
+              data-afsc="{{ person.AFSC }}"
+              data-hpme="{{ person.HIGHEST_PME_COURSES }}"
+              data-dateenteredmilitary="{{ person.EFFECTIVE_DATE_ENTERED|date:'d-b-Y' }}"
+              data-lengthofservice="{{ person.LENGTH_OF_SERVICE }}"
+              data-pilotrating="{{ person.PILOT_RATED_NON_RATED }}"
+              data-promotion="{{ person.DATE_LAST_PROMOTION_APPOINTMENT|date:'Y-m-d' }}"
+              data-dateofcommissionship="{{ person.EFFECTIVE_DATE_APPOINTMENT|date:'d-b-Y' }}"
+              data-fullreeenlistment="{{ person.DATE_LASTFULL_REENLISTMENT|date:'Y-m-d' }}"
+              data-dateoflastetadsot="{{ person.DATE_LAST_ETAD|date:'Y-m-d' }}"
 
               data-toggle="modal"
               data-target="#myModal"><i class="fa fa-edit"></i> SET STATUS </button>
@@ -50,7 +63,7 @@
 
 
 
-  {% include 'modals/set_status_modal.html' %}
+  {% include 'modals/updateModal.html' %}
   
  <script>
 $(document).ready(function() {
@@ -68,8 +81,31 @@ $(document).ready(function() {
         }
         var afpsn = $(this).data('afpsn');
         var unit = $(this).data('unit');
-        var bos = $(this).data('bos');
+        var subunit = $(this).data('subunit');
+        var birthday = $(this).data('birthday');
+        var contactnum = $(this).data('contactnumber');
+        if (contactnum === "None") {
+          contactnum = '';
+        }
+        var sex = $(this).data('sex');
+        var address = $(this).data('address');
+        var classification = $(this).data('classification');
+        var sourceofenlistmentcommission = $(this).data('sourceofenlistmentcommission');
+        var category = $(this).data('category');
+        var afsc = $(this).data('afsc');
+        if (afsc === "nan") {
+          afsc = '';
+        }
+        var hpme = $(this).data('hpme');
+        var dateenteredmilitary = $(this).data('dateenteredmilitary');
+        var dateoflastpromotion = $(this).data('datelastpromotion');
+        var lengthofservice = $(this).data('lengthofservice');
+        var dateofcommissionship = $(this).data('dateofcommissionship');
+        var promotion = $(this).data('promotion');
+        var pilotrating = $(this).data('pilotrating');
 
+        var firstTranche = $(this).data('fullreeenlistment');
+        var dateoflastetadsot = $(this).data('dateoflastetadsot');
 
 
         // POPULATING DATA TO MODAL 
@@ -79,8 +115,82 @@ $(document).ready(function() {
         $('#middlenametxt').val(middlename);
         $('#suffixtxt').val(suffix);
         $('#afpsntxt').val(afpsn);
-        $('#unitDP').val(unit);
-        $('#bostxt').val(bos);
+        $('#unittxt').val(unit);
+        $('#subunittxt').val(subunit);
+        $('#bdaytxt').val(birthday);
+        $('#contactnumtxt').val(contactnum);
+        $('#sextxt').val(sex);
+        $('#addresstxt').val(address);
+        $('#categorytxt').val(category);
+        $('#classificationtxt').val(classification);
+        $('#sourceofenlistmentcommissiontxt').val(sourceofenlistmentcommission);
+        $('#afsctxt').val(afsc);
+        $('#enlistmentdatetxt').val(dateenteredmilitary);
+        $('#promotiontxt').val(dateoflastpromotion);
+        $('#lengthofservicetxt').val(lengthofservice);
+        $('#dateofcommissionshiptxt').val(dateofcommissionship);
+        $('#promotiontxt').val(promotion);
+        $('#fullreeenlistmenttxt').val(firstTranche);
+        $('#dateoflastetadsottxt').val(dateoflastetadsot);
+        $('#pilotratingtxt').val(pilotrating);
+        $('#hpmetxt').val(hpme);
+
+
+        if (classification === "Regular" || classification === "Regular " || classification === "REGULAR") {
+          $('#tohide').hide();
+        }else if (classification === "Reserve" || classification === "Reserve "|| classification === "RESERVE"){
+          $('#tohide').show();
+
+        }
+        if (category === "ENLISTED PERSONNEL") {
+          $('#tohide').show();
+        } 
+
+ 
+     
+        if (category === "ENLISTED PERSONNEL") {
+          
+          $('#commission_enlistment_lbl').text('Date of Enlistment');
+          $('#dateoflastetadsottxt').hide();
+          $('#dateoflastetadsotlbl').hide();
+
+          $('#pilotratingtxt').hide();
+          $('#pilotratinglbl').hide();
+
+          $('#classificationtxt').hide();
+          $('#classificationlbl').hide();
+
+          $('#fullreeenlistmentlbl').show();
+          $('#fullreeenlistmenttxt').show();
+          
+
+
+
+        } else {
+          $('#commission_enlistment_lbl').text('Date of Commission');
+
+          $('#pilotratinglbl').show();
+          $('#pilotratingtxt').show();
+
+          $('#classificationlbl').show();
+          $('#classificationtxt').show();
+          
+          $('#dateoflastetadsottxt').show();
+          $('#dateoflastetadsotlbl').show();
+
+          $('#fullreeenlistmentlbl').hide();
+          $('#fullreeenlistmenttxt').hide();
+
+          
+        }
+
+
+        
+
+
+
+
+
 
 
     });
