@@ -131,7 +131,7 @@ def index(request):
         filters &= Q(CATEGORY__icontains=category_query)
     if sex_query and sex_query != "Sex":
         filters &= Q(SEX__icontains=sex_query)
-    if unit_query:
+    if unit_query and unit_query != "UNIT":
         filters &= Q(UNIT__icontains=unit_query)
     
     persons = PersonnelItem.objects.filter(filters)

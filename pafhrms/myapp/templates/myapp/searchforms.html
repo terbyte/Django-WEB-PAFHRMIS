@@ -60,22 +60,42 @@
             <option>Female</option>
           </select>
       </div>
-      <select name="unit_search" class="form-control">
+      <select name="unit" class="form-control">
         <option selected>UNIT</option>
-
-
-
-        <option>GHQ</option>
-        <option>PAFHRMC A/U</option>
-        <option>AFPWSSUS</option>
-        <option >NOLCOM</option>
-        <option >SOLCOM</option>
-        <option >WESCOM</option>
-        <option >VISCOM</option>
-        <option >WESTMINCOM</option>
-        <option >EASTMINCOM</option>
-        <option >JTF-NCR</option>
-
+        <option {% if not unit_query %}selected{% endif %}>UNIT</option>
+        <option value="GHQ" {% if unit_query == "GHQ" %}selected{% endif %}>GHQ</option>
+        <option value="HPAF" {% if unit_query == "HPAF" %}selected{% endif %}>HPAF</option>
+        <option value="PAFHRMC A/U" {% if unit_query == "PAFHRMC A/U" %}selected{% endif %}>PAFHRMC A/U</option>
+        <option value="AFPWSSUS" {% if unit_query == "AFPWSSUS" %}selected{% endif %}>AFPWSSUS</option>
+        <option value="AIBDC" {% if unit_query == "AIBDC" %}selected{% endif %}>AIBDC</option>
+        <option value="ADC" {% if unit_query == "ADC" %}selected{% endif %}>ADC</option>
+        <option value="AMC" {% if unit_query == "AMC" %}selected{% endif %}>AMC</option>
+        <option value="ACC" {% if unit_query == "ACC" %}selected{% endif %}>ACC</option>
+        <option value="AETDC" {% if unit_query == "AETDC" %}selected{% endif %}>AETDC</option>
+        <option value="ARFC" {% if unit_query == "ARFC" %}selected{% endif %}>ARFC</option>
+        <option value="TOWNOL" {% if unit_query == "TOWNOL" %}selected{% endif %}>TOWNOL</option>
+        <option value="TOWSOL" {% if unit_query == "TOWSOL" %}selected{% endif %}>TOWSOL</option>
+        <option value="TOWCEN" {% if unit_query == "TOWCEN" %}selected{% endif %}>TOWCEN</option>
+        <option value="TOWWEST" {% if unit_query == "TOWWEST" %}selected{% endif %}>TOWWEST</option>
+        <option value="TOWEASTMIN" {% if unit_query == "TOWEASTMIN" %}selected{% endif %}>TOWEASTMIN</option>
+        <option value="TOWWESTMIN" {% if unit_query == "TOWWESTMIN" %}selected{% endif %}>TOWWESTMIN</option>
+        <option value="355AEW" {% if unit_query == "355AEW" %}selected{% endif %}>355AEW</option>
+        <option value="300AISW" {% if unit_query == "300AISW" %}selected{% endif %}>300AISW</option>
+        <option value="900AFWG" {% if unit_query == "900AFWG" %}selected{% endif %}>900AFWG</option>
+        <option value="950CEWW" {% if unit_query == "950CEWW" %}selected{% endif %}>950CEWW</option>
+        <option value="AFFC" {% if unit_query == "AFFC" %}selected{% endif %}>AFFC</option>
+        <option value="AFSSG" {% if unit_query == "AFSSG" %}selected{% endif %}>AFSSG</option>
+        <option value="HSSG" {% if unit_query == "HSSG" %}selected{% endif %}>HSSG</option>
+        <option value="PAFCMOG" {% if unit_query == "PAFCMOG" %}selected{% endif %}>PAFCMOG</option>
+        <option value="PAFHRMC" {% if unit_query == "PAFHRMC" %}selected{% endif %}>PAFHRMC</option>
+        <option value="NOLCOM" {% if unit_query == "NOLCOM" %}selected{% endif %}>NOLCOM</option>
+        <option value="SOLCOM" {% if unit_query == "SOLCOM" %}selected{% endif %}>SOLCOM</option>
+        <option value="WESCOM" {% if unit_query == "WESCOM" %}selected{% endif %}>WESCOM</option>
+        <option value="VISCOM" {% if unit_query == "VISCOM" %}selected{% endif %}>VISCOM</option>
+        <option value="WESTMINCOM" {% if unit_query == "WESTMINCOM" %}selected{% endif %}>WESTMINCOM</option>
+        <option value="EASTMINCOM" {% if unit_query == "EASTMINCOM" %}selected{% endif %}>EASTMINCOM</option>
+        <option value="JTF-NCR" {% if unit_query == "JTF-NCR" %}selected{% endif %}>JTF-NCR</option>
+          </select>
         
       </select>
     </div>
@@ -83,3 +103,5 @@
       <button type="submit" class="btn btn-primary">Search</button>
   </div>
 </form>
+
+
