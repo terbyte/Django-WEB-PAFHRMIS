@@ -270,12 +270,10 @@ def convert_date(date_value):
 def upload_excel(request):
     if request.method == 'POST' and request.FILES['excel_file']:
         excel_file = request.FILES['excel_file']
-        fs = FileSystemStorage()
-        filename = fs.save(excel_file.name, excel_file)
-        file_path = fs.path(filename)
 
+        # Read the file directly from the uploaded file object
+        df = pd.read_excel(excel_file)
 
-        df = pd.read_excel(file_path)
         # Convert the date format
         def convert_date(date_value):
             if pd.isna(date_value):
@@ -299,7 +297,6 @@ def upload_excel(request):
             return str(value).upper()
         
         try:
-            df = pd.read_excel(file_path)
             for index, row in df.iterrows():
                 serial_number = row.iloc[5]
                 # Check if the entry with the same serial number already exists
@@ -334,6 +331,8 @@ def upload_excel(request):
         except Exception as e:
             return HttpResponse(f'Error: {e}')
     return render(request, 'myapp/upload.html')
+
+
 
 def custom_404(request, exception):
     return render(request, 'other/404.html', status=404)
