@@ -11,8 +11,76 @@
         <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
         <link href="{% static 'assets/css/nucleo-svg.css' %}" rel="stylesheet"/>
         <link id="pagestyle" href="{% static 'assets/css/soft-ui-dashboard.css' %}" rel="stylesheet"/>
-        <script defer data-site="YOUR_DOMAIN_HERE" src="https://api.nepcha.com/js/nepcha-analytics.js"></script>  
+        <!-- <script defer data-site="YOUR_DOMAIN_HERE" src="https://api.nepcha.com/js/nepcha-analytics.js"></script>   -->
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
+        <script src="{% static 'js/jquery.min.js' %}"></script>
+        <script src="{% static 'assets/js/core/popper.min.js' %}"></script>
+        <!-- <script src="{% static 'assets/js/core/bootstrap.min.js' %}"></script> -->
+        <script src="{% static 'js/bootstrap.min.js' %}"></script>
+        <script src="{% static 'assets/js/plugins/perfect-scrollbar.min.js' %}"></script>
+        <script src="{% static 'assets/js/plugins/smooth-scrollbar.min.js' %}"></script>
+        <script src="{% static 'assets/js/plugins/chartjs.min.js' %}"></script>
+        <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
+        <script src="{% static 'assets/js/soft-ui-dashboard-customized.js' %}"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
+        <style>
+          .dropzone {
+              border: dashed 4px #ddd !important ;
+              background-color: #f2f6fc;
+              border-radius: 15px;
+          }
+        
+          .dropzone .dropzone-container {
+              padding: 2rem 0;
+              width: 100%;
+              height: 100%;
+              position: relative;
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              align-items: center;
+              color: #8c96a8;
+              z-index: 20;
+          }
+        
+          .dropzone .file-input {
+              position: absolute;
+              width: 100%;
+              height: 100%;
+              top: 0;
+              left: 0;
+              opacity: 0;
+              visibility: hidden;
+              cursor: pointer;
+          }
+
+          .file-icon{
+              font-size: 60px;
+          }
+
+          .hr-sect {
+              display: flex;
+              flex-basis: 100%;
+              align-items: center;
+              margin: 8px 0px;
+          }
+
+          .hr-sect:before,
+          .hr-sect:after {
+              content: "";
+              flex-grow: 1;
+              background: #ddd;
+              height: 1px;
+              font-size: 0px;
+              line-height: 0px;
+              margin: 0px 8px;
+          }
+      </style>
+        
+
+        
     </head>
     <body class="g-sidenav-show bg-gray-100">
         <!-- sidebar -->
@@ -524,7 +592,7 @@
             <!-- Sidebar Footer Start -->
             <div class="sidenav-footer mx-3 ">
                 <div class="card card-background shadow-none card-background-mask-secondary" id="sidenavCard">
-                    <div class="full-background" style="background-image: url('{% static 'assets/img/curved-images/white-curved.jpg' %}')"></div>
+                    <!-- <div class="full-background" style="background-image: url('{% static 'assets/img/curved-images/white-curved.jpg' %}')"></div> -->
                     <div class="card-body text-start p-3 w-100">
                       <div class="icon icon-shape icon-sm bg-white shadow text-center mb-3 d-flex align-items-center justify-content-center border-radius-md">
                         <i class="ni ni-  diamond text-dark text-gradient text-lg top-0" aria-hidden="true" id="sidenavCardIcon"></i>
@@ -729,16 +797,7 @@
         
     </body>
     
-    <script src="{% static 'js/jquery.min.js' %}"></script>
-    <script src="{% static 'assets/js/core/popper.min.js' %}"></script>
-    <script src="{% static 'assets/js/core/bootstrap.min.js' %}"></script>
-    <script src="{% static 'js/bootstrap.min.js' %}"></script>
-    <script src="{% static 'assets/js/plugins/perfect-scrollbar.min.js' %}"></script>
-    <script src="{% static 'assets/js/plugins/smooth-scrollbar.min.js' %}"></script>
-    <script src="{% static 'assets/js/plugins/chartjs.min.js' %}"></script>
-    <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
-    <script src="{% static 'assets/js/soft-ui-dashboard-customized.js' %}"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 
     <script>
         var win = navigator.platform.indexOf('Win') > -1;

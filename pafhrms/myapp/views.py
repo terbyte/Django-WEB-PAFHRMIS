@@ -75,13 +75,6 @@ def update_placement(request):
             placement.IS_ARCHIVED = True
             placement.save()
 
-        # try:
-        #     personnel_item = PersonnelItem.objects.get(SERIAL_NUMBER=afpsn)
-        #     personnel_item.UNIT = new_unit
-        #     personnel_item.SUB_UNIT = "None"
-        #     personnel_item.save()
-        # except PersonnelItem.DoesNotExist:
-        #     return JsonResponse({'error': 'PersonnelItem not found'}, status=404)
         
         if category != "Assign":
             print("==============================", category, "DS OR TDY")
@@ -94,7 +87,7 @@ def update_placement(request):
                 placement.save()
         # Update the UNIT in PersonnelItem if The category is assign
         else:
-            personnel_item = PersonnelItem.objects.get(SERIAL_NUMBER=afpsn)
+            personnel_item = PersonnelItem.objects.get(AFPSN=afpsn)
             personnel_item.UNIT = new_unit
             personnel_item.SUB_UNIT = "None"
             personnel_item.save()
@@ -124,7 +117,7 @@ def index(request):
     if suffix_query and suffix_query != "Suffix":
         filters &= Q(EXTENSION_NAME__icontains=suffix_query)
     if afpsn_query:
-        filters &= Q(SERIAL_NUMBER__icontains=afpsn_query) 
+        filters &= Q(AFPSN__icontains=afpsn_query) 
     if rank_query and rank_query != "Rank":
         filters &= Q(RANK__icontains=rank_query)
     if category_query and category_query != "Category":
@@ -159,7 +152,7 @@ def index(request):
 
 
 def get_files(request, serial_number):
-    person = PersonnelItem.objects.get(SERIAL_NUMBER=serial_number)
+    person = PersonnelItem.objects.get(AFPSN=serial_number)
     files = PersonnelFile.objects.filter(personnel=person)
     file_list = [{'name': f.file.name, 'url': f.file.url} for f in files]
     return JsonResponse({'files': file_list})
@@ -168,14 +161,14 @@ def get_files(request, serial_number):
 def update_reenlistment_date(request):
     serial_number = request.POST['serial_number']
     new_date = request.POST['date_lastfull_reenlistment']
-    person = PersonnelItem.objects.get(SERIAL_NUMBER=serial_number)
+    person = PersonnelItem.objects.get(AFPSN=serial_number)
     person.DATE_LASTFULL_REENLISTMENT = new_date
     
     if 'pdf_file' in request.FILES:
         file = request.FILES['pdf_file']
         
         # Create a folder path based on the person's serial number
-        folder_path = os.path.join('uploads', str(person.SERIAL_NUMBER))
+        folder_path = os.path.join('uploads', str(person.AFPSN))
         
         # Create the folder if it doesn't exist
         if not os.path.exists(folder_path):
@@ -211,7 +204,7 @@ def update_personnel(request):
     if request.method == 'POST':
         try:
             personnel_id = request.POST.get('personnel_id')
-            personnel_items = PersonnelItem.objects.filter(SERIAL_NUMBER=personnel_id)
+            personnel_items = PersonnelItem.objects.filter(AFPSN=personnel_id)
             if not personnel_items.exists():
                 return JsonResponse({'success': False, 'error': 'Personnel not found'})
 
@@ -290,14 +283,14 @@ def upload_excel(request):
             for index, row in df.iterrows():
                 serial_number = row.iloc[5]
                 # Check if the entry with the same serial number already exists
-                if not PersonnelItem.objects.filter(SERIAL_NUMBER=serial_number).exists():
+                if not PersonnelItem.objects.filter(AFPSN=serial_number).exists():
                     PersonnelItem.objects.create(
                         RANK=row.iloc[0],
                         LAST_NAME=to_upper(row.iloc[1]),  # Convert to uppercase
                         FIRST_NAME=to_upper(row.iloc[2]),  # Convert to uppercase
                         MIDDLE_NAME=to_upper(row.iloc[3]),  # Convert to uppercase
                         EXTENSION_NAME=to_upper(row.iloc[4]),  # Convert to uppercase
-                        SERIAL_NUMBER=serial_number,
+                        AFPSN=serial_number,
                         BOS=row.iloc[6],
                         SEX=row.iloc[7],
                         BIRTHDAY=convert_date(row.iloc[8]),
@@ -350,7 +343,7 @@ def for_Separation(request):
     if suffix_query and suffix_query != "Suffix":
         filters &= Q(EXTENSION_NAME__icontains=suffix_query)
     if afpsn_query:
-        filters &= Q(SERIAL_NUMBER__icontains=afpsn_query)  # Change this to 'SERIAL_NUMBER'
+        filters &= Q(AFPSN__icontains=afpsn_query)  # Change this to 'SERIAL_NUMBER'
     if rank_query and rank_query != "Rank":
         filters &= Q(RANK__icontains=rank_query)
     if classification_query and classification_query != "Classification":
@@ -401,7 +394,7 @@ def lists_inactive(request):
     if suffix_query and suffix_query != "Suffix":
         filters &= Q(EXTENSION_NAME__icontains=suffix_query)
     if afpsn_query:
-        filters &= Q(SERIAL_NUMBER__icontains=afpsn_query)  # Change this to 'SERIAL_NUMBER'
+        filters &= Q(AFPSN__icontains=afpsn_query)  # Change this to 'SERIAL_NUMBER'
     if rank_query and rank_query != "Rank":
         filters &= Q(RANK__icontains=rank_query)
     if classification_query and classification_query != "Classification":
@@ -441,7 +434,7 @@ def set_inactive(request):
 
 
         try:
-            person = PersonnelItem.objects.get(SERIAL_NUMBER=serial_number)
+            person = PersonnelItem.objects.get(AFPSN=serial_number)
             person.IS_ACTIVE = False  # Set to inactive
             person.INACTIVITY_REASON = inactivity_reason
 
@@ -492,7 +485,7 @@ def Personnel_Records(request):
     if suffix_query and suffix_query != "Suffix":
         filters &= Q(EXTENSION_NAME__icontains=suffix_query)
     if afpsn_query:
-        filters &= Q(SERIAL_NUMBER__icontains=afpsn_query)  # Change this to 'SERIAL_NUMBER'
+        filters &= Q(AFPSN__icontains=afpsn_query)  # Change this to 'AFPSN'
     if rank_query and rank_query != "Rank":
         filters &= Q(RANK__icontains=rank_query)
     if classification_query and classification_query != "Classification":
@@ -551,7 +544,7 @@ def placement_officer(request):
     if suffix_query and suffix_query != "Suffix":
         filters &= Q(EXTENSION_NAME__icontains=suffix_query)
     if afpsn_query:
-        filters &= Q(SERIAL_NUMBER__icontains=afpsn_query)  
+        filters &= Q(AFPSN__icontains=afpsn_query)  
     if rank_query and rank_query != "Rank":
         filters &= Q(RANK__icontains=rank_query)
     if category_query and category_query:
@@ -604,7 +597,7 @@ def placement_enlisted(request):
     if suffix_query and suffix_query != "Suffix":
         filters &= Q(EXTENSION_NAME__icontains=suffix_query)
     if afpsn_query:
-        filters &= Q(SERIAL_NUMBER__icontains=afpsn_query)  
+        filters &= Q(AFPSN__icontains=afpsn_query)  
     if rank_query and rank_query != "Rank":
         filters &= Q(RANK__icontains=rank_query)
     if category_query and category_query:
@@ -658,7 +651,7 @@ def placement_DS(request):
     if suffix_query and suffix_query != "Suffix":
         filters &= Q(EXTENSION_NAME__icontains=suffix_query)
     if afpsn_query:
-        filters &= Q(SERIAL_NUMBER__icontains=afpsn_query)  
+        filters &= Q(AFPSN__icontains=afpsn_query)  
     if rank_query and rank_query != "Rank":
         filters &= Q(RANK__icontains=rank_query)
     if sex_query and sex_query != "Sex":
@@ -710,7 +703,7 @@ def placement_Assign(request):
     if suffix_query and suffix_query != "Suffix":
         filters &= Q(EXTENSION_NAME__icontains=suffix_query)
     if afpsn_query:
-        filters &= Q(SERIAL_NUMBER__icontains=afpsn_query)
+        filters &= Q(AFPSN__icontains=afpsn_query)
     if rank_query and rank_query != "Rank":
         filters &= Q(RANK__icontains=rank_query)
     if sex_query and sex_query != "Sex":
@@ -879,19 +872,19 @@ def unit_monitoring(request):
     filters = Q()
     if unit_query and unit_query != "UNIT":
         filters &= Q(UNIT__icontains=unit_query)
-    if sub_unit_query and sub_unit_query != "SUB UNIT":
+    if sub_unit_query and sub_unit_query != "":
         filters &= Q(SUB_UNIT__icontains=sub_unit_query)
+
     persons = PersonnelItem.objects.filter(filters)
     paginator = Paginator(persons, 10)
     page_num = request.GET.get("page")
     persons = paginator.get_page(page_num)
-    
+
     return render(request, 'Unit_Monitoring/unit_monitoring.html', {
         'persons': persons,
         'unit_query': unit_query,
         'sub_unit_query': sub_unit_query,
     })
-
 
 
 

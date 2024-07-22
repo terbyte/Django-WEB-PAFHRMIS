@@ -20,7 +20,7 @@
                 {% for person in persons %}
                 <tr>
                     <td>{{ person.RANK }}</td>
-                    <td>{{ person.SERIAL_NUMBER }}</td>
+                    <td>{{ person.AFPSN }}</td>
                     <td>{{ person.FIRST_NAME}} {{person.MIDDLE_NAME}} {{person.LAST_NAME}}</td>
                     <td>{{ person.UNIT }}</td>
                     <td>{{ person.SUB_UNIT }}</td>
@@ -33,7 +33,7 @@
                     data-firstname="{{ person.FIRST_NAME }}"
                     data-middlename="{{ person.MIDDLE_NAME }}"
                     data-suffix="{{ person.EXTENSION_NAME }}"
-                    data-afpsn="{{ person.SERIAL_NUMBER }}"
+                    data-afpsn="{{ person.AFPSN }}"
                     data-unit="{{ person.UNIT }}"
                     data-subunit="{{ person.SUB_UNIT }}"
                     data-birthday="{{ person.BIRTHDAY|date:'d-b-Y' }}"

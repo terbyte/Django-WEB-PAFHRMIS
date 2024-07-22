@@ -80,7 +80,7 @@
     {% with start_number=persons.start_index %}
         <tr>
             <td>{{ start_number|add:forloop.counter0 }}</td>
-            <td>{{ person.SERIAL_NUMBER }}</td>
+            <td>{{ person.AFPSN }}</td>
             <td>{{ person.RANK }}</td>
             <td>{{ person.FIRST_NAME }} {{ person.MIDDLE_NAME }} {{ person.LAST_NAME }}</td>
  V            <td>{{ person.UNIT }}</td>

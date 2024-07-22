@@ -39,7 +39,7 @@ urlpatterns = [
     path('set_inactive/', views.set_inactive, name='set_inactive'),
     
 
-    # 
+    # REENLISTMENT
     path('update_reenlistment_date/', views.update_reenlistment_date, name='update_reenlistment_date'),  
     path('get_files/<str:serial_number>/', views.get_files, name='get_files'),
 

@@ -6,7 +6,11 @@
       <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
       <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
       <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
+      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.13/jspdf.plugin.autotable.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
+      
 
 <div class="card mb-2">
     <div class="card-body pb-0">
@@ -93,8 +97,8 @@
                     <th>UNIT</th>
                     <th>SUB-UNIT</th>
                     <th>CP #</th>
-                    <th>DATE OF LAST FULL REENLISTMENT</th>
-                    <th>DATE OF NEXT FULL REENLISTMENT</th>
+                    <th>LAST FULL REENLISTMENT DATE</th>
+                    <th>NEXT FULL REENLISTMENT DATE</th>
                     <th>DATE UPDATE </th>
                     <th>FILES UPLOADED</th>
                 </tr>
@@ -104,7 +108,7 @@
                 {% with start_number=persons.start_index %}
                 <tr>
                     <td>{{ start_number|add:forloop.counter0 }}</td>
-                    <td>{{ person.SERIAL_NUMBER }}</td>
+                    <td>{{ person.AFPSN }}</td>
                     <td>{{ person.RANK }}</td>
                     <td>{{ person.FIRST_NAME }} {{ person.MIDDLE_NAME }} {{ person.LAST_NAME }} </td>
                     <td>{{ person.UNIT }}</td>
@@ -114,14 +118,14 @@
                     <td>{{ person.DATE_NEXTFULL_REENLISTMENT }}</td>
                     <td>
                         <button type="button" class="btn bg-gradient-primary customBGTheme btn-sm" data-toggle="modal" data-target="#editModal"
-                                data-serialnumber="{{ person.SERIAL_NUMBER }}"
+                                data-serialnumber="{{ person.AFPSN }}"
                                 data-lastfullreenlistment="{{ person.DATE_LASTFULL_REENLISTMENT }}">
                             UPDATE
                         </button>
                     </td>
                     <td>
                         <button type="button" class="btn bg-gradient-primary customBGTheme btn-sm" data-toggle="modal" data-target="#viewFilesModal"
-                                data-serialnumber="{{ person.SERIAL_NUMBER }}">
+                                data-serialnumber="{{ person.AFPSN }}">
                             ORDER
                         </button>
                     </td>
@@ -146,7 +150,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <input type="hidden" name="serial_number" id="modalSerialNumber">
+                    <input type="hidden" name="serial_number" id="serial_number" id="modalSerialNumber">
                     <div class="form-group">
                         <label for="modalDateLastFullReenlistment">Date of Last Full Reenlistment</label>
                         <input type="date" class="form-control" name="date_lastfull_reenlistment" id="modalDateLastFullReenlistment">
@@ -298,10 +302,6 @@
         {% endif %}
     </ul>
 </nav>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.13/jspdf.plugin.autotable.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
 
 <script>
     $(document).ready(function() {

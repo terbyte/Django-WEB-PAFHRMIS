@@ -1,6 +1,6 @@
 
-
-<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.css">
+<!-- 
+<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.css"> -->
 
 <table class="table table-responsive-sm table-bordered table-striped table-sm" id="sortableTable">
     <thead>
@@ -18,7 +18,7 @@
         {% for person in persons %}
         <tr>
             <td>{{ person.RANK }}</td>
-            <td>{{ person.SERIAL_NUMBER }}</td>
+            <td>{{ person.AFPSN }}</td>
             <td>{{ person.FIRST_NAME}} {{person.MIDDLE_NAME}} {{person.LAST_NAME}}</td>
             <td>{{ person.UNIT }}</td>
             <td>{{ person.SUB_UNIT }}</td>

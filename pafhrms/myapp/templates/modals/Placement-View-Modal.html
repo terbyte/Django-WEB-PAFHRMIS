@@ -434,7 +434,13 @@ $('#uploadOrder').change(function() {
     });
 
 
-
+    function getProcessedFilePath(fullFilePath) {
+    var startIdx = fullFilePath.indexOf("Temporary Duty");
+    if (startIdx !== -1) {
+        return fullFilePath.substring(startIdx);
+    }
+    return fullFilePath;
+}
 
     $(document).ready(function() {
       $('.openModalButton').click(function() {

@@ -1,12 +1,14 @@
 from django.db import models
 import os
+
+
 class PersonnelItem(models.Model):
     RANK = models.CharField(max_length=200)
     LAST_NAME = models.CharField(max_length=200)
     FIRST_NAME = models.CharField(max_length=200)
     MIDDLE_NAME = models.CharField(max_length=200, blank=True, null=True)
     EXTENSION_NAME = models.CharField(max_length=200, blank=True, null=True)
-    SERIAL_NUMBER = models.CharField(max_length=200)
+    AFPSN = models.CharField(max_length=200)
     BOS = models.CharField(max_length=200)
     SEX = models.CharField(max_length=10)
     BIRTHDAY = models.DateField(blank=True, null=True)
@@ -28,8 +30,8 @@ class PersonnelItem(models.Model):
     INACTIVITY_REASON=models.CharField(max_length=200, blank=True, null=True)
     IS_ACTIVE = models.BooleanField(default=True)
 
+class Placement(models.Model):        
 
-class Placement(models.Model):
     AFPSN = models.CharField(max_length=200)
     RANK = models.CharField(max_length=200)
     LAST_NAME = models.CharField(max_length=200)
