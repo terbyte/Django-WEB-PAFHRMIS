@@ -168,40 +168,30 @@ def get_files(request, serial_number):
 def update_reenlistment_date(request):
     serial_number = request.POST['serial_number']
     new_date = request.POST['date_lastfull_reenlistment']
-    
-    try:
-        person = PersonnelItem.objects.get(SERIAL_NUMBER=serial_number)
-    except PersonnelItem.DoesNotExist:
-        return JsonResponse({'success': False, 'error': 'Personnel not found'})
-    
+    person = PersonnelItem.objects.get(SERIAL_NUMBER=serial_number)
     person.DATE_LASTFULL_REENLISTMENT = new_date
-    person.save()
-
+    
     if 'pdf_file' in request.FILES:
         file = request.FILES['pdf_file']
-        afpsn = person.SERIAL_NUMBER  # Assuming you have a field AFPSN in PersonnelItem
-        last_name = person.LAST_NAME  # Assuming you have a field LAST_NAME in PersonnelItem
-
-        # Create the folder structure
-        folder_name = f"{afpsn}_{last_name}"
-        folder_path = os.path.join(settings.MEDIA_ROOT, folder_name, "reenlistmentOrder")
-
+        
+        # Create a folder path based on the person's serial number
+        folder_path = os.path.join('uploads', str(person.SERIAL_NUMBER))
+        
+        # Create the folder if it doesn't exist
         if not os.path.exists(folder_path):
             os.makedirs(folder_path)
-
-        # Save the file
+        
+        # Save the file in the person's folder
         file_path = os.path.join(folder_path, file.name)
-        with open(file_path, 'wb+') as destination:
+        with open(file_path, 'wb') as destination:
             for chunk in file.chunks():
                 destination.write(chunk)
         
-        # Assuming you have a placement instance
-        try:
-            placement = Placement.objects.get(AFPSN=afpsn)
-            PersonnelFile.objects.create(placement=placement, file=file_path)
-        except Placement.DoesNotExist:
-            return JsonResponse({'success': False, 'error': 'Placement not found'})
-
+        # Create a PersonnelFile object with the file path
+        PersonnelFile.objects.create(personnel=person, file=file_path)
+    
+    person.save()
+    
     return redirect('Tranche')
 
 
@@ -774,24 +764,6 @@ def save_placement_update(request):
             reassignment_effective_date_until = reassignment_date
             duration = "None"
 
-        folder_name = f"{afpsn}_{last_name}"
-        folder_path = os.path.join(settings.MEDIA_ROOT, folder_name)
-        
-        # Create the subfolder based on assignment_category
-        category_name = f"{assignment_category}"
-        category_folder_path = os.path.join(folder_path, category_name)
-
-        # Create the folders if they don't exist
-        if not os.path.exists(category_folder_path):
-            os.makedirs(category_folder_path)
-
-        # Save the uploaded file to the designated subfolder    
-        if upload_file:
-            file_path = os.path.join(category_folder_path, upload_file.name)
-            with open(file_path, 'wb+') as destination:
-                for chunk in upload_file.chunks():
-                    destination.write(chunk)
-
         # Create the Placement instance
         placement = Placement(
             AFPSN=afpsn,
@@ -807,13 +779,29 @@ def save_placement_update(request):
             REASSIGN_EFFECTIVEDDATE_UNTIL=reassignment_effective_date_until,
             DURATION=duration
         )
+        
         try:
             placement.save()
 
             if upload_file:
+                # Construct the folder path
+                folder_name = f"{afpsn}_{last_name}"
+                category_folder_path = os.path.join(settings.MEDIA_ROOT, folder_name, assignment_category)
+
+                # Create the folders if they don't exist
+                if not os.path.exists(category_folder_path):
+                    os.makedirs(category_folder_path)
+
+                # Define file path and save the file
+                file_path = os.path.join(category_folder_path, upload_file.name)
+                with open(file_path, 'wb+') as destination:
+                    for chunk in upload_file.chunks():
+                        destination.write(chunk)
+
+                # Save the file info in PersonnelFile model
                 personnel_file = PersonnelFile(
                     placement=placement,
-                    file=upload_file
+                    file=file_path
                 )
                 personnel_file.save()
 

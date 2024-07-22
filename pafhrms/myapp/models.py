@@ -1,5 +1,5 @@
 from django.db import models
-
+import os
 class PersonnelItem(models.Model):
     RANK = models.CharField(max_length=200)
     LAST_NAME = models.CharField(max_length=200)
@@ -49,12 +49,20 @@ class Placement(models.Model):
         db_table = "placementinfo"
 
 
-class PersonnelFile(models.Model):
-    placement = models.ForeignKey(Placement, related_name='files', on_delete=models.CASCADE)
-    file = models.FileField(upload_to='orders/')
-    uploaded_at = models.DateTimeField(auto_now_add=True)
-    
+# class PersonnelFile(models.Model):
+#     placement = models.ForeignKey(Placement, related_name='files', on_delete=models.CASCADE)
+#     file = models.FileField(upload_to='orders/')
+#     uploaded_at = models.DateTimeField(auto_now_add=True)
 
+    
+class PersonnelFile(models.Model):
+    def get_upload_path(instance, filename):
+        # Place the file in the appropriate folder based on the placement's details
+        return os.path.join(f"{instance.placement.AFPSN}_{instance.placement.LAST_NAME}", filename)
+
+    placement = models.ForeignKey(Placement, related_name='files', on_delete=models.CASCADE)
+    file = models.FileField(upload_to=get_upload_path)
+    uploaded_at = models.DateTimeField(auto_now_add=True)
 
 # class AFSC(models.Model):
 #     code = models.CharField(max_length=20, unique=True)
