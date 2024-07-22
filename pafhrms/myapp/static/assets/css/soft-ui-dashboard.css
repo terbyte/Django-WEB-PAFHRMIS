@@ -20938,6 +20938,7 @@ fieldset:disabled .btn {
 
 .card.card-background {
   align-items: center;
+  margin-top: 4rem;
 }
 
 .card.card-background .full-background {
@@ -22573,7 +22574,8 @@ html {
   top: 0;
   bottom: 0;
   width: 100%;
-  max-width: 15.625rem !important;
+  max-width: 17.625rem !important;
+  overflow: hidden;
   overflow-y: auto;
   padding: 0;
   box-shadow: none;
@@ -23223,7 +23225,7 @@ html {
   }
 
   .sidenav.fixed-start~.main-content {
-    margin-left: 17.125rem;
+    margin-left: 18.125rem;
   }
 
   .sidenav.fixed-end~.main-content {
