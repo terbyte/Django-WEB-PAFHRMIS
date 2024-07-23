@@ -7,7 +7,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     # path("<int:id>/", views.index, name="index"),
     path('', views.index, name='index'),
-    path('upload_excel/', views.upload_excel, name='upload_excel'),
+    
     path('update_personnel/', views.update_personnel, name='update_personnel'),  # Add this line 
     path('Tranche/', views.Tranche, name='Tranche'),  
 
@@ -42,6 +42,22 @@ urlpatterns = [
     # REENLISTMENT
     path('update_reenlistment_date/', views.update_reenlistment_date, name='update_reenlistment_date'),  
     path('get_files/<str:serial_number>/', views.get_files, name='get_files'),
+
+
+
+    # AFSC
+    path('afsc/afsc_Dasboard', views.afsc_Dashboard, name='afsc_Dashboard'),
+
+
+
+    # UPLOADS
+    path('upload_excel/', views.upload_excel, name='upload_excel'),
+    path('table_Units/', views.table_Units, name='table_Units'),
+
+
+
+
+
 
 
 

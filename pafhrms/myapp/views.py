@@ -27,6 +27,102 @@ from django.http import JsonResponse
 from django.db.models import Count, Q
 
 
+
+
+
+def table_Units(request):
+    print("Uploading ....")
+    if request.method == 'POST' and request.FILES['excel_file']:
+        excel_file = request.FILES['excel_file']
+
+        # Read the file directly from the uploaded file object
+        df = pd.read_excel(excel_file)
+
+        # Convert the date format
+        def convert_date(date_value):
+            if pd.isna(date_value):
+                return None
+            if isinstance(date_value, datetime):
+                # If the value is already a datetime object, return it in the desired format
+                return date_value.strftime('%Y-%m-%d')
+            elif isinstance(date_value, str):
+                # If the value is a string, try to parse it
+                try:
+                    return datetime.strptime(date_value, '%d-%b-%y').strftime('%Y-%m-%d')
+                except ValueError:
+                    return None
+            else:
+                return None
+            
+        # Function to convert strings to uppercase, handling NaN values
+        def to_upper(value):
+            if pd.isna(value):
+                return ''
+            return str(value).upper()
+        
+        try:
+            for index, row in df.iterrows():
+                serial_number = row.iloc[5]
+                # Check if the entry with the same serial number already exists
+                if not PersonnelItem.objects.filter(AFPSN=serial_number).exists():
+                    PersonnelItem.objects.create(
+                        RANK=row.iloc[0],
+                        LAST_NAME=to_upper(row.iloc[1]),  # Convert to uppercase
+                        FIRST_NAME=to_upper(row.iloc[2]),  # Convert to uppercase
+                        MIDDLE_NAME=to_upper(row.iloc[3]),  # Convert to uppercase
+                        EXTENSION_NAME=to_upper(row.iloc[4]),  # Convert to uppercase
+                        AFPSN=serial_number,
+                        BOS=row.iloc[6],
+                        SEX=row.iloc[7],
+                        BIRTHDAY=convert_date(row.iloc[8]),
+                        CONTACT_NUMBER=row.iloc[9],
+                        ADDRESS=row.iloc[10],
+                        CLASSIFICATION=row.iloc[11],
+                        CATEGORY=row.iloc[12],
+                        SOURCE_OF_ENLISTMENT_COMMISION=row.iloc[13],
+                        PILOT_RATED_NON_RATED=row.iloc[14],
+                        AFSC=row.iloc[15],
+                        HIGHEST_PME_COURSES=row.iloc[16],
+                        EFFECTIVE_DATE_APPOINTMENT=convert_date(row.iloc[17]),
+                        EFFECTIVE_DATE_ENTERED=convert_date(row.iloc[18]),
+                        DATE_LAST_PROMOTION_APPOINTMENT=convert_date(row.iloc[19]),
+                        UNIT=row.iloc[20],
+                        SUB_UNIT=row.iloc[21],
+                        DATE_LASTFULL_REENLISTMENT=convert_date(row.iloc[22]),
+                        DATE_LAST_ETAD=convert_date(row.iloc[23])
+                    )
+            return HttpResponse('Data uploaded successfully.')
+        except Exception as e:
+            return HttpResponse(f'Error: {e}')
+    return render(request, 'myapp/upload.html')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 def calculate_due_date(duration,reassignment_date):
     reassignment_date = datetime.strptime(reassignment_date, "%Y-%m-%d")
     if duration == '6 Months':
@@ -40,6 +136,14 @@ def calculate_due_date(duration,reassignment_date):
     elif duration == 'NO DEADLINE':
         return None
     return None 
+
+
+
+def afsc_Dashboard(request):
+    return render(request, 'afsc/afsc_Dashboard.html')
+
+
+
 
 
 
@@ -134,7 +238,116 @@ def index(request):
     paginator = Paginator(persons, 10)
     page_num = request.GET.get("page")
     persons = paginator.get_page(page_num)
+
+    # UNIT DASHBOARD
+    selected_unit = request.GET.get('selected_unit')
+
+    GUAS_units = [
+        'GHQ', 'PAFHRMC', 'AFPWSSUS', 'NOLCOM', 'SOLCOM', 'WESCOM', 
+        'VISCOM', 'WESTMINCOM', 'EASTMINCOM', 'JTF-NCR', 'TOWWEST',
+    ]
+
+    ALLPAF_units = [
+        'GHQ', 'HPAF', 'PAFHRMC A/U', 'PAFHRMC', 'AFPWSSUS', 'AIBDC', 
+        'ADC', 'AMC', 'ACC', 'AETDC', 'ARFC', 'TOWNOL', 'TOWSOL', 
+        'TOWCEN', 'TOWWEST', 'TOWEASTMIN', '355AEW', '300AISW', 
+        '900AFWG', '950CEWW', 'AFFC', 'AFSSG', 'HSSG', 'PAFCMOG', 
+        'NOLCOM', 'SOLCOM', 'WESCOM', 'VISCOM', 'WESTMINCOM', 
+        'EASTMINCOM', 'JTF-NCR',
+    ]
+
+    PAFHRMC_au = [
+        'PAFHRMC A/U'
+    ]
+
+    guas_filters = Q()
+    ALLPAF_units_filters = Q()
+    PAFHRMC_au_filters = Q()
+
+    if selected_unit and selected_unit in GUAS_units:
+        guas_filters &= Q(UNIT__exact=selected_unit)
+
+    if selected_unit and selected_unit in ALLPAF_units:
+        ALLPAF_units_filters &= Q(UNIT__exact=selected_unit)
     
+    if selected_unit and selected_unit in PAFHRMC_au:
+        PAFHRMC_au_filters &= Q(UNIT__exact=selected_unit)
+
+    GUAS_unit_counts = (
+        PersonnelItem.objects
+        .filter(guas_filters)
+        .values('UNIT')
+        .annotate(
+            officers_count=Count('pk', filter=Q(CATEGORY='OFFICER')),
+            enlisted_count=Count('pk', filter=Q(CATEGORY='ENLISTED PERSONNEL'))
+        )
+    )
+    ALLPAF_unit_counts = (
+        PersonnelItem.objects
+        .filter(ALLPAF_units_filters)
+        .values('UNIT')
+        .annotate(
+            officers_count=Count('pk', filter=Q(CATEGORY='OFFICER')),
+            enlisted_count=Count('pk', filter=Q(CATEGORY='ENLISTED PERSONNEL'))
+        )
+    )
+    PAFHRMC_au_counts = (
+        PersonnelItem.objects
+        .filter(PAFHRMC_au_filters)
+        .values('UNIT')
+        .annotate(
+            officers_count=Count('pk', filter=Q(CATEGORY='OFFICER')),
+            enlisted_count=Count('pk', filter=Q(CATEGORY='ENLISTED PERSONNEL'))
+        )
+    )
+
+    # Aggregating assignment categories from Placement model
+    placement_counts = (
+        Placement.objects
+        .values('NEW_UNIT')
+        .annotate(
+            detached_service_count=Count('pk', filter=Q(ASSIGNMENT_CATEGORY='Detached Service')),
+            temporary_duty_count=Count('pk', filter=Q(ASSIGNMENT_CATEGORY='Temporary Duty'))
+        )
+    )
+
+    # Convert placement counts to a dictionary for easy lookup
+    placement_counts_dict = {item['NEW_UNIT']: item for item in placement_counts}
+
+    # Update counts with assignment category data
+    def update_counts(unit_counts):
+        for unit in unit_counts:
+            unit_name = unit['UNIT']
+            if unit_name in placement_counts_dict:
+                unit.update(placement_counts_dict[unit_name])
+            else:
+                unit['detached_service_count'] = 0
+                unit['temporary_duty_count'] = 0
+
+    update_counts(GUAS_unit_counts)
+    update_counts(ALLPAF_unit_counts)
+    update_counts(PAFHRMC_au_counts)
+
+    # UNIT MONITORING
+
+    # unit_query = request.GET.get('unit')
+    # sub_unit_query = request.GET.get('SubunitDP')
+
+    # filters = Q()
+    # if unit_query and unit_query != "UNIT":
+    #     filters &= Q(UNIT__icontains=unit_query)
+    # if sub_unit_query and sub_unit_query != "":
+    #     filters &= Q(SUB_UNIT__icontains=sub_unit_query)
+
+    # persons = PersonnelItem.objects.filter(filters)
+    # paginator = Paginator(persons, 10)
+    # page_num = request.GET.get("page")
+    # persons = paginator.get_page(page_num)
+
+
+
+
+
     return render(request, 'myapp/index.html', {
         'persons': persons,
         'last_name_query': last_name_query,
@@ -146,6 +359,17 @@ def index(request):
         'category_query': category_query,
         'sex_query': sex_query,
         'unit_query': unit_query,
+        # unit dashboard
+
+        'GUAS_units': GUAS_units,
+        'GUAS_unit_counts': GUAS_unit_counts,
+        'ALLPAF_units': ALLPAF_units,
+        'ALLPAF_unit_counts': ALLPAF_unit_counts,
+        'PAFHRMC_au': PAFHRMC_au,
+        'PAFHRMC_au_counts': PAFHRMC_au_counts,
+        # unit monitoring
+        # 'unit_query': unit_query,
+        # 'sub_unit_query': sub_unit_query,
     })
 
 
@@ -880,7 +1104,7 @@ def unit_monitoring(request):
     page_num = request.GET.get("page")
     persons = paginator.get_page(page_num)
 
-    return render(request, 'Unit_Monitoring/unit_monitoring.html', {
+    return render(request, 'myapp/index.html', {
         'persons': persons,
         'unit_query': unit_query,
         'sub_unit_query': sub_unit_query,

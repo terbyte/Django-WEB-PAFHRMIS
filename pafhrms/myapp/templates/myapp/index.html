@@ -1,8 +1,5 @@
 {% extends 'Base/base.html' %}
-
-
 {% block title %}PAFHRMIS{% endblock %}
-
 {% block content %}
 
 
@@ -43,25 +40,34 @@
         pointer-events: none;
         cursor: default;
     }
+    .tab-content{
+        background-color: #fff;
+        color: #fff;
+        overflow: hidden;
+    }
 </style>
-<ul class="nav nav-pills">
-    <li class="unique-nav-item">
-      <a class="uniqueuniquenav-link active" aria-current="page" href="#">Active</a>
-    </li>
-    <li class="unique-nav-item">
-      <a class="uniqueuniquenav-link" href="#">Link</a>
-    </li>
-    <li class="unique-nav-item">
-      <a class="uniqueuniquenav-link" href="#">Link</a>
-    </li>
-    <li class="unique-nav-item">
-      <a class="uniqueuniquenav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-    </li>
-</ul>
+<nav>
+    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+      <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Personnel Records</button>
+      <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Unit Dashboard</button>
+      <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Unit Monitoring</button>
+    </div>
+  </nav>
+  <div class="tab-content" id="nav-tabContent">
+    <!-- PEROSNNEL RECORDS START -->
+    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">{% include 'myapp/searchforms.html' %}{% include 'myapp/tablewithPaginator.html' %}</div>
+    <!-- PEROSNNEL RECORDS END -->
+
+    <!-- UNIT DASHBOARD START -->
+    <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">{% include 'Unit_Monitoring/unit_dashboard.html' %}</div>
+    <!-- UNIT DASHBOARD END -->
+
+    <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">{% include 'Unit_Monitoring/unit_monitoring.html' %}</div>
+
+  </div>
 
 <!-- <h2 class="text-primary customTextTheme">Personnel Records</h2> -->
-{% include 'myapp/searchforms.html' %}
-{% include 'myapp/tablewithPaginator.html' %}
+
 
 <script>$(document).ready(function() {
     var pageLists = [];
@@ -87,5 +93,7 @@ function setActive(element) {
         element.classList.add('active');
     }
 </script>
+
+
 {% endblock %}
 
