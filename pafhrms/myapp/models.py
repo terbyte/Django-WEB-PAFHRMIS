@@ -30,6 +30,10 @@ class PersonnelItem(models.Model):
     INACTIVITY_REASON=models.CharField(max_length=200, blank=True, null=True)
     IS_ACTIVE = models.BooleanField(default=True)
 
+
+# 
+
+
 class Placement(models.Model):
     AFPSN = models.CharField(max_length=200)
     RANK = models.CharField(max_length=200)
@@ -75,11 +79,15 @@ class PersonnelTable(models.Model):
     isActive = models.BooleanField(default=True)
 
 class UnitsTable(models.Model):
-    PK_Units = models.BigIntegerField(primary_key=True)
+    PK_Units = models.BigAutoField (primary_key=True)
     UnitName = models.CharField(max_length=100)
     UnitDescription = models.CharField(max_length=200)
-    Logo = models.CharField(max_length=200)
-    FK_MotherUnit = models.ForeignKey('self', on_delete=models.CASCADE)
+    Logo = models.CharField(max_length=200, blank=True, null=True)
+    FK_MotherUnit = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)
+
+    def __str__(self):
+        return self.UnitName
+    
 
 class AFSCTable(models.Model):
     PK_AFSC = models.BigIntegerField(primary_key=True)

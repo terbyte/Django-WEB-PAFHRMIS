@@ -22,10 +22,9 @@ from django.conf import settings  # Import settings
 from django.shortcuts import render, redirect
 from django.views.decorators.http import require_POST
 from .models import PersonnelFile
-from .models import PersonnelItem, PersonnelFile
+from .models import PersonnelItem, PersonnelFile,UnitsTable
 from django.http import JsonResponse
 from django.db.models import Count, Q
-
 
 
 
@@ -38,59 +37,40 @@ def table_Units(request):
         # Read the file directly from the uploaded file object
         df = pd.read_excel(excel_file)
 
-        # Convert the date format
-        def convert_date(date_value):
-            if pd.isna(date_value):
-                return None
-            if isinstance(date_value, datetime):
-                # If the value is already a datetime object, return it in the desired format
-                return date_value.strftime('%Y-%m-%d')
-            elif isinstance(date_value, str):
-                # If the value is a string, try to parse it
-                try:
-                    return datetime.strptime(date_value, '%d-%b-%y').strftime('%Y-%m-%d')
-                except ValueError:
-                    return None
-            else:
-                return None
-            
+        # Print DataFrame columns to verify
+        print("Columns in Excel file:", df.columns)
+
         # Function to convert strings to uppercase, handling NaN values
         def to_upper(value):
             if pd.isna(value):
                 return ''
             return str(value).upper()
-        
+
         try:
             for index, row in df.iterrows():
-                serial_number = row.iloc[5]
-                # Check if the entry with the same serial number already exists
-                if not PersonnelItem.objects.filter(AFPSN=serial_number).exists():
-                    PersonnelItem.objects.create(
-                        RANK=row.iloc[0],
-                        LAST_NAME=to_upper(row.iloc[1]),  # Convert to uppercase
-                        FIRST_NAME=to_upper(row.iloc[2]),  # Convert to uppercase
-                        MIDDLE_NAME=to_upper(row.iloc[3]),  # Convert to uppercase
-                        EXTENSION_NAME=to_upper(row.iloc[4]),  # Convert to uppercase
-                        AFPSN=serial_number,
-                        BOS=row.iloc[6],
-                        SEX=row.iloc[7],
-                        BIRTHDAY=convert_date(row.iloc[8]),
-                        CONTACT_NUMBER=row.iloc[9],
-                        ADDRESS=row.iloc[10],
-                        CLASSIFICATION=row.iloc[11],
-                        CATEGORY=row.iloc[12],
-                        SOURCE_OF_ENLISTMENT_COMMISION=row.iloc[13],
-                        PILOT_RATED_NON_RATED=row.iloc[14],
-                        AFSC=row.iloc[15],
-                        HIGHEST_PME_COURSES=row.iloc[16],
-                        EFFECTIVE_DATE_APPOINTMENT=convert_date(row.iloc[17]),
-                        EFFECTIVE_DATE_ENTERED=convert_date(row.iloc[18]),
-                        DATE_LAST_PROMOTION_APPOINTMENT=convert_date(row.iloc[19]),
-                        UNIT=row.iloc[20],
-                        SUB_UNIT=row.iloc[21],
-                        DATE_LASTFULL_REENLISTMENT=convert_date(row.iloc[22]),
-                        DATE_LAST_ETAD=convert_date(row.iloc[23])
-                    )
+                unit_type = to_upper(row['Unit_Type'])
+                unit_name = to_upper(row['Unit_Name'])
+                unit_description = to_upper(row['Unit_Description'])
+                unit_under = to_upper(row.get('Unit_Under', ''))
+
+                # Determine the FK_MotherUnit based on Unit_Type
+                parent_unit = None
+                if unit_type == 'MAIN':
+                    parent_unit = None  # MAIN units do not have a parent
+                elif unit_type == 'SUB':
+                    if unit_under:
+                        try:
+                            parent_unit = UnitsTable.objects.get(UnitName=unit_under)
+                        except UnitsTable.DoesNotExist:
+                            parent_unit = None
+
+                # Create the unit
+                UnitsTable.objects.create(
+                    UnitName=unit_name,
+                    UnitDescription=unit_description,
+                    Logo=row.get('Logo', ''),  # Handle optional Logo field
+                    FK_MotherUnit=parent_unit  # Set the foreign key relationship
+                )
             return HttpResponse('Data uploaded successfully.')
         except Exception as e:
             return HttpResponse(f'Error: {e}')
@@ -102,7 +82,49 @@ def table_Units(request):
 
 
 
+# def table_Units(request):
+#     print("Uploading ....")
+#     if request.method == 'POST' and request.FILES['excel_file']:
+#         excel_file = request.FILES['excel_file']
 
+#         # Read the file directly from the uploaded file object
+#         df = pd.read_excel(excel_file)
+
+#         # Convert the date format
+#         def convert_date(date_value):
+#             if pd.isna(date_value):
+#                 return None
+#             if isinstance(date_value, datetime):
+#                 return date_value.strftime('%Y-%m-%d')
+#             elif isinstance(date_value, str):
+#                 try:
+#                     return datetime.strptime(date_value, '%d-%b-%y').strftime('%Y-%m-%d')
+#                 except ValueError:
+#                     return None
+#             else:
+#                 return None
+
+#         # Function to convert strings to uppercase, handling NaN values
+#         def to_upper(value):
+#             if pd.isna(value):
+#                 return ''
+#             return str(value).upper()
+
+#         # try:
+#         for index, row in df.iterrows():
+#                 mother_unit_id = row['FK_MotherUnit'] if 'FK_MotherUnit' in row else None
+#                 mother_unit = UnitsTable.objects.get(pk=mother_unit_id) if mother_unit_id else None
+
+#                 UnitsTable.objects.create(
+#                     UnitName=to_upper(row['UnitName']),  # Convert to uppercase
+#                     UnitDescription=to_upper(row['UnitDescription']),  # Convert to uppercase
+#                     Logo=row.get('Logo', ''),  # Handle optional Logo field
+#                     FK_MotherUnit=mother_unit
+#                 )
+#         return HttpResponse('Data uploaded successfully.')
+#         # except Exception as e:
+#         #     return HttpResponse(f'Error: {e}')
+#     return render(request, 'myapp/upload.html')
 
 
 
@@ -359,8 +381,8 @@ def index(request):
         'category_query': category_query,
         'sex_query': sex_query,
         'unit_query': unit_query,
-        # unit dashboard
 
+        # unit dashboard
         'GUAS_units': GUAS_units,
         'GUAS_unit_counts': GUAS_unit_counts,
         'ALLPAF_units': ALLPAF_units,
