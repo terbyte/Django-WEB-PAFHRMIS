@@ -884,6 +884,8 @@ def unit_monitoring(request):
         'persons': persons,
         'unit_query': unit_query,
         'sub_unit_query': sub_unit_query,
+ 
+
     })
 
 

@@ -1,6 +1,6 @@
 {% extends 'Base/base.html' %}
 {% block content %}
-<h2 class="text-primary customTextTheme">Unit Monitoring</h2>
+<h2 class="text-primary customTextTheme">{{ mainpagetitle }}</h2>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <div class="card mb-2">
@@ -125,6 +125,21 @@
     const initialSubunit = $('#SubunitDP').val();
     populateSubunits(initialUnit, initialSubunit);
   });
+
+
+  $(document).ready(function() {
+  var pageLists = [];
+  var pageTitle = "unit monitoring";
+  pageLists[0] = "Dashboard";
+  pageLists[1] = pageTitle;
+  var pagesData = {
+      "pagetitle" : pageTitle,
+      "pagelists" : pageLists              
+  };
+  localStorage.setItem("pagesData", JSON.stringify(pagesData));
+});
 </script>
+
+
 
 {% endblock %}

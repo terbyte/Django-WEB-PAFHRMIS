@@ -8218,7 +8218,7 @@ h1, h2, h3, h4, h5,
 #sidebar {
   min-width: 300px;
   max-width: 300px;
-  background: #588157;
+  background: #344767;
   color: #fff;
   -webkit-transition: all 0.3s;
   -o-transition: all 0.3s;
@@ -8281,7 +8281,7 @@ a[data-toggle="collapse"] {
   transition: all 0.3s; }
 
 .btn.btn-primary {
-  background: #588157;
+  background: #344767;
   width: 100%;
   border-color: #a3b18a; }
   .btn.btn-primary:hover, .btn.btn-primary:focus {
@@ -8291,7 +8291,7 @@ a[data-toggle="collapse"] {
   }
 
   .btn.btn-actions {
-    background: #588157;
+    background: #344767;
     width: 50%;
     color: white;
     border-color: #a3b18a; }

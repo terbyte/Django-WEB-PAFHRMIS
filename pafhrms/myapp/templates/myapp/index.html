@@ -4,10 +4,88 @@
 {% block title %}PAFHRMIS{% endblock %}
 
 {% block content %}
-<h2 class="text-primary customTextTheme">Personnel Records</h2>
 
+
+<style>
+    .nav {
+        display: flex;
+        padding-left: 0;
+        margin-bottom: 0;
+        list-style: none;
+        border-radius: .25rem;
+    }
+    .unique-nav-item {
+        margin-right: 5px;
+    }
+    .uniqueuniquenav-link {
+        display: block;
+        padding: .5rem 1rem;
+        border: 1px solid transparent;
+        border-radius: .25rem;
+        transition: background-color .15s ease-in-out, border-color .15s ease-in-out;
+        text-decoration: none;
+        color: #007bff;
+    }
+    .uniqueuniquenav-link:hover {
+        text-decoration: none;
+        background-color: #e9ecef;
+        border-color: #dee2e6;
+    }
+    .uniqueuniquenav-link.active {
+        color: #fff;
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+    .uniqueuniquenav-link.disabled {
+        color: #6c757d;
+        background-color: transparent;
+        border-color: transparent;
+        pointer-events: none;
+        cursor: default;
+    }
+</style>
+<ul class="nav nav-pills">
+    <li class="unique-nav-item">
+      <a class="uniqueuniquenav-link active" aria-current="page" href="#">Active</a>
+    </li>
+    <li class="unique-nav-item">
+      <a class="uniqueuniquenav-link" href="#">Link</a>
+    </li>
+    <li class="unique-nav-item">
+      <a class="uniqueuniquenav-link" href="#">Link</a>
+    </li>
+    <li class="unique-nav-item">
+      <a class="uniqueuniquenav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+    </li>
+</ul>
+
+<!-- <h2 class="text-primary customTextTheme">Personnel Records</h2> -->
 {% include 'myapp/searchforms.html' %}
 {% include 'myapp/tablewithPaginator.html' %}
 
+<script>$(document).ready(function() {
+    var pageLists = [];
+    var pageTitle = "Personnel Records";
+    pageLists[0] = "Dashboard";
+    pageLists[1] = pageTitle;
+    var pagesData = {
+        "pagetitle" : pageTitle,
+        "pagelists" : pageLists              
+    };
+    localStorage.setItem("pagesData", JSON.stringify(pagesData));
+});
 
+
+function setActive(element) {
+        // Get all nav links
+        var navLinks = document.querySelectorAll('.uniqueuniquenav-link');
+        // Remove the active class from all nav links
+        navLinks.forEach(function(link) {
+            link.classList.remove('active');
+        });
+        // Add the active class to the clicked nav link
+        element.classList.add('active');
+    }
+</script>
 {% endblock %}
+

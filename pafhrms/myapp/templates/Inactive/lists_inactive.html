@@ -50,4 +50,21 @@
     </div>
   </form>
 
+
+
+<script>
+    $(document).ready(function() {
+        var pageLists = [];
+        var pageTitle = "Lists of Inactive";
+        pageLists[0] = "Inactive";
+        pageLists[1] = pageTitle;
+        var pagesData = {
+            "pagetitle" : pageTitle,
+            "pagelists" : pageLists              
+        };
+        localStorage.setItem("pagesData", JSON.stringify(pagesData));
+    });
+</script>
+
+
   {% endblock %}

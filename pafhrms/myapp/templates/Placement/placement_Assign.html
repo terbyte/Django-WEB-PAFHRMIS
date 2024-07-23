@@ -1,7 +1,7 @@
 {% extends 'Base/base.html' %}
 
 {% block content %}
-<h2 class="text-primary customTextTheme">ASSIGN MONITORING</h2>
+<h2 class="text-primary customTextTheme">ASSIGNMENT MONITORING</h2>
 {% include 'myapp/searchforms.html' %}
 
 <div class="card mb-4">
@@ -255,6 +255,18 @@ function getCellValue(row, sortKey) {
         return -1;
     }
 
+
+    $(document).ready(function() {
+  var pageLists = [];
+  var pageTitle = "Assignment MONITORING";
+  pageLists[0] = "placement";
+  pageLists[1] = pageTitle;
+  var pagesData = {
+      "pagetitle" : pageTitle,
+      "pagelists" : pageLists              
+  };
+  localStorage.setItem("pagesData", JSON.stringify(pagesData));
+});
 
    
 </script>

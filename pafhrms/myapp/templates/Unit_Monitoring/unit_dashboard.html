@@ -185,4 +185,18 @@
             </div>
         </div>
     </div>
+
+
+
+    <script>$(document).ready(function() {
+        var pageLists = [];
+        var pageTitle = "unit dashboard";
+        pageLists[0] = "Dashboard";
+        pageLists[1] = pageTitle;
+        var pagesData = {
+            "pagetitle" : pageTitle,
+            "pagelists" : pageLists              
+        };
+        localStorage.setItem("pagesData", JSON.stringify(pagesData));
+    });</script>
 {% endblock %}

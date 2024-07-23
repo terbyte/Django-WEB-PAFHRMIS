@@ -98,6 +98,19 @@
   
       });
   });
+
+
+  $(document).ready(function() {
+  var pageLists = [];
+  var pageTitle = "Officer";
+  pageLists[0] = "placement";
+  pageLists[1] = pageTitle;
+  var pagesData = {
+      "pagetitle" : pageTitle,
+      "pagelists" : pageLists              
+  };
+  localStorage.setItem("pagesData", JSON.stringify(pagesData));
+});
   
     </script>
   
