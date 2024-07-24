@@ -48,7 +48,7 @@
                 Upload the excel file template of "Unit Data" here. <span class="text-primary customTextTheme">You only need to do it once</span>
             </p>
             <div class="form-group">
-                <form method="post" enctype="multipart/form-data" action="{% url 'table_Units' %}" class="novalidate">
+                <form method="post" enctype="multipart/form-data" action="{% url 'table_Units_upload' %}" class="novalidate">
                     {% csrf_token %}
                     <div class="form-group">
                         <div class="bg-white p-5 rounded shadow-sm border">

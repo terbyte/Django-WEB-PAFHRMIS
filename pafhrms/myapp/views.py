@@ -27,9 +27,23 @@ from django.http import JsonResponse
 from django.db.models import Count, Q
 
 
+def display_units(request):
+    # Fetch all units from the database
+    units_list = UnitsTable.objects.all()
+    print("asdasdasdaaaaaaaaaaa",units_list)
+    
+    # Set up pagination
+    paginator = Paginator(units_list, 10)  # Show 10 units per page
+    page_number = request.GET.get('page')  # Get the page number from the request
+    page_obj = paginator.get_page(page_number)  # Get the specific page
+    
+    # Pass the page object to the template
+    return render(request, 'afsc/afsc_Dashboard.html', {'page_obj': page_obj})
 
 
-def table_Units(request):
+
+
+def table_Units_upload(request):
     print("Uploading ....")
     if request.method == 'POST' and request.FILES['excel_file']:
         excel_file = request.FILES['excel_file']
@@ -162,7 +176,16 @@ def calculate_due_date(duration,reassignment_date):
 
 
 def afsc_Dashboard(request):
-    return render(request, 'afsc/afsc_Dashboard.html')
+    # Fetch all units from the database
+    units_list = UnitsTable.objects.all()
+    
+    # Set up pagination
+    paginator = Paginator(units_list, 1000000)  # Show 10 units per page
+    page_number = request.GET.get('page')  # Get the page number from the request
+    page_obj = paginator.get_page(page_number)  # Get the specific page
+    
+    # Pass the page object to the template
+    return render(request, 'afsc/afsc_Dashboard.html', {'page_obj': page_obj})
 
 
 

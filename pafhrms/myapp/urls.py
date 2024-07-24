@@ -52,7 +52,7 @@ urlpatterns = [
 
     # UPLOADS
     path('upload_excel/', views.upload_excel, name='upload_excel'),
-    path('table_Units/', views.table_Units, name='table_Units'),
+    path('table_Units_upload/', views.table_Units_upload, name='table_Units_upload'),
 
 
 
