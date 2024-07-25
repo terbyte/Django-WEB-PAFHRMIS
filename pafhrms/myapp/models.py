@@ -52,10 +52,21 @@ class Placement(models.Model):
     class Meta:
         db_table = "placementinfo"
 
+# PersonnelFile for DS/TDY and Reassignment
 class PersonnelFile(models.Model):
     placement = models.ForeignKey(PersonnelItem, related_name='files', on_delete=models.CASCADE)
     file = models.FileField(upload_to='orders/')
     uploaded_at = models.DateTimeField(auto_now_add=True)
+
+# class PersonnelFile(models.Model):
+#     placement = models.ForeignKey(PersonnelItem, related_name='files', on_delete=models.CASCADE)
+#     file = models.FileField(upload_to='orders/')
+#     uploaded_at = models.DateTimeField(auto_now_add=True)
+
+# class PersonnelFile_Placement(models.Model):
+#     placement = models.ForeignKey(Placement, related_name='files', on_delete=models.CASCADE)
+#     file = models.FileField(upload_to='orders/')
+#     uploaded_at = models.DateTimeField(auto_now_add=True)
 
 
 # New Define Tables -> Will be use in database

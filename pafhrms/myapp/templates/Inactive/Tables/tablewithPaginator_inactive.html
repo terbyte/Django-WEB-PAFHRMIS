@@ -11,6 +11,7 @@
             <th class="sortable" data-sort="UNIT">Unit</th>
             <th class="sortable" data-sort="SUB_UNIT">Sub-Unit</th>
             <th class="sortable" data-sort="CATEGORY">category</th>
+            <th>action</th>
 
         </tr>
     </thead>
@@ -22,7 +23,39 @@
             <td>{{ person.FIRST_NAME}} {{person.MIDDLE_NAME}} {{person.LAST_NAME}}</td>
             <td>{{ person.UNIT }}</td>
             <td>{{ person.SUB_UNIT }}</td>
-            <td>{{ person.CATEGORY }}</td>
+            <td>{{ person.CATEGORY }}</td> 
+            <td>
+                <button class="btn bg-gradient-primary customBGTheme openModalButton"
+                data-rank="{{ person.RANK }}"
+                data-lastname="{{ person.LAST_NAME }}"
+                data-firstname="{{ person.FIRST_NAME }}"
+                data-middlename="{{ person.MIDDLE_NAME }}"
+                data-suffix="{{ person.EXTENSION_NAME }}"
+                data-afpsn="{{ person.AFPSN }}"
+                data-unit="{{ person.UNIT }}"
+                data-subunit="{{ person.SUB_UNIT }}"
+                data-birthday="{{ person.BIRTHDAY|date:'d-b-Y' }}"
+                data-contactnumber="{{ person.CONTACT_NUMBER }}"
+                data-sex="{{ person.SEX }}"
+                data-address="{{ person.ADDRESS }}"
+                data-classification="{{ person.CLASSIFICATION }}"
+                data-sourceofenlistmentcommission="{{ person.SOURCE_OF_ENLISTMENT_COMMISION }}"
+                data-category="{{ person.CATEGORY }}"
+                data-bos="{{ person.BOS }}"
+                data-afsc="{{ person.AFSC }}"
+                data-hpme="{{ person.HIGHEST_PME_COURSES }}"
+                data-dateenteredmilitary="{{ person.EFFECTIVE_DATE_ENTERED|date:'d-b-Y' }}"
+                data-lengthofservice="{{ person.LENGTH_OF_SERVICE }}"
+                data-pilotrating="{{ person.PILOT_RATED_NON_RATED }}"
+                data-promotion="{{ person.DATE_LAST_PROMOTION_APPOINTMENT|date:'Y-m-d' }}"
+                data-dateofcommissionship="{{ person.EFFECTIVE_DATE_APPOINTMENT|date:'d-b-Y' }}"
+                data-fullreeenlistment="{{ person.DATE_LASTFULL_REENLISTMENT|date:'Y-m-d' }}"
+                data-dateoflastetadsot="{{ person.DATE_LAST_ETAD|date:'Y-m-d' }}"
+
+                data-toggle="modal"
+                data-target="#myModal"><i class="fa fa-edit"></i> rETRACT </button>
+            
+                </td>
 
         </tr>
         {% endfor %}
@@ -31,7 +64,7 @@
 
 
 
-  {% include 'modals/set_status_modal.html' %}
+  {% include 'Inactive/Modals/retraction_modal.html' %}
   
  <script>
 $(document).ready(function() {
