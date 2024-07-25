@@ -628,7 +628,7 @@ def for_Separation(request):
     page_num = request.GET.get("page")
     persons = paginator.get_page(page_num)
     
-    return render(request, 'Inactive/for_Seperation.html', {
+    return render(request, 'Inactive/for_Separation.html', {
         'persons': persons,
         'last_name_query': last_name_query,
         'first_name_query': first_name_query,
@@ -674,6 +674,8 @@ def lists_inactive(request):
         filters &= Q(UNIT__icontains=unit_query)
     
     persons = PersonnelItem.objects.filter(filters)
+
+    print("fersonnnnnnnnnn",persons)
     
     paginator = Paginator(persons, 10)
     page_num = request.GET.get("page")
@@ -708,7 +710,7 @@ def set_inactive(request):
             person.INACTIVITY_REASON = inactivity_reason
 
             if upload_order:
-                PersonnelFile.objects.create(personnel=person, file=upload_order)
+                PersonnelFile.objects.create(placement=person, file=upload_order)
 
             person.save()
             response = {'success': True}

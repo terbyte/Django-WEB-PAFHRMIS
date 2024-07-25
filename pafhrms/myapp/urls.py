@@ -34,8 +34,9 @@ urlpatterns = [
     path('placement/', views.placement_officer, name='placement'),
 
     # INACTIVE
-    path('for_Seperation/', views.for_Separation, name='for_Seperation'),
+    path('for_Separation/', views.for_Separation, name='for_Separation'),
     path('lists_inactive/', views.lists_inactive, name='lists_inactive'),
+    # INACTIVE FUNC
     path('set_inactive/', views.set_inactive, name='set_inactive'),
     
 

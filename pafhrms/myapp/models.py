@@ -53,7 +53,7 @@ class Placement(models.Model):
         db_table = "placementinfo"
 
 class PersonnelFile(models.Model):
-    placement = models.ForeignKey(Placement, related_name='files', on_delete=models.CASCADE)
+    placement = models.ForeignKey(PersonnelItem, related_name='files', on_delete=models.CASCADE)
     file = models.FileField(upload_to='orders/')
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
