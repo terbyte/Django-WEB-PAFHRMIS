@@ -33,7 +33,6 @@ class PersonnelItem(models.Model):
 
 # 
 
-
 class Placement(models.Model):
     AFPSN = models.CharField(max_length=200)
     RANK = models.CharField(max_length=200)
@@ -61,7 +60,7 @@ class PersonnelFile(models.Model):
 
 # New Define Tables -> Will be use in database
 class PersonnelTable(models.Model):
-    PK_Personnel = models.BigIntegerField(primary_key=True)
+    PK_Personnel = models.BigAutoField(primary_key=True)
     FirstName = models.CharField(max_length=200)
     LastName = models.CharField(max_length=200)    
     MiddleName = models.CharField(max_length=200, blank=True, null=True)
@@ -90,31 +89,31 @@ class UnitsTable(models.Model):
     
 
 class AFSCTable(models.Model):
-    PK_AFSC = models.BigIntegerField(primary_key=True)
+    PK_AFSC = models.BigAutoField(primary_key=True)
     AFSCTitle = models.CharField(max_length=100)
     AFSCDescription = models.CharField(max_length=200)
 
 class CoursesTable(models.Model):
-    PK_Course = models.BigIntegerField(primary_key=True)
+    PK_Course = models.BigAutoField(primary_key=True)
     CourseTitle = models.CharField(max_length=200)
     CourseDescription = models.CharField(max_length=200)
     RelatedCourse = models.CharField(max_length=200)
     
 class AFSCCourseTable(models.Model):
-    PK_AFSCCourse = models.BigIntegerField(primary_key=True)
+    PK_AFSCCourse = models.BigAutoField(primary_key=True)
     RelatedCourse = models.CharField(max_length=100)
     FK_AFSC= models.ForeignKey(AFSCTable, on_delete=models.CASCADE)
     FK_Course = models.ForeignKey(CoursesTable, on_delete=models.CASCADE)
 
 class AFSCRelatedCourse(models.Model):
-    PK_AFSCRelatedCourse = models.BigIntegerField(primary_key=True)
+    PK_AFSCRelatedCourse = models.BigAutoField(primary_key=True)
     UnitName = models.CharField(max_length=100)
     UnitDescription = models.CharField(max_length=200)
     Logo = models.CharField(max_length=100)
     FK_MotherUnit = models.ForeignKey('self', on_delete=models.CASCADE)
 
 class PersonnelHistoryTable(models.Model):
-    PK_Personnel = models.BigIntegerField(primary_key=True)
+    PK_Personnel = models.BigAutoField(primary_key=True)
     FirstName = models.CharField(max_length=100)
     LastName = models.CharField(max_length=100)    
     MiddleName = models.CharField(max_length=100, blank=True)
@@ -133,7 +132,7 @@ class PersonnelHistoryTable(models.Model):
     FK_Personnel = models.ForeignKey(PersonnelTable, on_delete=models.CASCADE)
 
 class PersonnelFilesTable(models.Model):
-    PK_PersonnelFiles = models.BigIntegerField(primary_key=True)
+    PK_PersonnelFiles = models.BigAutoField(primary_key=True)
     DateUploaded = models.DateField(default=date.today)
     FileName = models.CharField(max_length=200)
     FileType = models.CharField(max_length=200)
@@ -141,27 +140,20 @@ class PersonnelFilesTable(models.Model):
     FK_Personnel = models.ForeignKey(PersonnelTable, on_delete=models.CASCADE)
 
 class PositionTypeTable(models.Model):
-    PK_PositionType = models.BigIntegerField(primary_key=True)
+    PK_PositionType = models.BigAutoField(primary_key=True)
     TypeTitle = models.CharField(max_length=100)
     TypeDescription = models.CharField(max_length=100)
 
 class UnitWorkPositionTable(models.Model):
-    PK_UnitWorkPosition = models.BigIntegerField(primary_key=True)
+    PK_UnitWorkPosition = models.BigAutoField(primary_key=True)
     PositionTitle = models.CharField(max_length=100)
     PositionDescription = models.CharField(max_length=100)
     FK_PositionType = models.ForeignKey(PositionTypeTable, on_delete=models.CASCADE)
     FK_Unit = models.ForeignKey(UnitsTable, on_delete=models.CASCADE)
     
 class PositionSuggestedAFSC(models.Model):
-    PK_UnitWorkPosition = models.BigIntegerField(primary_key=True)
+    PK_UnitWorkPosition = models.BigAutoField(primary_key=True)
     PositionTitle = models.CharField(max_length=100)
     PositionDescription = models.CharField(max_length=100)
     FK_PositionType = models.ForeignKey(PositionTypeTable, on_delete=models.CASCADE)
     FK_Unit = models.ForeignKey(UnitsTable, on_delete=models.CASCADE)
-
-# class AFSC(models.Model):
-#     code = models.CharField(max_length=20, unique=True)
-#     description = models.CharField(max_length=255, blank=True)
-
-#     def __str__(self):
-#         return self.code
