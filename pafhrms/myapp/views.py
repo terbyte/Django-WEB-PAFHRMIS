@@ -196,13 +196,10 @@ def user_files(request, afpsn):
     try:
         # Fetch the Placement instances associated with the given AFPSN
         placements = Placement.objects.filter(AFPSN=afpsn)
-
         # Fetch the related PersonnelFile instances
         files = PersonnelFile.objects.filter(placement__in=placements)
-
         # Create a list of file details
         file_list = [{'name': file.file.name, 'url': file.file.url} for file in files]
-        
         return JsonResponse({'files': file_list, 'success': True})
     except Exception as e:
         return JsonResponse({'error': str(e), 'success': False})
@@ -226,7 +223,6 @@ def update_placement(request):
 
         
         if category != "Assign":
-            print("==============================", category, "DS OR TDY")
             # Archive all instances from Placement again if needed
             placements = Placement.objects.filter(AFPSN=afpsn, IS_ARCHIVED=False)
             if not placements.exists():
@@ -699,20 +695,38 @@ def lists_inactive(request):
 
 def set_inactive(request):
     if request.method == 'POST':
-        serial_number = request.POST.get('afpsn')
+        afpsn = request.POST.get('afpsn')
+        last_name = request.POST.get('last_name')
         inactivity_reason = request.POST.get('Inactivitycategory')
         upload_order = request.FILES.get('separation_uploadOrder')
 
 
         try:
-            person = PersonnelItem.objects.get(AFPSN=serial_number)
+            person = PersonnelItem.objects.get(AFPSN=afpsn)
             person.IS_ACTIVE = False  # Set to inactive
             person.INACTIVITY_REASON = inactivity_reason
 
             if upload_order:
-                PersonnelFile.objects.create(placement=person, file=upload_order)
+                # Construct the folder path
+                folder_name = f"{afpsn}_{last_name}"
+                category_folder_path = os.path.join(settings.MEDIA_ROOT, folder_name, "Separation Fle")
 
-            person.save()
+                # Create the folders if they don't exist
+                if not os.path.exists(category_folder_path):
+                    os.makedirs(category_folder_path)
+
+                # Define file path and save the file
+                file_path = os.path.join(category_folder_path, upload_order.name)
+                with open(file_path, 'wb+') as destination:
+                    for chunk in upload_order.chunks():
+                        destination.write(chunk)
+
+                # Save the file info in PersonnelFile model
+                personnel_file = PersonnelFile(
+                    placement=person,
+                    file=file_path
+                )
+                personnel_file.save()
             response = {'success': True}
         except ObjectDoesNotExist:
             response = {'success': False, 'error': 'Personnel item not found'}
@@ -784,11 +798,6 @@ def Personnel_Records(request):
         'sex_query': sex_query,
         'unit_query': unit_query,
     })
-
-
-
-
-
 
 
 
