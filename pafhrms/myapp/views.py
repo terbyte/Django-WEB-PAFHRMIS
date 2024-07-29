@@ -25,6 +25,8 @@ from .models import PersonnelFile
 from .models import PersonnelItem, PersonnelFile,UnitsTable
 from django.http import JsonResponse
 from django.db.models import Count, Q
+from itertools import groupby
+from operator import attrgetter
 
 
 def calculate_due_date(duration,reassignment_date):
@@ -52,29 +54,112 @@ def display_units(request):
     # Pass the page object to the template
     return render(request, 'afsc/afsc_Dashboard.html', {'page_obj': page_obj})
 
-def display_units(request):
-    # Fetch all units from the database
-    units_list = UnitsTable.objects.all()
-    # Set up pagination
-    paginator = Paginator(units_list, 10)  # Show 10 units per page
-    page_number = request.GET.get('page')  # Get the page number from the request
-    page_obj = paginator.get_page(page_number)  # Get the specific page
-    
-    # Pass the page object to the template
-    return render(request, 'afsc/afsc_Dashboard.html', {'page_obj': page_obj})
 
 
 def afsc_Dashboard(request):
     # Fetch all units from the database
     units_list = UnitsTable.objects.all()
-    
-    # Set up pagination
-    paginator = Paginator(units_list, 1000000)  # Show 10 units per page
+
+    # Filter out units where UnitCategory is None, blank, or empty
+    filtered_units = units_list.exclude(UnitCategory__in=['', None,'none','None','NONE'])
+
+    # Group the filtered units by UnitCategory
+    grouped_units = {}
+    for key, group in groupby(filtered_units.order_by('UnitCategory'), key=attrgetter('UnitCategory')):
+        grouped_units[key] = list(group)
+
+    # Fetch units where FK_MotherUnit is None (i.e., main units)
+    main_units = UnitsTable.objects.filter(FK_MotherUnit__isnull=True).exclude(UnitCategory__in=['', None])
+
+    # Flatten the grouped units list for pagination (but excluding main units)
+    flat_units_list = [unit for units in grouped_units.values() for unit in units if unit not in main_units]
+
+    # Set up pagination for main units
+    paginator = Paginator(main_units, 10)  # Show 10 units per page
     page_number = request.GET.get('page')  # Get the page number from the request
     page_obj = paginator.get_page(page_number)  # Get the specific page
-    
-    # Pass the page object to the template
-    return render(request, 'afsc/afsc_Dashboard.html', {'page_obj': page_obj})
+
+    return render(request, 'afsc/afsc_Dashboard.html', {
+        'grouped_units': grouped_units,
+        'page_obj': page_obj,
+        'main_units': main_units
+    })
+
+# doenst display sub units
+# def afsc_Dashboard(request):
+#     # Fetch all units from the database
+#     units_list = UnitsTable.objects.all()
+
+#     # Fetch units where FK_MotherUnit is None (i.e., main units)
+#     main_units = UnitsTable.objects.filter(FK_MotherUnit__isnull=True)
+
+#     # Filter out units where UnitCategory is blank, None, or null
+#     non_main_units = units_list.exclude(pk__in=main_units.values_list('pk', flat=True))
+#     non_main_units = non_main_units.exclude(UnitCategory__in=['', None])
+
+#     # Group the non-main units by UnitCategory
+#     grouped_units = {}
+#     for key, group in groupby(non_main_units.order_by('UnitCategory'), key=attrgetter('UnitCategory')):
+#         grouped_units[key] = list(group)
+
+#     # Flatten the grouped units list for pagination
+#     flat_units_list = [unit for units in grouped_units.values() for unit in units]
+
+#     # Set up pagination for main units
+#     paginator = Paginator(main_units, 10)  # Show 10 units per page
+#     page_number = request.GET.get('page')  # Get the page number from the request
+#     page_obj = paginator.get_page(page_number)  # Get the specific page
+
+#     return render(request, 'afsc/afsc_Dashboard.html', {
+#         'grouped_units': grouped_units,
+#         'page_obj': page_obj,
+#         'main_units': main_units
+#     })
+
+
+# def afsc_Dashboard(request):
+#      # Fetch all units from the database and order them by UnitCategory
+#     units_list = UnitsTable.objects.all().order_by('UnitCategory')
+
+#     # Group the units by UnitCategory
+#     grouped_units = {}
+#     for key, group in groupby(units_list, key=attrgetter('UnitCa tegory')):
+#         grouped_units[key] = list(group)
+
+#     # Flatten the grouped units list for pagination
+#     flat_units_list = [unit for units in grouped_units.values() for unit in units]
+#     main_units = UnitsTable.objects.filter(FK_MotherUnit__isnull=True or "None")
+
+#     # Set up pagination
+#     paginator = Paginator(flat_units_list, 10)  # Show 10 units per page
+#     page_number = request.GET.get('page')  # Get the page number from the request
+#     page_obj = paginator.get_page(page_number)  # Get the specific page
+
+#     return render(request, 'afsc/afsc_Dashboard.html', {'grouped_units': grouped_units,
+#                                                         'main_units': main_units,
+#                                                           'page_obj': page_obj
+#                                                           })
+
+
+# def afsc_Dashboard(request):
+#     # Fetch all units from the database and order them by UnitCategory
+#     units_list = UnitsTable.objects.all().order_by('UnitCategory')
+
+#     # Group the units by UnitCategory
+#     grouped_units = {}
+#     for key, group in groupby(units_list, key=attrgetter('UnitCategory')):
+#         category = key if key else "All PAF UNITS"  # Handle empty UnitCategory
+#         grouped_units[category] = list(group)
+
+#     # Flatten the grouped units list for pagination
+#     flat_units_list = [unit for units in grouped_units.values() for unit in units]
+
+#     # Set up pagination
+#     paginator = Paginator(flat_units_list, 10)  # Show 10 units per page
+#     page_number = request.GET.get('page')  # Get the page number from the request
+#     page_obj = paginator.get_page(page_number)  # Get the specific page
+
+#     return render(request, 'afsc/afsc_Dashboard.html', {'grouped_units': grouped_units, 'page_obj': page_obj})
 
 
 def table_Units_upload(request):

@@ -29,60 +29,65 @@
 </style>
 </head>
 <body>
-<h1>Units Table</h1>
-<table>
-    <thead>
-        <tr>
-            <th>PK Units</th>
-            <th>Unit Name</th>
-            <th>Unit Description</th>
-            <th>Logo</th>
-            <th>Mother Unit</th>
-            <th>Unit Category</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for unit in page_obj %}
-        <tr>
-            <td>{{ unit.PK_Units }}</td>
-            <td>{{ unit.UnitName }}</td>
-            <td>{{ unit.UnitDescription }}</td>
-            <td>{{ unit.Logo }}</td>
-            <td>{{ unit.FK_MotherUnit }}</td>
-            <td>{{ unit.UnitCategory }}</td>
-        </tr>
-        {% empty %}
-        <tr>
-            <td colspan="5">No units available.</td>
-        </tr>
+    {% if grouped_units %}
+        {% for category, units in grouped_units.items %}
+            <h2>{{ category }}</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>PK Units</th>
+                        <th>Unit Name</th>
+                        <th>Unit Description</th>
+                        <th>Logo</th>
+                        <th>Mother Unit</th>
+                        <th>Unit Category</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for unit in units %}
+                        <tr>
+                            <td>{{ unit.PK_Units }}</td>
+                            <td>{{ unit.UnitName }}</td>
+                            <td>{{ unit.UnitDescription }}</td>
+                            <td>{{ unit.Logo }}</td>
+                            <td>{{ unit.FK_MotherUnit }}</td>
+                            <td>{{ unit.UnitCategory }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         {% endfor %}
-    </tbody>
-</table>
-
-<!-- Pagination Controls -->
-<div class="pagination">
-    {% if page_obj.has_previous %}
-        <a href="?page=1">&laquo; First</a>
-        <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
     {% else %}
-        <span class="current">&laquo; First</span>
-        <span class="current">Previous</span>
+        <p>No units available.</p>
     {% endif %}
-
-    {% for num in page_obj.paginator.page_range %}
-        {% if num == page_obj.number %}
-            <span class="current">{{ num }}</span>
-        {% else %}
-            <a href="?page={{ num }}">{{ num }}</a>
-        {% endif %}
-    {% endfor %}
-
-    {% if page_obj.has_next %}
-        <a href="?page={{ page_obj.next_page_number }}">Next</a>
-        <a href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a>
-    {% else %}
-        <span class="current">Next</span>
-        <span class="current">Last &raquo;</span>
-    {% endif %}
-</div>
+      <!-- Section for main units -->
+      <h2>All PAF Units</h2>
+      <table>
+          <thead>
+              <tr>
+                  <th>PK Units</th>
+                  <th>Unit Name</th>
+                  <th>Unit Description</th>
+                  <th>Logo</th>
+                  <th>Mother Unit</th>
+                  <th>Unit Category</th>
+              </tr>
+          </thead>
+          <tbody>
+              {% for unit in main_units %}
+                  <tr>
+                      <td>{{ unit.PK_Units }}</td>
+                      <td>{{ unit.UnitName }}</td>
+                      <td>{{ unit.UnitDescription }}</td>
+                      <td>{{ unit.Logo }}</td>
+                      <td>{{ unit.FK_MotherUnit }}</td>
+                      <td>{{ unit.UnitCategory }}</td>
+                  </tr>
+              {% empty %}
+                  <tr>
+                      <td colspan="6">No main units available.</td>
+                  </tr>
+              {% endfor %}
+          </tbody>
+      </table>
 </body>
