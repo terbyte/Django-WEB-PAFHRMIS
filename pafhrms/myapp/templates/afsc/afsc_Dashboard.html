@@ -1,0 +1,48 @@
+{% extends 'Base/base.html' %}
+
+
+
+
+{% block content %}
+
+<h2>ALL ABOUT AFSC</h2>
+
+
+<nav>
+    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+      <button class="nav-link active" id="nav-units-table-tab" data-bs-toggle="tab" data-bs-target="#nav-units-table" type="button" role="tab" aria-controls="nav-units-table" aria-selected="true">Units</button>
+      <button class="nav-link" id=" nav-" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Something here</button>
+      <button class="nav-link" id=" nav-" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Something here</button>
+      <button class="nav-link" id=" nav-" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Something here</button>
+      <button class="nav-link" id=" nav-" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Something here</button>
+    </div>
+  </nav>
+  <div class="tab-content" id="nav-tabContent">
+    <!-- PEROSNNEL RECORDS START -->
+    <div class="tab-pane fade show active" id="nav-units-table" role="tabpanel" aria-labelledby="nav-units-table-tab">{% include 'afsc/Tables/units_tables.html' %}</div>
+    <!-- PEROSNNEL RECORDS END -->
+
+    <!-- UNIT DASHBOARD START -->
+    <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby=" nav-">something</div>
+    <!-- UNIT DASHBOARD END -->
+
+  </div>
+
+
+  {% load static %}
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <!-- Include Bootstrap JS -->
+  <script src="{% static 'assets/js/core/bootstrap.bundle.min.js' %}"></script>
+
+  <script>
+      $(document).ready(function () {
+          $('#sidebar .collapse').on('show.bs.collapse', function () {
+              $('#sidebar .collapse.show').collapse('hide');
+          });
+      });
+  </script>
+
+{% endblock %}
+

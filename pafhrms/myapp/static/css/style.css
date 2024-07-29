@@ -6,6 +6,10 @@
  */
 :root {
   --blue: #007bff;
+  --my_primary: #344767;
+  --my_secondary: #222e44;
+  --my_tertiary: #ced4da;
+  
   --indigo: #6610f2;
   --purple: #6f42c1;
   --pink: #e83e8c;
@@ -3820,7 +3824,7 @@ input[type="button"].btn-block {
 .card-header {
   padding: 0.75rem 1.25rem;
   margin-bottom: 0;
-  background-color: rgba(0, 0, 0, 0.03);
+  background-color: var(--my_tertiary);
   border-bottom: 1px solid rgba(0, 0, 0, 0.125); }
   .card-header:first-child {
     border-radius: calc(0.25rem - 1px) calc(0.25rem - 1px) 0 0; }
@@ -8218,7 +8222,7 @@ h1, h2, h3, h4, h5,
 #sidebar {
   min-width: 300px;
   max-width: 300px;
-  background: #588157;
+  background: var(--my_primary);
   color: #fff;
   -webkit-transition: all 0.3s;
   -o-transition: all 0.3s;
@@ -8281,11 +8285,11 @@ a[data-toggle="collapse"] {
   transition: all 0.3s; }
 
 .btn.btn-primary {
-  background: #588157;
+  background:var(--my_primary);
   width: 100%;
   border-color: #a3b18a; }
   .btn.btn-primary:hover, .btn.btn-primary:focus {
-    background: #3a5a40 !important;
+    background: var(--my_secondary) !important;
     /* border-color: #f8b739 !important;  */
     
   }

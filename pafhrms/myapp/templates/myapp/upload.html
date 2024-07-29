@@ -2,202 +2,172 @@
 
 {% extends 'Base/base.html' %}
 {% block content %}
-
-
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Upload Excel</title>
-    <style>
-        #unique-container {
-            margin: auto;
-            margin-top: auto;
-            width: 37%;
-        }
-    
-        .unique-box-input {
-            text-align: center;
-        }
-    
-        .unique-box-input svg {
-            width: 5rem;
-            height: 5rem;
-            vertical-align: middle;
-            fill: currentColor;
-        }
-    
-        form {
-            color: #fff;
-        }
-    
-        input[type="button" i],
-        input[type="file" i]::-webkit-file-upload-button {
-            display: none !important;
-        }
-    
-        .unique-box.has-advanced-upload {
-            transition: all .15s ease-in-out, background-color .15s linear;
-        }
-    
-        .unique-box {
-            font-size: 1.25rem;
-            background-color: #588157;
-            border: 4px solid #f8b739;
-            padding: 5rem 8rem;
-        }
-    
-        .unique-js .unique-box-file {
-            width: .1px;
-            height: .1px;
-            opacity: 0;
-            overflow: hidden;
-            position: absolute;
-            z-index: -1;
-        }
-    
-        .unique-box-input label {
-            margin: auto;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            color: #fff;
-            cursor: pointer;
-            text-align: center;
-            display: block;
-            overflow: hidden;
-        }
-    
-        .unique-js .unique-box-file + label * {
-            pointer-events: none;
-        }
-    
-        .unique-js .unique-box-file:focus + label {
-            outline: 1px dotted #000;
-            outline: -webkit-focus-ring-color auto 5px;
-        }
-    
-        button {
-            background: #008EC6;
-            border: none;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, .25);
-            color: #fff;
-            display: flex;
-            font-size: 1.25rem;
-            font-weight: 700;
-            margin: auto;
-            margin-top: 2.5rem;
-            overflow: auto;
-            padding: 1rem 1.5rem;
-        }
-    
-        button:hover {
-            box-shadow: 0 4px 12px rgba(0, 0, 0, .5);
-        }
-    
-        button:active {
-            box-shadow: none;
-        }
-    
-        .unique-box-uploading {
-            font-style: italic;
-        }
-    
-        .unique-box-success {
-            transition: appear-from-inside .25s ease-in-out;
-        }
-    
-        .unique-box__success {
-            animation: appear-from-inside .25s ease-in-out;
-        }
-    
-        @keyframes appear-from-inside {
-            from {
-                transform: translateY(-50%) scale(0);
-            }
-    
-            75% {
-                transform: translateY(-50%) scale(1.1);
-            }
-    
-            to {
-                transform: translateY(-50%) scale(1);
-            }
-        }
-    
-        .unique-box-restart {
-            font-weight: 700;
-        }
-    
-        input,
-        textarea,
-        select {
-            border-radius: 0;
-            border: none;
-        }
-    
-        input {
-            line-height: normal;
-        }
-    
-        .unique-box-dragndrop,
-        .unique-box-icon,
-        .unique-box-uploading,
-        .unique-box-success,
-        .unique-box-error {
-            display: none;
-        }
-    
-        .unique-box.has-advanced-upload .unique-box-dragndrop {
-            display: inline;
-        }
-    
-        strong {
-            color: #f8b739;
-        }
-    </style>
-</head>
-<body>
-    <div id="unique-container">
-        <form method="post" enctype="multipart/form-data" class="unique-box has-advanced-upload" action="{% url 'upload_excel' %}">
-            {% csrf_token %}
-            <div class="unique-box-input">
-                <svg x="0px" y="0px" viewBox="0 0 64 62" style="enable-background:new 0 0 64 62;" xml:space="preserve">
-                    <style type="text/css">
-                        .unique-st0 {
-                            fill: none;
-                            stroke: #fff;
-                            stroke-width: 2;
-                            stroke-linecap: round;
-                            stroke-linejoin: round;
-                            stroke-miterlimit: 10;
-                        }
-                    </style>
-                    <g id="unique-spa-launch">
-                        <path class="unique-st0" d="M33,27.1h-8c0,0-2-6-2-12c0-8,6-14,6-14s6,6,6,14C35,21.1,33,27.1,33,27.1z" />
-                        <line class="unique-st0" x1="29" y1="17.1" x2="29" y2="27.1" />
-                        <polyline class="unique-st0" points="25,27.1 17,27.1 17,23.1 23.1,17.1 " />
-                        <polyline class="unique-st0" points="33,27.1 41,27.1 41,23.1 34.9,17.1 " />
-                        <path class="unique-st0" d="M18,41.2c0.5-5.7,5.2-10.1,11-10.1c5.1,0,9.3,3.4,10.6,8.1" />
-                        <path class="unique-st0" d="M48,41.1c-0.2-3.4-3.1-6-6.5-6c-1.2,0-2.4,0.3-3.3,0.9" />
-                        <path class="unique-st0" d="M42.3,47.1c0,0-1-4-6-4" />
-                        <path class="unique-st0" d="M26.3,43.1c-3-1-4,2-4,2s-3-2-5,0s-1,4-1,4" />
-                        <path class="unique-st0" d="M9,46.1c-0.8-0.6-1.9-1-3-1c-2.8,0-5,2.2-5,5s2.2,5,5,5h46c2.8,0,5-2.2,5-5c0-5-4-9-9-9 c-0.9,0-1.8,0.1-2.6,0.4" />
-                        <path class="unique-st0" d="M18.8,37.9c-1.1-0.5-2.4-0.8-3.8-0.8c-4.6,0-8.5,3.5-8.9,8" />
-                    </g>
-                </svg>
-                <input type="file" name="excel_file" id="unique-file" class="unique-box-file">
-                <label for="unique-file"><strong>Choose a file</strong><span class="unique-box-dragndrop"> or drag it here</span>.</label>
+<div class="form-row">  
+    <div class="col-12 col-xl-4">
+      <div class="card h-100">
+        <div class="card-header pb-0 p-3">
+          <h6 class="mb-0">UPLOAD PERSONNEL DATA</h6>
+        </div>
+        <div class="card-body p-3">
+            <p class="text-sm">
+                Upload the excel file template of "Personnel Data" here. <span class="text-primary customTextTheme">You only need to do it once</span>
+            </p>
+            <div class="form-group">
+                <form method="post" enctype="multipart/form-data" action="{% url 'upload_excel' %}" class="novalidate">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <div class="bg-white p-5 rounded shadow-sm border">
+                            <div class="dropzone d-block mb-4">
+                                <label for="unique-file" class="dropzone-container">
+                                    <div class="file-icon file-empty"><i class="fas fa-upload text-primary customTextTheme"></i></div>
+                                    <div class="file-icon file-attached"><i class="fas fa-file-excel text-primary customTextTheme"></i></div>
+                                    <div class="text-center">
+                                        <p class="px-4 h5 text-dark fw-bold file-empty"><span class="text-primary customTextTheme">CLICK HERE</span> to attach the Excel File, then click Upload Now</p> 
+                                        <p class="px-4 h5 text-dark fw-bold file-attached">Excel File attached. Please click Upload Now.</p> 
+                                    </div>
+                                </label>
+                                <input type="file" name="excel_file" id="unique-file" class="file-input" required>
+                            </div>
+                            <div class="form-group" id="unique-file-attachment"></div>
+                            <button type="submit" class="btn bg-gradient-primary btn-block customBGTheme">Upload Now</button>
+                        </div>    
+                    </div>
+                </form>
             </div>
-            <button type="submit" class="UploadBtn">UPLOAD DATA</button>
-            <div class="unique-box-uploading">Uploading…</div>
-            <div class="unique-box-success">Done! <a href="#" class="unique-box-restart" role="button">Upload more?</a></div>
-            <div class="unique-box-error">Error! <span></span>. <a href="#" class="unique-box-restart" role="button">Try again!</a></div>
-        </form>
+        </div>
+      </div>
     </div>
-    <script>
-        // Your existing JavaScript for drag and drop
-    </script>
-</body>
-</html>
+
+    <div class="col-12 col-xl-4">
+      <div class="card h-100">
+        <div class="card-header pb-0 p-3">
+          <h6 class="mb-0">UPLOAD UNIT DATA</h6>
+        </div>
+        <div class="card-body p-3">
+            <p class="text-sm">
+                Upload the excel file template of "Unit Data" here. <span class="text-primary customTextTheme">You only need to do it once</span>
+            </p>
+            <div class="form-group">
+                <form method="post" enctype="multipart/form-data" action="{% url 'table_Units_upload' %}" class="novalidate">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <div class="bg-white p-5 rounded shadow-sm border">
+                            <div class="dropzone d-block mb-4">
+                                <label for="unique-file-for-units" class="dropzone-container">
+                                    <div class="file-icon file-empty"><i class="fas fa-upload text-primary customTextTheme"></i></div>
+                                    <div class="file-icon file-attached"><i class="fas fa-file-excel text-primary customTextTheme"></i></div>
+                                    <div class="text-center">
+                                        <p class="px-4 h5 text-dark fw-bold file-empty"><span class="text-primary customTextTheme">CLICK HERE</span> to attach the Excel File, then click Upload Now</p> 
+                                        <p class="px-4 h5 text-dark fw-bold file-attached">Excel File attached. Please click Upload Now.</p> 
+                                    </div>
+                                </label>
+                                <input type="file" name="excel_file" id="unique-file-for-units" class="file-input" required>
+                            </div>
+                            <div class="form-group" id="unique-file-attachment-for-units"></div>
+                            <button type="submit" class="btn bg-gradient-primary btn-block customBGTheme">Upload Now</button>
+                        </div>    
+                    </div>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-xl-4">
+      <div class="card h-100">
+        <div class="card-header pb-0 p-3">
+          <h6 class="mb-0">UPLOAD AFSC DATA</h6>
+        </div>
+        <div class="card-body p-3">
+            <p class="text-sm">
+                Upload the excel file template of "AFSC Data" here. <span class="text-primary customTextTheme">You only need to do it once</span>
+            </p>
+            <div class="form-group">
+                <form method="post" enctype="multipart/form-data" action="{% url 'upload_excel' %}" class="novalidate">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <div class="bg-white p-5 rounded shadow-sm border">
+                            <div class="dropzone d-block mb-4">
+                                <label for="unique-file" class="dropzone-container">
+                                    <div class="file-icon file-empty"><i class="fas fa-upload text-primary customTextTheme"></i></div>
+                                    <div class="file-icon file-attached"><i class="fas fa-file-excel text-primary customTextTheme"></i></div>
+                                    <div class="text-center">
+                                        <p class="px-4 h5 text-dark fw-bold file-empty"><span class="text-primary customTextTheme">CLICK HERE</span> to attach the Excel File, then click Upload Now</p> 
+                                        <p class="px-4 h5 text-dark fw-bold file-attached">Excel File attached. Please click Upload Now.</p> 
+                                    </div>
+                                </label>
+                                <input type="file" name="excel_file" id="unique-file" class="file-input" required>
+                            </div>
+                            <div class="form-group" id="unique-file-attachment"></div>
+                            <button type="submit" class="btn bg-gradient-primary btn-block customBGTheme">Upload Now</button>
+                        </div>    
+                    </div>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<script>
+    function ToogleDefaultUploadUI(uploadElem){
+        $('.file-err-msg').empty();
+        $('.file-attached').hide();
+        $('.file-empty').show();
+    }
+
+    function ToogleOnUploadUI(uploadElem){
+
+        uploadElem.closest('div').find('.file-empty').hide();
+        uploadElem.closest('div').find('.file-attached').show();
+    }
+
+    function ToogleOffUploadUI(uploadElem){
+        uploadElem.closest('div').find('.file-err-msg').empty();
+        uploadElem.closest('div').find('.file-attached').hide();
+        uploadElem.closest('div').find('.file-empty').show();
+    }
+    
+
+    $(document).ready(function() {
+        ToogleDefaultUploadUI();
+        $("#unique-file").on("change",function() {
+            $("#unique-file-file-err-msg").empty();
+            $("#unique-file-attachment").empty();
+            var fileLen = $(this)[0].files.length;
+            if(!(fileLen == 0)){
+              var filename = $(this).val().replace(/.*(\/|\\)/, '');;  
+                $("#unique-file-attachment").append('<div class="alert alert-success text-left text-white" role="alert"><div class="row"><div class="col-2"><i class="fas fa-file-excel fa-2x text-white"></i></div><div class="col-10">'+filename+'</div></div></div>');
+                ToogleOnUploadUI($(this));
+            }else{
+                ToogleOffUploadUI($(this));
+            }
+        });
+    });
 
 
+
+    $(document).ready(function() {
+        ToogleDefaultUploadUI();
+        $("#unique-file-for-units").on("change",function() {
+            $("#unique-file-file-err-msg").empty();
+            $("#unique-file-attachment-for-units").empty();
+            var fileLen = $(this)[0].files.length;
+            if(!(fileLen == 0)){
+              var filename = $(this).val().replace(/.*(\/|\\)/, '');;  
+                $("#unique-file-attachment-for-units").append('<div class="alert alert-success text-left text-white" role="alert"><div class="row"><div class="col-2"><i class="fas fa-file-excel fa-2x text-white"></i></div><div class="col-10">'+filename+'</div></div></div>');
+                ToogleOnUploadUI($(this));
+            }else{
+                ToogleOffUploadUI($(this));
+            }
+        });
+    });
+
+
+
+
+
+
+
+
+</script>
 {% endblock %}

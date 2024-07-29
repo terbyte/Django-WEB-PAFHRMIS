@@ -44,7 +44,15 @@ urlpatterns = [
     path('get_files/<str:serial_number>/', views.get_files, name='get_files'),
 
 
+    # afsc
+    path('afsc/afsc_Dasboard', views.afsc_Dashboard, name='afsc_Dashboard'),
 
+    # UPLOADS
+    path('upload_excel/', views.upload_excel, name='upload_excel'),
+    path('table_Units_upload/', views.table_Units_upload, name='table_Units_upload'),
+
+
+#344767 background color dark blue
 
     
 

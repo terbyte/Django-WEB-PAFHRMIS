@@ -22,7 +22,7 @@ from django.conf import settings  # Import settings
 from django.shortcuts import render, redirect
 from django.views.decorators.http import require_POST
 from .models import PersonnelFile
-from .models import PersonnelItem, PersonnelFile
+from .models import PersonnelItem, PersonnelFile,UnitsTable
 from django.http import JsonResponse
 from django.db.models import Count, Q
 
@@ -40,6 +40,85 @@ def calculate_due_date(duration,reassignment_date):
     elif duration == 'NO DEADLINE':
         return None
     return None 
+
+def display_units(request):
+    # Fetch all units from the database
+    units_list = UnitsTable.objects.all()
+    # Set up pagination
+    paginator = Paginator(units_list, 10)  # Show 10 units per page
+    page_number = request.GET.get('page')  # Get the page number from the request
+    page_obj = paginator.get_page(page_number)  # Get the specific page
+    
+    # Pass the page object to the template
+    return render(request, 'afsc/afsc_Dashboard.html', {'page_obj': page_obj})
+
+def display_units(request):
+    # Fetch all units from the database
+    units_list = UnitsTable.objects.all()
+    # Set up pagination
+    paginator = Paginator(units_list, 10)  # Show 10 units per page
+    page_number = request.GET.get('page')  # Get the page number from the request
+    page_obj = paginator.get_page(page_number)  # Get the specific page
+    
+    # Pass the page object to the template
+    return render(request, 'afsc/afsc_Dashboard.html', {'page_obj': page_obj})
+
+
+def afsc_Dashboard(request):
+    # Fetch all units from the database
+    units_list = UnitsTable.objects.all()
+    
+    # Set up pagination
+    paginator = Paginator(units_list, 1000000)  # Show 10 units per page
+    page_number = request.GET.get('page')  # Get the page number from the request
+    page_obj = paginator.get_page(page_number)  # Get the specific page
+    
+    # Pass the page object to the template
+    return render(request, 'afsc/afsc_Dashboard.html', {'page_obj': page_obj})
+
+
+def table_Units_upload(request):
+    if request.method == 'POST' and request.FILES['excel_file']:
+        excel_file = request.FILES['excel_file']
+        # Read the file directly from the uploaded file object
+        df = pd.read_excel(excel_file)
+        # Print DataFrame columns to verify
+        print("Columns in Excel file:", df.columns)
+        # Function to convert strings to uppercase, handling NaN values
+        def to_upper(value):
+            if pd.isna(value):
+                return ''
+            return str(value).upper()
+        try:
+            for index, row in df.iterrows():
+                unit_type = to_upper(row['Unit_Type'])
+                unit_name = to_upper(row['Unit_Name'])
+                unit_description = to_upper(row['Unit_Description'])
+                UnitCategory = to_upper(row['Unit_Category'])
+                unit_under = to_upper(row.get('Unit_Under', ''))
+
+                # Determine the FK_MotherUnit based on Unit_Type
+                parent_unit = None
+                if unit_type == 'MAIN':
+                    parent_unit = None  # MAIN units do not have a parent
+                elif unit_type == 'SUB':
+                    if unit_under:
+                        try:
+                            parent_unit = UnitsTable.objects.get(UnitName=unit_under)
+                        except UnitsTable.DoesNotExist:
+                            parent_unit = None
+                # Create the unit
+                UnitsTable.objects.create(
+                    UnitName=unit_name,
+                    UnitDescription=unit_description,
+                    UnitCategory=UnitCategory,
+                    Logo=row.get('Logo', ''),  # Handle optional Logo field
+                    FK_MotherUnit=parent_unit  # Set the foreign key relationship
+                )
+            return HttpResponse('Data uploaded successfully.')
+        except Exception as e:
+            return HttpResponse(f'Error: {e}')
+    return render(request, 'myapp/upload.html')
 
 
 
