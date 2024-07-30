@@ -1,0 +1,30 @@
+{% extends 'Base/base.html' %}
+
+
+{% block title %}PAFHRMIS{% endblock %}
+
+{% block content %}
+<h2>For Seperation</h2>
+
+{% include 'myapp/searchforms.html' %}
+{% include 'Inactive/Tables/tablewithPaginator.html' %}
+
+<script>
+    $(document).ready(function() {
+        var pageLists = [];
+        var pageTitle = "Inactive";
+        pageLists[0] = "For Separationg";
+        pageLists[1] = pageTitle;
+        var pagesData = {
+            "pagetitle" : pageTitle,
+            "pagelists" : pageLists              
+        };
+        localStorage.setItem("pagesData", JSON.stringify(pagesData));
+    });
+</script>
+
+
+{% endblock %}
+
+
+

@@ -1,0 +1,44 @@
+{% extends 'Base/base.html' %}
+
+{% block content %}
+<head>
+    <title>{{ unit.UnitName }} Detail</title>
+</head>
+<body>
+    <h1>{{ unit.UnitName }}</h1>
+    <p>ID: {{ unit.PK_Units }}</p>
+    <p>Description: {{ unit.UnitDescription }}</p>
+
+    <h2>Personnel Assigned to {{ unit.UnitName }}</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Rank</th>
+                <th>Last Name</th>
+                <th>First Name</th>
+                <th>Serial Number</th>
+                <th>Contact Number</th>
+                <th>AFSC</th>
+                <!-- Add more fields as needed -->
+            </tr>
+        </thead>
+        <tbody>
+            {% for person in personnel %}
+            <tr>
+                <td>{{ person.RANK }}</td>
+                <td>{{ person.LAST_NAME }}</td>
+                <td>{{ person.FIRST_NAME }}</td>
+                <td>{{ person.SERIAL_NUMBER }}</td>
+                <td>{{ person.CONTACT_NUMBER }}</td>
+                <td>{{ person.AFSC}}</td>
+                <!-- Add more fields as needed -->
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5">No personnel assigned to this unit.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+{% endblock %}

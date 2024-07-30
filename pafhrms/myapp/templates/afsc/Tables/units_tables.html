@@ -47,7 +47,7 @@
                     {% for unit in units %}
                         <tr>
                             <td>{{ unit.PK_Units }}</td>
-                            <td>{{ unit.UnitName }}</td>
+                            <td><a href="{% url 'unit_rooster' unit.PK_Units %}">{{ unit.UnitName }}</a></td>
                             <td>{{ unit.UnitDescription }}</td>
                             <td>{{ unit.Logo }}</td>
                             <td>{{ unit.FK_MotherUnit }}</td>
@@ -77,7 +77,7 @@
               {% for unit in main_units %}
                   <tr>
                       <td>{{ unit.PK_Units }}</td>
-                      <td>{{ unit.UnitName }}</td>
+                      <td><a href="{% url 'unit_rooster' unit.PK_Units %}">{{ unit.UnitName }}</a></td>
                       <td>{{ unit.UnitDescription }}</td>
                       <td>{{ unit.Logo }}</td>
                       <td>{{ unit.FK_MotherUnit }}</td>

@@ -51,6 +51,11 @@ urlpatterns = [
     path('upload_excel/', views.upload_excel, name='upload_excel'),
     path('table_Units_upload/', views.table_Units_upload, name='table_Units_upload'),
 
+    # units TO
+    # units details 
+    path('units/<int:unit_id>/personnel/', views.unit_rooster, name='unit_rooster'),
+
+
 
 #344767 background color dark blue
 

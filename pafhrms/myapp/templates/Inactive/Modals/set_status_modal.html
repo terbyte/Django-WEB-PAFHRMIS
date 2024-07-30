@@ -1,0 +1,216 @@
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="myModalLabel">Separation Form</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+  
+        <div class="modal-body">
+          <form id="InactivityForm" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="hidden" id="personnel_id" name="personnel_id">
+        
+            <!-- First Row: Form elements aligned in two columns -->
+            <div class="row justify-content-center">
+              <div class="col-md-6">
+                <div class="mb-4">
+                  <label >Rank</label>
+                  <input name="rank" id="ranktxt" class="form-control" readonly>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="mb-4">
+                  <label >AFPSN</label>
+                  <input type="text" id="afpsntxt" name="afpsn" class="form-control" placeholder="AFPSN" readonly>
+                </div>
+              </div>
+            </div>
+            
+        
+            <!-- Second Row: Form elements aligned in two columns -->
+            <div class="row justify-content-center">
+              <div class="col-md-6">
+                <div class="mb-4">
+                  <label >Last Name</label>
+                  <input type="text" id="lastnametxt" name="last_name" class="form-control" placeholder="Last Name" readonly>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="mb-4">
+                  <label >First Name</label>
+                  <input type="text" id="firstnametxt" name="first_name" class="form-control" placeholder="First Name" readonly>
+                </div>
+              </div>
+            </div>
+        
+            <!-- Third Row: Form elements aligned in two columns -->
+            <div class="row justify-content-center">
+              <div class="col-md-6">
+                <div class="mb-4">
+                  <label >Middle Name</label>
+                  <input type="text" id="middlenametxt" name="middle_name" class="form-control" placeholder="Middle Name" readonly>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="mb-4">
+                  <label >Suffix</label>
+                  <input type="text" id="suffixtxt" name="suffix" class="form-control" placeholder="Suffix" readonly>
+                </div>
+              </div>
+            </div>
+        
+            <!-- Fourth Row: Present Unit and new Textbox -->
+            <div class="row justify-content-center">
+              <div class="col-md-6">
+                <div class="mb-4">
+                  <label class="form-label">Present Unit</label >
+                  <input type="text" id="unitDP" name="unit" class="form-control" placeholder="Suffix" readonly>
+                </div>
+              </div>
+              
+              <div class="col-md-6">
+                <div class="mb-4">
+                  <label >Branch of Service</label>
+                  <input type="text" id="bostxt" name="bostxt" class="form-control" placeholder="Branch of Service" disabled>
+                </div>
+              </div>
+            </div>
+   
+            <div class="mb-3">
+              <label  class="form-label">Reason for Inactivity</label>
+                <select name="Inactivitycategory" id="Inactivitycategorytxt" class="form-control">
+                  <optgroup label="Category">
+                    <option>Resigned</option>
+                    <option>Discharged</option>
+                    <option> AWOL</option>
+                    <option> Optional Retirement</option>
+                    <option> Compulsory Retirement</option>
+                    <option> Deceased</option>
+
+                  </optgroup>
+              </select>
+            </div>
+
+            <div class="mb-3" id="dropdownContainer" hidden>
+              <label class="form-label">Assignment effective date until:</label>
+
+              <label  class="form-label" name="untildatelbl" id="untildatelbl" > </label>
+
+            </div>
+            
+            <div class="mb-3">
+              <label class="form-label">Upload Order</label>
+              
+              <div class="custom-file">
+                  <input type="file" class="form-control custom-file-input" id="separation_uploadOrder" name="separation_uploadOrder" required>
+                  <label class="custom-file-label" >Choose file...</label>
+              </div>
+
+           
+              
+
+            </div>
+            
+
+
+          
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <script>
+    $(document).ready(function() {
+      // Add change event listener to the file input
+      $('#separation_uploadOrder').change(function() {
+          // Get the name of the selected file
+          var fileName = $(this).val().split('\\').pop();
+          // Display the file name in the custom file label
+          $('.custom-file-label').text(fileName);
+      });
+  });
+
+  
+$('#InactivityForm').submit(function(event) {
+// true or false if active
+document.querySelectorAll('input[name="select"]').forEach((radio) => {
+        radio.addEventListener('change', () => {
+            const isActive = document.getElementById('option-1').checked;
+            console.log(isActive ? "Active: True" : "Active: False");
+        });
+    });
+
+
+    
+
+    // Prevent the default form submission behavior
+    event.preventDefault();
+
+        // Create FormData object
+        var formData = new FormData(this);
+
+        // Manually append file input to FormData (if needed)
+        // formData.append('uploadOrder', $('#uploadOrder')[0].files[0]);
+
+        var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
+
+    // Perform AJAX request to submit the form data
+    $.ajax({
+            url: '{% url "set_inactive" %}', // Replace with the URL of your server-side script
+            method: 'POST',
+            data: formData,
+            processData: false, // Prevent jQuery from processing data
+            contentType: false, // Prevent jQuery from setting content type
+            headers: {
+                'X-CSRFToken': csrfToken
+            },
+            success: function(response) {
+                if (response.success) {
+                    console.log('Data updated successfully!');
+
+                    // Optionally, show a success message to the user
+                    Swal.fire({
+                        title: 'Updated Successfully',
+                        text: 'Your data has been updated successfully!',
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    });
+                } else {
+                    // Optionally, show an error message to the user
+                    Swal.fire({
+                        title: 'Update Failed',
+                        text: response.error,
+                        icon: 'error',
+                        confirmButtonText: 'Try Again'
+                    });
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Error updating data:', error);
+
+                // Optionally, show an error message to the user
+                Swal.fire({
+                    title: 'Update Failed',
+                    text: 'Unexpected error occurred while updating data. Please try again later.',
+                    icon: 'error',
+                    confirmButtonText: 'Try Again'
+                });
+            }
+        });
+    
+});</script>

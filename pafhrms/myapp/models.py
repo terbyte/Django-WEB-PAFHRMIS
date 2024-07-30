@@ -1,5 +1,18 @@
 from django.db import models
 
+
+class UnitsTable(models.Model):
+    PK_Units = models.BigAutoField (primary_key=True)
+    UnitName = models.CharField(max_length=100)
+    UnitDescription = models.CharField(max_length=200)
+    UnitCategory = models.CharField(max_length=200)
+    Logo = models.CharField(max_length=200, blank=True, null=True)
+    FK_MotherUnit = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)
+
+    def __str__(self):
+        return self.UnitName
+    
+    
 class PersonnelItem(models.Model):
     RANK = models.CharField(max_length=200)
     LAST_NAME = models.CharField(max_length=200)
@@ -21,7 +34,7 @@ class PersonnelItem(models.Model):
     EFFECTIVE_DATE_APPOINTMENT = models.DateField()
     EFFECTIVE_DATE_ENTERED = models.DateField()
     DATE_LAST_PROMOTION_APPOINTMENT = models.DateField(blank=True, null=True)
-    UNIT = models.CharField(max_length=200, blank=True, null=True)
+    UNIT = models.ForeignKey(UnitsTable, related_name='personnel', on_delete=models.CASCADE)
     SUB_UNIT = models.CharField(max_length=200, blank=True, null=True)
     DATE_LASTFULL_REENLISTMENT = models.DateField(blank=True, null=True)
     DATE_LAST_ETAD = models.DateField(blank=True, null=True)
@@ -61,16 +74,7 @@ class Placement(models.Model):
         db_table = "placementinfo"
 
 
-class UnitsTable(models.Model):
-    PK_Units = models.BigAutoField (primary_key=True)
-    UnitName = models.CharField(max_length=100)
-    UnitDescription = models.CharField(max_length=200)
-    UnitCategory = models.CharField(max_length=200)
-    Logo = models.CharField(max_length=200, blank=True, null=True)
-    FK_MotherUnit = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)
 
-    def __str__(self):
-        return self.UnitName
     
 
 # # New Define Tables -> Will be use in database

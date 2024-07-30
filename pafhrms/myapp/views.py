@@ -43,6 +43,17 @@ def calculate_due_date(duration,reassignment_date):
         return None
     return None 
 
+
+
+
+def unit_rooster(request, unit_id):
+    unit = get_object_or_404(UnitsTable, pk=unit_id)
+    print("THIS IS THE UNIT IDDDDDDDDDDDDDDDDDDDDDD",unit_id)
+    personnel = unit.personnel.all()  # Access personnel assigned to this unit
+    return render(request, 'afsc/units_rooster.html', {'unit': unit, 'personnel': personnel})
+
+
+
 def display_units(request):
     # Fetch all units from the database
     units_list = UnitsTable.objects.all()
@@ -55,111 +66,28 @@ def display_units(request):
     return render(request, 'afsc/afsc_Dashboard.html', {'page_obj': page_obj})
 
 
-
 def afsc_Dashboard(request):
     # Fetch all units from the database
     units_list = UnitsTable.objects.all()
-
     # Filter out units where UnitCategory is None, blank, or empty
     filtered_units = units_list.exclude(UnitCategory__in=['', None,'none','None','NONE'])
-
     # Group the filtered units by UnitCategory
     grouped_units = {}
     for key, group in groupby(filtered_units.order_by('UnitCategory'), key=attrgetter('UnitCategory')):
         grouped_units[key] = list(group)
-
     # Fetch units where FK_MotherUnit is None (i.e., main units)
     main_units = UnitsTable.objects.filter(FK_MotherUnit__isnull=True).exclude(UnitCategory__in=['', None])
-
     # Flatten the grouped units list for pagination (but excluding main units)
     flat_units_list = [unit for units in grouped_units.values() for unit in units if unit not in main_units]
-
     # Set up pagination for main units
     paginator = Paginator(main_units, 10)  # Show 10 units per page
     page_number = request.GET.get('page')  # Get the page number from the request
     page_obj = paginator.get_page(page_number)  # Get the specific page
-
     return render(request, 'afsc/afsc_Dashboard.html', {
         'grouped_units': grouped_units,
         'page_obj': page_obj,
         'main_units': main_units
     })
-
-# doenst display sub units
-# def afsc_Dashboard(request):
-#     # Fetch all units from the database
-#     units_list = UnitsTable.objects.all()
-
-#     # Fetch units where FK_MotherUnit is None (i.e., main units)
-#     main_units = UnitsTable.objects.filter(FK_MotherUnit__isnull=True)
-
-#     # Filter out units where UnitCategory is blank, None, or null
-#     non_main_units = units_list.exclude(pk__in=main_units.values_list('pk', flat=True))
-#     non_main_units = non_main_units.exclude(UnitCategory__in=['', None])
-
-#     # Group the non-main units by UnitCategory
-#     grouped_units = {}
-#     for key, group in groupby(non_main_units.order_by('UnitCategory'), key=attrgetter('UnitCategory')):
-#         grouped_units[key] = list(group)
-
-#     # Flatten the grouped units list for pagination
-#     flat_units_list = [unit for units in grouped_units.values() for unit in units]
-
-#     # Set up pagination for main units
-#     paginator = Paginator(main_units, 10)  # Show 10 units per page
-#     page_number = request.GET.get('page')  # Get the page number from the request
-#     page_obj = paginator.get_page(page_number)  # Get the specific page
-
-#     return render(request, 'afsc/afsc_Dashboard.html', {
-#         'grouped_units': grouped_units,
-#         'page_obj': page_obj,
-#         'main_units': main_units
-#     })
-
-
-# def afsc_Dashboard(request):
-#      # Fetch all units from the database and order them by UnitCategory
-#     units_list = UnitsTable.objects.all().order_by('UnitCategory')
-
-#     # Group the units by UnitCategory
-#     grouped_units = {}
-#     for key, group in groupby(units_list, key=attrgetter('UnitCa tegory')):
-#         grouped_units[key] = list(group)
-
-#     # Flatten the grouped units list for pagination
-#     flat_units_list = [unit for units in grouped_units.values() for unit in units]
-#     main_units = UnitsTable.objects.filter(FK_MotherUnit__isnull=True or "None")
-
-#     # Set up pagination
-#     paginator = Paginator(flat_units_list, 10)  # Show 10 units per page
-#     page_number = request.GET.get('page')  # Get the page number from the request
-#     page_obj = paginator.get_page(page_number)  # Get the specific page
-
-#     return render(request, 'afsc/afsc_Dashboard.html', {'grouped_units': grouped_units,
-#                                                         'main_units': main_units,
-#                                                           'page_obj': page_obj
-#                                                           })
-
-
-# def afsc_Dashboard(request):
-#     # Fetch all units from the database and order them by UnitCategory
-#     units_list = UnitsTable.objects.all().order_by('UnitCategory')
-
-#     # Group the units by UnitCategory
-#     grouped_units = {}
-#     for key, group in groupby(units_list, key=attrgetter('UnitCategory')):
-#         category = key if key else "All PAF UNITS"  # Handle empty UnitCategory
-#         grouped_units[category] = list(group)
-
-#     # Flatten the grouped units list for pagination
-#     flat_units_list = [unit for units in grouped_units.values() for unit in units]
-
-#     # Set up pagination
-#     paginator = Paginator(flat_units_list, 10)  # Show 10 units per page
-#     page_number = request.GET.get('page')  # Get the page number from the request
-#     page_obj = paginator.get_page(page_number)  # Get the specific page
-
-#     return render(request, 'afsc/afsc_Dashboard.html', {'grouped_units': grouped_units, 'page_obj': page_obj})
 
 
 def table_Units_upload(request):
@@ -398,48 +326,49 @@ def convert_date(date_value):
         return None
 
 def upload_excel(request):
+    message = ''
     if request.method == 'POST' and request.FILES['excel_file']:
         excel_file = request.FILES['excel_file']
         fs = FileSystemStorage()
         filename = fs.save(excel_file.name, excel_file)
         file_path = fs.path(filename)
 
-
-        df = pd.read_excel(file_path)
-        # Convert the date format
         def convert_date(date_value):
             if pd.isna(date_value):
                 return None
             if isinstance(date_value, datetime):
-                # If the value is already a datetime object, return it in the desired format
                 return date_value.strftime('%Y-%m-%d')
             elif isinstance(date_value, str):
-                # If the value is a string, try to parse it
                 try:
                     return datetime.strptime(date_value, '%d-%b-%y').strftime('%Y-%m-%d')
                 except ValueError:
                     return None
             else:
                 return None
-            
-        # Function to convert strings to uppercase, handling NaN values
+
         def to_upper(value):
             if pd.isna(value):
                 return ''
             return str(value).upper()
-        
+
         try:
             df = pd.read_excel(file_path)
             for index, row in df.iterrows():
                 serial_number = row.iloc[5]
-                # Check if the entry with the same serial number already exists
                 if not PersonnelItem.objects.filter(SERIAL_NUMBER=serial_number).exists():
+                    unit_name = row.iloc[20]
+                    try:
+                        unit = UnitsTable.objects.get(UnitName=unit_name)
+                    except UnitsTable.DoesNotExist:
+                        message = f'Error: Unit "{unit_name}" does not exist.'
+                        break
+
                     PersonnelItem.objects.create(
                         RANK=row.iloc[0],
-                        LAST_NAME=to_upper(row.iloc[1]),  # Convert to uppercase
-                        FIRST_NAME=to_upper(row.iloc[2]),  # Convert to uppercase
-                        MIDDLE_NAME=to_upper(row.iloc[3]),  # Convert to uppercase
-                        EXTENSION_NAME=to_upper(row.iloc[4]),  # Convert to uppercase
+                        LAST_NAME=to_upper(row.iloc[1]),
+                        FIRST_NAME=to_upper(row.iloc[2]),
+                        MIDDLE_NAME=to_upper(row.iloc[3]),
+                        EXTENSION_NAME=to_upper(row.iloc[4]),
                         SERIAL_NUMBER=serial_number,
                         BOS=row.iloc[6],
                         SEX=row.iloc[7],
@@ -455,18 +384,88 @@ def upload_excel(request):
                         EFFECTIVE_DATE_APPOINTMENT=convert_date(row.iloc[17]),
                         EFFECTIVE_DATE_ENTERED=convert_date(row.iloc[18]),
                         DATE_LAST_PROMOTION_APPOINTMENT=convert_date(row.iloc[19]),
-                        UNIT=row.iloc[20],
+                        UNIT=unit,
                         SUB_UNIT=row.iloc[21],
                         DATE_LASTFULL_REENLISTMENT=convert_date(row.iloc[22]),
                         DATE_LAST_ETAD=convert_date(row.iloc[23])
                     )
-            return HttpResponse('Data uploaded successfully.')
+            else:
+                message = 'Data uploaded successfully.'
         except Exception as e:
-            return HttpResponse(f'Error: {e}')
-    return render(request, 'myapp/upload.html')
+            message = f'Error: {e}'
 
-def custom_404(request, exception):
-    return render(request, 'other/404.html', status=404)
+    return render(request, 'myapp/upload.html', {'message': message})
+
+# def upload_excel(request):
+#     if request.method == 'POST' and request.FILES['excel_file']:
+#         excel_file = request.FILES['excel_file']
+#         fs = FileSystemStorage()
+#         filename = fs.save(excel_file.name, excel_file)
+#         file_path = fs.path(filename)
+
+
+#         df = pd.read_excel(file_path)
+#         # Convert the date format
+#         def convert_date(date_value):
+#             if pd.isna(date_value):
+#                 return None
+#             if isinstance(date_value, datetime):
+#                 # If the value is already a datetime object, return it in the desired format
+#                 return date_value.strftime('%Y-%m-%d')
+#             elif isinstance(date_value, str):
+#                 # If the value is a string, try to parse it
+#                 try:
+#                     return datetime.strptime(date_value, '%d-%b-%y').strftime('%Y-%m-%d')
+#                 except ValueError:
+#                     return None
+#             else:
+#                 return None
+            
+#         # Function to convert strings to uppercase, handling NaN values
+#         def to_upper(value):
+#             if pd.isna(value):
+#                 return ''
+#             return str(value).upper()
+        
+#         try:
+#             df = pd.read_excel(file_path)
+#             for index, row in df.iterrows():
+#                 serial_number = row.iloc[5]
+#                 # Check if the entry with the same serial number already exists
+#                 if not PersonnelItem.objects.filter(SERIAL_NUMBER=serial_number).exists():
+#                     PersonnelItem.objects.create(
+#                         RANK=row.iloc[0],
+#                         LAST_NAME=to_upper(row.iloc[1]),  # Convert to uppercase
+#                         FIRST_NAME=to_upper(row.iloc[2]),  # Convert to uppercase
+#                         MIDDLE_NAME=to_upper(row.iloc[3]),  # Convert to uppercase
+#                         EXTENSION_NAME=to_upper(row.iloc[4]),  # Convert to uppercase
+#                         SERIAL_NUMBER=serial_number,
+#                         BOS=row.iloc[6],
+#                         SEX=row.iloc[7],
+#                         BIRTHDAY=convert_date(row.iloc[8]),
+#                         CONTACT_NUMBER=row.iloc[9],
+#                         ADDRESS=row.iloc[10],
+#                         CLASSIFICATION=row.iloc[11],
+#                         CATEGORY=row.iloc[12],
+#                         SOURCE_OF_ENLISTMENT_COMMISION=row.iloc[13],
+#                         PILOT_RATED_NON_RATED=row.iloc[14],
+#                         AFSC=row.iloc[15],
+#                         HIGHEST_PME_COURSES=row.iloc[16],
+#                         EFFECTIVE_DATE_APPOINTMENT=convert_date(row.iloc[17]),
+#                         EFFECTIVE_DATE_ENTERED=convert_date(row.iloc[18]),
+#                         DATE_LAST_PROMOTION_APPOINTMENT=convert_date(row.iloc[19]),
+#                         UNIT=row.iloc[20],
+#                         SUB_UNIT=row.iloc[21],
+#                         DATE_LASTFULL_REENLISTMENT=convert_date(row.iloc[22]),
+#                         DATE_LAST_ETAD=convert_date(row.iloc[23])
+#                     )
+#             return HttpResponse('Data uploaded successfully.')
+#         except Exception as e:
+#             return HttpResponse(f'Error: {e}')
+#     return render(request, 'myapp/upload.html')
+
+# def custom_404(request, exception):
+#     return render(request, 'other/404.html', status=404)
 
 # INACTIVE FOR SEPARATION
 
