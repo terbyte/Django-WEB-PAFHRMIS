@@ -100,8 +100,9 @@
                     <tr>
                         <th>OFFICER</th>
                         <th>ENLISTED PERSONNEL</th>
-                        <th>DS / TDY</th>
+                            <th>DS / TDY</th>
                         <th>TOTAL</th>
+                        
                     </tr>
                 </thead>
                 <tbody>
@@ -165,9 +166,16 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>UNIT</th>
-                            <th>Officers Count</th>
-                            <th>Enlisted Count</th>
+                            <th rowspan="4" colspan="1">UNIT</th>
+                            <th colspan="2">ACTUAL</th>
+                            <th colspan="3"></th>
+                          </tr>
+                        <tr>
+                            <th>OFFICER</th>
+                            <th>ENLISTED PERSONNEL</th>
+                                <th>DS / TDY</th>
+                            <th>TOTAL</th>
+                            
                         </tr>
                     </thead>
                     <tbody>
@@ -185,6 +193,20 @@
                                 {% for count in PAFHRMC_au_counts %}
                                     {% if count.UNIT == unit %}
                                         {{ count.enlisted_count }}
+                                    {% endif %}
+                                {% endfor %}
+                            </td>
+                            <td>
+                                {% for count in PAFHRMC_au_counts %}
+                                    {% if count.UNIT == unit %}
+                                        {{ count.detached_service_count }} / {{ count.temporary_duty_count }}
+                                    {% endif %}
+                                {% endfor %}
+                            </td>
+                            <td>
+                                {% for count in PAFHRMC_au_counts %}
+                                    {% if count.UNIT == unit %}
+                                        {{ count.officers_count|add:count.enlisted_count|add:count.detached_service_count|add:count.temporary_duty_count }}
                                     {% endif %}
                                 {% endfor %}
                             </td>
@@ -213,9 +235,15 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th>UNIT</th>
-                        <th>Officers Count</th>
-                        <th>Enlisted Count</th>
+                        <th rowspan="4" colspan="1">UNIT</th>
+                        <th colspan="2">ACTUAL</th>
+                        <th colspan="3"></th>
+                      </tr>
+                    <tr>
+                        <th>OFFICER</th>
+                        <th>ENLISTED PERSONNEL</th>
+                            <th>DS / TDY</th>
+                        <th>TOTAL</th>
                         
                     </tr>
                 </thead>
@@ -234,6 +262,21 @@
                             {% for count in ALLPAF_unit_counts %}
                                 {% if count.UNIT == unit %}
                                     {{ count.enlisted_count }}
+                                {% endif %}
+                            {% endfor %}
+                        </td>
+
+                        <td>
+                            {% for count in ALLPAF_unit_counts %}
+                                {% if count.UNIT == unit %}
+                                    {{ count.detached_service_count }} / {{ count.temporary_duty_count }}
+                                {% endif %}
+                            {% endfor %}
+                        </td>
+                        <td>
+                            {% for count in ALLPAF_unit_counts %}
+                                {% if count.UNIT == unit %}
+                                    {{ count.officers_count|add:count.enlisted_count|add:count.detached_service_count|add:count.temporary_duty_count }}
                                 {% endif %}
                             {% endfor %}
                         </td>
