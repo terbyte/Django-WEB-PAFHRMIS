@@ -1,4 +1,6 @@
 from django.db import models
+from datetime import date
+
 
 class PersonnelItem(models.Model):
     RANK = models.CharField(max_length=200)
@@ -34,7 +36,6 @@ class PersonnelFile(models.Model):
     file = models.FileField(upload_to='personnel_files/')
     uploaded_at = models.DateTimeField(auto_now_add=True)
     
-
 
     def __str__(self):
         return f'{self.RANK} {self.LAST_NAME}, {self.FIRST_NAME} {self.MIDDLE_NAME} {self.EXTENSION_NAME}'
@@ -73,50 +74,82 @@ class UnitsTable(models.Model):
         return self.UnitName
     
 
-# # New Define Tables -> Will be use in database
-# class PersonnelTable(models.Model):
-#     PK_Personnel = models.BigAutoField(primary_key=True)
-#     FirstName = models.CharField(max_length=200)
-#     LastName = models.CharField(max_length=200)    
-#     MiddleName = models.CharField(max_length=200, blank=True, null=True)
-#     NameSuffix = models.CharField(max_length=200, blank=True, null=True)
-#     BOS = models.CharField(max_length=200)
-#     Sex = models.CharField(max_length=10)
-#     Birthday = models.DateField(blank=True, null=True)
-#     ContactNumber = models.CharField(max_length=200, blank=True, null=True)
-#     Address = models.CharField(max_length=200, blank=True, null=True)
-#     SerialNumber = models.CharField(max_length=200)
-#     Rank = models.CharField(max_length=200)
-#     DateEnlisted = models.DateField(blank=True, null=True)
-#     DatePromoted = models.DateField(blank=True, null=True)
-#     TypeOfPersonnel = models.DateField(blank=True)
-#     isActive = models.BooleanField(default=True)
 
-# class AFSCTable(models.Model):
+
+
+
+# New Define Tables -> Will be use in database
+class tbl_Personnel(models.Model):
+    PK_Personnel = models.BigAutoField(primary_key=True)
+    FirstName = models.CharField(max_length=200)
+    MiddleName = models.CharField(max_length=200, blank=True, null=True)
+    LastName = models.CharField(max_length=200)
+    NameSuffix = models.CharField(max_length=200, blank=True, null=True)
+    AFPSN = models.CharField(max_length=200)
+    Rank = models.CharField(max_length=200)
+    BOS = models.CharField(max_length=200)
+    Sex = models.CharField(max_length=10)
+    Birthday = models.DateField(blank=True, null=True)
+    ContactNumber = models.CharField(max_length=200, blank=True, null=True)
+    EmailAddress = models.CharField(max_length=200, blank=True, null=True)
+    Address = models.CharField(max_length=200, blank=True, null=True)
+    Classification = models.CharField(max_length=200, blank=True, null=True)
+    PersCategory = models.CharField(max_length=200, blank=True, null=True)
+    SourceOfCommissionEnlistment = models.CharField(max_length=200, blank=True, null=True)
+    PilotRated_NonRated = models.CharField(max_length=200, blank=True, null=True)
+    AFSC_PRIMARY = models.CharField(max_length=200, blank=True, null=True)
+    AFSC_SECONDARY = models.CharField(max_length=200, blank=True, null=True)
+    AFSC_TERTIARY = models.CharField(max_length=200, blank=True, null=True)
+    HighestPMEcourse = models.CharField(max_length=200, blank=True, null=True)
+    EffectiveDateOfAppointment = models.DateField(blank=True, null=True)
+    DateEnteredMilitary = models.DateField()
+    DateLastPromotionAppointment = models.DateField(blank=True, null=True)
+    Unit = models.CharField(max_length=200, blank=True, null=True)
+    SubUnit = models.CharField(max_length=200, blank=True, null=True)
+    DateUnitAssigned = models.DateField(blank=True, null=True)
+    DateLastFullReenlistment = models.DateField(blank=True, null=True)
+    DateLastETAD = models.DateField(blank=True, null=True)
+    BachelorsDegree = models.CharField(max_length=200, blank=True, null=True)
+    HighestAttainment = models.CharField(max_length=200, blank=True, null=True)
+    SchoolAttended = models.CharField(max_length=200, blank=True, null=True)
+    WithEligibility = models.CharField(max_length=200, blank=True, null=True)
+    EligibilityDescription = models.CharField(max_length=200, blank=True, null=True)
+    isActive = models.BooleanField(default=True)
+
+
+class tbl_PersonnelFilesTable(models.Model):
+    PK_PersonnelFiles = models.BigAutoField(primary_key=True)
+    DateUploaded = models.DateField(default=date.today)
+    FileName = models.CharField(max_length=200)
+    FileType = models.CharField(max_length=200)
+    FileLocation= models.CharField(max_length=200)
+    FK_Personnel = models.ForeignKey(tbl_Personnel, on_delete=models.CASCADE)
+
+# class tbl_AFSCTable(models.Model):
 #     PK_AFSC = models.BigAutoField(primary_key=True)
 #     AFSCTitle = models.CharField(max_length=100)
 #     AFSCDescription = models.CharField(max_length=200)
 
-# class CoursesTable(models.Model):
+# class tbl_CoursesTable(models.Model):
 #     PK_Course = models.BigAutoField(primary_key=True)
 #     CourseTitle = models.CharField(max_length=200)
 #     CourseDescription = models.CharField(max_length=200)
 #     RelatedCourse = models.CharField(max_length=200)
     
-# class AFSCCourseTable(models.Model):
+# class tbl_AFSCCourseTable(models.Model):
 #     PK_AFSCCourse = models.BigAutoField(primary_key=True)
 #     RelatedCourse = models.CharField(max_length=100)
 #     FK_AFSC= models.ForeignKey(AFSCTable, on_delete=models.CASCADE)
 #     FK_Course = models.ForeignKey(CoursesTable, on_delete=models.CASCADE)
 
-# class AFSCRelatedCourse(models.Model):
+# class tbl_AFSCRelatedCourse(models.Model):
 #     PK_AFSCRelatedCourse = models.BigAutoField(primary_key=True)
 #     UnitName = models.CharField(max_length=100)
 #     UnitDescription = models.CharField(max_length=200)
 #     Logo = models.CharField(max_length=100)
 #     FK_MotherUnit = models.ForeignKey('self', on_delete=models.CASCADE)
 
-# class PersonnelHistoryTable(models.Model):
+# class tbl_PersonnelHistoryTable(models.Model):
 #     PK_Personnel = models.BigAutoField(primary_key=True)
 #     FirstName = models.CharField(max_length=100)
 #     LastName = models.CharField(max_length=100)    
@@ -135,27 +168,21 @@ class UnitsTable(models.Model):
 #     DateEdited = models.DateField(default=date.today)
 #     FK_Personnel = models.ForeignKey(PersonnelTable, on_delete=models.CASCADE)
 
-# class PersonnelFilesTable(models.Model):
-#     PK_PersonnelFiles = models.BigAutoField(primary_key=True)
-#     DateUploaded = models.DateField(default=date.today)
-#     FileName = models.CharField(max_length=200)
-#     FileType = models.CharField(max_length=200)
-#     FileLocation= models.CharField(max_length=200)
-#     FK_Personnel = models.ForeignKey(PersonnelTable, on_delete=models.CASCADE)
 
-# class PositionTypeTable(models.Model):
+
+# class tbl_PositionTypeTable(models.Model):
 #     PK_PositionType = models.BigAutoField(primary_key=True)
 #     TypeTitle = models.CharField(max_length=100)
 #     TypeDescription = models.CharField(max_length=100)
 
-# class UnitWorkPositionTable(models.Model):
+# class tbl_UnitWorkPositionTable(models.Model):
 #     PK_UnitWorkPosition = models.BigAutoField(primary_key=True)
 #     PositionTitle = models.CharField(max_length=100)
 #     PositionDescription = models.CharField(max_length=100)
 #     FK_PositionType = models.ForeignKey(PositionTypeTable, on_delete=models.CASCADE)
 #     FK_Unit = models.ForeignKey(UnitsTable, on_delete=models.CASCADE)
     
-# class PositionSuggestedAFSC(models.Model):
+# class tbl_PositionSuggestedAFSC(models.Model):
 #     PK_UnitWorkPosition = models.BigAutoField(primary_key=True)
 #     PositionTitle = models.CharField(max_length=100)
 #     PositionDescription = models.CharField(max_length=100)

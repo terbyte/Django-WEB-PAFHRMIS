@@ -22,11 +22,12 @@ from django.conf import settings  # Import settings
 from django.shortcuts import render, redirect
 from django.views.decorators.http import require_POST
 from .models import PersonnelFile
-from .models import PersonnelItem, PersonnelFile,UnitsTable
+from .models import PersonnelItem,tbl_Personnel,UnitsTable
 from django.http import JsonResponse
 from django.db.models import Count, Q
 from itertools import groupby
 from operator import attrgetter
+from django.db import transaction #for atomicity
 
 
 def calculate_due_date(duration,reassignment_date):
@@ -161,45 +162,48 @@ def afsc_Dashboard(request):
 
 #     return render(request, 'afsc/afsc_Dashboard.html', {'grouped_units': grouped_units, 'page_obj': page_obj})
 
-
 def table_Units_upload(request):
-    if request.method == 'POST' and request.FILES['excel_file']:
+    if request.method == 'POST' and request.FILES.get('excel_file'):
         excel_file = request.FILES['excel_file']
         # Read the file directly from the uploaded file object
         df = pd.read_excel(excel_file)
         # Print DataFrame columns to verify
         print("Columns in Excel file:", df.columns)
+
         # Function to convert strings to uppercase, handling NaN values
         def to_upper(value):
             if pd.isna(value):
                 return ''
             return str(value).upper()
-        try:
-            for index, row in df.iterrows():
-                unit_type = to_upper(row['Unit_Type'])
-                unit_name = to_upper(row['Unit_Name'])
-                unit_description = to_upper(row['Unit_Description'])
-                UnitCategory = to_upper(row['Unit_Category'])
-                unit_under = to_upper(row.get('Unit_Under', ''))
 
-                # Determine the FK_MotherUnit based on Unit_Type
-                parent_unit = None
-                if unit_type == 'MAIN':
-                    parent_unit = None  # MAIN units do not have a parent
-                elif unit_type == 'SUB':
-                    if unit_under:
-                        try:
-                            parent_unit = UnitsTable.objects.get(UnitName=unit_under)
-                        except UnitsTable.DoesNotExist:
-                            parent_unit = None
-                # Create the unit
-                UnitsTable.objects.create(
-                    UnitName=unit_name,
-                    UnitDescription=unit_description,
-                    UnitCategory=UnitCategory,
-                    Logo=row.get('Logo', ''),  # Handle optional Logo field
-                    FK_MotherUnit=parent_unit  # Set the foreign key relationship
-                )
+        try:
+            with transaction.atomic():
+                for index, row in df.iterrows():
+                    unit_type = to_upper(row['Unit_Type'])
+                    unit_name = to_upper(row['Unit_Name'])
+                    unit_description = to_upper(row['Unit_Description'])
+                    UnitCategory = to_upper(row['Unit_Category'])
+                    unit_under = to_upper(row.get('Unit_Under', ''))
+
+                    # Determine the FK_MotherUnit based on Unit_Type
+                    parent_unit = None
+                    if unit_type == 'MAIN':
+                        parent_unit = None  # MAIN units do not have a parent
+                    elif unit_type == 'SUB':
+                        if unit_under:
+                            try:
+                                parent_unit = UnitsTable.objects.get(UnitName=unit_under)
+                            except UnitsTable.DoesNotExist:
+                                parent_unit = None
+
+                    # Create the unit
+                    UnitsTable.objects.create(
+                        UnitName=unit_name,
+                        UnitDescription=unit_description,
+                        UnitCategory=UnitCategory,
+                        Logo=row.get('Logo', ''),  # Handle optional Logo field
+                        FK_MotherUnit=parent_unit  # Set the foreign key relationship
+                    )
             return HttpResponse('Data uploaded successfully.')
         except Exception as e:
             return HttpResponse(f'Error: {e}')
@@ -269,27 +273,27 @@ def index(request):
     sex_query = request.GET.get('sex')
     unit_query = request.GET.get('unit')
     
-    filters = Q(IS_ACTIVE =True)
+    filters = Q(isActive =True)
     if last_name_query:
-        filters &= Q(LAST_NAME__icontains=last_name_query)
+        filters &= Q(LastName__icontains=last_name_query)
     if first_name_query:
-        filters &= Q(FIRST_NAME__icontains=first_name_query)
+        filters &= Q(FirstName__icontains=first_name_query)
     if middle_name_query:
-        filters &= Q(MIDDLE_NAME__icontains=middle_name_query)
+        filters &= Q(MiddleName__icontains=middle_name_query)
     if suffix_query and suffix_query != "Suffix":
-        filters &= Q(EXTENSION_NAME__icontains=suffix_query)
+        filters &= Q(NameSuffix__icontains=suffix_query)
     if afsn_query:
-        filters &= Q(SERIAL_NUMBER__icontains=afsn_query) 
+        filters &= Q(AFPSN__icontains=afsn_query) 
     if rank_query and rank_query != "Rank":
-        filters &= Q(RANK__icontains=rank_query)
+        filters &= Q(Rank__icontains=rank_query)
     if category_query and category_query != "Category":
-        filters &= Q(CATEGORY__icontains=category_query)
+        filters &= Q(PersCategory__icontains=category_query)
     if sex_query and sex_query != "Sex":
-        filters &= Q(SEX__icontains=sex_query)
+        filters &= Q(Sex__icontains=sex_query)
     if unit_query:
-        filters &= Q(UNIT__icontains=unit_query)
+        filters &= Q(Unit__icontains=unit_query)
     
-    persons = PersonnelItem.objects.filter(filters)
+    persons = tbl_Personnel.objects.filter(filters)
 
 
     
@@ -351,27 +355,29 @@ def update_personnel(request):
     if request.method == 'POST':
         try:
             personnel_id = request.POST.get('personnel_id')
-            personnel_items = PersonnelItem.objects.filter(SERIAL_NUMBER=personnel_id)
+            personnel_items = tbl_Personnel.objects.filter(AFPSN=personnel_id)
             if not personnel_items.exists():
                 return JsonResponse({'success': False, 'error': 'Personnel not found'})
 
             
             personnel_items.update(
-                LAST_NAME=request.POST.get('last_name'),
-                FIRST_NAME=request.POST.get('first_name'),
-                MIDDLE_NAME=request.POST.get('middle_name'),
-                EXTENSION_NAME=request.POST.get('suffix'),
-                ADDRESS=request.POST.get('address'),
-                RANK=request.POST.get('rank'),
-                AFSC=request.POST.get('afsc'),
-                UNIT=request.POST.get('unit'),
-                SUB_UNIT=request.POST.get('subunit'),
-                CONTACT_NUMBER=request.POST.get('contactnum'),
-                HIGHEST_PME_COURSES=request.POST.get('hpme'),
-                PILOT_RATED_NON_RATED=request.POST.get('pilotrating'),
-                DATE_LAST_PROMOTION_APPOINTMENT=format_date(request.POST.get('promotion')),
-                DATE_LASTFULL_REENLISTMENT=format_date(request.POST.get('fullreeenlistment')),
-                DATE_LAST_ETAD=format_date(request.POST.get('dateoflastetadsot'))
+                LastName=request.POST.get('last_name'),
+                FirstName=request.POST.get('first_name'),
+                MiddleName=request.POST.get('middle_name'),
+                NameSuffix=request.POST.get('suffix'),
+                Address=request.POST.get('address'),
+                Rank=request.POST.get('rank'),
+                AFSC_PRIMARY=request.POST.get('afsc'),
+                # AFSC_SECONDARY=request.POST.get('afsc'),
+                # AFSC_TERTIARY=request.POST.get('afsc'),
+                Unit=request.POST.get('unit'),
+                SubUnit=request.POST.get('subunit'),
+                ContactNumber=request.POST.get('contactnum'),
+                HighestPMEcourse=request.POST.get('hpme'),
+                PilotRated_NonRated=request.POST.get('pilotrating'),
+                DateLastPromotionAppointment=format_date(request.POST.get('promotion')),
+                DateLastFullReenlistment=format_date(request.POST.get('fullreeenlistment')),
+                DateLastETAD=format_date(request.POST.get('dateoflastetadsot'))
             )
             return JsonResponse({'success': True})
         except Exception as e:
@@ -396,74 +402,162 @@ def convert_date(date_value):
             return None
     else:
         return None
+    
+
 
 def upload_excel(request):
-    if request.method == 'POST' and request.FILES['excel_file']:
+    if request.method == 'POST' and request.FILES.get('excel_file'):
         excel_file = request.FILES['excel_file']
         fs = FileSystemStorage()
         filename = fs.save(excel_file.name, excel_file)
         file_path = fs.path(filename)
 
-
-        df = pd.read_excel(file_path)
-        # Convert the date format
+        # Function to convert date format
         def convert_date(date_value):
             if pd.isna(date_value):
                 return None
             if isinstance(date_value, datetime):
-                # If the value is already a datetime object, return it in the desired format
                 return date_value.strftime('%Y-%m-%d')
             elif isinstance(date_value, str):
-                # If the value is a string, try to parse it
-                try:
-                    return datetime.strptime(date_value, '%d-%b-%y').strftime('%Y-%m-%d')
-                except ValueError:
-                    return None
-            else:
-                return None
-            
+                # Attempt to parse common date formats
+                for fmt in ('%d-%b-%y', '%Y-%m-%d', '%m/%d/%Y', '%d/%m/%Y'):
+                    try:
+                        return datetime.strptime(date_value, fmt).strftime('%Y-%m-%d')
+                    except ValueError:
+                        continue
+            return None
+
         # Function to convert strings to uppercase, handling NaN values
         def to_upper(value):
             if pd.isna(value):
                 return ''
             return str(value).upper()
-        
+
         try:
             df = pd.read_excel(file_path)
-            for index, row in df.iterrows():
-                serial_number = row.iloc[5]
-                # Check if the entry with the same serial number already exists
-                if not PersonnelItem.objects.filter(SERIAL_NUMBER=serial_number).exists():
-                    PersonnelItem.objects.create(
-                        RANK=row.iloc[0],
-                        LAST_NAME=to_upper(row.iloc[1]),  # Convert to uppercase
-                        FIRST_NAME=to_upper(row.iloc[2]),  # Convert to uppercase
-                        MIDDLE_NAME=to_upper(row.iloc[3]),  # Convert to uppercase
-                        EXTENSION_NAME=to_upper(row.iloc[4]),  # Convert to uppercase
-                        SERIAL_NUMBER=serial_number,
-                        BOS=row.iloc[6],
-                        SEX=row.iloc[7],
-                        BIRTHDAY=convert_date(row.iloc[8]),
-                        CONTACT_NUMBER=row.iloc[9],
-                        ADDRESS=row.iloc[10],
-                        CLASSIFICATION=row.iloc[11],
-                        CATEGORY=row.iloc[12],
-                        SOURCE_OF_ENLISTMENT_COMMISION=row.iloc[13],
-                        PILOT_RATED_NON_RATED=row.iloc[14],
-                        AFSC=row.iloc[15],
-                        HIGHEST_PME_COURSES=row.iloc[16],
-                        EFFECTIVE_DATE_APPOINTMENT=convert_date(row.iloc[17]),
-                        EFFECTIVE_DATE_ENTERED=convert_date(row.iloc[18]),
-                        DATE_LAST_PROMOTION_APPOINTMENT=convert_date(row.iloc[19]),
-                        UNIT=row.iloc[20],
-                        SUB_UNIT=row.iloc[21],
-                        DATE_LASTFULL_REENLISTMENT=convert_date(row.iloc[22]),
-                        DATE_LAST_ETAD=convert_date(row.iloc[23])
-                    )
+            
+            # Print columns for debugging
+            print("Columns in Excel file:", df.columns)
+
+            # Begin atomic transaction
+            with transaction.atomic():
+                # Iterate over each row in the DataFrame
+                for index, row in df.iterrows():
+                    # Use row.get() to avoid KeyError if the column is missing
+                    afpsn = row.get('SERIAL NUMBER', '')
+
+                    # Check if the entry with the same AFPSN already exists
+                    if not tbl_Personnel.objects.filter(AFPSN=afpsn).exists():
+                        tbl_Personnel.objects.create(
+                            FirstName=to_upper(row.get('FIRST NAME', '')),
+                            MiddleName=to_upper(row.get('MIDDLE NAME', '')),
+                            LastName=to_upper(row.get('LAST NAME', '')),
+                            NameSuffix=to_upper(row.get('SUFFIX', '')),
+                            AFPSN=afpsn,
+                            Rank=row.get('RANK', ''),
+                            BOS=row.get('BOS', ''),
+                            Sex=row.get('SEX', ''),
+                            Birthday=convert_date(row.get('BIRTHDAY', '')),
+                            ContactNumber=row.get('CONTACT NUMBER', ''),
+                            EmailAddress=row.get('EMAIL ADDRESS', ''),
+                            Address=row.get('ADDRESS', ''),
+                            Classification=row.get('CLASSIFICATION', ''),
+                            PersCategory=row.get('PERS CATEGORY', ''),
+                            SourceOfCommissionEnlistment=row.get('SOURCE OF COMMISSION/ENLISTMENT', ''),
+                            PilotRated_NonRated=row.get('PILOT (RATED / NON-RATED)', ''),
+                            AFSC_PRIMARY=row.get('PRIMARY AFSC', ''),
+                            AFSC_SECONDARY=row.get('SECONDARY AFSC', ''),
+                            AFSC_TERTIARY=row.get('TERTIARY AFSC', ''),
+                            HighestPMEcourse=row.get('HIGHEST PME COURSES', ''),
+                            EffectiveDateOfAppointment=convert_date(row.get('EFFECTIVE DATE OF APPOINTMENT (CAD)/ DATE GRADUATED PMA/OCS/BMT', '')),
+                            DateEnteredMilitary=convert_date(row.get('DATE ENTERED MILITARY SERVICE', '')),
+                            DateLastPromotionAppointment=convert_date(row.get('DATE OF LAST PROMOTION / APPOINTMENT', '')),
+                            Unit=row.get('UNIT', ''),
+                            SubUnit=row.get('SUBUNIT', ''),
+                            DateUnitAssigned=convert_date(row.get('DATE UNIT ASSIGNED', '')),
+                            DateLastFullReenlistment=convert_date(row.get('DATE OF LAST FULL REENLISTMENT', '')),
+                            DateLastETAD=convert_date(row.get('DATE OF LAST ETAD', '')),
+                            BachelorsDegree=row.get('BACHELORS DEGREE', ''),
+                            HighestAttainment=row.get('HIGHEST ATTAINMENT', ''),
+                            SchoolAttended=row.get('SCHOOL ATTENDED', ''),
+                            # WithEligibility=row.get('WithEligibility', ''),
+                            EligibilityDescription=row.get('ELIGIBILITY', ''),
+                            isActive=True  # Default value
+                        )
             return HttpResponse('Data uploaded successfully.')
         except Exception as e:
+            # Print error details for debugging
+            print(f'Error: {e}')
             return HttpResponse(f'Error: {e}')
     return render(request, 'myapp/upload.html')
+
+# def upload_excel(request):
+#     if request.method == 'POST' and request.FILES['excel_file']:
+#         excel_file = request.FILES['excel_file']
+#         fs = FileSystemStorage()
+#         filename = fs.save(excel_file.name, excel_file)
+#         file_path = fs.path(filename)
+
+
+#         df = pd.read_excel(file_path)
+#         # Convert the date format
+#         def convert_date(date_value):
+#             if pd.isna(date_value):
+#                 return None
+#             if isinstance(date_value, datetime):
+#                 # If the value is already a datetime object, return it in the desired format
+#                 return date_value.strftime('%Y-%m-%d')
+#             elif isinstance(date_value, str):
+#                 # If the value is a string, try to parse it
+#                 try:
+#                     return datetime.strptime(date_value, '%d-%b-%y').strftime('%Y-%m-%d')
+#                 except ValueError:
+#                     return None
+#             else:
+#                 return None
+            
+#         # Function to convert strings to uppercase, handling NaN values
+#         def to_upper(value):
+#             if pd.isna(value):
+#                 return ''
+#             return str(value).upper()
+        
+#         try:
+#             df = pd.read_excel(file_path)
+#             for index, row in df.iterrows():
+#                 serial_number = row.iloc[5]
+#                 # Check if the entry with the same serial number already exists
+#                 if not PersonnelItem.objects.filter(SERIAL_NUMBER=serial_number).exists():
+#                     PersonnelItem.objects.create(
+#                         RANK=row.iloc[0],
+#                         LAST_NAME=to_upper(row.iloc[1]),  # Convert to uppercase
+#                         FIRST_NAME=to_upper(row.iloc[2]),  # Convert to uppercase
+#                         MIDDLE_NAME=to_upper(row.iloc[3]),  # Convert to uppercase
+#                         EXTENSION_NAME=to_upper(row.iloc[4]),  # Convert to uppercase
+#                         SERIAL_NUMBER=serial_number,
+#                         BOS=row.iloc[6],
+#                         SEX=row.iloc[7],
+#                         BIRTHDAY=convert_date(row.iloc[8]),
+#                         CONTACT_NUMBER=row.iloc[9],
+#                         ADDRESS=row.iloc[10],
+#                         CLASSIFICATION=row.iloc[11],
+#                         CATEGORY=row.iloc[12],
+#                         SOURCE_OF_ENLISTMENT_COMMISION=row.iloc[13],
+#                         PILOT_RATED_NON_RATED=row.iloc[14],
+#                         AFSC=row.iloc[15],
+#                         HIGHEST_PME_COURSES=row.iloc[16],
+#                         EFFECTIVE_DATE_APPOINTMENT=convert_date(row.iloc[17]),
+#                         EFFECTIVE_DATE_ENTERED=convert_date(row.iloc[18]),
+#                         DATE_LAST_PROMOTION_APPOINTMENT=convert_date(row.iloc[19]),
+#                         UNIT=row.iloc[20],
+#                         SUB_UNIT=row.iloc[21],
+#                         DATE_LASTFULL_REENLISTMENT=convert_date(row.iloc[22]),
+#                         DATE_LAST_ETAD=convert_date(row.iloc[23])
+#                     )
+#             return HttpResponse('Data uploaded successfully.')
+#         except Exception as e:
+#             return HttpResponse(f'Error: {e}')
+#     return render(request, 'myapp/upload.html')
 
 def custom_404(request, exception):
     return render(request, 'other/404.html', status=404)

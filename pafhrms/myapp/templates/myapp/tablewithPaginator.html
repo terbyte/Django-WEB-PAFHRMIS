@@ -18,39 +18,40 @@
     <tbody>
         {% for person in persons %}
         <tr>
-            <td>{{ person.RANK }}</td>
-            <td>{{ person.SERIAL_NUMBER }}</td>
-            <td>{{ person.FIRST_NAME}} {{person.MIDDLE_NAME}} {{person.LAST_NAME}}</td>
-            <td>{{ person.UNIT }}</td>
-            <td>{{ person.SUB_UNIT }}</td>
-            <td>{{ person.CATEGORY }}</td>
+            <td>{{ person.Rank }}</td>
+            <td>{{ person.AFPSN }}</td>
+            <td>{{ person.FirstName}} {{person.MiddleName}} {{person.LastName}}</td>
+            <td>{{ person.Unit }}</td>
+            <td>{{ person.SubUnit }}</td>
+            <td>{{ person.PersCategory }}</td>
 
             <td>
               <button class="btn btn-primary openModalButton"
-              data-rank="{{ person.RANK }}"
-              data-lastname="{{ person.LAST_NAME }}"
-              data-firstname="{{ person.FIRST_NAME }}"
-              data-middlename="{{ person.MIDDLE_NAME }}"
-              data-suffix="{{ person.EXTENSION_NAME }}"
-              data-afpsn="{{ person.SERIAL_NUMBER }}"
-              data-unit="{{ person.UNIT }}"
-              data-subunit="{{ person.SUB_UNIT }}"
-              data-birthday="{{ person.BIRTHDAY|date:'d-b-Y' }}"
-              data-contactnumber="{{ person.CONTACT_NUMBER }}"
-              data-sex="{{ person.SEX }}"
-              data-address="{{ person.ADDRESS }}"
-              data-classification="{{ person.CLASSIFICATION }}"
-              data-sourceofenlistmentcommission="{{ person.SOURCE_OF_ENLISTMENT_COMMISION }}"
-              data-category="{{ person.CATEGORY }}"
-              data-afsc="{{ person.AFSC }}"
-              data-hpme="{{ person.HIGHEST_PME_COURSES }}"
-              data-dateenteredmilitary="{{ person.EFFECTIVE_DATE_ENTERED|date:'d-b-Y' }}"
-              data-lengthofservice="{{ person.LENGTH_OF_SERVICE }}"
-              data-pilotrating="{{ person.PILOT_RATED_NON_RATED }}"
-              data-promotion="{{ person.DATE_LAST_PROMOTION_APPOINTMENT|date:'Y-m-d' }}"
-              data-dateofcommissionship="{{ person.EFFECTIVE_DATE_APPOINTMENT|date:'d-b-Y' }}"
-              data-fullreeenlistment="{{ person.DATE_LASTFULL_REENLISTMENT|date:'Y-m-d' }}"
-              data-dateoflastetadsot="{{ person.DATE_LAST_ETAD|date:'Y-m-d' }}"
+              data-rank="{{ person.Rank }}"
+              data-lastname="{{ person.LastName }}"
+              data-firstname="{{ person.FirstName }}"
+              data-middlename="{{ person.MiddleName }}"
+              data-suffix="{{ person.NameSuffix }}"
+              data-afpsn="{{ person.AFPSN }}"
+              data-unit="{{ person.Unit }}"
+              data-subunit="{{ person.SubUnit }}"
+              data-birthday="{{ person.Birthday|date:'d-b-Y' }}"
+              data-contactnumber="{{ person.ContactNumber }}"
+              data-sex="{{ person.Sex }}"
+              data-address="{{ person.Address }}"
+              data-classification="{{ person.Classification }}"
+              data-sourceofenlistmentcommission="{{ person.SourceOfCommissionEnlistment }}"
+              data-category="{{ person.PersCategory }}"
+              data-afsc="{{ person.AFSC_PRIMARY }}"
+              data-afsc="{{ person.AFSC_SECONDARY }}"
+              data-afsc="{{ person.AFSC_TERTIARY }}"
+              data-hpme="{{ person.HighestPMEcourse }}"
+              data-dateenteredmilitary="{{ person.DateEnteredMilitary|date:'d-b-Y' }}"
+              data-pilotrating="{{ person.PilotRated_NonRated }}"
+              data-promotion="{{ person.DateLastPromotionAppointment|date:'Y-m-d' }}"
+              data-dateofcommissionship="{{ person.EffectiveDateOfAppointment|date:'d-b-Y' }}"
+              data-fullreeenlistment="{{ person.DateLastFullReenlistment|date:'Y-m-d' }}"
+              data-dateoflastetadsot="{{ person.DateLastETAD|date:'Y-m-d' }}"
 
               data-toggle="modal"
               data-target="#myModal"><i class="fa fa-edit"></i> Edit </button>
