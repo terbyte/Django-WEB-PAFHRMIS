@@ -8,10 +8,9 @@ from django.db.models import Q
 from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from .models import PersonnelItem
 import pandas as pd
 from datetime import datetime
-from .forms import PersonnelItemForm
+from .forms import tbl_PersonnelForm
 from .models import Placement
 from django.http import HttpResponseBadRequest, HttpResponse
 from datetime import datetime, timedelta
@@ -22,7 +21,7 @@ from django.conf import settings  # Import settings
 from django.shortcuts import render, redirect
 from django.views.decorators.http import require_POST
 from .models import PersonnelFile
-from .models import PersonnelItem,tbl_Personnel,UnitsTable
+from .models import *
 from django.http import JsonResponse
 from django.db.models import Count, Q
 from itertools import groupby
@@ -233,14 +232,6 @@ def update_placement(request):
         for placement in placements:
             placement.IS_ARCHIVED = True
             placement.save()
-
-        # try:
-        #     personnel_item = PersonnelItem.objects.get(SERIAL_NUMBER=afpsn)
-        #     personnel_item.UNIT = new_unit
-        #     personnel_item.SUB_UNIT = "None"
-        #     personnel_item.save()
-        # except PersonnelItem.DoesNotExist:
-        #     return JsonResponse({'error': 'PersonnelItem not found'}, status=404)
         
         if category != "Assign":
             print("==============================", category, "DS OR TDY")
@@ -251,11 +242,11 @@ def update_placement(request):
             for placement in placements:
                 placement.IS_ARCHIVED = True
                 placement.save()
-        # Update the UNIT in PersonnelItem if The category is assign
+        # Update the UNIT in tbl_Personnel if The category is assign
         else:
-            personnel_item = PersonnelItem.objects.get(SERIAL_NUMBER=afpsn)
-            personnel_item.UNIT = new_unit
-            personnel_item.SUB_UNIT = "None"
+            personnel_item = tbl_Personnel.objects.get(AFPSN=afpsn)
+            personnel_item.Unit = new_unit
+            personnel_item.SubUnit = "None"
             personnel_item.save()
 
         return JsonResponse({'success': 'Placement updated successfully'})
@@ -318,7 +309,7 @@ def index(request):
 
 
 def get_files(request, serial_number):
-    person = PersonnelItem.objects.get(SERIAL_NUMBER=serial_number)
+    person = tbl_Personnel.objects.get(AFPSN=serial_number)
     files = PersonnelFile.objects.filter(personnel=person)
     file_list = [{'name': f.file.name, 'url': f.file.url} for f in files]
     return JsonResponse({'files': file_list})
@@ -328,7 +319,7 @@ def update_reenlistment_date(request):
     serial_number = request.POST['serial_number']
     new_date = request.POST['date_lastfull_reenlistment']
     
-    person = PersonnelItem.objects.get(SERIAL_NUMBER=serial_number)
+    person = tbl_Personnel.objects.get(AFPSN=serial_number)
     person.DATE_LASTFULL_REENLISTMENT = new_date
     
     if 'pdf_file' in request.FILES:
@@ -351,41 +342,42 @@ def format_date(date):
     return None
 
 
+@require_POST
 def update_personnel(request):
-    if request.method == 'POST':
-        try:
-            personnel_id = request.POST.get('personnel_id')
-            personnel_items = tbl_Personnel.objects.filter(AFPSN=personnel_id)
-            if not personnel_items.exists():
-                return JsonResponse({'success': False, 'error': 'Personnel not found'})
+    try:
+        personnel_id = request.POST.get('personnel_id')
+        personnel_item = tbl_Personnel.objects.filter(PK_Personnel=personnel_id).first()
+        
+        if not personnel_item:
+            return JsonResponse({'success': False, 'error': 'Personnel not found'})
 
-            
-            personnel_items.update(
-                LastName=request.POST.get('last_name'),
-                FirstName=request.POST.get('first_name'),
-                MiddleName=request.POST.get('middle_name'),
-                NameSuffix=request.POST.get('suffix'),
-                Address=request.POST.get('address'),
-                Rank=request.POST.get('rank'),
-                AFSC_PRIMARY=request.POST.get('afsc'),
-                # AFSC_SECONDARY=request.POST.get('afsc'),
-                # AFSC_TERTIARY=request.POST.get('afsc'),
-                Unit=request.POST.get('unit'),
-                SubUnit=request.POST.get('subunit'),
-                ContactNumber=request.POST.get('contactnum'),
-                HighestPMEcourse=request.POST.get('hpme'),
-                PilotRated_NonRated=request.POST.get('pilotrating'),
-                DateLastPromotionAppointment=format_date(request.POST.get('promotion')),
-                DateLastFullReenlistment=format_date(request.POST.get('fullreeenlistment')),
-                DateLastETAD=format_date(request.POST.get('dateoflastetadsot'))
-            )
-            return JsonResponse({'success': True})
-        except Exception as e:
-            return JsonResponse({'success': False, 'error': str(e)})
-
-    return JsonResponse({'success': False, 'error': 'Invalid request'})
+        personnel_item.LastName = request.POST.get('last_name')
+        personnel_item.FirstName = request.POST.get('first_name')
+        personnel_item.MiddleName = request.POST.get('middle_name')
+        personnel_item.NameSuffix = request.POST.get('suffix')
+        personnel_item.Address = request.POST.get('address')
+        personnel_item.Rank = request.POST.get('rank')
+        personnel_item.AFSC_PRIMARY = request.POST.get('afsc')
+        # AFSC_SECONDARY=request.POST.get('afsc'),
+        # AFSC_TERTIARY=request.POST.get('afsc'),
+        personnel_item.Unit = request.POST.get('unit')
+        personnel_item.SubUnit = request.POST.get('subunit')
+        personnel_item.ContactNumber = request.POST.get('contactnum')
+        personnel_item.HighestPMEcourse = request.POST.get('hpme')
+        personnel_item.PilotRated_NonRated = request.POST.get('pilotrating')
+        personnel_item.DateLastPromotionAppointment = format_date(request.POST.get('promotion'))
+        personnel_item.DateLastFullReenlistment = format_date(request.POST.get('fullreeenlistment'))
+        personnel_item.DateLastETAD = format_date(request.POST.get('dateoflastetadsot'))
+        
+        personnel_item.save()
+        
+        return JsonResponse({'success': True})
+    except Exception as e:
+        return JsonResponse({'success': False, 'error': str(e)})
 
 
+
+               
 
 
 def convert_date(date_value):
@@ -527,8 +519,8 @@ def upload_excel(request):
 #             for index, row in df.iterrows():
 #                 serial_number = row.iloc[5]
 #                 # Check if the entry with the same serial number already exists
-#                 if not PersonnelItem.objects.filter(SERIAL_NUMBER=serial_number).exists():
-#                     PersonnelItem.objects.create(
+#                 if not tbl_Personnel.objects.filter(SERIAL_NUMBER=serial_number).exists():
+#                     tbl_Personnel.objects.create(
 #                         RANK=row.iloc[0],
 #                         LAST_NAME=to_upper(row.iloc[1]),  # Convert to uppercase
 #                         FIRST_NAME=to_upper(row.iloc[2]),  # Convert to uppercase
@@ -595,7 +587,7 @@ def for_Separation(request):
     if unit_query:
         filters &= Q(UNIT__icontains=unit_query)
     
-    persons = PersonnelItem.objects.filter(filters)
+    persons = tbl_Personnel.objects.filter(filters)
     
     paginator = Paginator(persons, 10)
     page_num = request.GET.get("page")
@@ -646,7 +638,7 @@ def lists_inactive(request):
     if unit_query:
         filters &= Q(UNIT__icontains=unit_query)
     
-    persons = PersonnelItem.objects.filter(filters)
+    persons = tbl_Personnel.objects.filter(filters)
     
     paginator = Paginator(persons, 10)
     page_num = request.GET.get("page")
@@ -675,7 +667,7 @@ def set_inactive(request):
         upload_order = request.FILES.get('separation_uploadOrder')
 
         try:
-            person = PersonnelItem.objects.get(SERIAL_NUMBER=serial_number)
+            person = tbl_Personnel.objects.get(SERIAL_NUMBER=serial_number)
             person.IS_ACTIVE = False  # Set to inactive
             person.INACTIVITY_REASON = inactivity_reason
 
@@ -735,7 +727,7 @@ def Personnel_Records(request):
     if unit_query:
         filters &= Q(UNIT__icontains=unit_query)
     
-    persons = PersonnelItem.objects.filter(filters)
+    persons = tbl_Personnel.objects.filter(filters)
     
     paginator = Paginator(persons, 10)
     page_num = request.GET.get("page")
@@ -805,7 +797,7 @@ def placement_officer(request):
     if unit_query:
         filters &= Q(UNIT__icontains=unit_query)
     
-    persons = PersonnelItem.objects.filter(filters)
+    persons = tbl_Personnel.objects.filter(filters)
     
     paginator = Paginator(persons, 10)
     page_num = request.GET.get("page")
@@ -858,7 +850,7 @@ def placement_enlisted(request):
     if unit_query:
         filters &= Q(UNIT__icontains=unit_query)
     
-    persons = PersonnelItem.objects.filter(filters)
+    persons = tbl_Personnel.objects.filter(filters)
     
     paginator = Paginator(persons, 10)
     page_num = request.GET.get("page")
@@ -1111,7 +1103,7 @@ def unit_monitoring(request):
         filters &= Q(UNIT__icontains=unit_query)
     if sub_unit_query and sub_unit_query != "SUB UNIT":
         filters &= Q(SUB_UNIT__icontains=sub_unit_query)
-    persons = PersonnelItem.objects.filter(filters)
+    persons = tbl_Personnel.objects.filter(filters)
     paginator = Paginator(persons, 10)
     page_num = request.GET.get("page")
     persons = paginator.get_page(page_num)
@@ -1159,7 +1151,7 @@ def unit_dashboard(request):
         PAFHRMC_au_filters &= Q(UNIT__exact=selected_unit)
 
     GUAS_unit_counts = (
-        PersonnelItem.objects
+        tbl_Personnel.objects
         .filter(guas_filters)
         .values('UNIT')
         .annotate(
@@ -1168,7 +1160,7 @@ def unit_dashboard(request):
         )
     )
     ALLPAF_unit_counts = (
-        PersonnelItem.objects
+        tbl_Personnel.objects
         .filter(ALLPAF_units_filters)
         .values('UNIT')
         .annotate(
@@ -1177,7 +1169,7 @@ def unit_dashboard(request):
         )
     )
     PAFHRMC_au_counts = (
-        PersonnelItem.objects
+        tbl_Personnel.objects
         .filter(PAFHRMC_au_filters)
         .values('UNIT')
         .annotate(
@@ -1240,7 +1232,7 @@ def Tranche(request):
     if sub_unit_query and sub_unit_query != "SUB UNIT":
         filters &= Q(SUB_UNIT__icontains=sub_unit_query)
 
-    persons = PersonnelItem.objects.filter(filters)
+    persons = tbl_Personnel.objects.filter(filters)
 
     # Calculate DATE OF NEXT FULL REENLISTMENT
     for person in persons:
@@ -1285,7 +1277,7 @@ def Tranches(request):
     if sub_unit_query and sub_unit_query != "SUB UNIT":
         filters &= Q(SUB_UNIT__icontains=sub_unit_query)
 
-    persons = PersonnelItem.objects.filter(filters)
+    persons = tbl_Personnel.objects.filter(filters)
 
     # Calculate DATE OF NEXT FULL REENLISTMENT
     for person in persons:
@@ -1328,7 +1320,7 @@ def Medicalforfullreenlistment(request):
     if sub_unit_query and sub_unit_query != "SUB UNIT":
         filters &= Q(SUB_UNIT__icontains=sub_unit_query)
 
-    persons = PersonnelItem.objects.filter(filters)
+    persons = tbl_Personnel.objects.filter(filters)
 
     # Calculate DATE OF NEXT FULL REENLISTMENT
     for person in persons:
@@ -1372,7 +1364,7 @@ def Mforfullreenlistment(request):
     if sub_unit_query and sub_unit_query != "SUB UNIT":
         filters &= Q(SUB_UNIT__icontains=sub_unit_query)
 
-    persons = PersonnelItem.objects.filter(filters)
+    persons = tbl_Personnel.objects.filter(filters)
 
     # Calculate DATE OF NEXT FULL REENLISTMENT
     for person in persons:

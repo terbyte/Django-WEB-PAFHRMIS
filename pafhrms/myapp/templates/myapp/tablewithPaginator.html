@@ -18,6 +18,7 @@
     <tbody>
         {% for person in persons %}
         <tr>
+            
             <td>{{ person.Rank }}</td>
             <td>{{ person.AFPSN }}</td>
             <td>{{ person.FirstName}} {{person.MiddleName}} {{person.LastName}}</td>
@@ -27,6 +28,7 @@
 
             <td>
               <button class="btn btn-primary openModalButton"
+              data-pk="{{ person.PK_Personnel }}"
               data-rank="{{ person.Rank }}"
               data-lastname="{{ person.LastName }}"
               data-firstname="{{ person.FirstName }}"
@@ -69,6 +71,7 @@
  <script>
 $(document).ready(function() {
     $('.openModalButton').click(function() {
+        
         var rank = $(this).data('rank');
         var lastname = $(this).data('lastname');
         var firstname = $(this).data('firstname');
