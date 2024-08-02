@@ -110,7 +110,7 @@
                         <td>{{ unit }}</td>
                         <td>
                             {% for count in GUAS_unit_counts %}
-                                {% if count.UNIT == unit %}
+                                {% if count.Unit == unit %}
                                     {{ count.officers_count }}
                                 {% endif %}
                             {% endfor %}
@@ -119,7 +119,7 @@
                         </td>
                         <td>
                             {% for count in GUAS_unit_counts %}
-                                {% if count.UNIT == unit %}
+                                {% if count.Unit == unit %}
                                     {{ count.enlisted_count }}
                                 {% endif %}
                             {% endfor %}
@@ -127,14 +127,14 @@
 
                         <td>
                             {% for count in GUAS_unit_counts %}
-                                {% if count.UNIT == unit %}
+                                {% if count.Unit == unit %}
                                     {{ count.detached_service_count }} / {{ count.temporary_duty_count }}
                                 {% endif %}
                             {% endfor %}
                         </td>
                         <td>
                             {% for count in GUAS_unit_counts %}
-                                {% if count.UNIT == unit %}
+                                {% if count.Unit == unit %}
                                     {{ count.officers_count|add:count.enlisted_count|add:count.detached_service_count|add:count.temporary_duty_count }}
                                 {% endif %}
                             {% endfor %}
@@ -183,28 +183,28 @@
                             <td>{{ unit }}</td>
                             <td>
                                 {% for count in PAFHRMC_au_counts %}
-                                    {% if count.UNIT == unit %}
+                                    {% if count.Unit == unit %}
                                         {{ count.officers_count }}
                                     {% endif %}
                                 {% endfor %}
                             </td>
                             <td>
                                 {% for count in PAFHRMC_au_counts %}
-                                    {% if count.UNIT == unit %}
+                                    {% if count.Unit == unit %}
                                         {{ count.enlisted_count }}
                                     {% endif %}
                                 {% endfor %}
                             </td>
                             <td>
                                 {% for count in PAFHRMC_au_counts %}
-                                    {% if count.UNIT == unit %}
+                                    {% if count.Unit == unit %}
                                         {{ count.detached_service_count }} / {{ count.temporary_duty_count }}
                                     {% endif %}
                                 {% endfor %}
                             </td>
                             <td>
                                 {% for count in PAFHRMC_au_counts %}
-                                    {% if count.UNIT == unit %}
+                                    {% if count.Unit == unit %}
                                         {{ count.officers_count|add:count.enlisted_count|add:count.detached_service_count|add:count.temporary_duty_count }}
                                     {% endif %}
                                 {% endfor %}
@@ -252,14 +252,14 @@
                         <td>{{ unit }}</td>
                         <td>
                             {% for count in ALLPAF_unit_counts %}
-                                {% if count.UNIT == unit %}
+                                {% if count.Unit == unit %}
                                     {{ count.officers_count }}
                                 {% endif %}
                             {% endfor %}
                         </td>
                         <td>
                             {% for count in ALLPAF_unit_counts %}
-                                {% if count.UNIT == unit %}
+                                {% if count.Unit == unit %}
                                     {{ count.enlisted_count }}
                                 {% endif %}
                             {% endfor %}
@@ -267,14 +267,14 @@
 
                         <td>
                             {% for count in ALLPAF_unit_counts %}
-                                {% if count.UNIT == unit %}
+                                {% if count.Unit == unit %}
                                     {{ count.detached_service_count }} / {{ count.temporary_duty_count }}
                                 {% endif %}
                             {% endfor %}
                         </td>
                         <td>
                             {% for count in ALLPAF_unit_counts %}
-                                {% if count.UNIT == unit %}
+                                {% if count.Unit == unit %}
                                     {{ count.officers_count|add:count.enlisted_count|add:count.detached_service_count|add:count.temporary_duty_count }}
                                 {% endif %}
                             {% endfor %}

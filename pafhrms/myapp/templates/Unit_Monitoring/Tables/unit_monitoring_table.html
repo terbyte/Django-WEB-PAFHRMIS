@@ -18,12 +18,12 @@
     <tbody>
         {% for person in persons %}
         <tr>
-            <td>{{ person.RANK }}</td>
-            <td>{{ person.SERIAL_NUMBER }}</td>
-            <td>{{ person.FIRST_NAME}} {{person.MIDDLE_NAME}} {{person.LAST_NAME}}</td>
-            <td>{{ person.UNIT }}</td>
-            <td>{{ person.SUB_UNIT }}</td>
-            <td>{{ person.CATEGORY }}</td>
+            <td>{{ person.Rank }}</td>
+            <td>{{ person.AFPSN }}</td>
+            <td>{{ person.First}} {{person.MiddleName}} {{person.LastName}}</td>
+            <td>{{ person.Unit }}</td>
+            <td>{{ person.SubUnit }}</td>
+            <td>{{ person.PersCategory }}</td>
 
         </tr>
         {% endfor %}

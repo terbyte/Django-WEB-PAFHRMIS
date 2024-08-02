@@ -11,7 +11,6 @@ from django.views.decorators.csrf import csrf_exempt
 import pandas as pd
 from datetime import datetime
 from .forms import tbl_PersonnelForm
-from .models import Placement
 from django.http import HttpResponseBadRequest, HttpResponse
 from datetime import datetime, timedelta
 from datetime import datetime
@@ -341,7 +340,8 @@ def format_date(date):
             return None
     return None
 
-
+# from django.views.decorators.csrf import csrf_protect
+# @csrf_protect
 @require_POST
 def update_personnel(request):
     try:
@@ -1100,9 +1100,9 @@ def unit_monitoring(request):
 
     filters = Q()
     if unit_query and unit_query != "UNIT":
-        filters &= Q(UNIT__icontains=unit_query)
+        filters &= Q(Unit__icontains=unit_query)
     if sub_unit_query and sub_unit_query != "SUB UNIT":
-        filters &= Q(SUB_UNIT__icontains=sub_unit_query)
+        filters &= Q(SubUnit__icontains=sub_unit_query)
     persons = tbl_Personnel.objects.filter(filters)
     paginator = Paginator(persons, 10)
     page_num = request.GET.get("page")
@@ -1153,28 +1153,28 @@ def unit_dashboard(request):
     GUAS_unit_counts = (
         tbl_Personnel.objects
         .filter(guas_filters)
-        .values('UNIT')
+        .values('Unit')
         .annotate(
-            officers_count=Count('pk', filter=Q(CATEGORY='OFFICER')),
-            enlisted_count=Count('pk', filter=Q(CATEGORY='ENLISTED PERSONNEL'))
+            officers_count=Count('pk', filter=Q(PersCategory='OFFICER')),
+            enlisted_count=Count('pk', filter=Q(PersCategory='ENLISTED PERSONNEL'))
         )
     )
     ALLPAF_unit_counts = (
         tbl_Personnel.objects
         .filter(ALLPAF_units_filters)
-        .values('UNIT')
+        .values('Unit')
         .annotate(
-            officers_count=Count('pk', filter=Q(CATEGORY='OFFICER')),
-            enlisted_count=Count('pk', filter=Q(CATEGORY='ENLISTED PERSONNEL'))
+            officers_count=Count('pk', filter=Q(PersCategory='OFFICER')),
+            enlisted_count=Count('pk', filter=Q(PersCategory='ENLISTED PERSONNEL'))
         )
     )
     PAFHRMC_au_counts = (
         tbl_Personnel.objects
         .filter(PAFHRMC_au_filters)
-        .values('UNIT')
+        .values('Unit')
         .annotate(
-            officers_count=Count('pk', filter=Q(CATEGORY='OFFICER')),
-            enlisted_count=Count('pk', filter=Q(CATEGORY='ENLISTED PERSONNEL'))
+            officers_count=Count('pk', filter=Q(PersCategory='OFFICER')),
+            enlisted_count=Count('pk', filter=Q(PersCategory='ENLISTED PERSONNEL'))
         )
     )
 
@@ -1194,7 +1194,7 @@ def unit_dashboard(request):
     # Update counts with assignment category data
     def update_counts(unit_counts):
         for unit in unit_counts:
-            unit_name = unit['UNIT']
+            unit_name = unit['Unit']
             if unit_name in placement_counts_dict:
                 unit.update(placement_counts_dict[unit_name])
             else:

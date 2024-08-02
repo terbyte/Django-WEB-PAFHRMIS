@@ -50,6 +50,22 @@ class PersonnelFile(models.Model):
         return f'{self.RANK} {self.LAST_NAME}, {self.FIRST_NAME} {self.MIDDLE_NAME} {self.EXTENSION_NAME}'
 
 
+class tbl_Personnel_Placement(models.Model):
+    PK_PersonnelPlacement = models.BigAutoField(primary_key=True)
+    pass
+
+class UnitsTable(models.Model):
+    PK_Units = models.BigAutoField (primary_key=True)
+    UnitName = models.CharField(max_length=100)
+    UnitDescription = models.CharField(max_length=200)
+    UnitCategory = models.CharField(max_length=200)
+    Logo = models.CharField(max_length=200, blank=True, null=True)
+    FK_MotherUnit = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)
+
+    def __str__(self):
+        return self.UnitName
+
+
 class Placement(models.Model):
     AFPSN = models.CharField(max_length=200)
     RANK = models.CharField(max_length=200)
@@ -70,21 +86,23 @@ class Placement(models.Model):
     class Meta:
         db_table = "placementinfo"
 
-class tbl_Personnel_Placement(models.Model):
+
+class tbl_PersonnelPlacement(models.Model):
     PK_PersonnelPlacement = models.BigAutoField(primary_key=True)
-    pass
+    FK_Personnel = models.ForeignKey(tbl_Personnel, on_delete=models.CASCADE)
+    FK_Unit = models.ForeignKey(UnitsTable, on_delete=models.CASCADE)
+    AssignmentCategory = models.CharField(max_length=200)
+    DateFiled = models.DateField()
+    EffectiveDate = models.DateField()
+    EffectiveUntil = models.DateField()
+    IsArchived = models.BooleanField(default=False)
+    UploadedOrder = models.FileField(upload_to='orders/')
 
-
-class UnitsTable(models.Model):
-    PK_Units = models.BigAutoField (primary_key=True)
-    UnitName = models.CharField(max_length=100)
-    UnitDescription = models.CharField(max_length=200)
-    UnitCategory = models.CharField(max_length=200)
-    Logo = models.CharField(max_length=200, blank=True, null=True)
-    FK_MotherUnit = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
-        return self.UnitName
+        return f"{self.FK_Personnel} - {self.FK_Unit}" 
+
+
 
 
 
