@@ -319,7 +319,7 @@ def update_reenlistment_date(request):
     new_date = request.POST['date_lastfull_reenlistment']
     
     person = tbl_Personnel.objects.get(AFPSN=serial_number)
-    person.DATE_LASTFULL_REENLISTMENT = new_date
+    person.DateLastFullReenlistment = new_date
     
     if 'pdf_file' in request.FILES:
         file = request.FILES['pdf_file']
@@ -543,7 +543,7 @@ def upload_excel(request):
 #                         DATE_LAST_PROMOTION_APPOINTMENT=convert_date(row.iloc[19]),
 #                         UNIT=row.iloc[20],
 #                         SUB_UNIT=row.iloc[21],
-#                         DATE_LASTFULL_REENLISTMENT=convert_date(row.iloc[22]),
+#                         DateLastFullReenlistment=convert_date(row.iloc[22]),
 #                         DATE_LAST_ETAD=convert_date(row.iloc[23])
 #                     )
 #             return HttpResponse('Data uploaded successfully.')
@@ -779,23 +779,23 @@ def placement_officer(request):
     
     filters = Q()
     if last_name_query:
-        filters &= Q(LAST_NAME__icontains=last_name_query)
+        filters &= Q(LastName__icontains=last_name_query)
     if first_name_query:
-        filters &= Q(FIRST_NAME__icontains=first_name_query)
+        filters &= Q(FirstName__icontains=first_name_query)
     if middle_name_query:
-        filters &= Q(MIDDLE_NAME__icontains=middle_name_query)
+        filters &= Q(MiddleName__icontains=middle_name_query)
     if suffix_query and suffix_query != "Suffix":
-        filters &= Q(EXTENSION_NAME__icontains=suffix_query)
+        filters &= Q(NameSuffix__icontains=suffix_query)
     if afpsn_query:
-        filters &= Q(SERIAL_NUMBER__icontains=afpsn_query)  
+        filters &= Q(AFPSN__icontains=afpsn_query)  
     if rank_query and rank_query != "Rank":
-        filters &= Q(RANK__icontains=rank_query)
+        filters &= Q(Rank__icontains=rank_query)
     if category_query and category_query:
-        filters &= Q(CATEGORY__icontains=category_query)
+        filters &= Q(PersCategory__icontains=category_query)
     if sex_query and sex_query != "Sex":
-        filters &= Q(SEX__icontains=sex_query)
+        filters &= Q(Sex__icontains=sex_query)
     if unit_query:
-        filters &= Q(UNIT__icontains=unit_query)
+        filters &= Q(Unit__icontains=unit_query)
     
     persons = tbl_Personnel.objects.filter(filters)
     
@@ -832,23 +832,23 @@ def placement_enlisted(request):
     
     filters = Q()
     if last_name_query:
-        filters &= Q(LAST_NAME__icontains=last_name_query)
+        filters &= Q(LastName__icontains=last_name_query)
     if first_name_query:
-        filters &= Q(FIRST_NAME__icontains=first_name_query)
+        filters &= Q(FirstName__icontains=first_name_query)
     if middle_name_query:
-        filters &= Q(MIDDLE_NAME__icontains=middle_name_query)
+        filters &= Q(MiddleName__icontains=middle_name_query)
     if suffix_query and suffix_query != "Suffix":
-        filters &= Q(EXTENSION_NAME__icontains=suffix_query)
+        filters &= Q(NameSuffix__icontains=suffix_query)
     if afpsn_query:
-        filters &= Q(SERIAL_NUMBER__icontains=afpsn_query)  
+        filters &= Q(AFPSN__icontains=afpsn_query)  
     if rank_query and rank_query != "Rank":
-        filters &= Q(RANK__icontains=rank_query)
+        filters &= Q(Rank__icontains=rank_query)
     if category_query and category_query:
-        filters &= Q(CATEGORY__icontains=category_query)
+        filters &= Q(PersCategory__icontains=category_query)
     if sex_query and sex_query != "Sex":
-        filters &= Q(SEX__icontains=sex_query)
+        filters &= Q(Sex__icontains=sex_query)
     if unit_query:
-        filters &= Q(UNIT__icontains=unit_query)
+        filters &= Q(Unit__icontains=unit_query)
     
     persons = tbl_Personnel.objects.filter(filters)
     
@@ -1226,18 +1226,18 @@ def Tranche(request):
 
     filters = Q()
     if category_query:
-        filters &= Q(CATEGORY__icontains=category_query)
+        filters &= Q(PersCategory__icontains=category_query)
     if unit_query and unit_query != "UNIT":
-        filters &= Q(UNIT__icontains=unit_query)
+        filters &= Q(Unit__icontains=unit_query)
     if sub_unit_query and sub_unit_query != "SUB UNIT":
-        filters &= Q(SUB_UNIT__icontains=sub_unit_query)
+        filters &= Q(SubUnit__icontains=sub_unit_query)
 
     persons = tbl_Personnel.objects.filter(filters)
 
     # Calculate DATE OF NEXT FULL REENLISTMENT
     for person in persons:
-        if person.DATE_LASTFULL_REENLISTMENT:
-            person.DATE_NEXTFULL_REENLISTMENT = person.DATE_LASTFULL_REENLISTMENT + timedelta(days=6*365)  # Roughly adding 6 years
+        if person.DateLastFullReenlistment:
+            person.DATE_NEXTFULL_REENLISTMENT = person.DateLastFullReenlistment + timedelta(days=6*365)  # Roughly adding 6 years
 
     if dnfr_query and dnfr_query != "YEAR":
         try:
@@ -1262,7 +1262,6 @@ def Tranche(request):
 
 
 # for DATE OF 2ND TRANCHE
-# for DATE OF 2ND TRANCHE
 def Tranches(request):
     category_query = 'ENLISTED PERSONNEL'
     unit_query = request.GET.get('unit')
@@ -1271,18 +1270,18 @@ def Tranches(request):
 
     filters = Q()
     if category_query:
-        filters &= Q(CATEGORY__icontains=category_query)
+        filters &= Q(PersCategory__icontains=category_query)
     if unit_query and unit_query != "UNIT":
-        filters &= Q(UNIT__icontains=unit_query)
+        filters &= Q(Unit__icontains=unit_query)
     if sub_unit_query and sub_unit_query != "SUB UNIT":
-        filters &= Q(SUB_UNIT__icontains=sub_unit_query)
+        filters &= Q(SubUnit__icontains=sub_unit_query)
 
     persons = tbl_Personnel.objects.filter(filters)
 
     # Calculate DATE OF NEXT FULL REENLISTMENT
     for person in persons:
-        if person.DATE_LASTFULL_REENLISTMENT:
-            person.DATE_NEXTFULL_REENLISTMENT = person.DATE_LASTFULL_REENLISTMENT + timedelta(days=3*365)  # Roughly adding 6 years
+        if person.DateLastFullReenlistment:
+            person.DATE_NEXTFULL_REENLISTMENT = person.DateLastFullReenlistment + timedelta(days=3*365)  # Roughly adding 6 years
 
     if dnfr_query and dnfr_query != "YEAR":
         try:
@@ -1314,18 +1313,18 @@ def Medicalforfullreenlistment(request):
 
     filters = Q()
     if category_query:
-        filters &= Q(CATEGORY__icontains=category_query)
+        filters &= Q(PersCategory__icontains=category_query)
     if unit_query and unit_query != "UNIT":
-        filters &= Q(UNIT__icontains=unit_query)
+        filters &= Q(Unit__icontains=unit_query)
     if sub_unit_query and sub_unit_query != "SUB UNIT":
-        filters &= Q(SUB_UNIT__icontains=sub_unit_query)
+        filters &= Q(SubUnit__icontains=sub_unit_query)
 
     persons = tbl_Personnel.objects.filter(filters)
 
     # Calculate DATE OF NEXT FULL REENLISTMENT
     for person in persons:
-        if person.DATE_LASTFULL_REENLISTMENT:
-            person.DATE_NEXTFULL_REENLISTMENT = person.DATE_LASTFULL_REENLISTMENT + timedelta(days=2*365)  # Roughly adding 6 years
+        if person.DateLastFullReenlistment:
+            person.DATE_NEXTFULL_REENLISTMENT = person.DateLastFullReenlistment + timedelta(days=2*365)  # Roughly adding 6 years
 
     if dnfr_query and dnfr_query != "YEAR":
         try:
@@ -1358,18 +1357,18 @@ def Mforfullreenlistment(request):
 
     filters = Q()
     if category_query:
-        filters &= Q(CATEGORY__icontains=category_query)
+        filters &= Q(PersCategory__icontains=category_query)
     if unit_query and unit_query != "UNIT":
-        filters &= Q(UNIT__icontains=unit_query)
+        filters &= Q(Unit__icontains=unit_query)
     if sub_unit_query and sub_unit_query != "SUB UNIT":
-        filters &= Q(SUB_UNIT__icontains=sub_unit_query)
+        filters &= Q(SubUnit__icontains=sub_unit_query)
 
     persons = tbl_Personnel.objects.filter(filters)
 
     # Calculate DATE OF NEXT FULL REENLISTMENT
     for person in persons:
-        if person.DATE_LASTFULL_REENLISTMENT:
-            person.DATE_NEXTFULL_REENLISTMENT = person.DATE_LASTFULL_REENLISTMENT + timedelta(days=5*365)  # Roughly adding 6 years
+        if person.DateLastFullReenlistment:
+            person.DATE_NEXTFULL_REENLISTMENT = person.DateLastFullReenlistment + timedelta(days=5*365)  # Roughly adding 6 years
 
     if dnfr_query and dnfr_query != "YEAR":
         try:

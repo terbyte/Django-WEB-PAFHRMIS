@@ -68,9 +68,7 @@
             <th>No.</th>
             <th>AFPSN</th>
             <th>RANK</th>
-            <th>NAME</th>
-            <th>MIDDLE NAME</th>
-            <th>SURNAME</th>
+            <th>FULL NAME</th>
             <th>UNIT</th>
             <th>SUB-UNIT</th>
             <th>CP #</th>
@@ -82,14 +80,12 @@
     {% with start_number=persons.start_index %}
         <tr>
             <td>{{ start_number|add:forloop.counter0 }}</td>
-            <td>{{ person.SERIAL_NUMBER }}</td>
-            <td>{{ person.RANK }}</td>
-            <td>{{ person.FIRST_NAME }}</td>
-            <td>{{ person.MIDDLE_NAME }}</td>
-            <td>{{ person.LAST_NAME }}</td>
-            <td>{{ person.UNIT }}</td>
-            <td>{{ person.SUB_UNIT }}</td>
-            <td>{{ person.CONTACT_NUMBER }}</td>
+            <td>{{ person.AFPSN }}</td>
+            <td>{{ person.Rank }}</td>
+            <td>{{ person.FirstName }} {{ person.MiddleName }} {{ person.LastName }} {{ person.NameSuffix }}</td>
+            <td>{{ person.Unit }}</td>
+            <td>{{ person.SubUnit }}</td>
+            <td>{{ person.ContactNumber }}</td>
             <td>{{ person.DATE_NEXTFULL_REENLISTMENT }}</td>
         </tr>
     {% endwith %}

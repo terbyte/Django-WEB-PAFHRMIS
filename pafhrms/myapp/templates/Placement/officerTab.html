@@ -24,25 +24,25 @@
         </tr>
         {% for person in persons %}
         <tr>
-          <td>{{ person.RANK }}</td>
-          <td>{{ person.SERIAL_NUMBER }}</td>
-          <td>{{ person.FIRST_NAME}} {{person.MIDDLE_NAME}} {{person.LAST_NAME}}</td>
-          <td>{{ person.UNIT }}</td>
-          <td>{{ person.SUB_UNIT }}</td>
-          <td>{{ person.CATEGORY }}</td>
+            <td>{{ person.Rank }}</td>
+            <td>{{ person.AFPSN }}</td>
+            <td>{{ person.First}} {{person.MiddleName}} {{person.LastName}}</td>
+            <td>{{ person.Unit }}</td>
+            <td>{{ person.SubUnit }}</td>
+            <td>{{ person.PersCategory }}</td>
   
           <!-- <td><button class="btn btn-primary" id="openModalButton"  class="count_btn">EDIT</button></td> -->
           
           <td>
           <button 
                   class="btn btn-primary openModalButton" 
-                  data-lastname="{{ person.LAST_NAME }}"
-                  data-firstname="{{ person.FIRST_NAME }}"
-                  data-middlename="{{ person.MIDDLE_NAME }}"
-                  data-suffix="{{ person.EXTENSION_NAME }}"
-                  data-afpsn="{{ person.SERIAL_NUMBER }}"
-                  data-unit="{{ person.UNIT }}"
-                  data-rank="{{ person.RANK }}"
+                  data-lastname="{{ person.LastName }}"
+                  data-firstname="{{ person.FirstName }}"
+                  data-middlename="{{ person.MiddleName }}"
+                  data-suffix="{{ person.NameSuffix }}"
+                  data-afpsn="{{ person.AFPSN }}"
+                  data-unit="{{ person.Unit }}"
+                  data-rank="{{ person.Rank }}"
                   data-bos="{{ person.BOS }}"
                   
                   data-toggle="modal"
