@@ -386,15 +386,19 @@ document.addEventListener('DOMContentLoaded', function() {
                 break;
         }
 
-        const newDate = new Date(reassignmentDate);
-        newDate.setMonth(newDate.getMonth() + monthsToAdd);
-        newDate.setFullYear(newDate.getFullYear() + yearsToAdd);
-        if (newDate.getDate() !== reassignmentDate.getDate()) {
-            newDate.setDate(0);
-        }
-        const formattedNewDate = newDate.toLocaleDateString('en-GB');
-        document.getElementById('untildatelbl').textContent = formattedNewDate;
+
+         var newDate = new Date(reassignmentDate);
+    newDate.setMonth(newDate.getMonth() + monthsToAdd);
+    newDate.setFullYear(newDate.getFullYear() + yearsToAdd);
+    if (newDate.getDate() !== reassignmentDate.getDate()) {
+      newDate.setDate(0);
     }
+    var day = ("0" + newDate.getDate()).slice(-2);
+    var month = ("0" + (newDate.getMonth() + 1)).slice(-2);
+    var year = newDate.getFullYear();
+    var formattedNewDate = day + "-" + month + "-" + year;
+    document.getElementById('untildatelbl').textContent = formattedNewDate;
+  }
 
     document.getElementById('reassignmentDate').addEventListener('change', computeDate);
     document.getElementById('durationtxt').addEventListener('change', computeDate);
@@ -463,6 +467,20 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+
+
+var selectElement = document.getElementById('assignmentcategorytxt');
+          // Add event listener for change event
+          selectElement.addEventListener('change', function(event) {
+              // Get the selected option
+              var selectedOption = event.target.value;
+              // Check if the selected option is not "Assigned"
+              if (selectedOption !== 'Assign') {
+                document.getElementById('dropdownContainer').removeAttribute('hidden');
+              }else{
+                document.getElementById('dropdownContainer').setAttribute('hidden', 'hidden');
+              }
+          });
     </script>
 
     
