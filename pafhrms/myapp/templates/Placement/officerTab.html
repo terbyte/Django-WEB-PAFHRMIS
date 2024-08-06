@@ -36,6 +36,7 @@
           <td>
           <button 
                   class="btn btn-primary openModalButton" 
+                  data-pk="{{ person.PK_Personnel }}"
                   data-lastname="{{ person.LastName }}"
                   data-firstname="{{ person.FirstName }}"
                   data-middlename="{{ person.MiddleName }}"
@@ -93,7 +94,7 @@
   
     </script>
   
-  <nav aria-label="...">
+ <nav aria-label="...">
     <ul class="pagination">
         {% if persons.has_previous %}
             <li class="page-item">
@@ -133,10 +134,14 @@
             </li>
         {% endif %}
     </ul>
-</nav>
+</nav> 
 
 {% endblock %}
     
+
+<!-- pagination -->
+
+
 
     <!-- <div class="form-group">
         <button type="submit" class="btn btn-primary">Search</button>

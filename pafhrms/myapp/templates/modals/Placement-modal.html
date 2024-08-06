@@ -228,68 +228,23 @@
               </div>
             </div>
         
-            <!-- Fourth Row: Present Unit and new Textbox -->
-            <div class="row justify-content-center">
-              <div class="col-md-6">
-                <div class="mb-4">
-                  <label class="form-label">Present Unit</label >
-                  <input type="text" id="unitDP" name="unit" class="form-control" placeholder="Suffix" readonly>
-                </div>
-              </div>
-              
-              <div class="col-md-6">
-                <div class="mb-4">
-                  <label >Branch of Service</label>
-                  <input type="text" id="bostxt" name="bostxt" class="form-control" placeholder="Branch of Service" disabled>
-                </div>
-              </div>
-            </div>
-
             <div class="mb-3">
-              <label class="form-label">Reassignment Unit</label>
-              <select id="new_unit" name="new_unit" class="form-select" required>
-                <option selected></option>
-                <option>GHQ</option>
-                <option>HPAF</option>
-                <option>PAFHRMC A/U</option>
-                <option>PAFHRMC</option>
-                <option>AFPWSSUS</option>
-                <option>AIBDC</option>
-                <option>ADC</option>
-                <option>AMC</option>
-                <option>ACC</option>
-                <option>AETDC</option>
-                <option>ARFC</option>
-                <option>TOWNOL</option>
-                <option>TOWSOL</option>
-                <option>TOWCEN</option>
-                <option>TOWWEST</option>
-                <option>TOWEASTMIN</option>
-                <option>TOWWESTMIN</option>
-                <option>355AEW</option>
-                <option>300AISW</option>
-                <option>900AFWG</option>
-                <option>950CEWW</option>
-                <option>AFFC</option>
-                <option>AFSSG</option>
-                <option>HSSG</option>
-                <option>PAFCMOG</option>
-                <option>NOLCOM</option>
-                <option>SOLCOM</option>
-                <option>WESCOM</option>
-                <option>VISCOM</option>
-                <option>WESTMINCOM</option>
-                <option>EASTMINCOM</option>
-                <option>JTF-NCR</option>
+              <label class="form-label">Unit</label>
+              <select id="unit" name="unit" class="form-select">
+                  <option selected value="">Select Unit</option>
+                  {% for unit in units %}
+                      <option value="{{ unit.PK_Units }}">{{ unit.UnitName }}</option>
+                  {% endfor %}
               </select>
-            </div>
-
-            <div class="mb-3">
-              <label>Sub Unit</label>
-              <select for="SubunitDP" id="SubunitDP"  name="subunit" class="form-control">
-              <option selected>SUB UNIT</option>
-            </select>
-            </div>
+          </div>
+          
+          <!-- Subunit Dropdown -->
+          <div class="mb-3">
+              <label class="form-label">Subunit</label>
+              <select id="subunit" name="subunit" class="form-select">
+                  <option selected value="">Select Subunit</option>
+              </select>
+          </div>
 
             <div class="mb-3">
               <label  class="form-label">Reassignment Effective Date</label>
@@ -349,256 +304,124 @@
 <!-- /alert section -->
 
 <script>
-
-  // Function to populate subunits based on the selected unit
-  function populateSubunits(unit, selectedSubunit) {
-    const unitSubunitMap = {
-      'HPAF': ['OCG', 'OVC', 'OCAS', 'OSAS', 'AFCC', 'OAFIG', 'OSS', 'AFSO', 'OESPA','AFSMO', 'AFPAO', 'OAFIA', 'OAFSM', 'OAFA', 'OAFPM', 'OAJA', 'OCAC','OCSAF', 'OCAFDS', 'OCNAF', 'OAFCE', 'OCHCA', 'AFREO', 'AFIMAO','AFCLOAC', 'OAFGAD', 'ACOFAS, A-1', 'ACOFAS, A-2', 'ACOFAS, A-3','ACOFAS, A-4', 'ACOFAS, A-5', 'ACOFAS, A-6', 'ACOFAS, A-7', 'ACOFAS, A-8','ACOFAS, A-9', 'ACOFAS, A-10'],
-      'AIBDC':  ['HAIBDC', '520th ABG', '530th ABG', '540th ABG', '550th ABG','560th ABG', '585th ABG', '590th ABG', '600ABG', '970th HECG','AFGH', '1301st DD'],
-      'ADC': ['HADC', '5FW', '580ACWW', '960AMDG', 'PADCC', 'ADAC'],
-      'AMC':['HAMC', '205THW', '220AW', '250PAW', '505SRG'],
-      'ACC': ['HACC', '15SW', '710SPOW'],
-      'AETDC': [ 'HAETDC', 'PAFOS', 'PAFOCS', 'PAFFS', 'PAFNCOS', 'PAFTSS','PAFBMS', 'PAFLTC', 'PAFALEN', '440AMG', 'TDC', 'AWC'],
-      'ARFC': ['HAFRC', '1st ARCEN', '2nd ARCEN', '3rd ARCEN', '4th ARCEN', '5th ARCEN', '6th ARCEN', '7th ARCEN', '8th ARCEN'],  
-      'GHQ': ['OJ1', 'OJ2', 'OJ3', 'OJ4', 'OJ5', 'OJ6', 'OJ7', 'OJ8', 'OJ9', 'OJ10', 'AFPCC','OTAG', 'OTPMG', 'OTCCHS', 'OTJAG', 'AFPPDO', 'OTQMG', 'OTSG', 'AFPSEO','AFPHRO', 'OTCN', 'OTCDS', 'OSPS', 'AFPIMAC', 'AFPREO', 'AFPEBSO', 'OTCE','AFP K9', 'AFPCOC', 'CEISO', 'CGEASH', 'OAFPSM', 'GHQTS', 'PMO', 'OSJA','ODCOP', 'ONAF', 'GHQPFO'],
-      'AFPWSSUS': ['PMA', 'AFPETDC', 'CEISSAFP', 'CRSAFP', 'ISAFP', 'AFPHSC', 'AFP SOCOM', 'AFPFC', 'AFPPS', 'AFPPKOC', 'AFPCES', 'AFPMCC', 'PSG', 'AFPPGMC', 'AFPCYBER', 'AFPRESCOM', 'DND'],
-    };
-
-
-    const subunitDP = document.getElementById('SubunitDP');
-    subunitDP.innerHTML = '<option value="">--Select Subunit--</option>';
-
-    if (unit) {
-      const subunits = unitSubunitMap[unit];
-      if (subunits) {
-        subunits.forEach(function(subunit) {
-          const option = document.createElement('option');
-          option.value = subunit;
-          option.textContent = subunit;
-          subunitDP.appendChild(option);
-        });
-      }
+document.addEventListener('DOMContentLoaded', function() {
+    function populateSubunits(unitId) {
+        const subunitDP = document.getElementById('subunit');
+        subunitDP.innerHTML = '<option value="">--Select Subunit--</option>';
+        
+        if (unitId) {
+            fetch(`/get_subunits/?unit_id=${unitId}`)
+                .then(response => response.json())
+                .then(data => {
+                    const subunits = data.subunits;
+                    if (subunits) {
+                        subunits.forEach(function(subunit) {
+                            const option = document.createElement('option');
+                            option.value = subunit.PK_Units;
+                            option.textContent = subunit.UnitName;
+                            subunitDP.appendChild(option);
+                        });
+                    }
+                })
+                .catch(error => console.error('Error fetching subunits:', error));
+        }
     }
 
-    if (selectedSubunit) {  
-      $('#SubunitDP').val(selectedSubunit);
-    }
-  }
+    document.getElementById('unit').addEventListener('change', function() {
+        const selectedUnitId = this.value;
+        populateSubunits(selectedUnitId);
+    });
 
-  // Event listener for unit dropdown change
-  $('#new_unit').change(function() {
-    const selectedUnit = $(this).val();
-    const selectedSubunit = $('#SubunitDP').val(); // Get the current value of subunit
-    populateSubunits(selectedUnit, selectedSubunit); // Pass current subunit value to maintain selection
-  });
+    // Reassignment Date Picker
+    document.getElementById('reassignmentDate').addEventListener('change', function() {
+        const reassignmentDateValue = this.value;
+        const reassignmentDate = new Date(reassignmentDateValue);
+        const formattedDate2 = reassignmentDate.toLocaleDateString('en-GB');
+        document.getElementById('untildatelbl').textContent = formattedDate2;
+    });
 
-
-
-// MAKE THE REASSIGNMENT EFFECTIVE DATEPICKER NOT ALLOW YOU TO PICK PRIOR TODAY
-        // var today = new Date();
-        // var day = String(today.getDate()).padStart(2, '0');
-        // var month = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
-        // var year = today.getFullYear();
-        // // Format today's date as YYYY-MM-DD
-        // var todayDate = year + '-' + month + '-' + day;
-        // // Set the min attribute of the date input to today's date
-        // document.getElementById('reassignmentDate').setAttribute('min', todayDate);
-        // // ENDS
-
-
-
-
-    
-  // if the reaasgined date is empty, do something
-  var previousValue = document.getElementById('assignmentcategorytxt').value;
-  var untilDateLabel = document.getElementById('untildatelbl');
-  document.getElementById('reassignmentDate').addEventListener('change', function() {
-    //populate date to untildatelbl
-    // Get the value of the reassignmentDate input
-    var reassignmentDateValue = document.getElementById('reassignmentDate').value;
-    // Convert the input date string to a Date object
-    var reassignmentDate = new Date(reassignmentDateValue);
-    var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
-                  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-    // Format the date as "dd-mmm-yyyy"
-    var formattedDate = ("0" + reassignmentDate.getDate()).slice(-2) + "-" + 
-                        months[reassignmentDate.getMonth()] + "-" + 
-                        reassignmentDate.getFullYear();
-    // Get the label element by its ID
-    // new var format = dd-mm-yyyy
-    var formattedDate2 = reassignmentDate.toLocaleDateString('en-GB');
-    var untildatelbl = document.getElementById('untildatelbl');
-    // Set the text content of the label
-    untildatelbl.textContent = formattedDate2;
-  });
-  // ends 
-
-
-
-  // hides the dropdown of DS and TDY if dropdown option has value of "assigned"
+    // Assignment Category Dropdown
     document.getElementById('assignmentcategorytxt').addEventListener('change', function() {
-      var reassignmentDate = document.getElementById('reassignmentDate').value;
-      var selectedCategory = this.value;
-      var dropdownContainer = document.getElementById('dropdownContainer');
-      if ((selectedCategory === 'Detached Service' || selectedCategory === 'Temporary Duty') && !reassignmentDate) {
-        showAlert();
-        this.value = previousValue;
-        dropdownContainer.classList.add('hidden');
-      } else {
-        dropdownContainer.classList.remove('hidden');
-        previousValue = selectedCategory;
-      }
-    });
-    
-
-    
-  // event for duration drop down
-  function computeDate() {
-    var reassignmentDateValue = document.getElementById('reassignmentDate').value;
-    if (!reassignmentDateValue) return; // Return if reassignment date is not set
-    var reassignmentDate = new Date(reassignmentDateValue);
-    var durationSelect = document.getElementById('durationtxt');
-    var selectedDuration = durationSelect.value;
-    var assignmentcategory = document.getElementById('assignmentcategorytxt');
-    var selectedCategory = assignmentcategory.value;
-  if (selectedCategory === "Assign") {
-          endDate = reassignmentDate;
-          return;
-        } 
-
-    var yearsToAdd = 0;
-    var monthsToAdd = 0;
-    switch (selectedDuration) {
-      case "6 Months":
-        monthsToAdd = 6;
-        break;
-      case "8 Months":
-        monthsToAdd = 8;
-        break;
-      case "1 Year":
-        yearsToAdd = 1;
-        break;
-      case "2 Years":
-        yearsToAdd = 2;
-        break;
-      default:
-        break;
-    }
-
-    var newDate = new Date(reassignmentDate);
-    newDate.setMonth(newDate.getMonth() + monthsToAdd);
-    newDate.setFullYear(newDate.getFullYear() + yearsToAdd);
-    if (newDate.getDate() !== reassignmentDate.getDate()) {
-      newDate.setDate(0);
-    }
-    var day = ("0" + newDate.getDate()).slice(-2);
-    var month = ("0" + (newDate.getMonth() + 1)).slice(-2);
-    var year = newDate.getFullYear();
-    var formattedNewDate = day + "-" + month + "-" + year;
-    document.getElementById('untildatelbl').textContent = formattedNewDate;
-  }
-
-  // Add event listener to reassignment date picker
-  document.getElementById('reassignmentDate').addEventListener('change', computeDate);
-  // Add event listener to duration dropdown
-  document.getElementById('durationtxt').addEventListener('change', computeDate);
-
-
-
-
-
-    document.getElementById('closeAlertBtn').addEventListener('click', function() {
-      hideAlert();
+        const reassignmentDate = document.getElementById('reassignmentDate').value;
+        const selectedCategory = this.value;
+        const dropdownContainer = document.getElementById('dropdownContainer');
+        if ((selectedCategory === 'Detached Service' || selectedCategory === 'Temporary Duty') && !reassignmentDate) {
+            showAlert();
+            this.value = previousValue;
+            dropdownContainer.classList.add('hidden');
+        } else {
+            dropdownContainer.classList.remove('hidden');
+            previousValue = selectedCategory;
+        }
     });
 
-    function showAlert() {
-      var alertBox = document.getElementById('alertBox');
-      alertBox.style.display = 'block';
+    function computeDate() {
+        const reassignmentDateValue = document.getElementById('reassignmentDate').value;
+        if (!reassignmentDateValue) return;
+        const reassignmentDate = new Date(reassignmentDateValue);
+        const durationSelect = document.getElementById('durationtxt');
+        const selectedDuration = durationSelect.value;
+        const assignmentcategory = document.getElementById('assignmentcategorytxt');
+        const selectedCategory = assignmentcategory.value;
+
+        if (selectedCategory === "Assign") {
+            endDate = reassignmentDate;
+            return;
+        }
+
+        let monthsToAdd = 0;
+        let yearsToAdd = 0;
+        switch (selectedDuration) {
+            case "6 Months":
+                monthsToAdd = 6;
+                break;
+            case "8 Months":
+                monthsToAdd = 8;
+                break;
+            case "1 Year":
+                yearsToAdd = 1;
+                break;
+            case "2 Years":
+                yearsToAdd = 2;
+                break;
+        }
+
+        const newDate = new Date(reassignmentDate);
+        newDate.setMonth(newDate.getMonth() + monthsToAdd);
+        newDate.setFullYear(newDate.getFullYear() + yearsToAdd);
+        if (newDate.getDate() !== reassignmentDate.getDate()) {
+            newDate.setDate(0);
+        }
+        const formattedNewDate = newDate.toLocaleDateString('en-GB');
+        document.getElementById('untildatelbl').textContent = formattedNewDate;
     }
 
-    function hideAlert() {
-      var alertBox = document.getElementById('alertBox');
-      alertBox.style.display = 'none';
-      
-    }
+    document.getElementById('reassignmentDate').addEventListener('change', computeDate);
+    document.getElementById('durationtxt').addEventListener('change', computeDate);
 
-  // =======================================
-  $(document).ready(function() {
-      // Add change event listener to the file input
-      $('#uploadOrder').change(function() {
-          // Get the name of the selected file
-          var fileName = $(this).val().split('\\').pop();
-          // Display the file name in the custom file label
-          $('.custom-file-label').text(fileName);
-      });
-  });
-
-      $(document).ready(function() {
-        $('.openModalButton').click(function() {
-
-          $('#personnel_id').val(personnel_id);
-          var rank = $(this).data('rank');
-          var afpsn = $(this).data('afpsn'); // Assuming 'afpsn' is the unique identifier
-          var lastname = $(this).data('lastname');
-          var firstname = $(this).data('firstname');
-          var middlename = $(this).data('middlename');
-          var suffix = $(this).data('suffix');
-          var mother_unit = $(this).data('unit');
-
-          // Populate the subunit dropdown based on the selected unit
-
-        });
-      });
-
-      var selectElement = document.getElementById('assignmentcategorytxt');
-          // Add event listener for change event
-          selectElement.addEventListener('change', function(event) {
-              // Get the selected option
-              var selectedOption = event.target.value;
-              // Check if the selected option is not "Assigned"
-              if (selectedOption !== 'Assign') {
-                document.getElementById('dropdownContainer').removeAttribute('hidden');
-              }else{
-                document.getElementById('dropdownContainer').setAttribute('hidden', 'hidden');
-              }
-          });
-
-          $(document).ready(function() {
-    // Add change event listener to the file input
+    // File Input
     $('#uploadOrder').change(function() {
-        // Get the name of the selected file
-        var fileName = $(this).val().split('\\').pop();
-        // Display the file name in the custom file label
+        const fileName = $(this).val().split('\\').pop();
         $('.custom-file-label').text(fileName);
     });
 
-$('#PlacementupdateForm').submit(function(event) {
-        // Prevent the default form submission behavior
+    // Form Submission
+    $('#PlacementupdateForm').submit(function(event) {
         event.preventDefault();
+        const formData = new FormData(this);
+        const csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
 
-        // Create FormData object
-        var formData = new FormData(this);
-
-        // Manually append file input to FormData (if needed)
-        // formData.append('uploadOrder', $('#uploadOrder')[0].files[0]);
-
-        var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
-
-        // Perform AJAX request to submit the form data
         $.ajax({
-            url: '{% url "placement_update" %}', // Replace with the URL of your server-side script
+            url: '{% url "placement_update" %}', 
             method: 'POST',
             data: formData,
-            processData: false, // Prevent jQuery from processing data
-            contentType: false, // Prevent jQuery from setting content type
+            processData: false,
+            contentType: false,
             headers: {
                 'X-CSRFToken': csrfToken
             },
             success: function(response) {
                 if (response.success) {
-                    console.log('Data updated successfully!');
-
-                    // Optionally, show a success message to the user
                     Swal.fire({
                         title: 'Updated Successfully',
                         text: 'Your data has been updated successfully!',
@@ -606,7 +429,6 @@ $('#PlacementupdateForm').submit(function(event) {
                         confirmButtonText: 'OK'
                     });
                 } else {
-                    // Optionally, show an error message to the user
                     Swal.fire({
                         title: 'Update Failed',
                         text: response.error,
@@ -616,9 +438,6 @@ $('#PlacementupdateForm').submit(function(event) {
                 }
             },
             error: function(xhr, status, error) {
-                console.error('Error updating data:', error);
-
-                // Optionally, show an error message to the user
                 Swal.fire({
                     title: 'Update Failed',
                     text: 'Unexpected error occurred while updating data. Please try again later.',
@@ -627,6 +446,20 @@ $('#PlacementupdateForm').submit(function(event) {
                 });
             }
         });
+    });
+
+    function showAlert() {
+        const alertBox = document.getElementById('alertBox');
+        alertBox.style.display = 'block';
+    }
+
+    function hideAlert() {
+        const alertBox = document.getElementById('alertBox');
+        alertBox.style.display = 'none';
+    }
+
+    document.getElementById('closeAlertBtn').addEventListener('click', function() {
+        hideAlert();
     });
 });
 

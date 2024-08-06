@@ -12,6 +12,7 @@ urlpatterns = [
     path('Tranche/', views.Tranche, name='Tranche'),  
 
     # Placement
+    path('get_subunits/', views.get_subunits, name='get_subunits'),
     path('placement/', views.placement_officer, name='placement'),
     path('placement/placement_officer', views.placement_officer, name='placement_officer'),
     path('placement/placement_enlisted', views.placement_enlisted, name='placement_enlisted'),

@@ -216,6 +216,74 @@ def user_files(request, afpsn):
     return JsonResponse({'files': file_list})
 
 
+def save_placement_update(request):
+    if request.method == 'POST':
+        afpsn = request.POST.get('afpsn')
+        rank = request.POST.get('rank')
+        last_name = request.POST.get('last_name')
+        first_name = request.POST.get('first_name')
+        middle_name = request.POST.get('middle_name', '')  # Default to empty string if not provided
+        suffix = request.POST.get('suffix', '')  # Default to empty string if not provided
+        unit_id = request.POST.get('unit')
+        new_unit_id = request.POST.get('new_unit')
+        reassignment_date = request.POST.get('reassignmentDate')
+        assignment_category = request.POST.get('assignmentcategory')
+        duration = request.POST.get('duration')
+        dateeffective_until = request.POST.get('formattedNewDate')
+        upload_file = request.FILES.get('uploadOrder')
+        
+        # Calculate the due date based on the duration
+        reassignment_effective_date_until = calculate_due_date(duration, reassignment_date)
+
+        if assignment_category == "Assign":
+            reassignment_effective_date_until = reassignment_date
+            duration = "None"
+
+        try:
+            # Retrieve the personnel and unit instances
+            personnel = tbl_Personnel.objects.get(AFPSN=afpsn)
+            new_unit = UnitsTable.objects.get(pk=new_unit_id)
+
+            # Create the tbl_PersonnelPlacement instance
+            placement = tbl_PersonnelPlacement(
+                FK_Personnel=personnel,
+                FK_Unit=new_unit,
+                AssignmentCategory=assignment_category,
+                DateFiled=reassignment_date,
+                EffectiveDate=reassignment_date,
+                EffectiveUntil=reassignment_effective_date_until,
+                Duration=duration,
+                UploadedOrder=upload_file
+            )
+            
+            placement.save()
+
+            if upload_file:
+                # Construct the folder path
+                folder_name = f"{afpsn}_{last_name}"
+                category_folder_path = os.path.join(settings.MEDIA_ROOT, folder_name, assignment_category)
+
+                # Create the folders if they don't exist
+                if not os.path.exists(category_folder_path):
+                    os.makedirs(category_folder_path)
+
+                # Define file path and save the file
+                file_path = os.path.join(category_folder_path, upload_file.name)
+                with open(file_path, 'wb+') as destination:
+                    for chunk in upload_file.chunks():
+                        destination.write(chunk)
+
+                # Update the UploadedOrder field in the placement instance
+                placement.UploadedOrder = file_path
+                placement.save()
+
+            return JsonResponse({'success': True})
+        except Exception as e:
+            return JsonResponse({'success': False, 'error': str(e)})
+
+    return render(request, 'modals/Placement-modal.html')
+
+
 def update_placement(request):
     if request.method == 'POST':
         afpsn = request.POST.get('afpsn')
@@ -761,7 +829,19 @@ def Personnel_Records(request):
 #     return JsonResponse([])
 
 
-
+# gets sub units
+def get_subunits(request):
+    unit_id = request.GET.get('unit_id')
+    if unit_id:
+        # Fetch subunits where FK_MotherUnit matches the selected unit
+        try:
+            parent_unit = UnitsTable.objects.get(pk=unit_id)
+            subunits = UnitsTable.objects.filter(FK_MotherUnit=parent_unit)
+            subunit_list = list(subunits.values('PK_Units', 'UnitName'))
+            return JsonResponse({'subunits': subunit_list})
+        except UnitsTable.DoesNotExist:
+            return JsonResponse({'subunits': []})
+    return JsonResponse({'subunits': []})
 
 
 # PLACEMENT DS/TDY/REASSIGNMENT
@@ -773,10 +853,10 @@ def placement_officer(request):
     suffix_query = request.GET.get('suffix')
     afpsn_query = request.GET.get('afpsn')
     rank_query = request.GET.get('rank')
-    category_query = ('Officer')
+    category_query = 'Officer'
     sex_query = request.GET.get('sex')
     unit_query = request.GET.get('unit')
-    
+
     filters = Q()
     if last_name_query:
         filters &= Q(LastName__icontains=last_name_query)
@@ -787,33 +867,38 @@ def placement_officer(request):
     if suffix_query and suffix_query != "Suffix":
         filters &= Q(NameSuffix__icontains=suffix_query)
     if afpsn_query:
-        filters &= Q(AFPSN__icontains=afpsn_query)  
+        filters &= Q(AFPSN__icontains=afpsn_query)
     if rank_query and rank_query != "Rank":
         filters &= Q(Rank__icontains=rank_query)
-    if category_query and category_query:
+    if category_query:
         filters &= Q(PersCategory__icontains=category_query)
     if sex_query and sex_query != "Sex":
         filters &= Q(Sex__icontains=sex_query)
     if unit_query:
         filters &= Q(Unit__icontains=unit_query)
-    
+
     persons = tbl_Personnel.objects.filter(filters)
-    
     paginator = Paginator(persons, 10)
     page_num = request.GET.get("page")
     persons = paginator.get_page(page_num)
-    
+
+    # Fetch units and sub-units
+    units = UnitsTable.objects.filter(FK_MotherUnit__isnull=True)
+    sub_units = UnitsTable.objects.filter(FK_MotherUnit__isnull=False)
+
     return render(request, 'Placement/officerTab.html', {
         'persons': persons,
         'last_name_query': last_name_query,
         'first_name_query': first_name_query,
         'middle_name_query': middle_name_query,
         'suffix_query': suffix_query,
-        'afsn_query': afpsn_query,
+        'afpsn_query': afpsn_query,
         'rank_query': rank_query,
         'category_query': category_query,
         'sex_query': sex_query,
         'unit_query': unit_query,
+        'units': units,
+        'sub_units': sub_units,
     })
 
 
@@ -923,7 +1008,7 @@ def placement_DS(request):
         'category_query': category_queries,
     })
 
-# PLACEMENT ASSIGN
+# # PLACEMENT ASSIGN new
 def placement_Assign(request):
     rank_query = request.GET.get('rank')
     afpsn_query = request.GET.get('afpsn')
@@ -978,65 +1063,229 @@ def placement_Assign(request):
 
 
 # SAVING REASSIGNMENT ON MODAL WHEN ASSINGING TO OTHER UNIT OR DS/TDY
+# def save_placement_update(request):
+#     if request.method == 'POST':
+#         afpsn = request.POST.get('afpsn')
+#         rank = request.POST.get('rank')
+#         last_name = request.POST.get('last_name')
+#         first_name = request.POST.get('first_name')
+#         middle_name = request.POST.get('middle_name', '')  # Default to empty string if not provided
+#         suffix = request.POST.get('suffix', '')  # Default to empty string if not provided
+#         mother_unit = request.POST.get('unit')
+#         new_unit = request.POST.get('new_unit')
+#         reassignment_date = request.POST.get('reassignmentDate')
+#         assignment_category = request.POST.get('assignmentcategory')
+#         duration = request.POST.get('duration')
+#         dateeffective_until = request.POST.get('formattedNewDate')
+#         upload_file = request.FILES.get('uploadOrder')
+#         # Calculate the due date based on the duration
+#         reassignment_effective_date_until = calculate_due_date(duration, reassignment_date)
+#         if assignment_category == "Assign":
+#             reassignment_effective_date_until = reassignment_date
+#             duration = "None"
+
+
+#         # Create the folder for saving the file if it doesn't exist
+#         folder_name = f"{afpsn}_{last_name}"
+#         folder_path = os.path.join(settings.MEDIA_ROOT, folder_name)
+#         if not os.path.exists(folder_path):
+#             os.makedirs(folder_path)
+
+#         # Save the uploaded file to the designated folder
+#         if upload_file:
+#             file_path = os.path.join(folder_path, upload_file.name)
+#             with open(file_path, 'wb+') as destination:
+#                 for chunk in upload_file.chunks():
+#                     destination.write(chunk)
+
+#         # Create the Placement instance
+#         placement = Placement(
+#             AFPSN=afpsn,
+#             RANK=rank,
+#             LAST_NAME=last_name,
+#             FIRST_NAME=first_name,
+#             MIDDLE_NAME=middle_name,
+#             SUFFIX=suffix,
+#             MOTHER_UNIT=mother_unit,
+#             NEW_UNIT=new_unit,
+#             REASSIGN_EFFECTIVEDDATE=reassignment_date,
+#             ASSIGNMENT_CATEGORY=assignment_category,
+#             REASSIGN_EFFECTIVEDDATE_UNTIL=reassignment_effective_date_until,
+#             DURATION=duration,
+#             ORDER_UPLOADFILE=upload_file  # This saves the file path in the database
+#         )
+#         try:
+#             placement.save()
+#             return JsonResponse({'success': True})
+#         except Exception as e:
+#             return JsonResponse({'success': False, 'error': str(e)})
+
+#     return render(request, 'modals/Placement-modal.html')
+
+
+
+
+# def save_placement_update(request):
+#     if request.method == 'POST':
+#         # Retrieve fields from POST data
+#         personnel_id = request.POST.get('personnel_id')  # Use personnel_id for update
+#         afpsn = request.POST.get('afpsn')
+#         last_name = request.POST.get('last_name')
+#         first_name = request.POST.get('first_name')
+#         middle_name = request.POST.get('middle_name', '')  # Default to empty string if not provided
+#         suffix = request.POST.get('suffix', '')  # Default to empty string if not provided
+#         unit_id = request.POST.get('unit')
+#         new_unit_id = request.POST.get('new_unit')
+#         reassignment_date = request.POST.get('reassignmentDate')
+#         assignment_category = request.POST.get('assignmentcategory')
+#         duration = request.POST.get('duration')
+#         dateeffective_until = request.POST.get('formattedNewDate')
+#         upload_file = request.FILES.get('uploadOrder')
+
+#         # Calculate the due date based on the duration
+#         reassignment_effective_date_until = calculate_due_date(duration, reassignment_date)
+
+#         if assignment_category == "Assign":
+#             reassignment_effective_date_until = reassignment_date
+#             duration = "None"
+
+#         try:
+#             # Retrieve the personnel and unit instances
+#             if personnel_id:
+#                 personnel = tbl_Personnel.objects.get(pk=personnel_id)  # Use pk for primary key lookup
+#             else:
+#                 raise ValueError("Personnel ID is required")
+
+#             new_unit = UnitsTable.objects.get(pk=new_unit_id)
+
+#             # Check if we are updating an existing placement
+#             placement, created = tbl_PersonnelPlacement.objects.update_or_create(
+#                 FK_Personnel=personnel,
+#                 FK_Unit=new_unit,
+#                 defaults={
+#                     'AssignmentCategory': assignment_category,
+#                     'DateFiled': reassignment_date,
+#                     'EffectiveDate': reassignment_date,
+#                     'EffectiveUntil': reassignment_effective_date_until,
+#                     'Duration': duration,
+#                     'UploadedOrder': upload_file
+#                 }
+#             )
+            
+#             if upload_file:
+#                 # Construct the folder path
+#                 folder_name = f"{afpsn}_{last_name}"
+#                 category_folder_path = os.path.join(settings.MEDIA_ROOT, folder_name, assignment_category)
+
+#                 # Create the folders if they don't exist
+#                 if not os.path.exists(category_folder_path):
+#                     os.makedirs(category_folder_path)
+
+#                 # Define file path and save the file
+#                 file_path = os.path.join(category_folder_path, upload_file.name)
+#                 with open(file_path, 'wb+') as destination:
+#                     for chunk in upload_file.chunks():
+#                         destination.write(chunk)
+
+#                 # Update the UploadedOrder field in the placement instance
+#                 placement.UploadedOrder = file_path
+#                 placement.save()
+
+#             return JsonResponse({'success': True})
+#         except Exception as e:
+#             return JsonResponse({'success': False, 'error': str(e)})
+
+#     return render(request, 'modals/Placement-modal.html')
+
+
+
+# the only problem here is updating data thru PK in personnel, but it hides PK when inspected in web
 def save_placement_update(request):
     if request.method == 'POST':
+        print("POST data:", request.POST)   
+
         afpsn = request.POST.get('afpsn')
         rank = request.POST.get('rank')
         last_name = request.POST.get('last_name')
         first_name = request.POST.get('first_name')
         middle_name = request.POST.get('middle_name', '')  # Default to empty string if not provided
         suffix = request.POST.get('suffix', '')  # Default to empty string if not provided
-        mother_unit = request.POST.get('unit')
-        new_unit = request.POST.get('new_unit')
+        unit_id = request.POST.get('unit')
+        new_unit_id = request.POST.get('new_unit')
         reassignment_date = request.POST.get('reassignmentDate')
         assignment_category = request.POST.get('assignmentcategory')
         duration = request.POST.get('duration')
         dateeffective_until = request.POST.get('formattedNewDate')
         upload_file = request.FILES.get('uploadOrder')
+        placement_id = request.POST.get('placement_id')  # Add this to identify the record to update
+
         # Calculate the due date based on the duration
         reassignment_effective_date_until = calculate_due_date(duration, reassignment_date)
+
         if assignment_category == "Assign":
             reassignment_effective_date_until = reassignment_date
             duration = "None"
 
-
-        # Create the folder for saving the file if it doesn't exist
-        folder_name = f"{afpsn}_{last_name}"
-        folder_path = os.path.join(settings.MEDIA_ROOT, folder_name)
-        if not os.path.exists(folder_path):
-            os.makedirs(folder_path)
-
-        # Save the uploaded file to the designated folder
-        if upload_file:
-            file_path = os.path.join(folder_path, upload_file.name)
-            with open(file_path, 'wb+') as destination:
-                for chunk in upload_file.chunks():
-                    destination.write(chunk)
-
-        # Create the Placement instance
-        placement = Placement(
-            AFPSN=afpsn,
-            RANK=rank,
-            LAST_NAME=last_name,
-            FIRST_NAME=first_name,
-            MIDDLE_NAME=middle_name,
-            SUFFIX=suffix,
-            MOTHER_UNIT=mother_unit,
-            NEW_UNIT=new_unit,
-            REASSIGN_EFFECTIVEDDATE=reassignment_date,
-            ASSIGNMENT_CATEGORY=assignment_category,
-            REASSIGN_EFFECTIVEDDATE_UNTIL=reassignment_effective_date_until,
-            DURATION=duration,
-            ORDER_UPLOADFILE=upload_file  # This saves the file path in the database
-        )
         try:
+            # Retrieve the personnel instance
+            personnel_id = request.POST.get('personnel_id')  # This should be used to get the personnel instance
+            personnel = tbl_Personnel.objects.filter(PK_Personnel=personnel_id)
+            new_unit = UnitsTable.objects.get(pk=new_unit_id)
+
+
+            # Check if we are updating an existing record or creating a new one
+            if placement_id:
+                # Update existing placement
+                placement = tbl_PersonnelPlacement.objects.get(pk=placement_id)
+                placement.FK_Personnel = personnel
+                placement.FK_Unit = new_unit
+                placement.AssignmentCategory = assignment_category
+                placement.DateFiled = reassignment_date
+                placement.EffectiveDate = reassignment_date
+                placement.EffectiveUntil = reassignment_effective_date_until
+                placement.Duration = duration
+            else:
+                # Create a new placement
+                placement = tbl_PersonnelPlacement(
+                    FK_Personnel=personnel,
+                    FK_Unit=new_unit,
+                    AssignmentCategory=assignment_category,
+                    DateFiled=reassignment_date,
+                    EffectiveDate=reassignment_date,
+                    EffectiveUntil=reassignment_effective_date_until,
+                    Duration=duration
+                )
+
+            if upload_file:
+                # Construct the folder path
+                folder_name = f"{afpsn}_{last_name}"
+                category_folder_path = os.path.join(settings.MEDIA_ROOT, folder_name, assignment_category)
+
+                # Create the folders if they don't exist
+                if not os.path.exists(category_folder_path):
+                    os.makedirs(category_folder_path)
+
+                # Define file path and save the file
+                file_path = os.path.join(category_folder_path, upload_file.name)
+                with open(file_path, 'wb+') as destination:
+                    for chunk in upload_file.chunks():
+                        destination.write(chunk)
+
+                # Update the UploadedOrder field in the placement instance
+                placement.UploadedOrder = file_path
+
+            # Save the placement instance
             placement.save()
+
             return JsonResponse({'success': True})
+        except tbl_Personnel.DoesNotExist:
+            return JsonResponse({'success': False, 'error': f'Personnel with AFPSN {afpsn} does not exist.'})
+        except UnitsTable.DoesNotExist:
+            return JsonResponse({'success': False, 'error': f'Unit with ID {new_unit_id} does not exist.'})
         except Exception as e:
             return JsonResponse({'success': False, 'error': str(e)})
 
     return render(request, 'modals/Placement-modal.html')
-
 
 
 

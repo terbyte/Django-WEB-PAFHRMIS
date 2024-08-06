@@ -50,9 +50,7 @@ class PersonnelFile(models.Model):
         return f'{self.RANK} {self.LAST_NAME}, {self.FIRST_NAME} {self.MIDDLE_NAME} {self.EXTENSION_NAME}'
 
 
-class tbl_Personnel_Placement(models.Model):
-    PK_PersonnelPlacement = models.BigAutoField(primary_key=True)
-    pass
+
 
 class UnitsTable(models.Model):
     PK_Units = models.BigAutoField (primary_key=True)
@@ -93,27 +91,29 @@ class tbl_PersonnelPlacement(models.Model):
     FK_Unit = models.ForeignKey(UnitsTable, on_delete=models.CASCADE)
     AssignmentCategory = models.CharField(max_length=200)
     DateFiled = models.DateField()
+    MotherUnit = models.CharField(max_length=200)
+    AssigningUnit = models.CharField(max_length=200)
     EffectiveDate = models.DateField()
     EffectiveUntil = models.DateField()
+    AssignmentCategory = models.CharField(max_length=200)
+    Duration = models.CharField(max_length=200)
+    # UploadedOrder = models.FileField(upload_to='orders/')
     IsArchived = models.BooleanField(default=False)
-    UploadedOrder = models.FileField(upload_to='orders/')
-
 
     def __str__(self):
-        return f"{self.FK_Personnel} - {self.FK_Unit}" 
-
-
-
-
-
-
-class tbl_PersonnelFilesTable(models.Model):
-    PK_PersonnelFiles = models.BigAutoField(primary_key=True)
-    DateUploaded = models.DateField(default=date.today)
-    FileName = models.CharField(max_length=200)
-    FileType = models.CharField(max_length=200)
-    FileLocation= models.CharField(max_length=200)
+        return f"{self.FK_Personnel} - {self.FK_Unit}"
+    
+# this is the old one / as of now, it is still using the old placement
+class tbl_PersonnelFiles(models.Model):
+    PK_PersonnelPlacement = models.ForeignKey(tbl_PersonnelPlacement, related_name='files', on_delete=models.CASCADE)
+    Files = models.FileField(upload_to="orders/")
+    UploadedOn = models.DateTimeField(auto_now_add=True)
     FK_Personnel = models.ForeignKey(tbl_Personnel, on_delete=models.CASCADE)
+
+
+
+
+
 
 # class tbl_AFSCTable(models.Model):
 #     PK_AFSC = models.BigAutoField(primary_key=True)
