@@ -1204,9 +1204,6 @@ def placement_Assign(request):
 def save_placement_update(request):
     if request.method == 'POST':
         personnel_id = request.POST.get('personnel_id')
-        print("===================================", personnel_id)
-        print("POST data:", request.POST)   
-
         afpsn = request.POST.get('afpsn')
         rank = request.POST.get('rank')
         last_name = request.POST.get('last_name')
@@ -1221,9 +1218,20 @@ def save_placement_update(request):
         dateeffective_until = request.POST.get('formattedNewDate')
         upload_file = request.FILES.get('uploadOrder')
         placement_id = request.POST.get('placement_id')  # Add this to identify the record to update
-        mother_unit_id = request.POST.get('mother_unit')
-        
-        print("Mother Unit IDDDDDD:", mother_unit_id)
+        mother_unit_name = request.POST.get('mother_unit')
+
+        # Retrieve the primary key of the mother unit based on its name
+        mother_unit_id = None
+        if mother_unit_name:
+            try:
+                mother_unit = UnitsTable.objects.get(UnitName=mother_unit_name)
+                mother_unit_id = mother_unit.pk
+            except UnitsTable.DoesNotExist:
+                return JsonResponse({'success': False, 'error': f'Mother unit with name {mother_unit_name} does not exist.'})
+
+        print("Mother Unit ID:", mother_unit_id)
+        print("ID:", request.POST)
+
         # Calculate the due date based on the duration
         reassignment_effective_date_until = calculate_due_date(duration, reassignment_date)
 
@@ -1236,7 +1244,6 @@ def save_placement_update(request):
             personnel = tbl_Personnel.objects.get(PK_Personnel=personnel_id)
             new_unit = UnitsTable.objects.get(pk=unit_id)
             subunit = UnitsTable.objects.get(pk=subunit_id) if subunit_id else None
-            
 
             # Check if we are updating an existing record or creating a new one
             if placement_id:
@@ -1251,6 +1258,9 @@ def save_placement_update(request):
                 placement.EffectiveDate = reassignment_date
                 placement.EffectiveUntil = reassignment_effective_date_until
                 placement.Duration = duration
+                # Set the MotherUnit field if the primary key is available
+                if mother_unit_id:
+                    placement.MotherUnit = UnitsTable.objects.get(pk=mother_unit_id)
             else:
                 # Create a new placement
                 placement = tbl_PersonnelPlacement(
@@ -1264,6 +1274,9 @@ def save_placement_update(request):
                     EffectiveUntil=reassignment_effective_date_until,
                     Duration=duration
                 )
+                # Set the MotherUnit field if the primary key is available
+                if mother_unit_id:
+                    placement.MotherUnit = UnitsTable.objects.get(pk=mother_unit_id)
 
             if upload_file:
                 # Construct the folder path
@@ -1295,8 +1308,6 @@ def save_placement_update(request):
             return JsonResponse({'success': False, 'error': str(e)})
 
     return render(request, 'modals/Placement-modal.html')
-
-
 
 #  PLACEMENT UPDATING EXTENSION
 def placement_update_extension(request):
