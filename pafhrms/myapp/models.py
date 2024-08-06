@@ -52,16 +52,7 @@ class PersonnelFile(models.Model):
 
 
 
-class UnitsTable(models.Model):
-    PK_Units = models.BigAutoField (primary_key=True)
-    UnitName = models.CharField(max_length=100)
-    UnitDescription = models.CharField(max_length=200)
-    UnitCategory = models.CharField(max_length=200)
-    Logo = models.CharField(max_length=200, blank=True, null=True)
-    FK_MotherUnit = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)
 
-    def __str__(self):
-        return self.UnitName
 
 
 class Placement(models.Model):
@@ -84,20 +75,30 @@ class Placement(models.Model):
     class Meta:
         db_table = "placementinfo"
 
+class UnitsTable(models.Model):
+    PK_Units = models.BigAutoField (primary_key=True)
+    UnitName = models.CharField(max_length=100)
+    UnitDescription = models.CharField(max_length=200)
+    UnitCategory = models.CharField(max_length=200)
+    Logo = models.CharField(max_length=200, blank=True, null=True)
+    FK_MotherUnit = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)
+
+    def __str__(self):
+        return self.UnitName
+    
 
 class tbl_PersonnelPlacement(models.Model):
     PK_PersonnelPlacement = models.BigAutoField(primary_key=True)
     FK_Personnel = models.ForeignKey(tbl_Personnel, on_delete=models.CASCADE)
-    FK_Unit = models.ForeignKey(UnitsTable, on_delete=models.CASCADE)
+    FK_Unit = models.ForeignKey(UnitsTable, on_delete=models.CASCADE, related_name='assignments')
     AssignmentCategory = models.CharField(max_length=200)
     DateFiled = models.DateField()
-    MotherUnit = models.CharField(max_length=200)
-    AssigningUnit = models.CharField(max_length=200)
+    MotherUnit = models.ForeignKey(UnitsTable, on_delete=models.CASCADE, related_name='mother_unit_placements')
+    AssigningUnit = models.ForeignKey(UnitsTable, on_delete=models.CASCADE, related_name='assigning_unit_placements')
+    Subunit = models.ForeignKey(UnitsTable, on_delete=models.CASCADE, related_name='subunit_placements', null=True, blank=True)
     EffectiveDate = models.DateField()
     EffectiveUntil = models.DateField()
-    AssignmentCategory = models.CharField(max_length=200)
     Duration = models.CharField(max_length=200)
-    # UploadedOrder = models.FileField(upload_to='orders/')
     IsArchived = models.BooleanField(default=False)
 
     def __str__(self):

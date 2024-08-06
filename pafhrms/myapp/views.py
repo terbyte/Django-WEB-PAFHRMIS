@@ -857,6 +857,7 @@ def placement_officer(request):
     sex_query = request.GET.get('sex')
     unit_query = request.GET.get('unit')
 
+
     filters = Q()
     if last_name_query:
         filters &= Q(LastName__icontains=last_name_query)
@@ -1202,6 +1203,8 @@ def placement_Assign(request):
 # the only problem here is updating data thru PK in personnel, but it hides PK when inspected in web
 def save_placement_update(request):
     if request.method == 'POST':
+        personnel_id = request.POST.get('personnel_id')
+        print("===================================", personnel_id)
         print("POST data:", request.POST)   
 
         afpsn = request.POST.get('afpsn')
@@ -1211,14 +1214,16 @@ def save_placement_update(request):
         middle_name = request.POST.get('middle_name', '')  # Default to empty string if not provided
         suffix = request.POST.get('suffix', '')  # Default to empty string if not provided
         unit_id = request.POST.get('unit')
-        new_unit_id = request.POST.get('new_unit')
+        subunit_id = request.POST.get('subunit')
         reassignment_date = request.POST.get('reassignmentDate')
         assignment_category = request.POST.get('assignmentcategory')
         duration = request.POST.get('duration')
         dateeffective_until = request.POST.get('formattedNewDate')
         upload_file = request.FILES.get('uploadOrder')
         placement_id = request.POST.get('placement_id')  # Add this to identify the record to update
-
+        mother_unit_id = request.POST.get('mother_unit')
+        
+        print("Mother Unit IDDDDDD:", mother_unit_id)
         # Calculate the due date based on the duration
         reassignment_effective_date_until = calculate_due_date(duration, reassignment_date)
 
@@ -1228,10 +1233,10 @@ def save_placement_update(request):
 
         try:
             # Retrieve the personnel instance
-            personnel_id = request.POST.get('personnel_id')  # This should be used to get the personnel instance
-            personnel = tbl_Personnel.objects.filter(PK_Personnel=personnel_id)
-            new_unit = UnitsTable.objects.get(pk=new_unit_id)
-
+            personnel = tbl_Personnel.objects.get(PK_Personnel=personnel_id)
+            new_unit = UnitsTable.objects.get(pk=unit_id)
+            subunit = UnitsTable.objects.get(pk=subunit_id) if subunit_id else None
+            
 
             # Check if we are updating an existing record or creating a new one
             if placement_id:
@@ -1239,6 +1244,8 @@ def save_placement_update(request):
                 placement = tbl_PersonnelPlacement.objects.get(pk=placement_id)
                 placement.FK_Personnel = personnel
                 placement.FK_Unit = new_unit
+                placement.AssigningUnit = new_unit
+                placement.Subunit = subunit
                 placement.AssignmentCategory = assignment_category
                 placement.DateFiled = reassignment_date
                 placement.EffectiveDate = reassignment_date
@@ -1249,6 +1256,8 @@ def save_placement_update(request):
                 placement = tbl_PersonnelPlacement(
                     FK_Personnel=personnel,
                     FK_Unit=new_unit,
+                    AssigningUnit=new_unit,
+                    Subunit=subunit,
                     AssignmentCategory=assignment_category,
                     DateFiled=reassignment_date,
                     EffectiveDate=reassignment_date,
@@ -1281,13 +1290,11 @@ def save_placement_update(request):
         except tbl_Personnel.DoesNotExist:
             return JsonResponse({'success': False, 'error': f'Personnel with AFPSN {afpsn} does not exist.'})
         except UnitsTable.DoesNotExist:
-            return JsonResponse({'success': False, 'error': f'Unit with ID {new_unit_id} does not exist.'})
+            return JsonResponse({'success': False, 'error': f'Unit with ID {unit_id} or Subunit with ID {subunit_id} does not exist.'})
         except Exception as e:
             return JsonResponse({'success': False, 'error': str(e)})
 
     return render(request, 'modals/Placement-modal.html')
-
-
 
 
 
@@ -1368,8 +1375,10 @@ def unit_monitoring(request):
 def unit_dashboard(request):
     selected_unit = request.GET.get('selected_unit')
 
+
+# CHANGE GHQ & HSC TO GHQ
     GUAS_units = [
-        'GHQ', 'PAFHRMC', 'AFPWSSUS', 'NOLCOM', 'SOLCOM', 'WESCOM', 
+        'GHQ & HSC', 'PAFHRMC', 'AFPWSSUS', 'NOLCOM', 'SOLCOM', 'WESCOM', 
         'VISCOM', 'WESTMINCOM', 'EASTMINCOM', 'JTF-NCR', 'TOWWEST',
     ]
 

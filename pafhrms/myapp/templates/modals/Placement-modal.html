@@ -223,20 +223,34 @@
               <div class="col-md-6">
                 <div class="mb-4">
                   <label >Suffix</label>
+                  
                   <input type="text" id="suffixtxt" name="suffix" class="form-control" placeholder="Suffix" readonly>
+                
                 </div>
               </div>
             </div>
         
-            <div class="mb-3">
-              <label class="form-label">Unit</label>
-              <select id="unit" name="unit" class="form-select">
-                  <option selected value="">Select Unit</option>
-                  {% for unit in units %}
-                      <option value="{{ unit.PK_Units }}">{{ unit.UnitName }}</option>
-                  {% endfor %}
-              </select>
+            <div class="mb-3 row">
+              <div class="col-md-6">
+                  <label class="form-label">Unit</label>
+                  <select id="unit" name="unit" class="form-select">
+                      <option selected value="">Select Unit</option>
+                      {% for unit in units %}
+                          <option value="{{ unit.PK_Units }}">{{ unit.UnitName }}</option>
+                      {% endfor %}
+                  </select>
+              </div>
+              <div class="mb-3 row">
+                <div class="col-md-6">
+                    <label class="form-label">Present Unit</label>
+                    <!-- Hidden input for storing the unit ID -->
+                    <input type="hidden" id="unit_id" name="unit_id" value="{{ unit.PK_Units }}">
+                    <!-- Read-only input for displaying the unit name -->
+                    <input type="text" id="mother_unit" name="mother_unit" class="form-control" value="{{ unit.UnitName }}" readonly>
+                </div>
+            </div>
           </div>
+
           
           <!-- Subunit Dropdown -->
           <div class="mb-3">
@@ -411,46 +425,46 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Form Submission
     $('#PlacementupdateForm').submit(function(event) {
-        event.preventDefault();
-        const formData = new FormData(this);
-        const csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
+    event.preventDefault();
+    const formData = new FormData(this);
+    const csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
 
-        $.ajax({
-            url: '{% url "placement_update" %}', 
-            method: 'POST',
-            data: formData,
-            processData: false,
-            contentType: false,
-            headers: {
-                'X-CSRFToken': csrfToken
-            },
-            success: function(response) {
-                if (response.success) {
-                    Swal.fire({
-                        title: 'Updated Successfully',
-                        text: 'Your data has been updated successfully!',
-                        icon: 'success',
-                        confirmButtonText: 'OK'
-                    });
-                } else {
-                    Swal.fire({
-                        title: 'Update Failed',
-                        text: response.error,
-                        icon: 'error',
-                        confirmButtonText: 'Try Again'
-                    });
-                }
-            },
-            error: function(xhr, status, error) {
+    $.ajax({
+        url: '{% url "placement_update" %}',
+        method: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        headers: {
+            'X-CSRFToken': csrfToken
+        },
+        success: function(response) {
+            if (response.success) {
+                Swal.fire({
+                    title: 'Updated Successfully',
+                    text: 'Your data has been updated successfully!',
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                });
+            } else {
                 Swal.fire({
                     title: 'Update Failed',
-                    text: 'Unexpected error occurred while updating data. Please try again later.',
+                    text: response.error,
                     icon: 'error',
                     confirmButtonText: 'Try Again'
                 });
             }
-        });
+        },
+        error: function(xhr, status, error) {
+            Swal.fire({
+                title: 'Update Failed',
+                text: 'Unexpected error occurred while updating data. Please try again later.',
+                icon: 'error',
+                confirmButtonText: 'Try Again'
+            });
+        }
     });
+});
 
     function showAlert() {
         const alertBox = document.getElementById('alertBox');
@@ -467,7 +481,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-
+// unit ID
 
 var selectElement = document.getElementById('assignmentcategorytxt');
           // Add event listener for change event

@@ -45,6 +45,7 @@
                   data-unit="{{ person.Unit }}"
                   data-rank="{{ person.Rank }}"
                   data-bos="{{ person.BOS }}"
+                  data-mother_unit="{{ person.Unit }}"
                   
                   data-toggle="modal"
                   data-target="#myModal">Reassign</button>
@@ -58,6 +59,8 @@
   $(document).ready(function() {
     
       $('.openModalButton').click(function() {
+        var mother_unit = $(this).data('mother_unit');
+
           var lastname = $(this).data('lastname');
           var firstname = $(this).data('firstname');
           var middlename = $(this).data('middlename');
@@ -69,6 +72,8 @@
               }
           var afpsn = $(this).data('afpsn');
           var unit = $(this).data('unit');
+    var personnelId = $(this).data('pk'); // Assuming 'afpsn' is the unique identifier
+
 
   // POPULATING DATA TO MODAL 
         //   $('#fullnametxt').val(lastname +" "+firstname+" "+middlename+" "+suffix);
@@ -88,6 +93,10 @@
           $('#afpsntxt').val(afpsn);
           $('#ranktxt').val(rank);  
           $('#bostxt').val(bos); 
+          $('#mother_unit').val(mother_unit); 
+
+    $('#personnel_id').val(personnelId); // Set the personnel ID
+
   
       });
   });
