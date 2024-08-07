@@ -533,7 +533,7 @@ def upload_excel(request):
                             DateEnteredMilitary=convert_date(row.get('DATE ENTERED MILITARY SERVICE', '')),
                             DateLastPromotionAppointment=convert_date(row.get('DATE OF LAST PROMOTION / APPOINTMENT', '')),
                             Unit=row.get('UNIT', ''),
-                            SubUnit=row.get('SUBUNIT', ''),
+                            SubUnit=row.get('SUB UNIT', ''),
                             DateUnitAssigned=convert_date(row.get('DATE UNIT ASSIGNED', '')),
                             DateLastFullReenlistment=convert_date(row.get('DATE OF LAST FULL REENLISTMENT', '')),
                             DateLastETAD=convert_date(row.get('DATE OF LAST ETAD', '')),
