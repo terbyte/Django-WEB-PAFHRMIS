@@ -23,6 +23,7 @@
             <th class="sortable" data-sort="NEW_UNIT">ASSIGNING UNIT</th>
             <th class="sortable" data-sort="ASSIGNMENT_CATEGORY">CATEGORY</th>
             <th class="sortable" data-sort="REASSIGN_EFFECTIVEDDATE">ASSIGNMENT EFFECTIVE DATE</th>
+            <th class="sortable" data-sort="DURATION">DURATION</th>
             <th class="sortable" data-sort="TIME_ELAPSED">TIME ELAPSED</th>
             <th class="sortable">ACTION</th>
 
@@ -32,14 +33,15 @@
 
     <tbody>
         {% for person in persons %}
-        <tr data-end-date="{{ person.REASSIGN_EFFECTIVEDDATE_UNTIL }}">
-            <td>{{ person.RANK }}</td>
+        <tr data-end-date="{{ person.EffectiveUntil }}">
+            <td>{{ person.Rank }}</td>
             <td>{{ person.AFPSN }}</td>
-            <td>{{ person.FIRST_NAME }} {{ person.MIDDLE_NAME }} {{ person.LAST_NAME }}</td>
-            <td>{{ person.MOTHER_UNIT }}</td>
-            <td>{{ person.NEW_UNIT }}</td>
-            <td>{{ person.ASSIGNMENT_CATEGORY }}</td>
-            <td>{{ person.REASSIGN_EFFECTIVEDDATE }}</td>
+            <td>{{ person.FirstName }} {{ person.MiddleName }} {{ person.LastName }}</td>
+            <td>{{ person.MotherUnit }}</td>
+            <td>{{ person.AssigningUnit }}</td>
+            <td>{{ person.AssignmentCategory }}</td>
+            <td>{{ person.EffectiveDate }}</td>
+            <td>{{ person.Duration }}</td>
             <td class="time-elapsed"></td>
 
          
@@ -63,245 +65,243 @@
 
 
 
-
 <script>
 
     
-function showFiles(AFPSN) {
-    $.ajax({
-        url: `orders/${AFPSN}/`,  // Ensure the URL pattern matches
-        method: 'GET',
-        success: function(data) {
-            $('#fileList').empty();
-            data.files.forEach(function(file) {
-                $('#fileList').append(`<li><a href="${file.url}">${file.name}</a></li>`);
-            });
-            $('#fileModal').modal('show');  // Use Bootstrap's modal method
-        }
-    });
-}
-
-function closeModal() {
-    $('#fileModal').modal('hide');  // Use Bootstrap's modal method
-}
-
-// modal opens
-$(document).ready(function() {
-    
-    $('.openModalButton').click(function() {
-        var lastname = $(this).data('lastname');
-        var firstname = $(this).data('firstname');
-        var middlename = $(this).data('middlename');
-        var suffix = $(this).data('suffix');
-        var rank = $(this).data('rank');
-        var bos = $(this).data('bos');
-        if (suffix === "nan") {
-          suffix= '';
+    function showFiles(AFPSN) {
+        $.ajax({
+            url: `orders/${AFPSN}/`,  // Ensure the URL pattern matches
+            method: 'GET',
+            success: function(data) {
+                $('#fileList').empty();
+                data.files.forEach(function(file) {
+                    $('#fileList').append(`<li><a href="${file.url}">${file.name}</a></li>`);
+                });
+                $('#fileModal').modal('show');  // Use Bootstrap's modal method
             }
-        var afpsn = $(this).data('afpsn');
-        var unit = $(this).data('unit');
-
-
-        $('#fullnametxt').val(lastname +" "+firstname+" "+middlename+" "+suffix);
-        $('#lastnametxt').val(lastname);
-        $('#firstnametxt').val(firstname);
-        $('#middlenametxt').val(middlename);
-        $('#suffixtxt').val(suffix);
-        $('#unitDP').val(unit);  
-
-        $('#afpsntxt').val(afpsn);
-        $('#ranktxt').val(rank);  
-        $('#bostxt').val(bos); 
-
-    });
-});
-
-
-
-document.addEventListener('DOMContentLoaded', function() {
-    const rows = document.querySelectorAll('tbody tr');
-    const thresholdDays = 5 * 30; // 5 months
-
-    rows.forEach(row => {
-        const endDate = row.getAttribute('data-end-date');
-
-        const timeElapsedCell = row.querySelector('.time-elapsed');
-        const timeElapsed = calculateTimeElapsedToCurrent(endDate);
-        timeElapsedCell.textContent = timeElapsed;
-
-        // Highlight row if time elapsed is less than 5 months
-        if (timeElapsed !== "None" && timeElapsed < "0 years 1 months 0 days") {
-            row.style.backgroundColor = '#ffb4a2'; // Change this to your preferred color
-        }
-    });
-});
-
-
-
-
-    function calculateTimeElapsedToCurrent(endDate, category, afpsn, newUnit) {
-    if (endDate === "None" || endDate === null) {
-        return "None";
+        });
     }
-
-    const end = new Date(endDate);
-    const now = new Date();
-
-    let years = end.getFullYear() - now.getFullYear();
-    let months = end.getMonth() - now.getMonth();
-    let days = end.getDate() - now.getDate();
-
-    if (days < 0) {
-        months -= 1;
-        days += new Date(now.getFullYear(), now.getMonth(), 0).getDate();
+    
+    function closeModal() {
+        $('#fileModal').modal('hide');  // Use Bootstrap's modal method
     }
-    if (months < 0) {
-        years -= 1;
-        months += 12;
-    }
-
-    const elapsed = `${years} years ${months} months ${days} days`;
-
-
-    if (elapsed === "0 years 0 months 0 days"  || years <0 ) {
+    
+    // modal opens
+    $(document).ready(function() {
         
-
-    // Make AJAX call to update database
-    $.ajax({
-        url: "{% url 'update_placement' %}",
-        type: "POST",
-        data: {
-            afpsn: afpsn,
-            new_unit: newUnit,
-            category: category,
-            archived: true,  // Include the archived field
-            csrfmiddlewaretoken: "{{ csrf_token }}"
-        },
-        success: function(response) {
-            console.log("Placement updated successfully");
-        },
-        error: function(xhr, errmsg, err) {
-            console.error("Error updating placement: ", errmsg);
-        }
-    });
-}
-
-    return elapsed;
-}
-
-document.addEventListener('DOMContentLoaded', (event) => {
-    const rows = document.querySelectorAll('tbody tr');
-    rows.forEach(row => {
-        const endDate = row.getAttribute('data-end-date');
-        const category = row.querySelector('td:nth-child(6)').textContent.trim();
-        const afpsn = row.querySelector('td:nth-child(2)').textContent.trim();
-        const newUnit = row.querySelector('td:nth-child(5)').textContent.trim();
-        const timeElapsedCell = row.querySelector('.time-elapsed');
-        const timeElapsed = calculateTimeElapsedToCurrent(endDate, category, afpsn, newUnit);
-        timeElapsedCell.textContent = timeElapsed;
-    });
-});
-
-
-
-
-document.addEventListener('DOMContentLoaded', (event) => {
-    const rows = document.querySelectorAll('tbody tr');
-    rows.forEach(row => {
-        const endDate = row.getAttribute('data-end-date');
-        const timeElapsedCell = row.querySelector('.time-elapsed');
-        const timeElapsed = calculateTimeElapsedToCurrent(endDate);
-        timeElapsedCell.textContent = timeElapsed;
-    });
-    const headers = document.querySelectorAll('th.sortable');
-    headers.forEach(header => {
-        header.addEventListener('click', () => {
-            const sortKey = header.getAttribute('data-sort');
-            const isAscending = header.classList.contains('desc');
-            sortTable(sortKey, !isAscending);
-            headers.forEach(h => h.classList.remove('desc'));
-            if (!isAscending) header.classList.add('desc');
+        $('.openModalButton').click(function() {
+            var lastname = $(this).data('lastname');
+            var firstname = $(this).data('firstname');
+            var middlename = $(this).data('middlename');
+            var suffix = $(this).data('suffix');
+            var rank = $(this).data('rank');
+            var bos = $(this).data('bos');
+            if (suffix === "nan") {
+              suffix= '';
+                }
+            var afpsn = $(this).data('afpsn');
+            var unit = $(this).data('unit');
+    
+    
+            $('#fullnametxt').val(lastname +" "+firstname+" "+middlename+" "+suffix);
+            $('#lastnametxt').val(lastname);
+            $('#firstnametxt').val(firstname);
+            $('#middlenametxt').val(middlename);
+            $('#suffixtxt').val(suffix);
+            $('#unitDP').val(unit);  
+    
+            $('#afpsntxt').val(afpsn);
+            $('#ranktxt').val(rank);  
+            $('#bostxt').val(bos); 
+    
         });
     });
-});
-function sortTable(sortKey, ascending) {
-    const tbody = document.querySelector('tbody');  
-    const rows = Array.from(tbody.querySelectorAll('tr'));
-    rows.sort((a, b) => {
-        const aData = getCellValue(a, sortKey);
-        const bData = getCellValue(b, sortKey);
-        if (aData < bData) return ascending ? -1 : 1;
-        if (aData > bData) return ascending ? 1 : -1;
-        return 0;
-    });
-    rows.forEach(row => tbody.appendChild(row));
-}
-
-
-function getCellValue(row, sortKey) {
-    if (sortKey === 'TIME_ELAPSED') {
-        const endDate = row.getAttribute('data-end-date');
-        return new Date() - new Date(endDate);
-    } else {
-        return row.querySelector(`td:nth-child(${getColumnIndex(sortKey)})`).textContent.trim();
-    }
-}
-
-    function getColumnIndex(sortKey) {
-        const headers = document.querySelectorAll('th');
-        for (let i = 0; i < headers.length; i++) {
-            if (headers[i].getAttribute('data-sort') === sortKey) {
-                return i + 1; // nth-child is 1-based
+    
+    
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        const rows = document.querySelectorAll('tbody tr');
+        const thresholdDays = 5 * 30; // 5 months
+    
+        rows.forEach(row => {
+            const endDate = row.getAttribute('data-end-date');
+    
+            const timeElapsedCell = row.querySelector('.time-elapsed');
+            const timeElapsed = calculateTimeElapsedToCurrent(endDate);
+            timeElapsedCell.textContent = timeElapsed;
+    
+            // Highlight row if time elapsed is less than 5 months
+            if (timeElapsed !== "None" && timeElapsed < "0 years 1 months 0 days") {
+                row.style.backgroundColor = '#ffb4a2'; // Change this to your preferred color
             }
+        });
+    });
+    
+    
+    
+    
+        function calculateTimeElapsedToCurrent(endDate, category, afpsn, newUnit) {
+        if (endDate === "None" || endDate === null) {
+            return "None";
         }
-        return -1;
+    
+        const end = new Date(endDate);
+        const now = new Date();
+    
+        let years = end.getFullYear() - now.getFullYear();
+        let months = end.getMonth() - now.getMonth();
+        let days = end.getDate() - now.getDate();
+    
+        if (days < 0) {
+            months -= 1;
+            days += new Date(now.getFullYear(), now.getMonth(), 0).getDate();
+        }
+        if (months < 0) {
+            years -= 1;
+            months += 12;
+        }
+    
+        const elapsed = `${years} years ${months} months ${days} days`;
+    
+    
+        if (elapsed === "0 years 0 months 0 days"  || years <0 ) {
+            
+    
+        // Make AJAX call to update database
+        $.ajax({
+            url: "{% url 'update_placement' %}",
+            type: "POST",
+            data: {
+                afpsn: afpsn,
+                new_unit: newUnit,
+                category: category,
+                archived: true,  // Include the archived field
+                csrfmiddlewaretoken: "{{ csrf_token }}"
+            },
+            success: function(response) {
+                console.log("Placement updated successfully");
+            },
+            error: function(xhr, errmsg, err) {
+                console.error("Error updating placement: ", errmsg);
+            }
+        });
     }
-
-</script>
-
-
-<nav aria-label="...">
-    <ul class="pagination">
-        {% if persons.has_previous %}
+    
+        return elapsed;
+    }
+    
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const rows = document.querySelectorAll('tbody tr');
+        rows.forEach(row => {
+            const endDate = row.getAttribute('data-end-date');
+            const category = row.querySelector('td:nth-child(6)').textContent.trim();
+            const afpsn = row.querySelector('td:nth-child(2)').textContent.trim();
+            const newUnit = row.querySelector('td:nth-child(5)').textContent.trim();
+            const timeElapsedCell = row.querySelector('.time-elapsed');
+            const timeElapsed = calculateTimeElapsedToCurrent(endDate, category, afpsn, newUnit);
+            timeElapsedCell.textContent = timeElapsed;
+        });
+    });
+    
+    
+    
+    
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const rows = document.querySelectorAll('tbody tr');
+        rows.forEach(row => {
+            const endDate = row.getAttribute('data-end-date');
+            const timeElapsedCell = row.querySelector('.time-elapsed');
+            const timeElapsed = calculateTimeElapsedToCurrent(endDate);
+            timeElapsedCell.textContent = timeElapsed;
+        });
+        const headers = document.querySelectorAll('th.sortable');
+        headers.forEach(header => {
+            header.addEventListener('click', () => {
+                const sortKey = header.getAttribute('data-sort');
+                const isAscending = header.classList.contains('desc');
+                sortTable(sortKey, !isAscending);
+                headers.forEach(h => h.classList.remove('desc'));
+                if (!isAscending) header.classList.add('desc');
+            });
+        });
+    });
+    function sortTable(sortKey, ascending) {
+        const tbody = document.querySelector('tbody');  
+        const rows = Array.from(tbody.querySelectorAll('tr'));
+        rows.sort((a, b) => {
+            const aData = getCellValue(a, sortKey);
+            const bData = getCellValue(b, sortKey);
+            if (aData < bData) return ascending ? -1 : 1;
+            if (aData > bData) return ascending ? 1 : -1;
+            return 0;
+        });
+        rows.forEach(row => tbody.appendChild(row));
+    }
+    
+    
+    function getCellValue(row, sortKey) {
+        if (sortKey === 'TIME_ELAPSED') {
+            const endDate = row.getAttribute('data-end-date');
+            return new Date() - new Date(endDate);
+        } else {
+            return row.querySelector(`td:nth-child(${getColumnIndex(sortKey)})`).textContent.trim();
+        }
+    }
+    
+        function getColumnIndex(sortKey) {
+            const headers = document.querySelectorAll('th');
+            for (let i = 0; i < headers.length; i++) {
+                if (headers[i].getAttribute('data-sort') === sortKey) {
+                    return i + 1; // nth-child is 1-based
+                }
+            }
+            return -1;
+        }
+    
+    </script>
+    
+    
+    <nav aria-label="...">
+        <ul class="pagination">
+            {% if persons.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page=1{% if last_name_query %}&last_name={{ last_name_query }}{% endif %}{% if first_name_query %}&first_name={{ first_name_query }}{% endif %}{% if middle_name_query %}&middle_name={{ middle_name_query }}{% endif %}{% if suffix_query %}&suffix={{ suffix_query }}{% endif %}{% if afsn_query %}&afsn={{ afsn_query }}{% endif %}{% if rank_query %}&rank={{ rank_query }}{% endif %}{% if category_query %}&category={{ category_query }}{% endif %}{% if sex_query %}&sex={{ sex_query }}{% endif %}{% if unit_query %}&unit={{ unit_query }}{% endif %}">&laquo; first</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ persons.previous_page_number }}{% if last_name_query %}&last_name={{ last_name_query }}{% endif %}{% if first_name_query %}&first_name={{ first_name_query }}{% endif %}{% if middle_name_query %}&middle_name={{ middle_name_query }}{% endif %}{% if suffix_query %}&suffix={{ suffix_query }}{% endif %}{% if afsn_query %}&afsn={{ afsn_query }}{% endif %}{% if rank_query %}&rank={{ rank_query }}{% endif %}{% if category_query %}&category={{ category_query }}{% endif %}{% if sex_query %}&sex={{ sex_query }}{% endif %}{% if unit_query %}&unit={{ unit_query }}{% endif %}">previous</a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <span class="page-link">&laquo; first</span>
+                </li>
+                <li class="page-item disabled">
+                    <span class="page-link">previous</span>
+                </li>
+            {% endif %}
+    
             <li class="page-item">
-                <a class="page-link" href="?page=1{% if last_name_query %}&last_name={{ last_name_query }}{% endif %}{% if first_name_query %}&first_name={{ first_name_query }}{% endif %}{% if middle_name_query %}&middle_name={{ middle_name_query }}{% endif %}{% if suffix_query %}&suffix={{ suffix_query }}{% endif %}{% if afsn_query %}&afsn={{ afsn_query }}{% endif %}{% if rank_query %}&rank={{ rank_query }}{% endif %}{% if category_query %}&category={{ category_query }}{% endif %}{% if sex_query %}&sex={{ sex_query }}{% endif %}{% if unit_query %}&unit={{ unit_query }}{% endif %}">&laquo; first</a>
+                <span class="page-link">
+                    Page {{ persons.number }} of {{ persons.paginator.num_pages }}
+                </span>
             </li>
-            <li class="page-item">
-                <a class="page-link" href="?page={{ persons.previous_page_number }}{% if last_name_query %}&last_name={{ last_name_query }}{% endif %}{% if first_name_query %}&first_name={{ first_name_query }}{% endif %}{% if middle_name_query %}&middle_name={{ middle_name_query }}{% endif %}{% if suffix_query %}&suffix={{ suffix_query }}{% endif %}{% if afsn_query %}&afsn={{ afsn_query }}{% endif %}{% if rank_query %}&rank={{ rank_query }}{% endif %}{% if category_query %}&category={{ category_query }}{% endif %}{% if sex_query %}&sex={{ sex_query }}{% endif %}{% if unit_query %}&unit={{ unit_query }}{% endif %}">previous</a>
-            </li>
-        {% else %}
-            <li class="page-item disabled">
-                <span class="page-link">&laquo; first</span>
-            </li>
-            <li class="page-item disabled">
-                <span class="page-link">previous</span>
-            </li>
-        {% endif %}
-
-        <li class="page-item">
-            <span class="page-link">
-                Page {{ persons.number }} of {{ persons.paginator.num_pages }}
-            </span>
-        </li>
-
-        {% if persons.has_next %}
-            <li class="page-item">
-                <a class="page-link" href="?page={{ persons.next_page_number }}{% if last_name_query %}&last_name={{ last_name_query }}{% endif %}{% if first_name_query %}&first_name={{ first_name_query }}{% endif %}{% if middle_name_query %}&middle_name={{ middle_name_query }}{% endif %}{% if suffix_query %}&suffix={{ suffix_query }}{% endif %}{% if afsn_query %}&afsn={{ afsn_query }}{% endif %}{% if rank_query %}&rank={{ rank_query }}{% endif %}{% if category_query %}&category={{ category_query }}{% endif %}{% if sex_query %}&sex={{ sex_query }}{% endif %}{% if unit_query %}&unit={{ unit_query }}{% endif %}">next</a>
-            </li>
-            <li class="page-item">
-                <a class="page-link" href="?page={{ persons.paginator.num_pages }}{% if last_name_query %}&last_name={{ last_name_query }}{% endif %}{% if first_name_query %}&first_name={{ first_name_query }}{% endif %}{% if middle_name_query %}&middle_name={{ middle_name_query }}{% endif %}{% if suffix_query %}&suffix={{ suffix_query }}{% endif %}{% if afsn_query %}&afsn={{ afsn_query }}{% endif %}{% if rank_query %}&rank={{ rank_query }}{% endif %}{% if category_query %}&category={{ category_query }}{% endif %}{% if sex_query %}&sex={{ sex_query }}{% endif %}{% if unit_query %}&unit={{ unit_query }}{% endif %}">last &raquo;</a>
-            </li>
-        {% else %}
-            <li class="page-item disabled">
-                <span class="page-link">next</span>
-            </li>
-            <li class="page-item disabled">
-                <span class="page-link">last &raquo;</span>
-            </li>
-        {% endif %}
-    </ul>
-</nav>
-
-
-{% endblock %}
-
+    
+            {% if persons.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ persons.next_page_number }}{% if last_name_query %}&last_name={{ last_name_query }}{% endif %}{% if first_name_query %}&first_name={{ first_name_query }}{% endif %}{% if middle_name_query %}&middle_name={{ middle_name_query }}{% endif %}{% if suffix_query %}&suffix={{ suffix_query }}{% endif %}{% if afsn_query %}&afsn={{ afsn_query }}{% endif %}{% if rank_query %}&rank={{ rank_query }}{% endif %}{% if category_query %}&category={{ category_query }}{% endif %}{% if sex_query %}&sex={{ sex_query }}{% endif %}{% if unit_query %}&unit={{ unit_query }}{% endif %}">next</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ persons.paginator.num_pages }}{% if last_name_query %}&last_name={{ last_name_query }}{% endif %}{% if first_name_query %}&first_name={{ first_name_query }}{% endif %}{% if middle_name_query %}&middle_name={{ middle_name_query }}{% endif %}{% if suffix_query %}&suffix={{ suffix_query }}{% endif %}{% if afsn_query %}&afsn={{ afsn_query }}{% endif %}{% if rank_query %}&rank={{ rank_query }}{% endif %}{% if category_query %}&category={{ category_query }}{% endif %}{% if sex_query %}&sex={{ sex_query }}{% endif %}{% if unit_query %}&unit={{ unit_query }}{% endif %}">last &raquo;</a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <span class="page-link">next</span>
+                </li>
+                <li class="page-item disabled">
+                    <span class="page-link">last &raquo;</span>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+    
+    
+    {% endblock %}

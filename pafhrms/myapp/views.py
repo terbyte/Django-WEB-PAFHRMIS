@@ -956,6 +956,8 @@ def placement_enlisted(request):
     })
 
 
+
+
 # FOR DS
 def placement_DS(request):
     
@@ -1009,40 +1011,51 @@ def placement_DS(request):
         'category_query': category_queries,
     })
 
+
+from django.db.models.functions import Concat
+from django.db.models import Q, F, Value
 # # PLACEMENT ASSIGN new
 def placement_Assign(request):
-    rank_query = request.GET.get('rank')
-    afpsn_query = request.GET.get('afpsn')
     last_name_query = request.GET.get('last_name')
     first_name_query = request.GET.get('first_name')
     middle_name_query = request.GET.get('middle_name')
     suffix_query = request.GET.get('suffix')
+    afpsn_query = request.GET.get('afsn')
+    rank_query = request.GET.get('rank')
+    category_query = request.GET.get('category')
     sex_query = request.GET.get('sex')
     unit_query = request.GET.get('unit')
-    category_query = 'Assign'
-    
 
-    filters = Q(IS_ARCHIVED=False)  # Add this line to exclude archived records
+    filters = Q(IsArchived=False)
     if last_name_query:
-        filters &= Q(LAST_NAME__icontains=last_name_query)
+        filters &= Q(FK_Personnel__LastName__icontains=last_name_query)
     if first_name_query:
-        filters &= Q(FIRST_NAME__icontains=first_name_query)
+        filters &= Q(FK_Personnel__FirstName__icontains=first_name_query)
     if middle_name_query:
-        filters &= Q(MIDDLE_NAME__icontains=middle_name_query)
+        filters &= Q(FK_Personnel__MiddleName__icontains=middle_name_query)
     if suffix_query and suffix_query != "Suffix":
-        filters &= Q(EXTENSION_NAME__icontains=suffix_query)
+        filters &= Q(FK_Personnel__NameSuffix__icontains=suffix_query)
     if afpsn_query:
-        filters &= Q(SERIAL_NUMBER__icontains=afpsn_query)
+        filters &= Q(FK_Personnel__AFPSN__icontains=afpsn_query)
     if rank_query and rank_query != "Rank":
-        filters &= Q(RANK__icontains=rank_query)
+        filters &= Q(FK_Personnel__Rank__icontains=rank_query)
+    if category_query and category_query != "Category":
+        filters &= Q(FK_Personnel__PersCategory__icontains=category_query)
     if sex_query and sex_query != "Sex":
-        filters &= Q(SEX__icontains=sex_query)
+        filters &= Q(FK_Personnel__Sex__icontains=sex_query)
     if unit_query:
-        filters &= Q(UNIT__icontains=unit_query)
-    if category_query:
-        filters &= Q(ASSIGNMENT_CATEGORY__icontains=category_query)
+        filters &= Q(FK_Unit__UnitName__icontains=unit_query)
 
-    persons = Placement.objects.filter(filters)
+    persons = tbl_PersonnelPlacement.objects.filter(filters).select_related('FK_Personnel').annotate(
+
+        FirstName=F('FK_Personnel__FirstName'),
+        MiddleName=F('FK_Personnel__MiddleName'),
+        LastName=F('FK_Personnel__LastName'),
+        NameSuffix=F('FK_Personnel__NameSuffix'),
+
+        Rank=F('FK_Personnel__Rank'),
+        AFPSN=F('FK_Personnel__AFPSN')
+    )
 
     paginator = Paginator(persons, 10)
     page_num = request.GET.get("page")
@@ -1060,7 +1073,6 @@ def placement_Assign(request):
         'unit_query': unit_query,
         'category_query': category_query,
     })
-
 
 
 # SAVING REASSIGNMENT ON MODAL WHEN ASSINGING TO OTHER UNIT OR DS/TDY
