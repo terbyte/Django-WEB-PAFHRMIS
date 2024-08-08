@@ -619,19 +619,6 @@ def Personnel_Records(request):
 
 
 
-
-
-
-# from .models import AFSC
-
-# def autocomplete_afsc(request):
-#     if 'term' in request.GET:
-#         qs = AFSC.objects.filter(code__icontains=request.GET.get('term'))
-#         codes = list(qs.values_list('code', flat=True))
-#         return JsonResponse(codes, safe=False)
-#     return JsonResponse([])
-
-
 # gets sub units
 def get_subunits(request):
     unit_id = request.GET.get('unit_id')
@@ -715,10 +702,11 @@ def placement_enlisted(request):
     suffix_query = request.GET.get('suffix')
     afpsn_query = request.GET.get('afpsn')
     rank_query = request.GET.get('rank')
-    category_query = ('ENLISTED PERSONNEL')
+    category_query = 'ENLISTED PERSONNEL'
     sex_query = request.GET.get('sex')
     unit_query = request.GET.get('unit')
-    
+
+
     filters = Q()
     if last_name_query:
         filters &= Q(LastName__icontains=last_name_query)
@@ -729,23 +717,26 @@ def placement_enlisted(request):
     if suffix_query and suffix_query != "Suffix":
         filters &= Q(NameSuffix__icontains=suffix_query)
     if afpsn_query:
-        filters &= Q(AFPSN__icontains=afpsn_query)  
+        filters &= Q(AFPSN__icontains=afpsn_query)
     if rank_query and rank_query != "Rank":
         filters &= Q(Rank__icontains=rank_query)
-    if category_query and category_query:
+    if category_query:
         filters &= Q(PersCategory__icontains=category_query)
     if sex_query and sex_query != "Sex":
         filters &= Q(Sex__icontains=sex_query)
     if unit_query:
         filters &= Q(Unit__icontains=unit_query)
-    
+
     persons = tbl_Personnel.objects.filter(filters)
-    
     paginator = Paginator(persons, 10)
     page_num = request.GET.get("page")
     persons = paginator.get_page(page_num)
-    
-    return render(request, 'Placement/epTab.html', {
+
+    # Fetch units and sub-units
+    units = UnitsTable.objects.filter(FK_MotherUnit__isnull=True)
+    sub_units = UnitsTable.objects.filter(FK_MotherUnit__isnull=False)
+
+    return render(request, 'Placement/EpTab.html', {
         'persons': persons,
         'last_name_query': last_name_query,
         'first_name_query': first_name_query,
@@ -756,7 +747,10 @@ def placement_enlisted(request):
         'category_query': category_query,
         'sex_query': sex_query,
         'unit_query': unit_query,
+        'units': units,
+        'sub_units': sub_units,
     })
+
 
 
 

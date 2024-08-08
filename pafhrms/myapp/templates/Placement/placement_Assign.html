@@ -32,7 +32,7 @@
 
     <tbody>
         {% for person in persons %}
-        <tr data-end-date="{{ person.REASSIGN_EFFECTIVEDDATE_UNTIL }}">
+        <tr data-end-date="{{ person.EffectiveUntil }}">
             <td>{{ person.Rank }}</td>
             <td>{{ person.AFPSN }}</td>
             <td>{{ person.FirstName }} {{ person.MiddleName }} {{ person.LastName }}</td>
