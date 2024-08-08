@@ -374,7 +374,6 @@ def index(request):
 
 
 
-
 def get_files(request, serial_number):
     person = tbl_Personnel.objects.get(AFPSN=serial_number)
     files = PersonnelFile.objects.filter(personnel=person)
@@ -1290,6 +1289,9 @@ def save_placement_update(request):
                 if mother_unit_id:
                     placement.MotherUnit = UnitsTable.objects.get(pk=mother_unit_id)
 
+            # Save the placement instance first
+            placement.save()
+
             if upload_file:
                 # Construct the folder path
                 folder_name = f"{afpsn}_{last_name}"
@@ -1305,11 +1307,12 @@ def save_placement_update(request):
                     for chunk in upload_file.chunks():
                         destination.write(chunk)
 
-                # Update the UploadedOrder field in the placement instance
-                placement.UploadedOrder = file_path
-
-            # Save the placement instance
-            placement.save()
+                # Save the file information to tbl_PersonnelFiles
+                tbl_PersonnelFiles.objects.create(
+                    PK_PersonnelPlacement=placement,
+                    Files=file_path,
+                    FK_Personnel=personnel
+                )
 
             return JsonResponse({'success': True})
         except tbl_Personnel.DoesNotExist:
