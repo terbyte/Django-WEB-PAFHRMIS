@@ -25,30 +25,31 @@
 
     <tbody>
         {% for person in persons %}
-        <tr data-end-date="{{ person.REASSIGN_EFFECTIVEDDATE_UNTIL }}">
-            <td>{{ person.RANK }}</td>
+        <tr data-end-date="{{ person.EffectiveUntil }}">
+            <td>{{ person.Rank }}</td>
             <td>{{ person.AFPSN }}</td>
-            <td>{{ person.FIRST_NAME }} {{ person.MIDDLE_NAME }} {{ person.LAST_NAME }}</td>
-            <td>{{ person.MOTHER_UNIT }}</td>
-            <td>{{ person.NEW_UNIT }}</td>
-            <td>{{ person.ASSIGNMENT_CATEGORY }}</td>
-            <td>{{ person.REASSIGN_EFFECTIVEDDATE }}</td>
-            <td>{{ person.REASSIGN_EFFECTIVEDDATE_UNTIL }}</td>
-            <td>{{ person.DURATION }} </td>
+            <td>{{ person.FirstName }} {{ person.MiddleName }} {{ person.LastName }}</td>
+            <td>{{ person.MotherUnit }}</td>
+            <td>{{ person.AssigningUnit }}</td>
+            <td>{{ person.AssignmentCategory }}</td>
+            
+            <td>{{ person.EffectiveDate }}</td>
+            <td>{{ person.EffectiveUntil }}</td>
+            <td>{{ person.Duration }}</td>
             <td class="time-elapsed"></td>
 
             <td>
                 <button class="btn btn-primary openModalButton"
-                data-rank="{{ person.RANK }}"
-                data-lastname="{{ person.LAST_NAME }}"
-                data-firstname="{{ person.FIRST_NAME }}"
-                data-middlename="{{ person.MIDDLE_NAME }}"
-                data-suffix="{{ person.EXTENSION_NAME }}"
+                data-rank="{{ person.Rank }}"
+                data-lastname="{{ person.LastName }}"
+                data-firstname="{{ person.FirstName }}"
+                data-middlename="{{ person.MiddleName }}"
+                data-suffix="{{ person.NameSuffix }}"
                 data-afpsn="{{ person.AFPSN }}"
-                data-unit="{{ person.MOTHER_UNIT }}"
-                data-unit_category="{{ person.ASSIGNMENT_CATEGORY }}"
-                data-new_unit="{{ person.NEW_UNIT }}"
-                data-reassigneffectivedate_until="{{ person.REASSIGN_EFFECTIVEDDATE_UNTIL |date:'Y-m-d' }}"
+                data-unit="{{ person.Unit }}"
+                data-unit_category="{{ person.AssignmentCategory }}"
+                data-new_unit="{{ person.AssigningUnit }}"
+                data-reassigneffectivedate_until="{{ person.EffectiveUntil |date:'Y-m-d' }}"
 
 
                 data-toggle="modal"

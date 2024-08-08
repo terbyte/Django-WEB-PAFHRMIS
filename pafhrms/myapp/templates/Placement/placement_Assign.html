@@ -20,12 +20,13 @@
             <th class="sortable" data-sort="AFPSN">AFPSN</th>
             <th class="sortable" data-sort="FULL_NAME">FULL NAME</th>
             <th class="sortable" data-sort="MOTHER_UNIT">MOTHER UNIT</th>
-            <th class="sortable" data-sort="NEW_UNIT">ASSIGNING UNIT</th>
+            <th class="sortable" data-sort="NEW_UNIT">TEMPORARY UNIT</th>
             <th class="sortable" data-sort="ASSIGNMENT_CATEGORY">CATEGORY</th>
-            <th class="sortable" data-sort="REASSIGN_EFFECTIVEDDATE">ASSIGNMENT EFFECTIVE DATE</th>
+            <th class="sortable" data-sort="REASSIGN_EFFECTIVEDDATE">DS/TDY EFFECTIVE DATE</th>
+            <th class="sortable" data-sort="REASSIGN_EFFECTIVEDDATE_UNTIL">ASSIGNMENT END DATE</th>
+            <th class="sortable" data-sort="DURATION">DURATION</th>
             <th class="sortable" data-sort="TIME_ELAPSED">TIME ELAPSED</th>
             <th class="sortable">ACTION</th>
-
         </tr>
     </thead>
 
@@ -39,7 +40,10 @@
             <td>{{ person.MotherUnit }}</td>
             <td>{{ person.AssigningUnit }}</td>
             <td>{{ person.AssignmentCategory }}</td>
+            
             <td>{{ person.EffectiveDate }}</td>
+            <td>{{ person.EffectiveUntil }}</td>
+            <td>{{ person.Duration }}</td>
             <td class="time-elapsed"></td>
 
          
@@ -67,23 +71,8 @@
 <script>
 
     
-function showFiles(AFPSN,LastName) {
-    $.ajax({
-        url: `/orders/${AFPSN}_${LastName}/`,
-        method: 'GET',
-        success: function(data) {
-            $('#fileList').empty();
-            data.files.forEach(function(file) {
-                $('#fileList').append(`<li><a href="${file.url}">${file.name}</a></li>`);
-            });
-            $('#fileModal').modal('show');  // Use Bootstrap's modal method
-        }
-    });
-}
 
-function closeModal() {
-    $('#fileModal').modal('hide');  // Use Bootstrap's modal method
-}
+    
 
 // modal opens
 $(document).ready(function() {
@@ -118,54 +107,46 @@ $(document).ready(function() {
 
 
 
-document.addEventListener('DOMContentLoaded', function() {
-    const rows = document.querySelectorAll('tbody tr');
-    const thresholdDays = 5 * 30; // 5 months
-
-    rows.forEach(row => {
-        const endDate = row.getAttribute('data-end-date');
-
-        const timeElapsedCell = row.querySelector('.time-elapsed');
-        const timeElapsed = calculateTimeElapsedToCurrent(endDate);
-        timeElapsedCell.textContent = timeElapsed;
-
-        // Highlight row if time elapsed is less than 5 months
-        if (timeElapsed !== "None" && timeElapsed < "0 years 1 months 0 days") {
-            row.style.backgroundColor = '#ffb4a2'; // Change this to your preferred color
-        }
-    });
-});
 
 
 
 
-    function calculateTimeElapsedToCurrent(endDate, category, afpsn, newUnit) {
-    if (endDate === "None" || endDate === null) {
-        return "None";
-    }
 
-    const end = new Date(endDate);
-    const now = new Date();
 
-    let years = end.getFullYear() - now.getFullYear();
-    let months = end.getMonth() - now.getMonth();
-    let days = end.getDate() - now.getDate();
 
-    if (days < 0) {
-        months -= 1;
-        days += new Date(now.getFullYear(), now.getMonth(), 0).getDate();
-    }
-    if (months < 0) {
-        years -= 1;
-        months += 12;
-    }
+
+
+
+
+
+
+
+function calculateTimeElapsedToCurrent(endDate, category, afpsn, newUnit) {
+
+if (endDate === "None" || endDate === null) {
+    return "None";
+}
+
+const end = new Date(endDate);
+const now = new Date();
+
+let years = end.getFullYear() - now.getFullYear();
+let months = end.getMonth() - now.getMonth();
+let days = end.getDate() - now.getDate();
+
+if (days < 0) {
+    months -= 1;
+    days += new Date(now.getFullYear(), now.getMonth(), 0).getDate();
+}
+if (months < 0) {
+    years -= 1;
+    months += 12;
+}
 
     const elapsed = `${years} years ${months} months ${days} days`;
 
 
     if (elapsed === "0 years 0 months 0 days"  || years <0 ) {
-        
-
     // Make AJAX call to update database
     $.ajax({
         url: "{% url 'update_placement' %}",
@@ -202,7 +183,23 @@ document.addEventListener('DOMContentLoaded', (event) => {
     });
 });
 
+document.addEventListener('DOMContentLoaded', function() {
+    const rows = document.querySelectorAll('tbody tr');
+    const thresholdDays = 5 * 30; // 5 months
 
+    rows.forEach(row => {
+        const endDate = row.getAttribute('data-end-date');
+
+        const timeElapsedCell = row.querySelector('.time-elapsed');
+        const timeElapsed = calculateTimeElapsedToCurrent(endDate);
+        timeElapsedCell.textContent = timeElapsed;
+
+        // Highlight row if time elapsed is less than 5 months
+        if (timeElapsed !== "None" && timeElapsed < "0 years 1 months 0 days") {
+            row.style.backgroundColor = '#ffb4a2'; // Change this to your preferred color
+        }
+    });
+});
 
 
 document.addEventListener('DOMContentLoaded', (event) => {
@@ -256,6 +253,24 @@ function getCellValue(row, sortKey) {
         }
         return -1;
     }
+
+    function showFiles(AFPSN,LastName) {
+    $.ajax({
+        url: `/orders/${AFPSN}_${LastName}/`,
+        method: 'GET',
+        success: function(data) {
+            $('#fileList').empty();
+            data.files.forEach(function(file) {
+                $('#fileList').append(`<li><a href="${file.url}">${file.name}</a></li>`);
+            });
+            $('#fileModal').modal('show');  // Use Bootstrap's modal method
+        }
+    });
+}
+
+function closeModal() {
+    $('#fileModal').modal('hide');  // Use Bootstrap's modal method
+}
 
 </script>
 

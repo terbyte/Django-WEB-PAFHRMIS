@@ -769,27 +769,35 @@ def placement_DS(request):
     
     category_queries = ['Detached Service', 'Temporary Duty']
     
-    filters = Q(IS_ARCHIVED =False)
+    filters = Q(IsArchived =False)
     if last_name_query:
-        filters &= Q(LAST_NAME__icontains=last_name_query)
+        filters &= Q(FK_Personnel__LastName__icontains=last_name_query)
     if first_name_query:
-        filters &= Q(FIRST_NAME__icontains=first_name_query)
+        filters &= Q(FK_Personnel__FirstName__icontains=first_name_query)
     if middle_name_query:
-        filters &= Q(MIDDLE_NAME__icontains=middle_name_query)
+        filters &= Q(FK_Personnel__MiddleName__icontains=middle_name_query)
     if suffix_query and suffix_query != "Suffix":
-        filters &= Q(EXTENSION_NAME__icontains=suffix_query)
+        filters &= Q(FK_Personnel__NameSuffix__icontains=suffix_query)
     if afpsn_query:
-        filters &= Q(SERIAL_NUMBER__icontains=afpsn_query)  
+        filters &= Q(FK_Personnel__AFPSN__icontains=afpsn_query)
     if rank_query and rank_query != "Rank":
-        filters &= Q(RANK__icontains=rank_query)
+        filters &= Q(FK_Personnel__Rank__icontains=rank_query)
     if sex_query and sex_query != "Sex":
-        filters &= Q(SEX__icontains=sex_query)
+        filters &= Q(FK_Personnel__Sex__icontains=sex_query)
     if unit_query:
-        filters &= Q(UNIT__icontains=unit_query)
+        filters &= Q(FK_Unit__UnitName__icontains=unit_query)
     if category_queries:
-        filters &= Q(ASSIGNMENT_CATEGORY__in=category_queries)
+        filters &= Q(AssignmentCategory__in=category_queries)
     
-    persons = Placement.objects.filter(filters)
+    persons = tbl_PersonnelPlacement.objects.filter(filters).select_related('FK_Personnel').annotate(
+
+        FirstName=F('FK_Personnel__FirstName'),
+        MiddleName=F('FK_Personnel__MiddleName'),
+        LastName=F('FK_Personnel__LastName'),
+        NameSuffix=F('FK_Personnel__NameSuffix'),
+        Rank=F('FK_Personnel__Rank'),
+        AFPSN=F('FK_Personnel__AFPSN')
+    )
     
     paginator = Paginator(persons, 10)
     page_num = request.GET.get("page")
@@ -849,7 +857,6 @@ def placement_Assign(request):
         MiddleName=F('FK_Personnel__MiddleName'),
         LastName=F('FK_Personnel__LastName'),
         NameSuffix=F('FK_Personnel__NameSuffix'),
-
         Rank=F('FK_Personnel__Rank'),
         AFPSN=F('FK_Personnel__AFPSN')
     )
@@ -1122,6 +1129,22 @@ def save_placement_update(request):
 
     return render(request, 'modals/Placement-modal.html')
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #  PLACEMENT UPDATING EXTENSION
 def placement_update_extension(request):
     if request.method == 'POST':
@@ -1132,8 +1155,10 @@ def placement_update_extension(request):
         first_name = request.POST.get('first_name')
         middle_name = request.POST.get('middle_name', '')  # Default to empty string if not provided
         suffix = request.POST.get('suffix', '')  # Default to empty string if not provided
-        print("DURATION AND REASSSIGN DATE ",duration , reassignment_date)
         upload_file = request.FILES.get('uploadOrder')
+
+        # Debugging information
+        print("DURATION AND REASSIGNMENT DATE:", duration, reassignment_date)
 
         # Create the folder for saving the file if it doesn't exist
         folder_name = f"{afpsn}_{last_name}{first_name}{middle_name}{suffix}"
@@ -1148,28 +1173,42 @@ def placement_update_extension(request):
                 for chunk in upload_file.chunks():
                     destination.write(chunk)
 
+        # Confirm file upload status
         if 'uploadOrder' in request.FILES:
-            upload_file = request.FILES['uploadOrder']
-            print("FILE")
+            print("File uploaded:", upload_file.name)
         else:
             print("No file uploaded")
+
         # Calculate the due date based on the duration
-        reassignment_effective_date_until = calculate_due_date(duration,reassignment_date)
+        reassignment_effective_date_until = calculate_due_date(duration, reassignment_date)
+
         try:
-            personnel_id = request.POST.get('personnel_id')
-            personnel_items = Placement.objects.filter(AFPSN=personnel_id)
-            if not personnel_items.exists():
+            # Retrieve personnel placement by filtering on the related personnel's AFPSN
+            personnel_placements = tbl_PersonnelPlacement.objects.filter(FK_Personnel__AFPSN=afpsn)
+            if not personnel_placements.exists():
                 return JsonResponse({'success': False, 'error': 'Personnel not found'})
-            personnel_items.update(
-                AFPSN=afpsn,
-                REASSIGN_EFFECTIVEDDATE_UNTIL=reassignment_effective_date_until,
-                ORDER_UPLOADFILE = request.FILES.get('uploadOrder'),  # Correct variable name
+
+            # Update the fields of the personnel placement records
+            personnel_placements.update(
+                EffectiveUntil=reassignment_effective_date_until,  # Updating the correct field for effective until date
+                IsArchived=False  # Assuming you want to unarchive the placement (change this as needed)
             )
+
+            # If a file was uploaded, save it to the tbl_PersonnelFiles
+            if upload_file:
+                for placement in personnel_placements:
+                    tbl_PersonnelFiles.objects.create(
+                        PK_PersonnelPlacement=placement,
+                        Files=upload_file,
+                        FK_Personnel=placement.FK_Personnel
+                    )
+
             return JsonResponse({'success': True})
+
         except Exception as e:
             return JsonResponse({'success': False, 'error': str(e)})
+    
     return JsonResponse({'success': False, 'error': 'Invalid request'})
-
 
 
 # UNIT MONITORING
