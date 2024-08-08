@@ -113,14 +113,12 @@ class tbl_PersonnelFiles(models.Model):
     FK_Personnel = models.ForeignKey(tbl_Personnel, on_delete=models.CASCADE)
 
 
-
-
-
-
-# class tbl_AFSCTable(models.Model):
-#     PK_AFSC = models.BigAutoField(primary_key=True)
-#     AFSCTitle = models.CharField(max_length=100)
-#     AFSCDescription = models.CharField(max_length=200)
+class tbl_AFSC(models.Model):
+    PK_AFSC = models.BigAutoField(primary_key=True)
+    AFSCCode = models.CharField(max_length=100)
+    # AFSCTitle = models.CharField(max_length=100) THIS IS REMOVED BECAUSE THERE IS NO TITLE
+    AFSCDescription = models.CharField(max_length=200)
+    AFSCLevel = models.CharField(max_length=200)
 
 # class tbl_CoursesTable(models.Model):
 #     PK_Course = models.BigAutoField(primary_key=True)

@@ -83,7 +83,7 @@
                 Upload the excel file template of "AFSC Data" here. <span class="text-primary customTextTheme">You only need to do it once</span>
             </p>
             <div class="form-group">
-                <form method="post" enctype="multipart/form-data" action="{% url 'upload_excel' %}" class="novalidate">
+                <form method="post" enctype="multipart/form-data" action="{% url 'upload_afsc' %}" class="novalidate">
                     {% csrf_token %}
                     <div class="form-group">
                         <div class="bg-white p-5 rounded shadow-sm border">
@@ -96,9 +96,9 @@
                                         <p class="px-4 h5 text-dark fw-bold file-attached">Excel File attached. Please click Upload Now.</p> 
                                     </div>
                                 </label>
-                                <input type="file" name="excel_file" id="unique-file" class="file-input" required>
+                                <input type="file" name="excel_file" id="unique-file-for-afsc" class="file-input" required>
                             </div>
-                            <div class="form-group" id="unique-file-attachment"></div>
+                            <div class="form-group" id="unique-file-attachment-for-afsc"></div>
                             <button type="submit" class="btn bg-gradient-primary btn-block customBGTheme">Upload Now</button>
                         </div>    
                     </div>
@@ -163,6 +163,21 @@
     });
 
 
+    $(document).ready(function() {
+        ToogleDefaultUploadUI();
+        $("#unique-file-for-afsc").on("change",function() {
+            $("#unique-file-file-err-msg").empty();
+            $("#unique-file-attachment-for-afsc").empty();
+            var fileLen = $(this)[0].files.length;
+            if(!(fileLen == 0)){
+              var filename = $(this).val().replace(/.*(\/|\\)/, '');;  
+                $("#unique-file-attachment-for-afsc").append('<div class="alert alert-success text-left text-white" role="alert"><div class="row"><div class="col-2"><i class="fas fa-file-excel fa-2x text-white"></i></div><div class="col-10">'+filename+'</div></div></div>');
+                ToogleOnUploadUI($(this));
+            }else{
+                ToogleOffUploadUI($(this));
+            }
+        });
+    });
 
 
 
