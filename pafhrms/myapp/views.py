@@ -1156,7 +1156,7 @@ def placement_update_extension(request):
         middle_name = request.POST.get('middle_name', '')  # Default to empty string if not provided
         suffix = request.POST.get('suffix', '')  # Default to empty string if not provided
         upload_file = request.FILES.get('uploadOrder')
-        assignment_category = request.POST.get('assignmentcategory')
+        assignment_category = request.POST.get('PlacementCategory')
 
         # Debugging information
         print("DURATION AND REASSIGNMENT DATE:", duration, reassignment_date)
