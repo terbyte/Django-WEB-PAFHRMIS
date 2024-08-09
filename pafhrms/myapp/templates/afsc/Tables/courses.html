@@ -1,0 +1,57 @@
+
+<head>
+
+
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .pagination {
+            margin: 20px 0;
+            text-align: center;
+        }
+        .pagination a {
+            margin: 0 5px;
+            text-decoration: none;
+            color: #007BFF;
+        }
+        .pagination span.current {
+            margin: 0 5px;
+            font-weight: bold;
+        }
+    </style>
+    </head>
+    
+    <body>
+        <div class="container">
+            <h1>List of Courses</h1>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Course Title</th>
+                        <th>Course Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for course in courses %}
+                    <tr>
+                        <td>{{ course.CourseTitle }}</td>
+                        <td>{{ course.CourseDescription }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <!-- Add any required JavaScript here, e.g., Bootstrap JS -->
+    </body>

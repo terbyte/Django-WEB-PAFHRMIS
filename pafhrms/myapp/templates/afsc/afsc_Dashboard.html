@@ -11,8 +11,8 @@
 <nav>
     <div class="nav nav-tabs" id="nav-tab" role="tablist">
       <button class="nav-link active" id="nav-units-table-tab" data-bs-toggle="tab" data-bs-target="#nav-units-table" type="button" role="tab" aria-controls="nav-units-table" aria-selected="true">Units</button>
-      <button class="nav-link" id=" nav-" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">AFSC List</button>
-      <button class="nav-link" id=" nav-" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Something here</button>
+      <button class="nav-link" id=" nav-" data-bs-toggle="tab" data-bs-target="#nav-afsc" type="button" role="tab" aria-controls="nav-afsc" aria-selected="false">AFSC List</button>
+      <button class="nav-link" id=" nav-" data-bs-toggle="tab" data-bs-target="#nav-courses" type="button" role="tab" aria-controls="nav-courses" aria-selected="false">Courses</button>
       <button class="nav-link" id=" nav-" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Something here</button>
       <button class="nav-link" id=" nav-" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Something here</button>
     </div>
@@ -23,8 +23,12 @@
     <!-- PEROSNNEL RECORDS END -->
 
     <!-- AFSC DASHBOARD START -->
-    <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby=" nav-">{% include 'afsc/Tables/afsc_table.html' %}</div>
+    <div class="tab-pane fade" id="nav-afsc" role="tabpanel" aria-labelledby=" nav-">{% include 'afsc/Tables/afsc_table.html' %}</div>
     <!-- AFSC DASHBOARD END -->
+
+    <!-- AFSC courses START -->
+    <div class="tab-pane fade" id="nav-courses" role="tabpanel" aria-labelledby=" nav-">{% include 'afsc/Tables/courses.html' %}</div>
+    <!-- AFSC courses END -->
 
   </div>
 

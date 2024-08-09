@@ -82,6 +82,10 @@ def afsc_Dashboard(request):
 # for AFSC DATAS
     afscs = tbl_AFSC.objects.all()
 
+#FOR COURSES DATA 
+    courses = tbl_CoursesTable.objects.all()
+    print("courses are: ",courses)
+
 
 
 
@@ -91,7 +95,13 @@ def afsc_Dashboard(request):
         'main_units': main_units,
 
         # afsc
-        'afscs': afscs
+        'afscs': afscs,
+
+        # afsc
+        'courses': courses
+
+
+
     })
 
 
@@ -1669,7 +1679,44 @@ def upload_afsc(request):
         fs = FileSystemStorage()
         filename = fs.save(excel_file.name, excel_file)
         file_path = fs.path(filename)
+        # Function to convert strings to uppercase, handling NaN values
+        def to_upper(value):
+            if pd.isna(value):
+                return ''
+            return str(value).upper()
+        try:
+            df = pd.read_excel(file_path)
+            # Print columns for debugging
+            print("Columns in Excel file:", df.columns)
+            # Begin atomic transaction
+            with transaction.atomic():
+                # Iterate over each row in the DataFrame
+                for index, row in df.iterrows():
+                    # Use row.get() to avoid KeyError if the column is missing
+                    AFSCCODE = row.get('AFSC CODE', '')
+                    # Check if the entry with the same AFPSN already exists
+                    if not tbl_AFSC.objects.filter(AFSCCode=AFSCCODE).exists():
+                        tbl_AFSC.objects.create(
+                            AFSCCode=AFSCCODE,
+                            AFSCDescription=to_upper(row.get('AFSC DESCRIPTION', '')),
+                            AFSCLevel=to_upper(row.get('AFSC LEVEL', '')),
+                        )
+            return HttpResponse('Data uploaded successfully.')
+        except Exception as e:
+            # Print error details for debugging
+            print(f'Error: {e}')
+            return HttpResponse(f'Error: {e}')
+    return render(request, 'myapp/upload.html')
 
+
+
+
+def upload_courses(request):
+    if request.method == 'POST' and request.FILES.get('excel_file'):
+        excel_file = request.FILES['excel_file']
+        fs = FileSystemStorage()
+        filename = fs.save(excel_file.name, excel_file)
+        file_path = fs.path(filename)
 
         # Function to convert strings to uppercase, handling NaN values
         def to_upper(value):
@@ -1679,24 +1726,32 @@ def upload_afsc(request):
 
         try:
             df = pd.read_excel(file_path)
-            
+
             # Print columns for debugging
             print("Columns in Excel file:", df.columns)
+
+            # Ensure the required columns are present
+            required_columns = ['COURSE TITLE', 'COURSE DESCRIPTION']
+            for col in required_columns:
+                if col not in df.columns:
+                    raise ValueError(f"Missing required column: {col}")
 
             # Begin atomic transaction
             with transaction.atomic():
                 # Iterate over each row in the DataFrame
                 for index, row in df.iterrows():
-                    # Use row.get() to avoid KeyError if the column is missing
-                    AFSCCODE = row.get('AFSC CODE', '')
-
-                    # Check if the entry with the same AFPSN already exists
-                    if not tbl_AFSC.objects.filter(AFSCCode=AFSCCODE).exists():
-                        tbl_AFSC.objects.create(
-                            AFSCCode=AFSCCODE,
-                            AFSCDescription=to_upper(row.get('AFSC DESCRIPTION', '')),
-                            AFSCLevel=to_upper(row.get('AFSC LEVEL', '')),
+                    course_title = to_upper(row.get('COURSE TITLE', ''))
+                    course_description = to_upper(row.get('COURSE DESCRIPTION', ''))
+                    # Check if the entry with the same CourseDescription already exists
+                    if not tbl_CoursesTable.objects.filter(CourseDescription=course_description).exists():
+                        tbl_CoursesTable.objects.create(
+                            CourseTitle=course_title,
+                            CourseDescription=course_description,
                         )
+
+            # Optionally, remove the file after processing
+            fs.delete(filename)
+
             return HttpResponse('Data uploaded successfully.')
         except Exception as e:
             # Print error details for debugging

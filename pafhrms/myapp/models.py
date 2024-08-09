@@ -124,7 +124,7 @@ class tbl_CoursesTable(models.Model):
     PK_Course = models.BigAutoField(primary_key=True)
     CourseTitle = models.CharField(max_length=200)
     CourseDescription = models.CharField(max_length=200)
-    RelatedCourse = models.CharField(max_length=200)
+    RelatedCourse = models.CharField(max_length=200, blank=True, null=True)
     
 # class tbl_AFSCCourseTable(models.Model):
 #     PK_AFSCCourse = models.BigAutoField(primary_key=True)
