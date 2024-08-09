@@ -237,7 +237,7 @@
               <div class="col-md-6">
                 <div class="mb-4">
                   <label class="form-label">Present Mother Unit</label >
-                  <input type="text" id="unitDP" name="unit" class="form-control" placeholder="Suffix" readonly>
+                  <input type="text" id="mother_unit" name="mother_unit" class="form-control" placeholder="Present Mother Unit" readonly>
                 </div>
               </div>
 
@@ -245,16 +245,16 @@
               
               <div class="col-md-6">
                 <div class="mb-4">
-                  <label >Present DS/TDY Unit</label>
-                  <input type="text" id="new_unittxt" name="new_unit" class="form-control" placeholder="DS unit" disabled>
+                  <label >DS/TDY Unit</label>
+                  <input type="text" id="new_unittxt" name="new_unit" class="form-control" placeholder="DS/TDY Unit" disabled>
                 </div>
               </div>
             </div>
 
          
             <div class="mb-3">
-              <label  class="form-label">Assignment Category</label>
-              <input type="text" class="form-control" id="assignmentcategorytxt" class="form-control" name="assignmentcategory" placeholder="Assignment Category"readonly>
+              <label  class="form-label">Placement Category</label>
+              <input type="text" class="form-control" id="assignmentcategorytxt" class="form-control" name="Placement Category" placeholder="Assignment Category"readonly>
             </div>
 
             <div class="mb-3">
@@ -452,7 +452,8 @@ $('#uploadOrder').change(function() {
           suffix = '';
         }
         var afpsn = $(this).data('afpsn');
-        var unit = $(this).data('unit');
+        var mother_unit = $(this).data('unit');
+
         var unitcategory = $(this).data('unit_category');
         var new_unit = $(this).data('new_unit');
         var reassigneffectivedate_until = $(this).data('reassigneffectivedate_until');
@@ -465,7 +466,8 @@ $('#uploadOrder').change(function() {
         $('#middlenametxt').val(middlename);
         $('#suffixtxt').val(suffix);
         $('#afpsntxt').val(afpsn);
-        $('#unitDP').val(unit);
+        $('#mother_unit').val(mother_unit); 
+
         $('#assignmentcategorytxt').val(unitcategory);
         $('#new_unittxt').val(new_unit);
         $('#reassignmentDate').val(reassigneffectivedate_until);

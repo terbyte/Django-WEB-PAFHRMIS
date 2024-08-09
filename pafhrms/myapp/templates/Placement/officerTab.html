@@ -72,6 +72,8 @@
               }
           var afpsn = $(this).data('afpsn');
           var unit = $(this).data('unit');
+        var mother_unit = $(this).data('mother_unit');
+
           var personnelId = $(this).data('pk'); // Assuming 'afpsn' is the unique identifier
 
 
@@ -88,7 +90,6 @@
           $('#firstnametxt').val(firstname);
           $('#middlenametxt').val(middlename);
           $('#suffixtxt').val(suffix);
-          $('#unitDP').val(unit);  
 
           $('#afpsntxt').val(afpsn);
           $('#ranktxt').val(rank);  
