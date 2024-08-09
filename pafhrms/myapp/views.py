@@ -1156,19 +1156,23 @@ def placement_update_extension(request):
         middle_name = request.POST.get('middle_name', '')  # Default to empty string if not provided
         suffix = request.POST.get('suffix', '')  # Default to empty string if not provided
         upload_file = request.FILES.get('uploadOrder')
+        assignment_category = request.POST.get('assignmentcategory')
 
         # Debugging information
         print("DURATION AND REASSIGNMENT DATE:", duration, reassignment_date)
 
-        # Create the folder for saving the file if it doesn't exist
-        folder_name = f"{afpsn}_{last_name}{first_name}{middle_name}{suffix}"
+        # Create the main folder using the AFPSN and last name
+        folder_name = f"{afpsn}_{last_name}"
         folder_path = os.path.join(settings.MEDIA_ROOT, folder_name)
-        if not os.path.exists(folder_path):
-            os.makedirs(folder_path)
 
-        # Save the uploaded file to the designated folder
+        # Create the assignment category subfolder inside the main folder
+        subfolder_path = os.path.join(folder_path, assignment_category)
+        if not os.path.exists(subfolder_path):
+            os.makedirs(subfolder_path)
+
+        # Save the uploaded file to the assignment category subfolder
         if upload_file:
-            file_path = os.path.join(folder_path, upload_file.name)
+            file_path = os.path.join(subfolder_path, upload_file.name)
             with open(file_path, 'wb+') as destination:
                 for chunk in upload_file.chunks():
                     destination.write(chunk)
@@ -1204,10 +1208,8 @@ def placement_update_extension(request):
                     )
 
             return JsonResponse({'success': True})
-
         except Exception as e:
             return JsonResponse({'success': False, 'error': str(e)})
-    
     return JsonResponse({'success': False, 'error': 'Invalid request'})
 
 
